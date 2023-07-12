@@ -1,0 +1,32 @@
+
+[//]: # (MC filter cell second)
+
+```{r, include=FALSE}
+# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+```{python mc-cell-filtering-run-second, collapse = TRUE}
+excluded_genes_data = mc.tl.filter_data(ad, var_masks=['~clean_gene'])[0]
+excluded_umis_of_cells = mc.ut.get_o_numpy(excluded_genes_data, name='__x__', sum=True)
+excluded_fraction_of_umis_of_cells = excluded_umis_of_cells / total_umis_of_cells
+df_umis = pd.DataFrame(excluded_fraction_of_umis_of_cells, columns = ['frac_excl_genes_UMIs'])
+
+
+plt.figure()
+sns.histplot(df_umis, x = 'frac_excl_genes_UMIs')
+plt.xlabel('Fraction of excluded gene UMIs')
+plt.ylabel('Density')
+plt.axvline(x=properly_sampled_max_excluded_genes_fraction, color='crimson')
+plt.show()
+
+
+too_excluded_cells_count = sum(excluded_fraction_of_umis_of_cells > properly_sampled_max_excluded_genes_fraction)
+
+too_excluded_cells_percent = 100.0 * too_excluded_cells_count / len(total_umis_of_cells)
+
+print(f"Will exclude %s (%.2f%%) cells with more than %.2f%% excluded gene UMIs"
+      % (too_excluded_cells_count,
+         too_excluded_cells_percent,
+         100.0 * properly_sampled_max_excluded_genes_fraction))
+```

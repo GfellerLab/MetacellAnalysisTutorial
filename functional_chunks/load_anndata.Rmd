@@ -1,0 +1,16 @@
+```{r, include=FALSE}
+# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+```{bash, cache = TO_CACHE, eval = FALSE}
+## here code to download dataset and store it at f'Metacell_tutorial/data/{proj_name}/singlecell_anndata_filtered.h5ad'
+```
+
+
+```{python, cache = TO_CACHE}
+# Load pre-filtered data
+data_folder = os.path.join("./data/", proj_name) # here path to folder with adata
+ad = sc.read(os.path.join(data_folder, "singlecell_anndata_filtered.h5ad"))
+```
+

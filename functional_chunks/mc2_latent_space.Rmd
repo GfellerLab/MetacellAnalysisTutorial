@@ -1,0 +1,30 @@
+
+[//]: # (MC2 compute PCA for computation of compactness and separation)
+
+MC2 builds metacells from gene expression data, not from latent space. Some of QC metrics (e.g., **compactness** and **separation**) are computed from the latent space. Thus, to compute those metrics, we need to compute latent space. 
+```{python, result = 'hold'}
+# Save count as a separate layer
+ad.layers['counts'] = ad.X
+
+# Copy the counts to ".raw" attribute of the anndata since it is necessary for downstream analysis
+# This step should be performed after filtering 
+raw_ad = sc.AnnData(ad.layers['counts'])
+raw_ad.obs_names, raw_ad.var_names = ad.obs_names, ad.var_names
+ad.raw = raw_ad
+
+
+# Normalize cells, log transform and compute highly variable genes
+sc.pp.normalize_per_cell(ad)
+sc.pp.log1p(ad)
+sc.pp.highly_variable_genes(ad, n_top_genes=1000)
+
+# Compute principal components - 
+
+n_comp    = 10
+sc.tl.pca(ad, n_comps=n_comp, use_highly_variable=True)
+
+
+# Compute UMAP for visualization 
+sc.pp.neighbors(ad, n_neighbors=10, n_pcs=n_comp)
+sc.tl.umap(ad)
+```

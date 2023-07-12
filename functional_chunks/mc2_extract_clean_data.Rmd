@@ -1,0 +1,20 @@
+
+[//]: # (MC2 extract clean data)
+
+```{r, include=FALSE}
+# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+```{python mc-extract-clean-cells, result='hold', collapse = TRUE}
+mc.pl.analyze_clean_cells(
+    ad,
+    properly_sampled_min_cell_total=properly_sampled_min_cell_total,
+    properly_sampled_max_cell_total=properly_sampled_max_cell_total,
+    properly_sampled_max_excluded_genes_fraction=properly_sampled_max_excluded_genes_fraction
+)
+mc.pl.pick_clean_cells(ad)
+
+# Extract clean dataset (with filtered cells and genes)
+ad = mc.pl.extract_clean_data(ad)
+```

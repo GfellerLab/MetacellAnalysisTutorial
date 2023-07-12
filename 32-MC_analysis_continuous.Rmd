@@ -1,0 +1,27 @@
+# Downstream analysis of metacells (for a continuous dataset)
+
+Here we use the obtained metacell to run the downstream analysis on them instead of single-cell data. In this analysis, we treat metacell as single cell, neglecting information about their size (i.e., number of containing single cells). If you are interested in sample-weighted analysis, where metacell size is taken into account, see section \@ref(weighted-analysis-cont).
+
+## Standard analysis (R)
+Standard analysis includes dimensionality reduction, clustering, differential expression etc using Seurat [ref] framework.
+
+```{r, child='./sub_pages/32-downstream-R.Rmd'}
+
+```
+
+
+## Standard analysis (Python) {#standard-analysis-Py}
+```{r, child='./sub_pages/32-downstream-Py.Rmd'}
+
+```
+
+
+
+
+## Sample-weighted analysis {#weighted-analysis-cont}
+```{r, child='./sub_pages/32-sample-weighted.Rmd'}
+
+```
+
+
+

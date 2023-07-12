@@ -1,0 +1,18 @@
+[//]: # (mc2 estimate deviation of obtained graining level)
+
+```{python, result = 'hold'}
+gamma_obtained = ad.shape[0]/mc_ad.shape[0]
+print(gamma_obtained)
+
+gamma_dev = (gamma_obtained - gamma)/gamma
+if abs(gamma_dev) < 0.3: 
+    gamma_dev = 0
+
+if gamma_dev < 0:
+    print("Increase `target_metacell_size` parameter by increasing `scale` and re-run metacell divide_and_conquer_pipeline() to get larger graining level")
+elif gamma_dev > 0:
+    print("Deacrease `target_metacell_size` parameter by decreasing `scale` and re-run metacell divide_and_conquer_pipeline() to get smaller graining level")
+elif gamma_dev == 0:
+    print("The obtained graining level is acceptable, no need to re-run the metacell divide_and_conquer_pipeline() with a new `target_metacell_size` ")
+    
+```

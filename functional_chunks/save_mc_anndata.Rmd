@@ -1,0 +1,3 @@
+```{python}
+mc_ad.write_h5ad(os.path.join('..', 'data', proj_name, f'metacell_{MC_tool}.h5ad'))
+```

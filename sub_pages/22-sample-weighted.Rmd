@@ -1,0 +1,6 @@
+
+[//]: # (Sample-weighted analysis of metacell using SuperCell framework)
+
+
+One of the features of metacells are their size, which is a number of single cell it contains. Since metacells aggregate different number of cells, they also carry different amount of information. And thus, to better reproduce single-cell analysis, bigger metacells should have larger impact on the results than smaller metacells. For this, a sample-weighted analysis can be applied. Sample-weighted analysis is impleented in the SuperCell package. 
+

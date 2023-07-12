@@ -1,0 +1,9 @@
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+new_session: yes
+view: https://github.com/GfellerLab/Metacell_tutorial/blob/master/%s
+edit: https://github.com/GfellerLab/Metacell_tutorial/edit/master/%s
+output_dir: "docs"
+clean: ["my-book.bbl", "R-packages.bib"]
