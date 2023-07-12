@@ -3,6 +3,7 @@ language:
   ui:
     chapter_name: "Chapter "
 new_session: yes
+before_chapter_script: './R/config.R'
 view: https://github.com/GfellerLab/Metacell_tutorial/blob/master/%s
 edit: https://github.com/GfellerLab/Metacell_tutorial/edit/master/%s
 output_dir: "docs"

@@ -145,6 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="book-structure.html"><a href="book-structure.html"><i class="fa fa-check"></i><b>1.1</b> Book structure</a></li>
 <li class="chapter" data-level="1.2" data-path="installation-and-requirements.html"><a href="installation-and-requirements.html"><i class="fa fa-check"></i><b>1.2</b> Installation and requirements</a></li>
 <li class="chapter" data-level="1.3" data-path="render-book.html"><a href="render-book.html"><i class="fa fa-check"></i><b>1.3</b> Render book</a></li>
+<li class="chapter" data-level="1.4" data-path="get-data.html"><a href="get-data.html"><i class="fa fa-check"></i><b>1.4</b> Get data</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>2</b> The metacell concept</a>
 <ul>
@@ -159,6 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#running-mc2"><i class="fa fa-check"></i>Running MC2</a></li>
 <li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#compute-latent-space-for-metacell-qc"><i class="fa fa-check"></i>Compute latent space for metacell QC</a></li>
 <li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#metacell-qc"><i class="fa fa-check"></i>Metacell QC</a></li>
+<li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#save-output"><i class="fa fa-check"></i>Save output</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="supercell-r.html"><a href="supercell-r.html"><i class="fa fa-check"></i><b>3.2</b> SuperCell (R)</a></li>
 <li class="chapter" data-level="3.3" data-path="seacells-python.html"><a href="seacells-python.html"><i class="fa fa-check"></i><b>3.3</b> SEACells (Python)</a>
@@ -188,38 +190,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>4.4</b> Sample-weighted analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="MC-continuous.html"><a href="MC-continuous.html"><i class="fa fa-check"></i><b>5</b> Construction of metacells (for ‘continuous’ data)</a>
+<li class="chapter" data-level="5" data-path="command-line-tool-for-mc-construction.html"><a href="command-line-tool-for-mc-construction.html"><i class="fa fa-check"></i><b>5</b> Command line tool for MC construction</a></li>
+<li class="chapter" data-level="6" data-path="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><a href="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><i class="fa fa-check"></i><b>6</b> Comparison of metacells usage for a discrete and continuous data</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="mc2-python-1.html"><a href="mc2-python-1.html"><i class="fa fa-check"></i><b>5.1</b> MC2 (Python)</a>
-<ul>
-<li class="chapter" data-level="" data-path="mc2-python-1.html"><a href="mc2-python-1.html#running-mc2-1"><i class="fa fa-check"></i>Running MC2</a></li>
-<li class="chapter" data-level="" data-path="mc2-python-1.html"><a href="mc2-python-1.html#compute-latent-space-for-metacell-qc-1"><i class="fa fa-check"></i>Compute latent space for metacell QC</a></li>
-<li class="chapter" data-level="" data-path="mc2-python-1.html"><a href="mc2-python-1.html#metacell-qc-2"><i class="fa fa-check"></i>Metacell QC</a></li>
+<li class="chapter" data-level="6.1" data-path="continuous-metacells-have-lower-purity.html"><a href="continuous-metacells-have-lower-purity.html"><i class="fa fa-check"></i><b>6.1</b> Continuous metacells have lower purity</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="supercell-r-1.html"><a href="supercell-r-1.html"><i class="fa fa-check"></i><b>5.2</b> SuperCell (R)</a></li>
-<li class="chapter" data-level="5.3" data-path="seacells-python-1.html"><a href="seacells-python-1.html"><i class="fa fa-check"></i><b>5.3</b> SEACells (Python)</a></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells-for-a-continuous-dataset.html"><a href="downstream-analysis-of-metacells-for-a-continuous-dataset.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells (for a continuous dataset)</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="standard-analysis-r-1.html"><a href="standard-analysis-r-1.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="standard-analysis-r-1.html"><a href="standard-analysis-r-1.html#dimensionality-reduction-2"><i class="fa fa-check"></i><b>6.1.1</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="6.1.2" data-path="standard-analysis-r-1.html"><a href="standard-analysis-r-1.html#clustering-2"><i class="fa fa-check"></i><b>6.1.2</b> Clustering</a></li>
-<li class="chapter" data-level="6.1.3" data-path="standard-analysis-r-1.html"><a href="standard-analysis-r-1.html#differential-expression-analysis-2"><i class="fa fa-check"></i><b>6.1.3</b> Differential expression analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="standard-analysis-Py-cont.html"><a href="standard-analysis-Py-cont.html"><i class="fa fa-check"></i><b>6.2</b> Standard analysis (Python)</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="standard-analysis-Py-cont.html"><a href="standard-analysis-Py-cont.html#dimensionality-reduction-3"><i class="fa fa-check"></i><b>6.2.1</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="6.2.2" data-path="standard-analysis-Py-cont.html"><a href="standard-analysis-Py-cont.html#clustering-3"><i class="fa fa-check"></i><b>6.2.2</b> Clustering</a></li>
-<li class="chapter" data-level="6.2.3" data-path="standard-analysis-Py-cont.html"><a href="standard-analysis-Py-cont.html#differential-expression-analysis-3"><i class="fa fa-check"></i><b>6.2.3</b> Differential expression analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="weighted-analysis-cont.html"><a href="weighted-analysis-cont.html"><i class="fa fa-check"></i><b>6.3</b> Sample-weighted analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><a href="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><i class="fa fa-check"></i><b>7</b> Comparison of metacells usage for a discrete and continuous data</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="continuous-metacells-have-lower-purity.html"><a href="continuous-metacells-have-lower-purity.html"><i class="fa fa-check"></i><b>7.1</b> Continuous metacells have lower purity</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="data-integration-with-metacells.html"><a href="data-integration-with-metacells.html"><i class="fa fa-check"></i><b>8</b> Data integration with metacells</a></li>
+<li class="chapter" data-level="7" data-path="data-integration-with-metacells.html"><a href="data-integration-with-metacells.html"><i class="fa fa-check"></i><b>7</b> Data integration with metacells</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -248,203 +224,203 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>SEACells work with <a href="https://anndata.readthedocs.io/en/latest/#">Anndata</a> objects and used <a href="https://scanpy.readthedocs.io/en/stable/">Scanpy</a> for pre-processing single-cell data and for the analysis of data at the metacell level (for the analysis, see section <a href="standard-analysis-Py.html#standard-analysis-Py">4.2</a>).</p>
 <div id="imports-1" class="section level4 unnumbered hasAnchor">
 <h4>Imports<a href="seacells-python.html#imports-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="seacells-python.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb25-2"><a href="seacells-python.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb25-3"><a href="seacells-python.html#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
-<span id="cb25-4"><a href="seacells-python.html#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> SEACells</span>
-<span id="cb25-5"><a href="seacells-python.html#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random </span>
-<span id="cb25-6"><a href="seacells-python.html#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="seacells-python.html#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb25-8"><a href="seacells-python.html#cb25-8" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">&#39;./mc_QC/&#39;</span>) </span>
-<span id="cb25-9"><a href="seacells-python.html#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mc_QC</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="seacells-python.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb27-2"><a href="seacells-python.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb27-3"><a href="seacells-python.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb27-4"><a href="seacells-python.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> SEACells</span>
+<span id="cb27-5"><a href="seacells-python.html#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random </span>
+<span id="cb27-6"><a href="seacells-python.html#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="seacells-python.html#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb27-8"><a href="seacells-python.html#cb27-8" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">&#39;./mc_QC/&#39;</span>) </span>
+<span id="cb27-9"><a href="seacells-python.html#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mc_QC</span></code></pre></div>
 </div>
 <div id="global-parameters" class="section level4 unnumbered hasAnchor">
 <h4>Global parameters<a href="seacells-python.html#global-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="seacells-python.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Parameters</span></span>
-<span id="cb26-2"><a href="seacells-python.html#cb26-2" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">&quot;SEACell&quot;</span></span>
-<span id="cb26-3"><a href="seacells-python.html#cb26-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">50</span>   <span class="co"># the requested graining level</span></span>
-<span id="cb26-4"><a href="seacells-python.html#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-5"><a href="seacells-python.html#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Here we can modify dataset </span></span>
-<span id="cb26-6"><a href="seacells-python.html#cb26-6" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> [<span class="st">&quot;cell_lines&quot;</span>, <span class="st">&quot;3k_pbmc&quot;</span>][<span class="dv">1</span>]</span>
-<span id="cb26-7"><a href="seacells-python.html#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="seacells-python.html#cb26-8" aria-hidden="true" tabindex="-1"></a>annotation_label <span class="op">=</span> {<span class="st">&#39;cell_lines&#39;</span>:<span class="st">&#39;cell_line&#39;</span>,</span>
-<span id="cb26-9"><a href="seacells-python.html#cb26-9" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&#39;3k_pbmc&#39;</span>:<span class="st">&#39;louvain&#39;</span>}[proj_name]</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="seacells-python.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Parameters</span></span>
+<span id="cb28-2"><a href="seacells-python.html#cb28-2" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">&quot;SEACell&quot;</span></span>
+<span id="cb28-3"><a href="seacells-python.html#cb28-3" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">50</span>   <span class="co"># the requested graining level</span></span>
+<span id="cb28-4"><a href="seacells-python.html#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="seacells-python.html#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">## Here we can modify dataset </span></span>
+<span id="cb28-6"><a href="seacells-python.html#cb28-6" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> [<span class="st">&quot;cell_lines&quot;</span>, <span class="st">&quot;3k_pbmc&quot;</span>][<span class="dv">1</span>]</span>
+<span id="cb28-7"><a href="seacells-python.html#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="seacells-python.html#cb28-8" aria-hidden="true" tabindex="-1"></a>annotation_label <span class="op">=</span> {<span class="st">&#39;cell_lines&#39;</span>:<span class="st">&#39;cell_line&#39;</span>,</span>
+<span id="cb28-9"><a href="seacells-python.html#cb28-9" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&#39;3k_pbmc&#39;</span>:<span class="st">&#39;louvain&#39;</span>}[proj_name]</span></code></pre></div>
 </div>
 <div id="load-data-1" class="section level4 unnumbered hasAnchor">
 <h4>Load data<a href="seacells-python.html#load-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="seacells-python.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">## here code to download dataset and store it at f&#39;Metacell_tutorial/data/{proj_name}/singlecell_anndata_filtered.h5ad&#39;</span></span></code></pre></div>
-<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="seacells-python.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load pre-filtered data</span></span>
-<span id="cb28-2"><a href="seacells-python.html#cb28-2" aria-hidden="true" tabindex="-1"></a>data_folder <span class="op">=</span> os.path.join(<span class="st">&quot;./data/&quot;</span>, proj_name) <span class="co"># here path to folder with adata</span></span>
-<span id="cb28-3"><a href="seacells-python.html#cb28-3" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read(os.path.join(data_folder, <span class="st">&quot;singlecell_anndata_filtered.h5ad&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="seacells-python.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">## here code to download dataset and store it at f&#39;Metacell_tutorial/data/{proj_name}/singlecell_anndata_filtered.h5ad&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="seacells-python.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load pre-filtered data</span></span>
+<span id="cb30-2"><a href="seacells-python.html#cb30-2" aria-hidden="true" tabindex="-1"></a>data_folder <span class="op">=</span> os.path.join(<span class="st">&quot;./data/&quot;</span>, proj_name) <span class="co"># here path to folder with adata</span></span>
+<span id="cb30-3"><a href="seacells-python.html#cb30-3" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read(os.path.join(data_folder, <span class="st">&quot;singlecell_anndata_filtered.h5ad&quot;</span>))</span></code></pre></div>
 <p>Saving count layers to a raw attribute as raw counts will be used for metacell aggregation.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="seacells-python.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save count as a separate layer</span></span>
-<span id="cb29-2"><a href="seacells-python.html#cb29-2" aria-hidden="true" tabindex="-1"></a>ad.layers[<span class="st">&#39;counts&#39;</span>] <span class="op">=</span> ad.X</span>
-<span id="cb29-3"><a href="seacells-python.html#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="seacells-python.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the counts to &quot;.raw&quot; attribute of the anndata since it is necessary for downstream analysis</span></span>
-<span id="cb29-5"><a href="seacells-python.html#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This step should be performed after filtering </span></span>
-<span id="cb29-6"><a href="seacells-python.html#cb29-6" aria-hidden="true" tabindex="-1"></a>raw_ad <span class="op">=</span> sc.AnnData(ad.layers[<span class="st">&#39;counts&#39;</span>])</span>
-<span id="cb29-7"><a href="seacells-python.html#cb29-7" aria-hidden="true" tabindex="-1"></a>raw_ad.obs_names, raw_ad.var_names <span class="op">=</span> ad.obs_names, ad.var_names</span>
-<span id="cb29-8"><a href="seacells-python.html#cb29-8" aria-hidden="true" tabindex="-1"></a>ad.raw <span class="op">=</span> raw_ad</span></code></pre></div>
-<p>Standard pre-processing for single-cell RNA-seq data with Scanpy, for more information, see <a href="https://scanpy-tutorials.readthedocs.io/en/latest/pbmc3k.html">the Scanpy tutorial</a>.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="seacells-python.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize cells, log transform and compute highly variable genes</span></span>
-<span id="cb30-2"><a href="seacells-python.html#cb30-2" aria-hidden="true" tabindex="-1"></a>sc.pp.normalize_per_cell(ad)</span>
-<span id="cb30-3"><a href="seacells-python.html#cb30-3" aria-hidden="true" tabindex="-1"></a>sc.pp.log1p(ad)</span>
-<span id="cb30-4"><a href="seacells-python.html#cb30-4" aria-hidden="true" tabindex="-1"></a>sc.pp.highly_variable_genes(ad, n_top_genes<span class="op">=</span><span class="dv">1000</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="seacells-python.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute principal components - </span></span>
-<span id="cb31-2"><a href="seacells-python.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we use 10 components to be consistent with out main tutorial, but fill free to explore other number of principal components to use </span></span>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="seacells-python.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save count as a separate layer</span></span>
+<span id="cb31-2"><a href="seacells-python.html#cb31-2" aria-hidden="true" tabindex="-1"></a>ad.layers[<span class="st">&#39;counts&#39;</span>] <span class="op">=</span> ad.X</span>
 <span id="cb31-3"><a href="seacells-python.html#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="seacells-python.html#cb31-4" aria-hidden="true" tabindex="-1"></a>n_comp    <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb31-5"><a href="seacells-python.html#cb31-5" aria-hidden="true" tabindex="-1"></a>sc.tl.pca(ad, n_comps<span class="op">=</span>n_comp, use_highly_variable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb31-6"><a href="seacells-python.html#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="seacells-python.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute UMAP for visualization </span></span>
-<span id="cb31-8"><a href="seacells-python.html#cb31-8" aria-hidden="true" tabindex="-1"></a>sc.pp.neighbors(ad, n_neighbors<span class="op">=</span><span class="dv">10</span>, n_pcs<span class="op">=</span>n_comp)</span>
-<span id="cb31-9"><a href="seacells-python.html#cb31-9" aria-hidden="true" tabindex="-1"></a>sc.tl.umap(ad)</span></code></pre></div>
+<span id="cb31-4"><a href="seacells-python.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Copy the counts to &quot;.raw&quot; attribute of the anndata since it is necessary for downstream analysis</span></span>
+<span id="cb31-5"><a href="seacells-python.html#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This step should be performed after filtering </span></span>
+<span id="cb31-6"><a href="seacells-python.html#cb31-6" aria-hidden="true" tabindex="-1"></a>raw_ad <span class="op">=</span> sc.AnnData(ad.layers[<span class="st">&#39;counts&#39;</span>])</span>
+<span id="cb31-7"><a href="seacells-python.html#cb31-7" aria-hidden="true" tabindex="-1"></a>raw_ad.obs_names, raw_ad.var_names <span class="op">=</span> ad.obs_names, ad.var_names</span>
+<span id="cb31-8"><a href="seacells-python.html#cb31-8" aria-hidden="true" tabindex="-1"></a>ad.raw <span class="op">=</span> raw_ad</span></code></pre></div>
+<p>Standard pre-processing for single-cell RNA-seq data with Scanpy, for more information, see <a href="https://scanpy-tutorials.readthedocs.io/en/latest/pbmc3k.html">the Scanpy tutorial</a>.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="seacells-python.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize cells, log transform and compute highly variable genes</span></span>
+<span id="cb32-2"><a href="seacells-python.html#cb32-2" aria-hidden="true" tabindex="-1"></a>sc.pp.normalize_per_cell(ad)</span>
+<span id="cb32-3"><a href="seacells-python.html#cb32-3" aria-hidden="true" tabindex="-1"></a>sc.pp.log1p(ad)</span>
+<span id="cb32-4"><a href="seacells-python.html#cb32-4" aria-hidden="true" tabindex="-1"></a>sc.pp.highly_variable_genes(ad, n_top_genes<span class="op">=</span><span class="dv">1000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="seacells-python.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute principal components - </span></span>
+<span id="cb33-2"><a href="seacells-python.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we use 10 components to be consistent with out main tutorial, but fill free to explore other number of principal components to use </span></span>
+<span id="cb33-3"><a href="seacells-python.html#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="seacells-python.html#cb33-4" aria-hidden="true" tabindex="-1"></a>n_comp    <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb33-5"><a href="seacells-python.html#cb33-5" aria-hidden="true" tabindex="-1"></a>sc.tl.pca(ad, n_comps<span class="op">=</span>n_comp, use_highly_variable<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb33-6"><a href="seacells-python.html#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="seacells-python.html#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute UMAP for visualization </span></span>
+<span id="cb33-8"><a href="seacells-python.html#cb33-8" aria-hidden="true" tabindex="-1"></a>sc.pp.neighbors(ad, n_neighbors<span class="op">=</span><span class="dv">10</span>, n_pcs<span class="op">=</span>n_comp)</span>
+<span id="cb33-9"><a href="seacells-python.html#cb33-9" aria-hidden="true" tabindex="-1"></a>sc.tl.umap(ad)</span></code></pre></div>
 </div>
 <div id="running-seacells" class="section level3 unnumbered hasAnchor">
 <h3>Running SEACells<a href="seacells-python.html#running-seacells" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="setting-up-seacells-parameters" class="section level4 unnumbered hasAnchor">
 <h4>Setting up SEACells parameters<a href="seacells-python.html#setting-up-seacells-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="seacells-python.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">## User defined parameters</span></span>
-<span id="cb32-2"><a href="seacells-python.html#cb32-2" aria-hidden="true" tabindex="-1"></a>build_kernel_on <span class="op">=</span> <span class="st">&#39;X_pca&#39;</span> <span class="co"># key in ad.obsm to use for computing metacells</span></span>
-<span id="cb32-3"><a href="seacells-python.html#cb32-3" aria-hidden="true" tabindex="-1"></a>                          <span class="co"># This would be replaced by &#39;X_svd&#39; for ATAC data</span></span>
-<span id="cb32-4"><a href="seacells-python.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Additional parameters</span></span>
-<span id="cb32-5"><a href="seacells-python.html#cb32-5" aria-hidden="true" tabindex="-1"></a>n_waypoint_eigs <span class="op">=</span> <span class="dv">10</span>      <span class="co"># Number of eigenvalues to consider when initializing metacells</span></span>
-<span id="cb32-6"><a href="seacells-python.html#cb32-6" aria-hidden="true" tabindex="-1"></a>n_iter <span class="op">=</span> <span class="dv">50</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="seacells-python.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">## User defined parameters</span></span>
+<span id="cb34-2"><a href="seacells-python.html#cb34-2" aria-hidden="true" tabindex="-1"></a>build_kernel_on <span class="op">=</span> <span class="st">&#39;X_pca&#39;</span> <span class="co"># key in ad.obsm to use for computing metacells</span></span>
+<span id="cb34-3"><a href="seacells-python.html#cb34-3" aria-hidden="true" tabindex="-1"></a>                          <span class="co"># This would be replaced by &#39;X_svd&#39; for ATAC data</span></span>
+<span id="cb34-4"><a href="seacells-python.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Additional parameters</span></span>
+<span id="cb34-5"><a href="seacells-python.html#cb34-5" aria-hidden="true" tabindex="-1"></a>n_waypoint_eigs <span class="op">=</span> <span class="dv">10</span>      <span class="co"># Number of eigenvalues to consider when initializing metacells</span></span>
+<span id="cb34-6"><a href="seacells-python.html#cb34-6" aria-hidden="true" tabindex="-1"></a>n_iter <span class="op">=</span> <span class="dv">50</span></span></code></pre></div>
 </div>
 <div id="initialize-the-seacell-model" class="section level4 unnumbered hasAnchor">
 <h4>Initialize the SEACell model<a href="seacells-python.html#initialize-the-seacell-model" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="seacells-python.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility </span></span>
-<span id="cb33-2"><a href="seacells-python.html#cb33-2" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">123</span>)</span>
-<span id="cb33-3"><a href="seacells-python.html#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-4"><a href="seacells-python.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The number of SEACells is computed as a ratio between the number of single cells and the desired graining level</span></span>
-<span id="cb33-5"><a href="seacells-python.html#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-6"><a href="seacells-python.html#cb33-6" aria-hidden="true" tabindex="-1"></a>n_SEACells <span class="op">=</span> <span class="bu">int</span>(ad.shape[<span class="dv">0</span>]<span class="op">/</span>gamma) </span>
-<span id="cb33-7"><a href="seacells-python.html#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-8"><a href="seacells-python.html#cb33-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> SEACells.core.SEACells(ad, </span>
-<span id="cb33-9"><a href="seacells-python.html#cb33-9" aria-hidden="true" tabindex="-1"></a>                  build_kernel_on<span class="op">=</span>build_kernel_on, </span>
-<span id="cb33-10"><a href="seacells-python.html#cb33-10" aria-hidden="true" tabindex="-1"></a>                  n_SEACells<span class="op">=</span>n_SEACells, </span>
-<span id="cb33-11"><a href="seacells-python.html#cb33-11" aria-hidden="true" tabindex="-1"></a>                  n_waypoint_eigs<span class="op">=</span>n_waypoint_eigs,</span>
-<span id="cb33-12"><a href="seacells-python.html#cb33-12" aria-hidden="true" tabindex="-1"></a>                  convergence_epsilon <span class="op">=</span> <span class="fl">1e-5</span>,</span>
-<span id="cb33-13"><a href="seacells-python.html#cb33-13" aria-hidden="true" tabindex="-1"></a>                  verbose <span class="op">=</span> <span class="va">True</span>)</span>
-<span id="cb33-14"><a href="seacells-python.html#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Welcome to SEACells!</span></span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="seacells-python.html#cb34-1" aria-hidden="true" tabindex="-1"></a>model.construct_kernel_matrix()</span>
-<span id="cb34-2"><a href="seacells-python.html#cb34-2" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> model.kernel_matrix</span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="seacells-python.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize archetypes</span></span>
-<span id="cb35-2"><a href="seacells-python.html#cb35-2" aria-hidden="true" tabindex="-1"></a>model.initialize_archetypes()</span>
-<span id="cb35-3"><a href="seacells-python.html#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Building kernel on X_pca</span></span>
-<span id="cb35-4"><a href="seacells-python.html#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Computing diffusion components from X_pca for waypoint initialization ... </span></span>
-<span id="cb35-5"><a href="seacells-python.html#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Determing nearest neighbor graph...</span></span>
-<span id="cb35-6"><a href="seacells-python.html#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Done.</span></span>
-<span id="cb35-7"><a href="seacells-python.html#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Sampling waypoints ...</span></span>
-<span id="cb35-8"><a href="seacells-python.html#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Done.</span></span>
-<span id="cb35-9"><a href="seacells-python.html#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Selecting 42 cells from waypoint initialization.</span></span>
-<span id="cb35-10"><a href="seacells-python.html#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Initializing residual matrix using greedy column selection</span></span>
-<span id="cb35-11"><a href="seacells-python.html#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Initializing f and g...</span></span>
-<span id="cb35-12"><a href="seacells-python.html#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Selecting 10 cells from greedy initialization.</span></span>
-<span id="cb35-13"><a href="seacells-python.html#cb35-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb35-14"><a href="seacells-python.html#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb35-15"><a href="seacells-python.html#cb35-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">20</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
-<span id="cb35-16"><a href="seacells-python.html#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 20/20 [00:00&lt;00:00, 460.83it/s]</span></span>
-<span id="cb35-17"><a href="seacells-python.html#cb35-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb35-18"><a href="seacells-python.html#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the initialization to ensure they are evenly spread</span></span>
-<span id="cb35-19"><a href="seacells-python.html#cb35-19" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_initialization(ad, model, plot_basis<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>) <span class="co">## error, mb missing some modules</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="seacells-python.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility </span></span>
+<span id="cb35-2"><a href="seacells-python.html#cb35-2" aria-hidden="true" tabindex="-1"></a>random.seed(<span class="dv">123</span>)</span>
+<span id="cb35-3"><a href="seacells-python.html#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="seacells-python.html#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The number of SEACells is computed as a ratio between the number of single cells and the desired graining level</span></span>
+<span id="cb35-5"><a href="seacells-python.html#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="seacells-python.html#cb35-6" aria-hidden="true" tabindex="-1"></a>n_SEACells <span class="op">=</span> <span class="bu">int</span>(ad.shape[<span class="dv">0</span>]<span class="op">/</span>gamma) </span>
+<span id="cb35-7"><a href="seacells-python.html#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="seacells-python.html#cb35-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> SEACells.core.SEACells(ad, </span>
+<span id="cb35-9"><a href="seacells-python.html#cb35-9" aria-hidden="true" tabindex="-1"></a>                  build_kernel_on<span class="op">=</span>build_kernel_on, </span>
+<span id="cb35-10"><a href="seacells-python.html#cb35-10" aria-hidden="true" tabindex="-1"></a>                  n_SEACells<span class="op">=</span>n_SEACells, </span>
+<span id="cb35-11"><a href="seacells-python.html#cb35-11" aria-hidden="true" tabindex="-1"></a>                  n_waypoint_eigs<span class="op">=</span>n_waypoint_eigs,</span>
+<span id="cb35-12"><a href="seacells-python.html#cb35-12" aria-hidden="true" tabindex="-1"></a>                  convergence_epsilon <span class="op">=</span> <span class="fl">1e-5</span>,</span>
+<span id="cb35-13"><a href="seacells-python.html#cb35-13" aria-hidden="true" tabindex="-1"></a>                  verbose <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb35-14"><a href="seacells-python.html#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Welcome to SEACells!</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="seacells-python.html#cb36-1" aria-hidden="true" tabindex="-1"></a>model.construct_kernel_matrix()</span>
+<span id="cb36-2"><a href="seacells-python.html#cb36-2" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> model.kernel_matrix</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="seacells-python.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize archetypes</span></span>
+<span id="cb37-2"><a href="seacells-python.html#cb37-2" aria-hidden="true" tabindex="-1"></a>model.initialize_archetypes()</span>
+<span id="cb37-3"><a href="seacells-python.html#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Building kernel on X_pca</span></span>
+<span id="cb37-4"><a href="seacells-python.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Computing diffusion components from X_pca for waypoint initialization ... </span></span>
+<span id="cb37-5"><a href="seacells-python.html#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Determing nearest neighbor graph...</span></span>
+<span id="cb37-6"><a href="seacells-python.html#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Done.</span></span>
+<span id="cb37-7"><a href="seacells-python.html#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Sampling waypoints ...</span></span>
+<span id="cb37-8"><a href="seacells-python.html#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Done.</span></span>
+<span id="cb37-9"><a href="seacells-python.html#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Selecting 42 cells from waypoint initialization.</span></span>
+<span id="cb37-10"><a href="seacells-python.html#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Initializing residual matrix using greedy column selection</span></span>
+<span id="cb37-11"><a href="seacells-python.html#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Initializing f and g...</span></span>
+<span id="cb37-12"><a href="seacells-python.html#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Selecting 10 cells from greedy initialization.</span></span>
+<span id="cb37-13"><a href="seacells-python.html#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb37-14"><a href="seacells-python.html#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb37-15"><a href="seacells-python.html#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">20</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
+<span id="cb37-16"><a href="seacells-python.html#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 20/20 [00:00&lt;00:00, 469.56it/s]</span></span>
+<span id="cb37-17"><a href="seacells-python.html#cb37-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb37-18"><a href="seacells-python.html#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the initialization to ensure they are evenly spread</span></span>
+<span id="cb37-19"><a href="seacells-python.html#cb37-19" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_initialization(ad, model, plot_basis<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>) <span class="co">## error, mb missing some modules</span></span></code></pre></div>
 <p><img src="21-MC_construction_discrete_files/figure-html/seacells-model-init-1.png" width="672" /></p>
 </div>
 <div id="fitting-model" class="section level4 unnumbered hasAnchor">
 <h4>Fitting model<a href="seacells-python.html#fitting-model" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="seacells-python.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">## fit model</span></span>
-<span id="cb36-2"><a href="seacells-python.html#cb36-2" aria-hidden="true" tabindex="-1"></a>model.fit(min_iter <span class="op">=</span> <span class="dv">10</span>, max_iter <span class="op">=</span> n_iter)</span>
-<span id="cb36-3"><a href="seacells-python.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Randomly initialized A matrix.</span></span>
-<span id="cb36-4"><a href="seacells-python.html#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Setting convergence threshold at 0.00088</span></span>
-<span id="cb36-5"><a href="seacells-python.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 1.</span></span>
-<span id="cb36-6"><a href="seacells-python.html#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 1.</span></span>
-<span id="cb36-7"><a href="seacells-python.html#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 10.</span></span>
-<span id="cb36-8"><a href="seacells-python.html#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 10.</span></span>
-<span id="cb36-9"><a href="seacells-python.html#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 20.</span></span>
-<span id="cb36-10"><a href="seacells-python.html#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 20.</span></span>
-<span id="cb36-11"><a href="seacells-python.html#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 30.</span></span>
-<span id="cb36-12"><a href="seacells-python.html#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 30.</span></span>
-<span id="cb36-13"><a href="seacells-python.html#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Converged after 37 iterations.</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="seacells-python.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">## fit model</span></span>
+<span id="cb38-2"><a href="seacells-python.html#cb38-2" aria-hidden="true" tabindex="-1"></a>model.fit(min_iter <span class="op">=</span> <span class="dv">10</span>, max_iter <span class="op">=</span> n_iter)</span>
+<span id="cb38-3"><a href="seacells-python.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Randomly initialized A matrix.</span></span>
+<span id="cb38-4"><a href="seacells-python.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Setting convergence threshold at 0.00088</span></span>
+<span id="cb38-5"><a href="seacells-python.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 1.</span></span>
+<span id="cb38-6"><a href="seacells-python.html#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 1.</span></span>
+<span id="cb38-7"><a href="seacells-python.html#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 10.</span></span>
+<span id="cb38-8"><a href="seacells-python.html#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 10.</span></span>
+<span id="cb38-9"><a href="seacells-python.html#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 20.</span></span>
+<span id="cb38-10"><a href="seacells-python.html#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 20.</span></span>
+<span id="cb38-11"><a href="seacells-python.html#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 30.</span></span>
+<span id="cb38-12"><a href="seacells-python.html#cb38-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 30.</span></span>
+<span id="cb38-13"><a href="seacells-python.html#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Converged after 37 iterations.</span></span></code></pre></div>
 </div>
 <div id="check-model-convergence" class="section level4 unnumbered hasAnchor">
 <h4>Check model convergence<a href="seacells-python.html#check-model-convergence" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="seacells-python.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for convergence </span></span>
-<span id="cb37-2"><a href="seacells-python.html#cb37-2" aria-hidden="true" tabindex="-1"></a>model.plot_convergence()</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="seacells-python.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for convergence </span></span>
+<span id="cb39-2"><a href="seacells-python.html#cb39-2" aria-hidden="true" tabindex="-1"></a>model.plot_convergence()</span></code></pre></div>
 <p><img src="21-MC_construction_discrete_files/figure-html/seacells-convergence-3.png" width="672" /></p>
 </div>
 <div id="aggregate-metacells" class="section level4 unnumbered hasAnchor">
 <h4>Aggregate metacells<a href="seacells-python.html#aggregate-metacells" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><code>membership</code></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="seacells-python.html#cb38-1" aria-hidden="true" tabindex="-1"></a>membership <span class="op">=</span> model.get_hard_assignments()</span>
-<span id="cb38-2"><a href="seacells-python.html#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="seacells-python.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregate metacells    </span></span>
-<span id="cb38-4"><a href="seacells-python.html#cb38-4" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> SEACells.core.summarize_by_SEACell(ad, SEACells_label<span class="op">=</span><span class="st">&#39;SEACell&#39;</span>, summarize_layer<span class="op">=</span><span class="st">&#39;raw&#39;</span>)</span>
-<span id="cb38-5"><a href="seacells-python.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb38-6"><a href="seacells-python.html#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">52</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
-<span id="cb38-7"><a href="seacells-python.html#cb38-7" aria-hidden="true" tabindex="-1"></a> <span class="dv">81</span><span class="op">%|</span><span class="co">########  | 42/52 [00:00&lt;00:00, 419.01it/s]</span></span>
-<span id="cb38-8"><a href="seacells-python.html#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 52/52 [00:00&lt;00:00, 431.98it/s]</span></span>
-<span id="cb38-9"><a href="seacells-python.html#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-10"><a href="seacells-python.html#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co"># make `membership` numeric</span></span>
-<span id="cb38-11"><a href="seacells-python.html#cb38-11" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> {x: <span class="bu">int</span>(i)<span class="op">+</span><span class="dv">1</span> <span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(mc_ad.obs_names)}</span>
-<span id="cb38-12"><a href="seacells-python.html#cb38-12" aria-hidden="true" tabindex="-1"></a>ad.obs.merge(membership)</span>
-<span id="cb38-13"><a href="seacells-python.html#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         n_genes  percent_mito  n_counts          louvain     SEACell</span></span>
-<span id="cb38-14"><a href="seacells-python.html#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
-<span id="cb38-15"><a href="seacells-python.html#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
-<span id="cb38-16"><a href="seacells-python.html#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
-<span id="cb38-17"><a href="seacells-python.html#cb38-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
-<span id="cb38-18"><a href="seacells-python.html#cb38-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
-<span id="cb38-19"><a href="seacells-python.html#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...         ...           ...       ...              ...         ...</span></span>
-<span id="cb38-20"><a href="seacells-python.html#cb38-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189387     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
-<span id="cb38-21"><a href="seacells-python.html#cb38-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189388     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
-<span id="cb38-22"><a href="seacells-python.html#cb38-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189389     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
-<span id="cb38-23"><a href="seacells-python.html#cb38-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189390     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
-<span id="cb38-24"><a href="seacells-python.html#cb38-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189391     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
-<span id="cb38-25"><a href="seacells-python.html#cb38-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb38-26"><a href="seacells-python.html#cb38-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [189392 rows x 5 columns]</span></span>
-<span id="cb38-27"><a href="seacells-python.html#cb38-27" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">&#39;membership&#39;</span>] <span class="op">=</span> [d[x] <span class="cf">for</span> x <span class="kw">in</span> membership.SEACell]</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="seacells-python.html#cb40-1" aria-hidden="true" tabindex="-1"></a>membership <span class="op">=</span> model.get_hard_assignments()</span>
+<span id="cb40-2"><a href="seacells-python.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="seacells-python.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregate metacells    </span></span>
+<span id="cb40-4"><a href="seacells-python.html#cb40-4" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> SEACells.core.summarize_by_SEACell(ad, SEACells_label<span class="op">=</span><span class="st">&#39;SEACell&#39;</span>, summarize_layer<span class="op">=</span><span class="st">&#39;raw&#39;</span>)</span>
+<span id="cb40-5"><a href="seacells-python.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb40-6"><a href="seacells-python.html#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">52</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
+<span id="cb40-7"><a href="seacells-python.html#cb40-7" aria-hidden="true" tabindex="-1"></a> <span class="dv">73</span><span class="op">%|</span><span class="co">#######3  | 38/52 [00:00&lt;00:00, 374.72it/s]</span></span>
+<span id="cb40-8"><a href="seacells-python.html#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 52/52 [00:00&lt;00:00, 391.38it/s]</span></span>
+<span id="cb40-9"><a href="seacells-python.html#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-10"><a href="seacells-python.html#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co"># make `membership` numeric</span></span>
+<span id="cb40-11"><a href="seacells-python.html#cb40-11" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> {x: <span class="bu">int</span>(i)<span class="op">+</span><span class="dv">1</span> <span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(mc_ad.obs_names)}</span>
+<span id="cb40-12"><a href="seacells-python.html#cb40-12" aria-hidden="true" tabindex="-1"></a>ad.obs.merge(membership)</span>
+<span id="cb40-13"><a href="seacells-python.html#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         n_genes  percent_mito  n_counts          louvain     SEACell</span></span>
+<span id="cb40-14"><a href="seacells-python.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
+<span id="cb40-15"><a href="seacells-python.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
+<span id="cb40-16"><a href="seacells-python.html#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
+<span id="cb40-17"><a href="seacells-python.html#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
+<span id="cb40-18"><a href="seacells-python.html#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4           781      0.030178    2421.0      CD4 T cells  SEACell-15</span></span>
+<span id="cb40-19"><a href="seacells-python.html#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...         ...           ...       ...              ...         ...</span></span>
+<span id="cb40-20"><a href="seacells-python.html#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189387     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
+<span id="cb40-21"><a href="seacells-python.html#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189388     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
+<span id="cb40-22"><a href="seacells-python.html#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189389     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
+<span id="cb40-23"><a href="seacells-python.html#cb40-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189390     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
+<span id="cb40-24"><a href="seacells-python.html#cb40-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 189391     1567      0.021160    5678.0  Dendritic cells  SEACell-48</span></span>
+<span id="cb40-25"><a href="seacells-python.html#cb40-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb40-26"><a href="seacells-python.html#cb40-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [189392 rows x 5 columns]</span></span>
+<span id="cb40-27"><a href="seacells-python.html#cb40-27" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">&#39;membership&#39;</span>] <span class="op">=</span> [d[x] <span class="cf">for</span> x <span class="kw">in</span> membership.SEACell]</span></code></pre></div>
 </div>
 <div id="project-metacells-on-the-single-cell-umap" class="section level4 unnumbered hasAnchor">
 <h4>Project metacells on the single-cell umap<a href="seacells-python.html#project-metacells-on-the-single-cell-umap" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="seacells-python.html#cb39-1" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_2D(ad, key<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>, colour_metacells<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="seacells-python.html#cb41-1" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_2D(ad, key<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>, colour_metacells<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
 <p><img src="21-MC_construction_discrete_files/figure-html/seacells-umap-5.png" width="480" /></p>
 </div>
 </div>
 <div id="metacell-qc-1" class="section level3 unnumbered hasAnchor">
 <h3>Metacell QC<a href="seacells-python.html#metacell-qc-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Size distribution</strong></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="seacells-python.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_size = SEACells.plot.plot_SEACell_sizes(ad, bins=20)</span></span>
-<span id="cb40-2"><a href="seacells-python.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-3"><a href="seacells-python.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_ad.obs = pd.merge(mc_ad.obs, mc_size, left_index=True, right_index=True)</span></span>
-<span id="cb40-4"><a href="seacells-python.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_ad.obs</span></span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="seacells-python.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_size = SEACells.plot.plot_SEACell_sizes(ad, bins=20)</span></span>
+<span id="cb42-2"><a href="seacells-python.html#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="seacells-python.html#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_ad.obs = pd.merge(mc_ad.obs, mc_size, left_index=True, right_index=True)</span></span>
+<span id="cb42-4"><a href="seacells-python.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_ad.obs</span></span></code></pre></div>
 <p><strong>Purity</strong> of metacells is a proportion of the most abundant cell type within metacell [ref SuperCell]</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="seacells-python.html#cb41-1" aria-hidden="true" tabindex="-1"></a>mc_purity <span class="op">=</span> mc_QC.purity(ad, annotation_label, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>)</span>
-<span id="cb41-2"><a href="seacells-python.html#cb41-2" aria-hidden="true" tabindex="-1"></a>mc_purity.head()</span>
-<span id="cb41-3"><a href="seacells-python.html#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     louvain  louvain_purity</span></span>
-<span id="cb41-4"><a href="seacells-python.html#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; membership                                 </span></span>
-<span id="cb41-5"><a href="seacells-python.html#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1               CD4 T cells        0.553571</span></span>
-<span id="cb41-6"><a href="seacells-python.html#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                   B cells        0.977778</span></span>
-<span id="cb41-7"><a href="seacells-python.html#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3               CD4 T cells        0.955882</span></span>
-<span id="cb41-8"><a href="seacells-python.html#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4           CD14+ Monocytes        0.943396</span></span>
-<span id="cb41-9"><a href="seacells-python.html#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                  NK cells        1.000000</span></span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="seacells-python.html#cb43-1" aria-hidden="true" tabindex="-1"></a>mc_purity <span class="op">=</span> mc_QC.purity(ad, annotation_label, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>)</span>
+<span id="cb43-2"><a href="seacells-python.html#cb43-2" aria-hidden="true" tabindex="-1"></a>mc_purity.head()</span>
+<span id="cb43-3"><a href="seacells-python.html#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     louvain  louvain_purity</span></span>
+<span id="cb43-4"><a href="seacells-python.html#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; membership                                 </span></span>
+<span id="cb43-5"><a href="seacells-python.html#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1               CD4 T cells        0.553571</span></span>
+<span id="cb43-6"><a href="seacells-python.html#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2                   B cells        0.977778</span></span>
+<span id="cb43-7"><a href="seacells-python.html#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3               CD4 T cells        0.955882</span></span>
+<span id="cb43-8"><a href="seacells-python.html#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4           CD14+ Monocytes        0.943396</span></span>
+<span id="cb43-9"><a href="seacells-python.html#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5                  NK cells        1.000000</span></span></code></pre></div>
 <p><strong>Compactness</strong> of metacells is variance of components within metacells [ref SEACells]</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="seacells-python.html#cb42-1" aria-hidden="true" tabindex="-1"></a>compactness <span class="op">=</span> mc_QC.compactness(ad, <span class="st">&#39;X_pca&#39;</span>, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>, DO_DC <span class="op">=</span> <span class="va">False</span>, name <span class="op">=</span> <span class="st">&#39;Compactness_PCA&#39;</span>, n_comp<span class="op">=</span>n_comp)[<span class="st">&#39;Compactness_PCA&#39;</span>]</span>
-<span id="cb42-2"><a href="seacells-python.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add compactness to metadata</span></span>
-<span id="cb42-3"><a href="seacells-python.html#cb42-3" aria-hidden="true" tabindex="-1"></a>mc_ad.obs <span class="op">=</span> mc_ad.obs.join(compactness)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="seacells-python.html#cb44-1" aria-hidden="true" tabindex="-1"></a>compactness <span class="op">=</span> mc_QC.compactness(ad, <span class="st">&#39;X_pca&#39;</span>, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>, DO_DC <span class="op">=</span> <span class="va">False</span>, name <span class="op">=</span> <span class="st">&#39;Compactness_PCA&#39;</span>, n_comp<span class="op">=</span>n_comp)[<span class="st">&#39;Compactness_PCA&#39;</span>]</span>
+<span id="cb44-2"><a href="seacells-python.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add compactness to metadata</span></span>
+<span id="cb44-3"><a href="seacells-python.html#cb44-3" aria-hidden="true" tabindex="-1"></a>mc_ad.obs <span class="op">=</span> mc_ad.obs.join(compactness)</span></code></pre></div>
 <p><strong>Separation</strong> of metacells is a distance to a closest metacell [ref SEACells]</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="seacells-python.html#cb43-1" aria-hidden="true" tabindex="-1"></a>separation <span class="op">=</span> mc_QC.separation(ad, <span class="st">&#39;X_pca&#39;</span>, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>, DO_DC <span class="op">=</span> <span class="va">False</span>, name <span class="op">=</span> <span class="st">&#39;Separation_PCA&#39;</span>, n_comp<span class="op">=</span>n_comp)[<span class="st">&#39;Separation_PCA&#39;</span>]</span>
-<span id="cb43-2"><a href="seacells-python.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add separation to metadata</span></span>
-<span id="cb43-3"><a href="seacells-python.html#cb43-3" aria-hidden="true" tabindex="-1"></a>mc_ad.obs <span class="op">=</span> mc_ad.obs.join(separation)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="seacells-python.html#cb45-1" aria-hidden="true" tabindex="-1"></a>separation <span class="op">=</span> mc_QC.separation(ad, <span class="st">&#39;X_pca&#39;</span>, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>, DO_DC <span class="op">=</span> <span class="va">False</span>, name <span class="op">=</span> <span class="st">&#39;Separation_PCA&#39;</span>, n_comp<span class="op">=</span>n_comp)[<span class="st">&#39;Separation_PCA&#39;</span>]</span>
+<span id="cb45-2"><a href="seacells-python.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add separation to metadata</span></span>
+<span id="cb45-3"><a href="seacells-python.html#cb45-3" aria-hidden="true" tabindex="-1"></a>mc_ad.obs <span class="op">=</span> mc_ad.obs.join(separation)</span></code></pre></div>
 <p><strong>Inner normalized variance (INV)</strong> of metacells is mean-normalized variance of gene expression within metacells [ref MC-2]</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="seacells-python.html#cb44-1" aria-hidden="true" tabindex="-1"></a>mc_INV <span class="op">=</span> mc_QC.mc_inner_normalized_var(ad, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>)</span>
-<span id="cb44-2"><a href="seacells-python.html#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="seacells-python.html#cb44-3" aria-hidden="true" tabindex="-1"></a>mc_INV_val <span class="op">=</span> mc_INV.quantile(<span class="fl">0.95</span>, axis<span class="op">=</span><span class="dv">1</span>, numeric_only<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb44-4"><a href="seacells-python.html#cb44-4" aria-hidden="true" tabindex="-1"></a>mc_INV_val <span class="op">=</span> pd.DataFrame(mc_INV_val.transpose()).set_axis([<span class="st">&#39;INV&#39;</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb44-5"><a href="seacells-python.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># add INV to metadata</span></span>
-<span id="cb44-6"><a href="seacells-python.html#cb44-6" aria-hidden="true" tabindex="-1"></a>mc_ad.obs <span class="op">=</span> mc_ad.obs.join(mc_INV_val)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="seacells-python.html#cb46-1" aria-hidden="true" tabindex="-1"></a>mc_INV <span class="op">=</span> mc_QC.mc_inner_normalized_var(ad, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>)</span>
+<span id="cb46-2"><a href="seacells-python.html#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="seacells-python.html#cb46-3" aria-hidden="true" tabindex="-1"></a>mc_INV_val <span class="op">=</span> mc_INV.quantile(<span class="fl">0.95</span>, axis<span class="op">=</span><span class="dv">1</span>, numeric_only<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb46-4"><a href="seacells-python.html#cb46-4" aria-hidden="true" tabindex="-1"></a>mc_INV_val <span class="op">=</span> pd.DataFrame(mc_INV_val.transpose()).set_axis([<span class="st">&#39;INV&#39;</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb46-5"><a href="seacells-python.html#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># add INV to metadata</span></span>
+<span id="cb46-6"><a href="seacells-python.html#cb46-6" aria-hidden="true" tabindex="-1"></a>mc_ad.obs <span class="op">=</span> mc_ad.obs.join(mc_INV_val)</span></code></pre></div>
 </div>
 <div id="save-metacell-object-for-further-analysis" class="section level3 unnumbered hasAnchor">
 <h3>Save metacell object for further analysis<a href="seacells-python.html#save-metacell-object-for-further-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="seacells-python.html#cb45-1" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">&#39;..&#39;</span>, <span class="st">&#39;data&#39;</span>, proj_name, <span class="ss">f&#39;metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="seacells-python.html#cb47-1" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">&#39;..&#39;</span>, <span class="st">&#39;data&#39;</span>, proj_name, <span class="ss">f&#39;metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad&#39;</span>))</span></code></pre></div>
 
 </div>
 </div>

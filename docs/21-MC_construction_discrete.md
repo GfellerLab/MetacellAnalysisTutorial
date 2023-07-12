@@ -8,9 +8,6 @@ For this, we will use a dataset of PBMCs from study. This dataset contains 30K c
 
 
 
-
-
-
 ```
 #> findfont: Font family ['Raleway'] not found. Falling back to DejaVu Sans.
 #> findfont: Font family ['Lato'] not found. Falling back to DejaVu Sans.
@@ -111,8 +108,8 @@ The first round of cell cleaning usually implies filltering out cell with very l
 
 ```python
 ### The first round (high/low UMIs)
-properly_sampled_min_cell_total = {'cell_lines' : 5000, '3k_pbmc': 200}[proj_name] # setup for the dataset that will be used 
-properly_sampled_max_cell_total = {'cell_lines' : 110000, '3k_pbmc': 10000}[proj_name] # setup for the dataset that will be used 
+properly_sampled_min_cell_total = 200 # setup for the dataset that will be used 
+properly_sampled_max_cell_total = 10000 # setup for the dataset that will be used 
 ```
 
 
@@ -418,6 +415,7 @@ sc.tl.umap(ad)
 ### Metacell QC {-}
 
 
+### Save output {-}
 
 
 
@@ -586,7 +584,7 @@ model.initialize_archetypes()
 #> Initializing f and g...
 #> Selecting 10 cells from greedy initialization.
 #> 
-#>   0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 460.83it/s]
+#>   0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 469.56it/s]
     
 # Plot the initialization to ensure they are evenly spread
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') ## error, mb missing some modules
@@ -631,7 +629,7 @@ membership = model.get_hard_assignments()
 
 # aggregate metacells    
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw')
-#>   0%|          | 0/52 [00:00<?, ?it/s] 81%|########  | 42/52 [00:00<00:00, 419.01it/s]100%|##########| 52/52 [00:00<00:00, 431.98it/s]
+#>   0%|          | 0/52 [00:00<?, ?it/s] 73%|#######3  | 38/52 [00:00<00:00, 374.72it/s]100%|##########| 52/52 [00:00<00:00, 391.38it/s]
 
 # make `membership` numeric
 d = {x: int(i)+1 for i, x in enumerate(mc_ad.obs_names)}

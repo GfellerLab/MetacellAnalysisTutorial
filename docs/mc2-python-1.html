@@ -145,6 +145,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="book-structure.html"><a href="book-structure.html"><i class="fa fa-check"></i><b>1.1</b> Book structure</a></li>
 <li class="chapter" data-level="1.2" data-path="installation-and-requirements.html"><a href="installation-and-requirements.html"><i class="fa fa-check"></i><b>1.2</b> Installation and requirements</a></li>
 <li class="chapter" data-level="1.3" data-path="render-book.html"><a href="render-book.html"><i class="fa fa-check"></i><b>1.3</b> Render book</a></li>
+<li class="chapter" data-level="1.4" data-path="get-data.html"><a href="get-data.html"><i class="fa fa-check"></i><b>1.4</b> Get data</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>2</b> The metacell concept</a>
 <ul>
@@ -159,6 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#running-mc2"><i class="fa fa-check"></i>Running MC2</a></li>
 <li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#compute-latent-space-for-metacell-qc"><i class="fa fa-check"></i>Compute latent space for metacell QC</a></li>
 <li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#metacell-qc"><i class="fa fa-check"></i>Metacell QC</a></li>
+<li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#save-output"><i class="fa fa-check"></i>Save output</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="supercell-r.html"><a href="supercell-r.html"><i class="fa fa-check"></i><b>3.2</b> SuperCell (R)</a></li>
 <li class="chapter" data-level="3.3" data-path="seacells-python.html"><a href="seacells-python.html"><i class="fa fa-check"></i><b>3.3</b> SEACells (Python)</a>
@@ -246,105 +248,105 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Here we construct metacells using <a href="https://github.com/tanaylab/metacells">Metacell-2 (MC2)</a>. The code is adapted from the <a href="https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html">author’s tutorial</a>.</p>
 <div id="imports-2" class="section level4 unnumbered hasAnchor">
 <h4>Imports<a href="mc2-python-1.html#imports-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="mc2-python-1.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb47-2"><a href="mc2-python-1.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb47-3"><a href="mc2-python-1.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb47-4"><a href="mc2-python-1.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anndata <span class="im">as</span> ad</span>
-<span id="cb47-5"><a href="mc2-python-1.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
-<span id="cb47-6"><a href="mc2-python-1.html#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb47-7"><a href="mc2-python-1.html#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb47-8"><a href="mc2-python-1.html#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> metacells <span class="im">as</span> mc</span>
-<span id="cb47-9"><a href="mc2-python-1.html#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-10"><a href="mc2-python-1.html#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
-<span id="cb47-11"><a href="mc2-python-1.html#cb47-11" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">&#39;./mc_QC/&#39;</span>) </span>
-<span id="cb47-12"><a href="mc2-python-1.html#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mc_QC</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="mc2-python-1.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb49-2"><a href="mc2-python-1.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb49-3"><a href="mc2-python-1.html#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb49-4"><a href="mc2-python-1.html#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anndata <span class="im">as</span> ad</span>
+<span id="cb49-5"><a href="mc2-python-1.html#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb49-6"><a href="mc2-python-1.html#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb49-7"><a href="mc2-python-1.html#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb49-8"><a href="mc2-python-1.html#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> metacells <span class="im">as</span> mc</span>
+<span id="cb49-9"><a href="mc2-python-1.html#cb49-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-10"><a href="mc2-python-1.html#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb49-11"><a href="mc2-python-1.html#cb49-11" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">&#39;./mc_QC/&#39;</span>) </span>
+<span id="cb49-12"><a href="mc2-python-1.html#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mc_QC</span></code></pre></div>
 </div>
 <div id="parameters-1" class="section level4 unnumbered hasAnchor">
 <h4>Parameters<a href="mc2-python-1.html#parameters-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="mc2-python-1.html#cb48-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-2"><a href="mc2-python-1.html#cb48-2" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">&quot;MC2&quot;</span></span>
-<span id="cb48-3"><a href="mc2-python-1.html#cb48-3" aria-hidden="true" tabindex="-1"></a>gamma   <span class="op">=</span> <span class="dv">50</span> <span class="co"># graining level</span></span>
-<span id="cb48-4"><a href="mc2-python-1.html#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-5"><a href="mc2-python-1.html#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we can modify dataset </span></span>
-<span id="cb48-6"><a href="mc2-python-1.html#cb48-6" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">&quot;CD34&quot;</span></span>
-<span id="cb48-7"><a href="mc2-python-1.html#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-8"><a href="mc2-python-1.html#cb48-8" aria-hidden="true" tabindex="-1"></a>annotation_label <span class="op">=</span> <span class="st">&quot;cell_type&quot;</span> <span class="co"># name of annotation field (obs)</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="mc2-python-1.html#cb50-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-2"><a href="mc2-python-1.html#cb50-2" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">&quot;MC2&quot;</span></span>
+<span id="cb50-3"><a href="mc2-python-1.html#cb50-3" aria-hidden="true" tabindex="-1"></a>gamma   <span class="op">=</span> <span class="dv">50</span> <span class="co"># graining level</span></span>
+<span id="cb50-4"><a href="mc2-python-1.html#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="mc2-python-1.html#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Here we can modify dataset </span></span>
+<span id="cb50-6"><a href="mc2-python-1.html#cb50-6" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">&quot;CD34&quot;</span></span>
+<span id="cb50-7"><a href="mc2-python-1.html#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="mc2-python-1.html#cb50-8" aria-hidden="true" tabindex="-1"></a>annotation_label <span class="op">=</span> <span class="st">&quot;cell_type&quot;</span> <span class="co"># name of annotation field (obs)</span></span></code></pre></div>
 </div>
 <div id="load-data-2" class="section level4 unnumbered hasAnchor">
 <h4>Load data<a href="mc2-python-1.html#load-data-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><strong>Setup MC object</strong></p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="mc2-python-1.html#cb49-1" aria-hidden="true" tabindex="-1"></a>mc.ut.set_name(ad, proj_name)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="mc2-python-1.html#cb51-1" aria-hidden="true" tabindex="-1"></a>mc.ut.set_name(ad, proj_name)</span></code></pre></div>
 </div>
 <div id="gene-filtering-according-to-mc2-1" class="section level4 unnumbered hasAnchor">
 <h4>Gene filtering according to MC2<a href="mc2-python-1.html#gene-filtering-according-to-mc2-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="mc2-python-1.html#cb50-1" aria-hidden="true" tabindex="-1"></a>excluded_gene_names <span class="op">=</span> [] <span class="co"># for example, [&#39;IGHMBP2&#39;, &#39;IGLL1&#39;, &#39;IGLL5&#39;, &#39;IGLON5&#39;, &#39;NEAT1&#39;, &#39;TMSB10&#39;, &#39;TMSB4X&#39;]</span></span>
-<span id="cb50-2"><a href="mc2-python-1.html#cb50-2" aria-hidden="true" tabindex="-1"></a>excluded_gene_patterns <span class="op">=</span> [<span class="st">&#39;MT-.*&#39;</span>]</span>
-<span id="cb50-3"><a href="mc2-python-1.html#cb50-3" aria-hidden="true" tabindex="-1"></a>mc.pl.analyze_clean_genes(ad,</span>
-<span id="cb50-4"><a href="mc2-python-1.html#cb50-4" aria-hidden="true" tabindex="-1"></a>                          excluded_gene_names<span class="op">=</span>excluded_gene_names,</span>
-<span id="cb50-5"><a href="mc2-python-1.html#cb50-5" aria-hidden="true" tabindex="-1"></a>                          excluded_gene_patterns<span class="op">=</span>excluded_gene_patterns,</span>
-<span id="cb50-6"><a href="mc2-python-1.html#cb50-6" aria-hidden="true" tabindex="-1"></a>                          random_seed<span class="op">=</span><span class="dv">123456</span>)</span>
-<span id="cb50-7"><a href="mc2-python-1.html#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-8"><a href="mc2-python-1.html#cb50-8" aria-hidden="true" tabindex="-1"></a>mc.pl.pick_clean_genes(ad)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="mc2-python-1.html#cb52-1" aria-hidden="true" tabindex="-1"></a>excluded_gene_names <span class="op">=</span> [] <span class="co"># for example, [&#39;IGHMBP2&#39;, &#39;IGLL1&#39;, &#39;IGLL5&#39;, &#39;IGLON5&#39;, &#39;NEAT1&#39;, &#39;TMSB10&#39;, &#39;TMSB4X&#39;]</span></span>
+<span id="cb52-2"><a href="mc2-python-1.html#cb52-2" aria-hidden="true" tabindex="-1"></a>excluded_gene_patterns <span class="op">=</span> [<span class="st">&#39;MT-.*&#39;</span>]</span>
+<span id="cb52-3"><a href="mc2-python-1.html#cb52-3" aria-hidden="true" tabindex="-1"></a>mc.pl.analyze_clean_genes(ad,</span>
+<span id="cb52-4"><a href="mc2-python-1.html#cb52-4" aria-hidden="true" tabindex="-1"></a>                          excluded_gene_names<span class="op">=</span>excluded_gene_names,</span>
+<span id="cb52-5"><a href="mc2-python-1.html#cb52-5" aria-hidden="true" tabindex="-1"></a>                          excluded_gene_patterns<span class="op">=</span>excluded_gene_patterns,</span>
+<span id="cb52-6"><a href="mc2-python-1.html#cb52-6" aria-hidden="true" tabindex="-1"></a>                          random_seed<span class="op">=</span><span class="dv">123456</span>)</span>
+<span id="cb52-7"><a href="mc2-python-1.html#cb52-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-8"><a href="mc2-python-1.html#cb52-8" aria-hidden="true" tabindex="-1"></a>mc.pl.pick_clean_genes(ad)</span></code></pre></div>
 </div>
 <div id="cell-fintering-1" class="section level4 unnumbered hasAnchor">
 <h4>Cell fintering<a href="mc2-python-1.html#cell-fintering-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Since our data is pre-processed and low-quality cells have been already filtered out, this step is not applicable to our data, but we keep this chunk so that you can apply cell filtering to a newly generated dataset.</p>
 <p>The first round of cell cleaning usually implies filltering out cell with very low and very hight UMI content. The second round includes cell filtering based on mitochondrial and/or ribosomal content. We will skip both steps as our data have been pre-filtered and will use very lenient cutoffs (<code>properly_sampled_min_cell_total</code>, <code>properly_sampled_max_cell_total</code> and <code>properly_sampled_max_excluded_genes_fraction</code>) such that all the cells are kept for the metacell construction.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="mc2-python-1.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">### The first round (high/low UMIs)</span></span>
-<span id="cb51-2"><a href="mc2-python-1.html#cb51-2" aria-hidden="true" tabindex="-1"></a>properly_sampled_min_cell_total <span class="op">=</span> {<span class="st">&#39;cell_lines&#39;</span> : <span class="dv">5000</span>, <span class="st">&#39;3k_pbmc&#39;</span>: <span class="dv">200</span>}[proj_name] <span class="co"># setup for the dataset that will be used </span></span>
-<span id="cb51-3"><a href="mc2-python-1.html#cb51-3" aria-hidden="true" tabindex="-1"></a>properly_sampled_max_cell_total <span class="op">=</span> {<span class="st">&#39;cell_lines&#39;</span> : <span class="dv">110000</span>, <span class="st">&#39;3k_pbmc&#39;</span>: <span class="dv">10000</span>}[proj_name] <span class="co"># setup for the dataset that will be used </span></span></code></pre></div>
-<div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="mc2-python-1.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">## The second round (content of non-clean genes, e.g., mito-genes)</span></span>
-<span id="cb52-2"><a href="mc2-python-1.html#cb52-2" aria-hidden="true" tabindex="-1"></a>properly_sampled_max_excluded_genes_fraction <span class="op">=</span> <span class="fl">0.25</span></span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="mc2-python-1.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">### The first round (high/low UMIs)</span></span>
+<span id="cb53-2"><a href="mc2-python-1.html#cb53-2" aria-hidden="true" tabindex="-1"></a>properly_sampled_min_cell_total <span class="op">=</span> {<span class="st">&#39;cell_lines&#39;</span> : <span class="dv">5000</span>, <span class="st">&#39;3k_pbmc&#39;</span>: <span class="dv">200</span>}[proj_name] <span class="co"># setup for the dataset that will be used </span></span>
+<span id="cb53-3"><a href="mc2-python-1.html#cb53-3" aria-hidden="true" tabindex="-1"></a>properly_sampled_max_cell_total <span class="op">=</span> {<span class="st">&#39;cell_lines&#39;</span> : <span class="dv">110000</span>, <span class="st">&#39;3k_pbmc&#39;</span>: <span class="dv">10000</span>}[proj_name] <span class="co"># setup for the dataset that will be used </span></span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="mc2-python-1.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co">## The second round (content of non-clean genes, e.g., mito-genes)</span></span>
+<span id="cb54-2"><a href="mc2-python-1.html#cb54-2" aria-hidden="true" tabindex="-1"></a>properly_sampled_max_excluded_genes_fraction <span class="op">=</span> <span class="fl">0.25</span></span></code></pre></div>
 </div>
 <div id="running-mc2-1" class="section level3 unnumbered hasAnchor">
 <h3>Running MC2<a href="mc2-python-1.html#running-mc2-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Metacell-2 uses its own feature selection approach (i.e., selection of genes used to build metacells). Additionally, we can explicitly specify which features to use by providing two arguments: feature_gene_names - genes that have to be used forbidden_gene_names - genes to exclude.
 In contrast to the SuperCell and SEACells, Metacell-2 does not allow to explicitly obtain metacell data at a user-defined graining level. Instead, to vary graining level, we have to vary a <code>target_metacell_size</code> parameter, that is <code>160000</code> by default. Here we provide a chunk to calibrate this value to get a desired graining level. Please, increase or decrease scale if the obtained graining level <code>gamma_obtained</code> is lower or larger than the requested one (gamma).</p>
 <p><strong>Estimate target_metacell_size (gamma)</strong></p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="mc2-python-1.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;The requested graining level is </span><span class="sc">{</span>gamma<span class="sc">}</span><span class="ss">, lets estimate the target_metacell_size that should result in such graining level.&#39;</span>)</span>
-<span id="cb53-2"><a href="mc2-python-1.html#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-3"><a href="mc2-python-1.html#cb53-3" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="dv">2</span> <span class="co"># increase or decrease if the obtained graining level (`gamma_obtained`) is significantly &gt; or &lt; then the requested one `gamma`</span></span>
-<span id="cb53-4"><a href="mc2-python-1.html#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-5"><a href="mc2-python-1.html#cb53-5" aria-hidden="true" tabindex="-1"></a>N_c <span class="op">=</span> ad.shape[<span class="dv">0</span>]</span>
-<span id="cb53-6"><a href="mc2-python-1.html#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-7"><a href="mc2-python-1.html#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="co"># estimated mean UMI content in downsampled data</span></span>
-<span id="cb53-8"><a href="mc2-python-1.html#cb53-8" aria-hidden="true" tabindex="-1"></a>est_downsample_UMI <span class="op">=</span> np.quantile(np.array(total_umis_of_cells), <span class="fl">0.05</span>)</span>
-<span id="cb53-9"><a href="mc2-python-1.html#cb53-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-10"><a href="mc2-python-1.html#cb53-10" aria-hidden="true" tabindex="-1"></a>target_metacell_size <span class="op">=</span> <span class="bu">int</span>(est_downsample_UMI <span class="op">*</span> gamma <span class="op">*</span> scale)</span>
-<span id="cb53-11"><a href="mc2-python-1.html#cb53-11" aria-hidden="true" tabindex="-1"></a>target_metacell_size</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="mc2-python-1.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;The requested graining level is </span><span class="sc">{</span>gamma<span class="sc">}</span><span class="ss">, lets estimate the target_metacell_size that should result in such graining level.&#39;</span>)</span>
+<span id="cb55-2"><a href="mc2-python-1.html#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="mc2-python-1.html#cb55-3" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="dv">2</span> <span class="co"># increase or decrease if the obtained graining level (`gamma_obtained`) is significantly &gt; or &lt; then the requested one `gamma`</span></span>
+<span id="cb55-4"><a href="mc2-python-1.html#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="mc2-python-1.html#cb55-5" aria-hidden="true" tabindex="-1"></a>N_c <span class="op">=</span> ad.shape[<span class="dv">0</span>]</span>
+<span id="cb55-6"><a href="mc2-python-1.html#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="mc2-python-1.html#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="co"># estimated mean UMI content in downsampled data</span></span>
+<span id="cb55-8"><a href="mc2-python-1.html#cb55-8" aria-hidden="true" tabindex="-1"></a>est_downsample_UMI <span class="op">=</span> np.quantile(np.array(total_umis_of_cells), <span class="fl">0.05</span>)</span>
+<span id="cb55-9"><a href="mc2-python-1.html#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-10"><a href="mc2-python-1.html#cb55-10" aria-hidden="true" tabindex="-1"></a>target_metacell_size <span class="op">=</span> <span class="bu">int</span>(est_downsample_UMI <span class="op">*</span> gamma <span class="op">*</span> scale)</span>
+<span id="cb55-11"><a href="mc2-python-1.html#cb55-11" aria-hidden="true" tabindex="-1"></a>target_metacell_size</span></code></pre></div>
 <div id="aggregate-mc2" class="section level4 unnumbered hasAnchor">
 <h4>Aggregate metacells<a href="mc2-python.html#aggregate-mc2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb54"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="mc2-python-1.html#cb54-1" aria-hidden="true" tabindex="-1"></a>mc.pl.divide_and_conquer_pipeline(</span>
-<span id="cb54-2"><a href="mc2-python-1.html#cb54-2" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb54-3"><a href="mc2-python-1.html#cb54-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#feature_gene_names   = feature_gene_names, # comment this line to allow Metacell2 selecting features</span></span>
-<span id="cb54-4"><a href="mc2-python-1.html#cb54-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#forbidden_gene_names = forbidden_gene_names, # comment this line to allow Metacell2 selecting features</span></span>
-<span id="cb54-5"><a href="mc2-python-1.html#cb54-5" aria-hidden="true" tabindex="-1"></a>    target_metacell_size <span class="op">=</span> target_metacell_size,</span>
-<span id="cb54-6"><a href="mc2-python-1.html#cb54-6" aria-hidden="true" tabindex="-1"></a>    random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
-<span id="cb54-7"><a href="mc2-python-1.html#cb54-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-8"><a href="mc2-python-1.html#cb54-8" aria-hidden="true" tabindex="-1"></a><span class="co">## make anndata of metacells</span></span>
-<span id="cb54-9"><a href="mc2-python-1.html#cb54-9" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> mc.pl.collect_metacells(ad, name<span class="op">=</span><span class="st">&#39;metacells&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb56-1"><a href="mc2-python-1.html#cb56-1" aria-hidden="true" tabindex="-1"></a>mc.pl.divide_and_conquer_pipeline(</span>
+<span id="cb56-2"><a href="mc2-python-1.html#cb56-2" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb56-3"><a href="mc2-python-1.html#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">#feature_gene_names   = feature_gene_names, # comment this line to allow Metacell2 selecting features</span></span>
+<span id="cb56-4"><a href="mc2-python-1.html#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">#forbidden_gene_names = forbidden_gene_names, # comment this line to allow Metacell2 selecting features</span></span>
+<span id="cb56-5"><a href="mc2-python-1.html#cb56-5" aria-hidden="true" tabindex="-1"></a>    target_metacell_size <span class="op">=</span> target_metacell_size,</span>
+<span id="cb56-6"><a href="mc2-python-1.html#cb56-6" aria-hidden="true" tabindex="-1"></a>    random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
+<span id="cb56-7"><a href="mc2-python-1.html#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-8"><a href="mc2-python-1.html#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="co">## make anndata of metacells</span></span>
+<span id="cb56-9"><a href="mc2-python-1.html#cb56-9" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> mc.pl.collect_metacells(ad, name<span class="op">=</span><span class="st">&#39;metacells&#39;</span>)</span></code></pre></div>
 <p>Here we estimate whether a deviation of the obtained gamma is acceptable, and if not, suggest to increase or decrease <code>scale</code> parameter to get better graining level.</p>
 <p>If the obtained graining level is not acceptable and you updated <code>scale</code> parameter according to suggestion, do not forget to re-run chunk <a href="#chunk:mc2-divide-n-conquer"><strong>??</strong></a> <a href="mc2-python.html#aggregate-mc2"><strong>??</strong></a></p>
 </div>
 <div id="visualize-metacells-1" class="section level4 unnumbered hasAnchor">
 <h4>Visualize metacells<a href="mc2-python-1.html#visualize-metacells-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="mc2-python-1.html#cb55-1" aria-hidden="true" tabindex="-1"></a>mc.pl.compute_umap_by_features(mc_ad, max_top_feature_genes<span class="op">=</span><span class="dv">1000</span>,</span>
-<span id="cb55-2"><a href="mc2-python-1.html#cb55-2" aria-hidden="true" tabindex="-1"></a>                               min_dist<span class="op">=</span><span class="fl">2.0</span>, random_seed<span class="op">=</span><span class="dv">123456</span>)</span>
-<span id="cb55-3"><a href="mc2-python-1.html#cb55-3" aria-hidden="true" tabindex="-1"></a>                               </span>
-<span id="cb55-4"><a href="mc2-python-1.html#cb55-4" aria-hidden="true" tabindex="-1"></a>umap_x <span class="op">=</span> mc.ut.get_o_numpy(mc_ad, <span class="st">&#39;umap_x&#39;</span>)</span>
-<span id="cb55-5"><a href="mc2-python-1.html#cb55-5" aria-hidden="true" tabindex="-1"></a>umap_y <span class="op">=</span> mc.ut.get_o_numpy(mc_ad, <span class="st">&#39;umap_y&#39;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb56-1"><a href="mc2-python-1.html#cb56-1" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
-<span id="cb56-2"><a href="mc2-python-1.html#cb56-2" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span>umap_x, y<span class="op">=</span>umap_y)</span>
-<span id="cb56-3"><a href="mc2-python-1.html#cb56-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
-<div class="sourceCode" id="cb57"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb57-1"><a href="mc2-python-1.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a membership -- index of metacell single cell belongs to </span></span>
-<span id="cb57-2"><a href="mc2-python-1.html#cb57-2" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">&#39;membership&#39;</span>] <span class="op">=</span> [<span class="bu">int</span>(i)<span class="op">+</span><span class="dv">1</span> <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> np.nan <span class="cf">for</span> i <span class="kw">in</span> ad.obs.metacell] </span>
-<span id="cb57-3"><a href="mc2-python-1.html#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-4"><a href="mc2-python-1.html#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object</span></span>
-<span id="cb57-5"><a href="mc2-python-1.html#cb57-5" aria-hidden="true" tabindex="-1"></a>mc_ad.uns <span class="op">=</span> ad.uns.copy()</span>
-<span id="cb57-6"><a href="mc2-python-1.html#cb57-6" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;sc.obs&#39;</span>] <span class="op">=</span> ad.obs.copy()</span>
-<span id="cb57-7"><a href="mc2-python-1.html#cb57-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-8"><a href="mc2-python-1.html#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save the requested gamma</span></span>
-<span id="cb57-9"><a href="mc2-python-1.html#cb57-9" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;gamma&#39;</span>] <span class="op">=</span> gamma</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb57-1"><a href="mc2-python-1.html#cb57-1" aria-hidden="true" tabindex="-1"></a>mc.pl.compute_umap_by_features(mc_ad, max_top_feature_genes<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb57-2"><a href="mc2-python-1.html#cb57-2" aria-hidden="true" tabindex="-1"></a>                               min_dist<span class="op">=</span><span class="fl">2.0</span>, random_seed<span class="op">=</span><span class="dv">123456</span>)</span>
+<span id="cb57-3"><a href="mc2-python-1.html#cb57-3" aria-hidden="true" tabindex="-1"></a>                               </span>
+<span id="cb57-4"><a href="mc2-python-1.html#cb57-4" aria-hidden="true" tabindex="-1"></a>umap_x <span class="op">=</span> mc.ut.get_o_numpy(mc_ad, <span class="st">&#39;umap_x&#39;</span>)</span>
+<span id="cb57-5"><a href="mc2-python-1.html#cb57-5" aria-hidden="true" tabindex="-1"></a>umap_y <span class="op">=</span> mc.ut.get_o_numpy(mc_ad, <span class="st">&#39;umap_y&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb58-1"><a href="mc2-python-1.html#cb58-1" aria-hidden="true" tabindex="-1"></a>plt.figure()</span>
+<span id="cb58-2"><a href="mc2-python-1.html#cb58-2" aria-hidden="true" tabindex="-1"></a>sns.scatterplot(x<span class="op">=</span>umap_x, y<span class="op">=</span>umap_y)</span>
+<span id="cb58-3"><a href="mc2-python-1.html#cb58-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb59-1"><a href="mc2-python-1.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a membership -- index of metacell single cell belongs to </span></span>
+<span id="cb59-2"><a href="mc2-python-1.html#cb59-2" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">&#39;membership&#39;</span>] <span class="op">=</span> [<span class="bu">int</span>(i)<span class="op">+</span><span class="dv">1</span> <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> np.nan <span class="cf">for</span> i <span class="kw">in</span> ad.obs.metacell] </span>
+<span id="cb59-3"><a href="mc2-python-1.html#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-4"><a href="mc2-python-1.html#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="co">## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object</span></span>
+<span id="cb59-5"><a href="mc2-python-1.html#cb59-5" aria-hidden="true" tabindex="-1"></a>mc_ad.uns <span class="op">=</span> ad.uns.copy()</span>
+<span id="cb59-6"><a href="mc2-python-1.html#cb59-6" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;sc.obs&#39;</span>] <span class="op">=</span> ad.obs.copy()</span>
+<span id="cb59-7"><a href="mc2-python-1.html#cb59-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="mc2-python-1.html#cb59-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save the requested gamma</span></span>
+<span id="cb59-9"><a href="mc2-python-1.html#cb59-9" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;gamma&#39;</span>] <span class="op">=</span> gamma</span></code></pre></div>
 </div>
 </div>
 <div id="compute-latent-space-for-metacell-qc-1" class="section level3 unnumbered hasAnchor">

@@ -9,11 +9,6 @@ TO_CACHE <- FALSE
 ```
 
 
-```{r include=FALSE}
-source('./R/config.R')
-```
-
-
 ```{python true-import, echo = FALSE, result = FALSE, message = FALSE, warning = FALSE}
 # This is true import section that is executed, but not displayed as it simultaneously load MC2 and SEACells.
 # As MC2 and SEACells workflow displayed in separate files, while indeed they run in the same file/session (due to fact that in bookdown one and only one chapter per Rmd file)

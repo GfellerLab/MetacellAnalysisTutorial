@@ -47,6 +47,7 @@ install.packages('reticulate') # to run Python
 
 Then, we need to setup virtual environment
 
+
 ```bash
 pip install virtualenv
 cd <Path_to_Metacell_tutorial>
@@ -78,3 +79,38 @@ echo 'RETICULATE_PYTHON=my_env/bin/python' > '.Renviron'
 The function to render book is `bookdown::render_book()`, this will take some time, as it will execute all the chunks in the book, there is an option to cache some chunks, but we have to make sure that cached chunks do not share variables with non-cached chunks (it will raise an error anyway). 
 
 `bookdown::preview_chapter()` renders a chapter.
+
+## Get data
+
+To get 3k PBMCs, use scanpy datasets af follows 
+
+```python
+import scanpy as sc 
+import os
+
+adata = sc.datasets.pbmc3k()
+adata_proc = sc.datasets.pbmc3k_processed()
+
+adata       = adata[adata_proc.obs_names].copy()
+adata.obs   = adata_proc.obs.copy()
+adata.uns   = adata_proc.uns.copy()
+adata.obsm  = adata_proc.obsm.copy()
+adata.obsp  = adata_proc.obsp.copy()
+
+sc.pl.embedding(adata, 'X_umap', color='louvain')
+#> /Users/mariiabilous/Documents/PhD/UNIL/R/Metacell_tutorial/my_env_mc2/lib/python3.8/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
+#>   cax = scatter(
+```
+
+<img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+
+
+```python
+directory = os.path.join("data", "3k_pbmc")
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
+    
+adata.write_h5ad(os.path.join("data", "3k_pbmc", "singlecell_anndata_filtered.h5ad"))
+```
+
