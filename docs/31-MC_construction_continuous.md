@@ -199,8 +199,9 @@ mc_ad.uns['gamma'] = gamma
 
 
 
-[//]: # (Code to run mc construction with SuperCell for a discrete dataset)
+[//]: # (Code to run mc construction with SuperCell for a continuous dataset)
 
+Under construction...
 
 
 
@@ -208,4 +209,6 @@ mc_ad.uns['gamma'] = gamma
 
 
 
-[//]: # (Code to run mc construction with SEACells for a discrete dataset)
+[//]: # (Code to run mc construction with SEACells for a continuous dataset)
+
+Under construction...

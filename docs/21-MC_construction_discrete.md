@@ -432,6 +432,7 @@ sc.tl.umap(ad)
 
 [//]: # (Code to run mc construction with SuperCell for a discrete dataset)
 
+Under construction...
 
 
 
@@ -440,6 +441,8 @@ sc.tl.umap(ad)
 
 
 [//]: # (Code to run mc construction with SEACells for a discrete dataset)
+
+Under construction...
 
 Replace the following code with `./sub_pages/21-seacells.Rmd`
 
@@ -583,7 +586,7 @@ model.initialize_archetypes()
 #> Initializing f and g...
 #> Selecting 10 cells from greedy initialization.
 #> 
-#>   0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 463.72it/s]
+#>   0%|          | 0/20 [00:00<?, ?it/s]100%|##########| 20/20 [00:00<00:00, 460.83it/s]
     
 # Plot the initialization to ensure they are evenly spread
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') ## error, mb missing some modules
@@ -628,7 +631,7 @@ membership = model.get_hard_assignments()
 
 # aggregate metacells    
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw')
-#>   0%|          | 0/52 [00:00<?, ?it/s] 79%|#######8  | 41/52 [00:00<00:00, 406.97it/s]100%|##########| 52/52 [00:00<00:00, 420.10it/s]
+#>   0%|          | 0/52 [00:00<?, ?it/s] 81%|########  | 42/52 [00:00<00:00, 419.01it/s]100%|##########| 52/52 [00:00<00:00, 431.98it/s]
 
 # make `membership` numeric
 d = {x: int(i)+1 for i, x in enumerate(mc_ad.obs_names)}

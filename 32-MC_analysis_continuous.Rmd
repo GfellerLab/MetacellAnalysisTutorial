@@ -10,7 +10,7 @@ Standard analysis includes dimensionality reduction, clustering, differential ex
 ```
 
 
-## Standard analysis (Python) {#standard-analysis-Py}
+## Standard analysis (Python) {#standard-analysis-Py-cont}
 ```{r, child='./sub_pages/32-downstream-Py.Rmd'}
 
 ```

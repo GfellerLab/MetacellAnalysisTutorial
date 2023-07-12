@@ -9,6 +9,8 @@ Standard analysis includes dimensionality reduction, clustering, differential ex
 
 [//]: # (Standard downstream analysis of metacells using R (Seurat))
 
+Under construction...
+
 ### Dimensionality reduction 
 
 ### Clustering 
@@ -16,7 +18,7 @@ Standard analysis includes dimensionality reduction, clustering, differential ex
 ### Differential expression analysis 
 
 
-## Standard analysis (Python) {#standard-analysis-Py}
+## Standard analysis (Python) {#standard-analysis-Py-cont}
 
 
 [//]: # (Standard downstream analysis of metacells using Py (Scanpy))

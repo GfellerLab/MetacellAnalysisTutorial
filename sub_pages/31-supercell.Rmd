@@ -1,3 +1,4 @@
 
-[//]: # (Code to run mc construction with SuperCell for a discrete dataset)
+[//]: # (Code to run mc construction with SuperCell for a continuous dataset)
 
+Under construction...
