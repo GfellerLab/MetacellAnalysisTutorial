@@ -6,9 +6,12 @@
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
-Here we construct metacells using [Metacell-2 (MC2)](https://github.com/tanaylab/metacells). The code is adapted from the [author's tutorial](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html).
+In this section, we construct metacells using [Metacell-2 (MC2)](https://github.com/tanaylab/metacells). The code is adapted from the [author's tutorial](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html). For more information on the method, please refer to the section 1 of chapter 2. 
 
-#### Imports {-}
+#### Importing python packages {-}
+
+To run Metacell-2, the following python packages need to be imported: 
+
 ```{python import-mc2, eval = FALSE}
 import os
 import numpy as np
@@ -18,39 +21,46 @@ import scanpy as sc
 import matplotlib.pyplot as plt
 import seaborn as sns
 import metacells as mc
-
-import sys
-sys.path.append('./mc_QC/') 
-import mc_QC
 ```
+If you don't have these packages installed, please refer to the section 2 of chapter 1.
 
 
-#### Parameters {-}
-```{python mc2-parameters}
 
+```{python mc2-parameters, eval = TRUE, echo = FALSE}
 MC_tool = "MC2"
-gamma   = 50 # graining level
 
 # Here we can modify dataset 
 proj_name = ["cell_lines", "3k_pbmc"][1]
 
 annotation_label = {'cell_lines':'cell_line',
                    '3k_pbmc':'louvain'}[proj_name] # name of annotation field (obs)
-
 ```
 
-#### Load data {-}
+### Data loading 
+We will run Metacell-2 on a single-cell dataset composed of XX peripheral blood mononuclear cells (PBMCs). Please follow the section 4 from Chapter 1 to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
 ```{r load-data, child='./functional_chunks/load_anndata.Rmd'}
 ```
+```{python load-data-noEval, eval = FALSE, echo = TRUE}
+MC_tool = "MC2"
+proj_name = "3k_pbmc"
+ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
+```
 
+We initialize the name of the anndata (in the unstructured annotations) object using the `ut.set_name` function from the Metacells package.
 
-**Setup MC object**
 ```{python}
 mc.ut.set_name(ad, proj_name)
 ```
 
+### Filtering steps 
 
-#### Gene filtering according to MC2 {-}
+Before building the metacells the Metacell-2 authors recommend to filter the single-cell data in two-steps (See [original vignette](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html)). 
+A first filtering step consists in filtering genes based on biological knowledge (*e.g.* mitochrondrial genes) or based on their expression levels. The latter genes include genes with zero expression or low expression levels, "noisy lonely genes" (*i.e.*, genes with high expression levels but no correlation with any other gene). 
+A second filtering step consists in filtering cells based on their UMI counts.
+
+#### Gene filtering {-}
+
+In section XX form Chapter XX, we pre-processed the raw scRNA-Seq data and excluded genes with low expression as well as mitochondrial genes. In the following code chunk, we identify additional genes to filter using the `analyze_clean_genes` and `pick_clean_genes` functions from the Metacells package, which returns three sets of genes: i) the known-to-be-excluded genes defined by the user as an array of gene names or gene names patterns, ii) the properly sampled genes, and iii) the "noisy lonely genes". 
 
 ```{python mc2-gene-filtering, collapse = TRUE, result = 'hold'}
 excluded_gene_names = [] # for example, ['IGHMBP2', 'IGLL1', 'IGLL5', 'IGLON5', 'NEAT1', 'TMSB10', 'TMSB4X']
@@ -63,57 +73,71 @@ mc.pl.analyze_clean_genes(ad,
 mc.pl.pick_clean_genes(ad)
 ```
 
-#### Cell fintering {-}
-Since our data is pre-processed and low-quality cells have been already filtered out, this step is not applicable to our data, but we keep this chunk so that you can apply cell filtering to a newly generated dataset.
+#### Cell filtering {-}
 
-The first round of cell cleaning usually implies filltering out cell with very low and very hight UMI content. The second round includes cell filtering based on mitochondrial and/or ribosomal content. We will skip both steps as our data have been pre-filtered and will use very lenient cutoffs (`properly_sampled_min_cell_total`, `properly_sampled_max_cell_total` and `properly_sampled_max_excluded_genes_fraction`) such that all the cells are kept for the metacell construction.
+The first round of cell cleaning implies filtering out cell with very low and very hight UMI content (`properly_sampled_min_cell_total`, `properly_sampled_max_cell_total` parameters).  
+The second round includes cell filtering based on UMI counts in excluded genes (`properly_sampled_max_excluded_genes_fraction` parameter). 
+Since our dataset have been pre-filtered, very lenient cutoffs will be used in this tutorial (`properly_sampled_min_cell_total`, `properly_sampled_max_cell_total` and `properly_sampled_max_excluded_genes_fraction`) such that all the cells are kept for the metacell construction. 
+The following code chunk defines these parameters. To adapt them to your datasets, we advise you to explore the distributions of total UMI counts and UMI counts in excluded genes, as recommended and descrided in the Metacell-2 [original vignette](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html).
 
-```{python mc2-cell-filtering-first, warning = FALSE, collapse = TRUE, result = 'hold'}
-### The first round (high/low UMIs)
-properly_sampled_min_cell_total = 200 # setup for the dataset that will be used 
-properly_sampled_max_cell_total = 10000 # setup for the dataset that will be used 
-```
-
-```{r, child='./functional_chunks/mc2_cell_filtering_first.Rmd', result = 'asis'}
-```
-
-
-```{python mc2-cell-filtering-second, collapse = TRUE, result = 'hold'}
-## The second round (content of non-clean genes, e.g., mito-genes)
+```{python mc2-cell-filtering-parameters, warning = FALSE, collapse = TRUE, result = 'hold'}
+### The first round of cell cleaning (high/low UMIs)
+properly_sampled_min_cell_total = 200 
+properly_sampled_max_cell_total = 10000 
+## The second round of cell cleaning (content of excluded genes, e.g., mito-genes)
 properly_sampled_max_excluded_genes_fraction = 0.25
 ```
 
-```{r mc-cell-filtering-run-second-knitr, child='./functional_chunks/mc2_cell_filtering_second.Rmd'}
+The set of cells to be filtered is defined using the `analyze_clean_cells` and `pick_clean_cells` functions from the Metacell-2 package.
 
+```{python mc2-cells-filtering, result='hold', collapse = TRUE}
+mc.pl.analyze_clean_cells(
+    ad,
+    properly_sampled_min_cell_total = properly_sampled_min_cell_total,
+    properly_sampled_max_cell_total = properly_sampled_max_cell_total,
+    properly_sampled_max_excluded_genes_fraction = properly_sampled_max_excluded_genes_fraction
+)
+mc.pl.pick_clean_cells(ad)
 ```
 
+After performing the two-step filtering (genes and cells), the "cleaned" data can be extracted using the `pl.extract_clean_data` prior to metacells construction.
 
-```{r mc-extract-clean-cell-knitr, child='./functional_chunks/mc2_extract_clean_data.Rmd'}
-
+```{python mc-extract-clean-cells, result='hold', collapse = TRUE}
+# Extract clean dataset (with filtered cells and genes)
+ad = mc.pl.extract_clean_data(ad)
 ```
 
+### Building metacells
 
-### Running MC2 {-}
+#### Estimate target_metacell_size (gamma) {-}
 
-Metacell-2 uses its own feature selection approach (i.e., selection of genes used to build metacells). Additionally, we can explicitly specify which features to use by providing two arguments:  feature_gene_names - genes that have to be used  forbidden_gene_names - genes to exclude.
-In contrast to the SuperCell and SEACells, Metacell-2 does not allow to explicitly obtain metacell data at a user-defined graining level. Instead, to vary graining level, we have to vary a `target_metacell_size` parameter, that is `160000` by default. Here we provide a chunk to calibrate this value to get a desired graining level. Please, increase or decrease scale if the obtained graining level `gamma_obtained` is lower or larger than the requested one (gamma).
+In contrast to the SuperCell and SEACells, Metacell-2 does not allow to explicitly obtain metacell data at a user-defined graining level. 
+Instead, to vary the graining level, we have to vary the `target_metacell_size` parameter, that is `160000` by default. Here we provide a chunk to calibrate this value to reach a desired graining level. 
+Please, increase or decrease the `scale` parameter if the obtained graining level (`gamma_obtained`) is lower or larger than the requested one (`gamma`).
 
-**Estimate target_metacell_size (gamma)**
 ```{python estimate-target-mc-size}
+gamma   = 50 # graining level
 print(f'The requested graining level is {gamma}, lets estimate the target_metacell_size that should result in such graining level.')
 
 scale = 2 # increase or decrease if the obtained graining level (`gamma_obtained`) is significantly > or < then the requested one `gamma`
 
-N_c = ad.shape[0]
-
 # estimated mean UMI content in downsampled data
+total_umis_of_cells = mc.ut.get_o_numpy(ad, name='__x__', sum=True)
 est_downsample_UMI = np.quantile(np.array(total_umis_of_cells), 0.05)
 
 target_metacell_size = int(est_downsample_UMI * gamma * scale)
 target_metacell_size
 ```
 
-#### Aggregate metacells {.unnumbered #aggregate-mc2}
+#### Aggregating metacells {-}
+
+Metacell-2 uses its own feature selection approach (*i.e.*, selection of genes used to build metacells). 
+Additionally, users can explicitly specify which features should be used by providing two arguments:  
+i) `feature_gene_names`, *i.e.*, genes that have to be included and, ii) `forbidden_gene_names`, *i.e.*, genes that have to be excluded. 
+Examples of forbidden are cell cycle genes which reflect true biological signal but could bias the metacells construction. The Metacell-2 [original vignette](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html) provides additional information to identify forbidden genes.
+The previous arguments for feature selection are taken as input by the `pl.divide_and_conquer_pipeline` function which builds the metacells. 
+Note that by default all cores of the system will be used for the metacells construction. More information are available on the [original vignette](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html) to change this behavior and adapt the number of cores (see `ut.set_processors_count`) or the number processed in parallel (see `pl.set_max_parallel_piles`).
+
 ```{python mc2-divide-n-conquer, message=FALSE, warning=FALSE, result=FALSE}
 mc.pl.divide_and_conquer_pipeline(
     ad,
@@ -122,35 +146,55 @@ mc.pl.divide_and_conquer_pipeline(
     target_metacell_size = target_metacell_size,
     random_seed = 123456)
 
-## make anndata of metacells
+ad.obs.metacell.head
+```
+
+**Saving aggregated metacells in an `anndata` object for downstream analysis**
+
+The `pl.divide_and_conquer_pipeline` function associate each cell to a metacell or defines the cell as outlier. These assignments are found in the `obs` layer of the anndata object
+The function `pl.collect_metacells` should be used to subsequently retrieve an anndata object containing the data at the metacells level instead of the single-cell level. 
+
+```{python mc2-aggregation, echo=TRUE}
+
 mc_ad = mc.pl.collect_metacells(ad, name='metacells')
+mc_ad.shape
+
 ```
 
-Here we estimate whether a deviation of the obtained gamma is acceptable, and if not, suggest to increase or decrease `scale` parameter to get better graining level.
+**Comparing the obtained and requested graining level**
+
+In the following code chunk, we estimate whether a deviation of the obtained gamma from the requested gamma is acceptable. If not, we suggest to increase or decrease the `scale` parameter to approach the desired graining level.
+
 ```{r mc2-gamma-deviation, child='./functional_chunks/mc2_gamma_deviation.Rmd'}
-  
 ```
 
-If the obtained graining level is not acceptable and you updated `scale` parameter according to suggestion, do not forget to re-run chunk \@ref(chunk:mc2-divide-n-conquer) \@ref(aggregate-mc2)
+If the obtained graining level is not acceptable and you updated `scale` parameter according to the suggestion, do not forget to re-run chunk \@ref(chunk:mc2-divide-n-conquer) \@ref(aggregate-mc2).
 
+### Visualize metacells
 
-#### Visualize metacells {-}
 ```{python mc2-comp-umap, result = FALSE}
-mc.pl.compute_umap_by_features(mc_ad, max_top_feature_genes=1000,
-                               min_dist=2.0, random_seed=123456)
-                               
-umap_x = mc.ut.get_o_numpy(mc_ad, 'umap_x')
-umap_y = mc.ut.get_o_numpy(mc_ad, 'umap_y')
+# mc.pl.compute_umap_by_features(mc_ad, max_top_feature_genes=1000,
+#                                min_dist=2.0, random_seed=123456)
+# 
+# umap_x = mc.ut.get_o_numpy(mc_ad, 'umap_x')
+# umap_y = mc.ut.get_o_numpy(mc_ad, 'umap_y')
+# mc_QC.mc_visualize(ad, key='X_umap', group_by_name='membership', colour_sc_name='louvain',  colour_mc_name='membership', colour_metacells=True, legend_sc=None, legend_mc=None)
 ```
 
-```{python mc2-plot-umap}
-plt.figure()
-sns.scatterplot(x=umap_x, y=umap_y)
-plt.show()
-```
+<!-- ```{python mc2-plot-umap} -->
+<!-- plt.figure() -->
+<!-- sns.scatterplot(x=umap_x, y=umap_y) -->
+<!-- plt.show() -->
+<!-- ``` -->
+
+
+### Metacell QC
+
+The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data. 
+This annotation will be used in the mc_QC package to compute metacells quality metrics. We also save the single-cell metadata in the metacell anndata object.
 
 ```{python mc2-membership, result = FALSE}
-# make a membership -- index of metacell single cell belongs to 
+# make a membership -- index of metacells to which single cells belong to 
 ad.obs['membership'] = [int(i)+1 if i >= 0 else np.nan for i in ad.obs.metacell] 
 
 ## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object
@@ -161,20 +205,32 @@ mc_ad.uns['sc.obs'] = ad.obs.copy()
 mc_ad.uns['gamma'] = gamma
 ```
 
-### Compute latent space for metacell QC {-}
 
-```{r mc2-letent-space, child = './functional_chunks/mc2_latent_space.Rmd'}
+####  Compute latent space for metacell QC {-}
+
+MC2 builds metacells from gene expression data, not from latent space. Some of the QC metrics (e.g., **compactness** and **separation**) are computed from the latent space. Thus, to compute those metrics, we need to compute latent space. 
+
+```{r mc2-latent-space, child = './functional_chunks/mc2_latent_space.Rmd'}
 ```
 
+####  Compute purity, compactness and separation metrics {-}
 
-### Metacell QC {-}
-```{r mc-qc, chuld = './functional_chunks/MC_QC.Rmd'}
+
+```{python mc2-QC-imports, eval = FALSE}
+import sys
+sys.path.append('./mc_QC/') 
+import mc_QC
 ```
 
-### Save output {-}
+```{r mc-qc, child = './functional_chunks/MC_QC.Rmd'}
+```
+
+##### Save output {-}
+
+```{r mc2-save, child = './functional_chunks/save_mc_anndata.Rmd'}
+```
 
 ```{python mc2-remove-variables, include = FALSE}
-
 globals().pop('ad', None);
 globals().pop('raw', None);
 globals().pop('mc_ad', None);
