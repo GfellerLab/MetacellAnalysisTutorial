@@ -3,12 +3,12 @@
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
-```{bash, cache = TO_CACHE, eval = FALSE}
+```{bash, cache = TO_CACHE, eval = FALSE, echo = FALSE}
 ## here code to download dataset and store it at f'Metacell_tutorial/data/{proj_name}/singlecell_anndata_filtered.h5ad'
 ```
 
 
-```{python, cache = TO_CACHE}
+```{python, cache = TO_CACHE, echo = FALSE}
 # Load pre-filtered data
 data_folder = os.path.join("./data/", proj_name) # here path to folder with adata
 ad = sc.read(os.path.join(data_folder, "singlecell_anndata_filtered.h5ad"))
