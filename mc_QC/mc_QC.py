@@ -68,7 +68,8 @@ def separation(
     name = 'separation',
     nth_nbr=1,
     cluster=None,
-    MC_label='SEACell'):
+    MC_label='SEACell'
+):
     """
     Compute separation of each metacell. Separation is defined is the distance to the nearest neighboring metacell
 
@@ -148,7 +149,7 @@ def mc_gene_var(
 def mc_gene_mean(
 	ad, 
 	MC_label
-	):
+):
 		
 	"""
 	Get mc gene variance
@@ -181,4 +182,79 @@ def mc_inner_normalized_var(
 	res[zeros_mask] = np.nan
 	return res
 		
-	
+# adapted from https://github.com/dpeerlab/SEACells/blob/main/SEACells/plot.py
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def mc_visualize(ad, key='X_umap', 
+    group_by_name = 'SEACell', 
+    colour_metacells=True, colour_sc_name = 'SEACell', colour_mc_name = 'SEACell',
+    title='Metacell Assignments', legend_sc='None', legend_mc='None',
+    save_as=None,
+    show=True,
+    cmap='Set2',
+    figsize=(5, 5),
+    metacell_size=20,
+    cell_size=10
+):
+  """
+  Plot 2D visualization of metacells using the embedding provided in 'key'.
+  
+  :param ad: annData containing 'Metacells' label in .obs
+  :param key: (str) 2D embedding of data. Default: 'X_umap'
+  :param colour_metacells: (bool) whether to colour cells by metacell assignment. Default: True
+  :param title: (str) title for figure
+  :param save_as: (str or None) file name to which figure is saved
+  :param cmap: (str) matplotlib colormap for metacells. Default: 'Set2'
+  :param figsize: (int,int) tuple of integers representing figure size
+  """
+  umap = pd.DataFrame(ad.obsm[key]).set_index(ad.obs_names).join(ad.obs[group_by_name])
+  umap[group_by_name] = umap[group_by_name].astype("category")
+  if colour_sc_name not in umap.columns:
+      umap = umap.join(ad.obs[colour_sc_name])
+      umap[colour_sc_name] = umap[colour_sc_name].astype("category")
+  
+  mcs = umap.groupby(group_by_name).mean().reset_index()
+  
+  plt.figure(figsize=figsize)
+  if colour_metacells:
+    sns.scatterplot(x=0, y=1,
+                    hue=colour_sc_name,
+                    data=umap,
+                    s=cell_size,
+                    cmap=cmap,
+                    legend=legend_sc)
+    sns.scatterplot(x=0, y=1, s=metacell_size,
+                    hue=colour_mc_name,
+                    data=mcs,
+                    cmap=cmap,
+                    edgecolor='black', linewidth=1.25,
+                    legend=legend_mc)
+  else:
+    sns.scatterplot(x=0, y=1,
+                    color='grey',
+                    data=umap,
+                    s=cell_size,
+                    cmap=cmap,
+                    legend=legend_sc)
+    sns.scatterplot(x=0, y=1, s=metacell_size,
+                    color='red',
+                    data=mcs,
+                    cmap=cmap,
+                    edgecolor='black', linewidth=1.25,
+                    legend=legend_mc)
+  
+  plt.xlabel(f'{key}-0')
+  plt.ylabel(f'{key}-1')
+  plt.title(title)
+  ax = plt.gca()
+  ax.set_axis_off()
+  
+  if save_as is not None:
+    plt.savefig(save_as, dpi=150, transparent=True)
+  if show:
+    plt.show()
+  plt.close()
+
+
