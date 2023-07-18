@@ -1,3 +1,8 @@
+```{r, include=FALSE}
+# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
 ```{python}
-mc_ad.write_h5ad(os.path.join('..', 'data', proj_name, f'metacell_{MC_tool}.h5ad'))
+mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
 ```
