@@ -21,6 +21,12 @@ import SEACells
 import random
 ```
 
+```{python seacells-QC-imports, eval = FALSE}
+import sys
+sys.path.append('./mc_QC/')
+import mc_QC
+```
+
 If you don't have these packages installed, please refer to the section 2 of chapter 1.
 
 
@@ -159,12 +165,6 @@ SEACells.plot.plot_2D(ad, key='X_umap', colour_metacells=True)
 
 ### Metacell QC
 ####  Compute purity, compactness and separation metrics {-}
-
-```{python seacells-QC-imports, eval = FALSE}
-import sys
-sys.path.append('./mc_QC/')
-import mc_QC
-```
 
 The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data. 
 This annotation will be used in the mc_QC package to compute metacells quality metrics.

@@ -188,13 +188,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 def mc_visualize(ad, key='X_umap', 
-    group_by_name = 'SEACell', 
+    group_by_name = 'SEACell', mc_continuous=False,
     colour_metacells=True, colour_sc_name = 'SEACell', colour_mc_name = 'SEACell',
     title='Metacell Assignments', legend_sc='None', legend_mc='None',
-    save_as=None,
-    show=True,
     cmap='Set2',
-    figsize=(5, 5),
     metacell_size=20,
     cell_size=10
 ):
@@ -216,8 +213,20 @@ def mc_visualize(ad, key='X_umap',
       umap[colour_sc_name] = umap[colour_sc_name].astype("category")
   
   mcs = umap.groupby(group_by_name).mean().reset_index()
+  if colour_mc_name not in mcs.columns:
+      mcs[colour_mc_name] = list(ad.uns["mc_obs"][colour_mc_name])
+      if not mc_continuous:
+        mcs[colour_mc_name] = mcs[colour_mc_name].astype("category")
+      else:
+        mcs[colour_mc_name] = mcs[colour_mc_name].to_numpy(dtype=float)
+      
+
+  plt.figure()
+  if mc_continuous:
+    mc_cmap = sns.cubehelix_palette(rot=-.2, as_cmap=True)
+  else:
+    mc_cmap = 'Set2'
   
-  plt.figure(figsize=figsize)
   if colour_metacells:
     sns.scatterplot(x=0, y=1,
                     hue=colour_sc_name,
@@ -225,10 +234,17 @@ def mc_visualize(ad, key='X_umap',
                     s=cell_size,
                     cmap=cmap,
                     legend=legend_sc)
-    sns.scatterplot(x=0, y=1, s=metacell_size,
+    if mc_continuous:
+      sns.scatterplot(x=0, y=1, s=metacell_size,
                     hue=colour_mc_name,
                     data=mcs,
-                    cmap=cmap,
+                    edgecolor='black', linewidth=1.25,
+                    legend=legend_mc)
+    else:
+      sns.scatterplot(x=0, y=1, s=metacell_size,
+                    hue=colour_mc_name,
+                    data=mcs,
+                    cmap=mc_cmap,
                     edgecolor='black', linewidth=1.25,
                     legend=legend_mc)
   else:
@@ -245,16 +261,78 @@ def mc_visualize(ad, key='X_umap',
                     edgecolor='black', linewidth=1.25,
                     legend=legend_mc)
   
+  
   plt.xlabel(f'{key}-0')
   plt.ylabel(f'{key}-1')
   plt.title(title)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
   ax = plt.gca()
   ax.set_axis_off()
+
+  return plt
+
+
+
+def mc_visualize_continuous(ad, key='X_umap', 
+    group_by_name = 'SEACell', 
+    colour_metacells=True, colour_sc_name = 'SEACell', colour_mc_name = 'SEACell',
+    legend_sc='None', legend_mc='None',
+    cmap='Set2',
+    metacell_size=20,
+    cell_size=10
+):
+  """
+  Plot 2D visualization of metacells using the embedding provided in 'key'.
   
-  if save_as is not None:
-    plt.savefig(save_as, dpi=150, transparent=True)
-  if show:
-    plt.show()
+  :param ad: annData containing 'Metacells' label in .obs
+  :param key: (str) 2D embedding of data. Default: 'X_umap'
+  :param colour_metacells: (bool) whether to colour cells by metacell assignment. Default: True
+  :param title: (str) title for figure
+  :param save_as: (str or None) file name to which figure is saved
+  :param cmap: (str) matplotlib colormap for metacells. Default: 'Set2'
+  :param figsize: (int,int) tuple of integers representing figure size
+  """
+  umap = pd.DataFrame(ad.obsm[key]).set_index(ad.obs_names).join(ad.obs[group_by_name])
+  umap[group_by_name] = umap[group_by_name].astype("category")
+  if colour_sc_name not in umap.columns:
+      umap = umap.join(ad.obs[colour_sc_name])
+      umap[colour_sc_name] = umap[colour_sc_name].astype("category")
+  
+  mcs = umap.groupby(group_by_name).mean().reset_index()
+  if colour_mc_name not in mcs.columns:
+      mcs[colour_mc_name] = list(ad.uns["mc_obs"][colour_mc_name])
+      mcs[colour_mc_name] = mcs[colour_mc_name].to_numpy(dtype=float)
+      
+  f, (ax1, ax2) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [5, 1]})
+  sns.set_context("paper", rc={"font.size":5})
+  sns.set(font="DejaVuSans")
+  sns.scatterplot(data=umap, x=0, y=1, hue=colour_sc_name,  s=cell_size, cmap=cmap, legend=legend_sc, ax=ax1)
+  sns.scatterplot(x=0, y=1, s=metacell_size, hue=colour_mc_name, data=mcs, edgecolor='black', linewidth=1.25, legend=False, ax=ax1)
+
+  ax1.set_xlabel(f'{key}-0')
+  ax1.set_xlabel(f'{key}-1')
+  ax1.set_axis_off()
+  ax1.set_title("Metacell projection")
+  
+  norm = plt.Normalize(mcs[colour_mc_name].min(), mcs[colour_mc_name].max())
+  cmap = sns.cubehelix_palette(light=1, as_cmap=True)
+  sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+  sm.set_array([])
+  im_ratio = ax1.get_position().height/ax1.get_position().width
+  cbar = ax1.figure.colorbar(sm, ax = ax1, shrink = 0.75)
+  cbar.ax.tick_params(labelsize=8)
+  cbar.ax.set_title(colour_mc_name,fontsize=8)
+  
+  sns.boxplot(y = mcs[colour_mc_name], ax = ax2)
+  ax2.set_xlabel(f'Metacells')
+  
+  plt.subplots_adjust(wspace=1)
+  plt.show()
   plt.close()
+
+    
+  
+  
+
 
 

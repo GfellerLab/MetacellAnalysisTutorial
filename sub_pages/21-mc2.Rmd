@@ -22,6 +22,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import metacells as mc
 ```
+
+```{python mc2-QC-imports, eval = FALSE}
+import sys
+sys.path.append('./mc_QC/')
+import mc_QC
+```
 If you don't have these packages installed, please refer to the section 2 of chapter 1.
 
 
@@ -172,24 +178,6 @@ If the obtained graining level is not acceptable and you updated `scale` paramet
 
 ### Visualize metacells
 
-```{python mc2-comp-umap, result = FALSE}
-# mc.pl.compute_umap_by_features(mc_ad, max_top_feature_genes=1000,
-#                                min_dist=2.0, random_seed=123456)
-# 
-# umap_x = mc.ut.get_o_numpy(mc_ad, 'umap_x')
-# umap_y = mc.ut.get_o_numpy(mc_ad, 'umap_y')
-# mc_QC.mc_visualize(ad, key='X_umap', group_by_name='membership', colour_sc_name='louvain',  colour_mc_name='membership', colour_metacells=True, legend_sc=None, legend_mc=None)
-```
-
-<!-- ```{python mc2-plot-umap} -->
-<!-- plt.figure() -->
-<!-- sns.scatterplot(x=umap_x, y=umap_y) -->
-<!-- plt.show() -->
-<!-- ``` -->
-
-
-### Metacell QC
-
 The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data. 
 This annotation will be used in the mc_QC package to compute metacells quality metrics. We also save the single-cell metadata in the metacell anndata object.
 
@@ -205,22 +193,22 @@ mc_ad.uns['sc.obs'] = ad.obs.copy()
 mc_ad.uns['gamma'] = gamma
 ```
 
-
 ####  Compute latent space for metacell QC {-}
-
-MC2 builds metacells from gene expression data, not from latent space. Some of the QC metrics (e.g., **compactness** and **separation**) are computed from the latent space. Thus, to compute those metrics, we need to compute latent space. 
+To visualize the metacells, we can project the metacells on the single-cell UMAP representation. To run UMAP, we will generate in the next code chunk a lower-dimentional embedding of the data, so far not needed since the MC2 methods builds metacells from gene expression data and not from latent space. 
+Also, note that some of the QC metrics (e.g., **compactness** and **separation**), that we will compute in the next section of this tutorial, are computed from this latent space. 
 
 ```{r mc2-latent-space, child = './functional_chunks/mc2_latent_space.Rmd'}
 ```
+To visualize the metacell projection on the single-cell UMAP, we use the `mc_visualize` function from the `mc_QC`, this function was adapted from the `plot.plot_2D` included in the SEACells package.
+
+```{python mc2-comp-umap, result = FALSE, warning = FALSE,}
+mc_proj = mc_QC.mc_visualize(ad, key='X_umap', group_by_name='membership', colour_sc_name='louvain',  colour_mc_name='membership', colour_metacells=True, legend_sc=None, legend_mc=None)
+mc_proj.show()
+```
+
+### Metacell QC
 
 ####  Compute purity, compactness and separation metrics {-}
-
-
-```{python mc2-QC-imports, eval = FALSE}
-import sys
-sys.path.append('./mc_QC/') 
-import mc_QC
-```
 
 ```{r mc-qc, child = './functional_chunks/MC_QC.Rmd'}
 ```

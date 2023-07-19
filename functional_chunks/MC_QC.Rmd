@@ -11,6 +11,7 @@ The **purity** of a metacell is the proportion of the most abundant cell type wi
 ```{python}
 mc_purity = mc_QC.purity(ad, annotation_label, MC_label = 'membership')
 mc_purity.head()
+# add purity to metadata
 mc_ad.obs['purity'] = list(mc_purity[annotation_label + "_purity"])
 ```
 
@@ -40,4 +41,18 @@ mc_INV_val = pd.DataFrame(mc_INV_val.transpose()).set_axis(['INV'], axis=1, inpl
 mc_ad.obs['INV'] = list(mc_INV_val["INV"])
 ```
 
+```{python, warning = FALSE, message=FALSE, fig.dim = c(15, 15)}
+ad.uns['mc_obs'] = mc_ad.obs
+mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
+             colour_sc_name='louvain',  colour_mc_name='purity', colour_metacells=True,
+             legend_sc=None, legend_mc='auto', metacell_size=30)
+             
+mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
+             colour_sc_name='louvain',  colour_mc_name='Compactness_PCA', colour_metacells=True, 
+             legend_sc=None, legend_mc='auto', metacell_size=30)   
+             
+mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
+             colour_sc_name='louvain',  colour_mc_name='Separation_PCA', colour_metacells=True, 
+             legend_sc=None, legend_mc='auto', metacell_size=30)   
 
+```
