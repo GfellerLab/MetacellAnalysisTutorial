@@ -135,7 +135,7 @@ target_metacell_size = int(est_downsample_UMI * gamma * scale)
 target_metacell_size
 ```
 
-#### Aggregating metacells {-}
+#### Metacells identification using the divide and conquer approach {-}
 
 Metacell-2 uses its own feature selection approach (*i.e.*, selection of genes used to build metacells). 
 Additionally, users can explicitly specify which features should be used by providing two arguments:  
@@ -155,7 +155,7 @@ mc.pl.divide_and_conquer_pipeline(
 ad.obs.metacell.head
 ```
 
-**Saving aggregated metacells in an `anndata` object for downstream analysis**
+#### Retrieve aggregated metacell data {-}
 
 The `pl.divide_and_conquer_pipeline` function associate each cell to a metacell or defines the cell as outlier. These assignments are found in the `obs` layer of the anndata object
 The function `pl.collect_metacells` should be used to subsequently retrieve an anndata object containing the data at the metacells level instead of the single-cell level. 

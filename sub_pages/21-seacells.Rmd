@@ -45,7 +45,7 @@ annotation_label = {'cell_lines':'cell_line',
 Similarly to Metacell-2, we will run SEACells on the single-cell dataset composed of XX peripheral blood mononuclear cells (PBMCs). 
 Please follow the section 4 from Chapter 1 to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
 
-```{r load-data, child='./functional_chunks/load_anndata.Rmd'}
+```{r seacells-load-data, child='./functional_chunks/load_anndata.Rmd'}
 ```
 ```{python seacell-load-data-noEval, eval = FALSE, echo = TRUE}
 MC_tool = "SEACells"
@@ -58,16 +58,17 @@ In this tutorial, the data have been pre-filterd in the section XX of chapter XX
 
 ### Building metacells
 
-Metacells construction using SEACells requires 3 main inputs: i) an anndata object (`build_kernel_on` parameter), 
-ii) a key indicating which matrix in the `obsm` attribute of the anndata object should be considered to compute the kernel needed for archetypal analysis (`build_kernel_on` parameter), and 
-iii) the number of metacells to identify (`n_SEACells` parameter), which is used as inpput of the archetypal analysis.
+Metacells construction using SEACells requires 2 main inputs: i) an anndata object (`build_kernel_on` parameter), and
+ii) a key indicating which matrix in the `obsm` attribute of the anndata object should be considered to compute the kernel needed for archetypal analysis (`build_kernel_on` parameter).
+Important optional inputs are: the number of metacells to identify (`n_SEACells` parameter), which is used as input of the archetypal analysis, 
+ii) the number of neighbors to consider for the knn graph (`n_neighbors` parameter).
 
 #### Data pre-processing {-}
 
 The following code chunk saves the raw counts of the filtered data in the raw attribute of the anndata object.
 The raw counts will be used later for metacells aggregation.
 
-```{python data-processing, cache = TO_CACHE}
+```{python seacells-data-processing, cache = TO_CACHE}
 raw_ad = sc.AnnData(ad.X)
 raw_ad.obs_names, raw_ad.var_names = ad.obs_names, ad.var_names
 ad.raw = raw_ad
@@ -81,13 +82,15 @@ PCA components are saved in the `obsm` attribute of the anndata object.
 
 #### Setting up SEACells parameters {-}
 
-In this tutorial, we will use in the SEACells model the 10 first principal components resulting from the PCA.
+In this tutorial, we will use in the SEACells model the 10 first principal components resulting from the PCA to build the knn graph which will be used to compute the kernel. 
+The number of neighbors to considered for the knn graph can be fixed using the `n_neighbors` parameter (here 15).  
 As mentioned previously, users should provide as input the number of metacells required (`n_SEACells` parameter). This number can be defined as the ratio between the number of single cells and the desired graining level (`gamma` parameter in the following code chunk). 
-In this example, we choose a graining level of 75 as recommended by the SEACells authors.  
+In this example, we choose a graining level of 50.  
 
 ```{python seacells-parameters}
 build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
 n_waypoint_eigs = 10      # Number of eigenvalues to consider when initializing metacells
+n_neighbors = 15 # Number of neighbors used for graph construction 
 gamma = 50   # the requested graining level
 n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  
 ```
@@ -98,9 +101,10 @@ The SEACells model is initialized with the previously defined parameters using t
 
 ```{python seacells-model-initialization, cache = TO_CACHE}
 model = SEACells.core.SEACells(ad,
-                  build_kernel_on=build_kernel_on,
-                  n_SEACells=n_SEACells,
-                  n_waypoint_eigs=n_waypoint_eigs,
+                  build_kernel_on = build_kernel_on,
+                  n_SEACells = n_SEACells,
+                  n_waypoint_eigs = n_waypoint_eigs,
+                  n_neighbors = n_neighbors,
                   convergence_epsilon = 1e-5,
                   verbose = True)
 ```
@@ -126,7 +130,7 @@ model.initialize_archetypes()
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') 
 ```
 
-#### Fitting the SEACells model {-}
+#### Fitting the SEACells model to identify metacells {-}
 
 The identification of the archetypes is an iterative process. In this example, we fixed the minimum and maximum number of iteration to 10 and 50 respectively. 
 We then check the model convergence using the `plot_convergence` function.  
@@ -147,7 +151,7 @@ membership.head
 ad.obs["SEACell"].head
 ```
 
-#### Aggregating metacells {-}
+#### Retrieve aggregated metacell data {-}
 
 The `core.summarize_by_SEACell` function can be used to generate a metacell count matrix (aggregation of counts across all cells belonging to each metacell).  
 

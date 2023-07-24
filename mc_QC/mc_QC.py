@@ -305,7 +305,7 @@ def mc_visualize_continuous(ad, key='X_umap',
       
   f, (ax1, ax2) = plt.subplots(1, 2, gridspec_kw={'width_ratios': [5, 1]})
   sns.set_context("paper", rc={"font.size":5})
-  sns.set(font="DejaVuSans")
+  sns.set(font="DejaVu Sans")
   sns.scatterplot(data=umap, x=0, y=1, hue=colour_sc_name,  s=cell_size, cmap=cmap, legend=legend_sc, ax=ax1)
   sns.scatterplot(x=0, y=1, s=metacell_size, hue=colour_mc_name, data=mcs, edgecolor='black', linewidth=1.25, legend=False, ax=ax1)
 

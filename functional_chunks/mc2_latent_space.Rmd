@@ -1,7 +1,6 @@
 
 [//]: # (MC2 compute PCA for computation of compactness and separation)
 
-MC2 builds metacells from gene expression data, not from latent space. Some of QC metrics (e.g., **compactness** and **separation**) are computed from the latent space. Thus, to compute those metrics, we need to compute latent space. 
 ```{python, result = 'hold'}
 # Save count as a separate layer
 ad.layers['counts'] = ad.X
