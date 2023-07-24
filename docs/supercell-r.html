@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3.2 SuperCell (R) | Metacell Tutorial</title>
+  <title>3.3 SuperCell (R) | Metacell Tutorial</title>
   <meta name="description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3.2 SuperCell (R) | Metacell Tutorial" />
+  <meta property="og:title" content="3.3 SuperCell (R) | Metacell Tutorial" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3.2 SuperCell (R) | Metacell Tutorial" />
+  <meta name="twitter:title" content="3.3 SuperCell (R) | Metacell Tutorial" />
   
   <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
   
@@ -23,15 +23,15 @@
 <meta name="author" content="Mariia Bilous, Léonard Hérault, Aurélie Gabriel, David Gfeller" />
 
 
-<meta name="date" content="2023-07-12" />
+<meta name="date" content="2023-07-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="mc2-python.html"/>
-<link rel="next" href="seacells-python.html"/>
+<link rel="prev" href="seacells-python.html"/>
+<link rel="next" href="downstream-analysis-of-metacells-for-a-discrete-dataset.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
+code span.bu { } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -153,36 +153,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2" data-path="SuperCell.html"><a href="SuperCell.html"><i class="fa fa-check"></i><b>2.2</b> SuperCell</a></li>
 <li class="chapter" data-level="2.3" data-path="SEACells.html"><a href="SEACells.html"><i class="fa fa-check"></i><b>2.3</b> SEACells</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="constructing-metacells-for-a-discrete-data.html"><a href="constructing-metacells-for-a-discrete-data.html"><i class="fa fa-check"></i><b>3</b> Constructing metacells (for a ‘discrete’ data)</a>
+<li class="chapter" data-level="3" data-path="constructing-metacells-for-discrete-data.html"><a href="constructing-metacells-for-discrete-data.html"><i class="fa fa-check"></i><b>3</b> Constructing metacells (for ‘discrete’ data)</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="mc2-python.html"><a href="mc2-python.html"><i class="fa fa-check"></i><b>3.1</b> MC2 (Python)</a>
 <ul>
-<li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#running-mc2"><i class="fa fa-check"></i>Running MC2</a></li>
-<li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#compute-latent-space-for-metacell-qc"><i class="fa fa-check"></i>Compute latent space for metacell QC</a></li>
-<li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#metacell-qc"><i class="fa fa-check"></i>Metacell QC</a></li>
-<li class="chapter" data-level="" data-path="mc2-python.html"><a href="mc2-python.html#save-output"><i class="fa fa-check"></i>Save output</a></li>
+<li class="chapter" data-level="3.1.1" data-path="mc2-python.html"><a href="mc2-python.html#data-loading"><i class="fa fa-check"></i><b>3.1.1</b> Data loading</a></li>
+<li class="chapter" data-level="3.1.2" data-path="mc2-python.html"><a href="mc2-python.html#filtering-steps"><i class="fa fa-check"></i><b>3.1.2</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.1.3" data-path="mc2-python.html"><a href="mc2-python.html#building-metacells"><i class="fa fa-check"></i><b>3.1.3</b> Building metacells</a></li>
+<li class="chapter" data-level="3.1.4" data-path="mc2-python.html"><a href="mc2-python.html#visualize-metacells"><i class="fa fa-check"></i><b>3.1.4</b> Visualize metacells</a></li>
+<li class="chapter" data-level="3.1.5" data-path="mc2-python.html"><a href="mc2-python.html#metacell-qc"><i class="fa fa-check"></i><b>3.1.5</b> Metacell QC</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="supercell-r.html"><a href="supercell-r.html"><i class="fa fa-check"></i><b>3.2</b> SuperCell (R)</a></li>
-<li class="chapter" data-level="3.3" data-path="seacells-python.html"><a href="seacells-python.html"><i class="fa fa-check"></i><b>3.3</b> SEACells (Python)</a>
+<li class="chapter" data-level="3.2" data-path="seacells-python.html"><a href="seacells-python.html"><i class="fa fa-check"></i><b>3.2</b> SEACells (Python)</a>
 <ul>
-<li class="chapter" data-level="" data-path="seacells-python.html"><a href="seacells-python.html#running-seacells"><i class="fa fa-check"></i>Running SEACells</a></li>
-<li class="chapter" data-level="" data-path="seacells-python.html"><a href="seacells-python.html#metacell-qc-1"><i class="fa fa-check"></i>Metacell QC</a></li>
-<li class="chapter" data-level="" data-path="seacells-python.html"><a href="seacells-python.html#save-metacell-object-for-further-analysis"><i class="fa fa-check"></i>Save metacell object for further analysis</a></li>
+<li class="chapter" data-level="3.2.1" data-path="seacells-python.html"><a href="seacells-python.html#data-loading-1"><i class="fa fa-check"></i><b>3.2.1</b> Data loading</a></li>
+<li class="chapter" data-level="3.2.2" data-path="seacells-python.html"><a href="seacells-python.html#filtering-steps-1"><i class="fa fa-check"></i><b>3.2.2</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.2.3" data-path="seacells-python.html"><a href="seacells-python.html#building-metacells-1"><i class="fa fa-check"></i><b>3.2.3</b> Building metacells</a></li>
+<li class="chapter" data-level="3.2.4" data-path="seacells-python.html"><a href="seacells-python.html#visualize-metacells-1"><i class="fa fa-check"></i><b>3.2.4</b> Visualize metacells</a></li>
+<li class="chapter" data-level="3.2.5" data-path="seacells-python.html"><a href="seacells-python.html#metacell-qc-1"><i class="fa fa-check"></i><b>3.2.5</b> Metacell QC</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="supercell-r.html"><a href="supercell-r.html"><i class="fa fa-check"></i><b>3.3</b> SuperCell (R)</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="supercell-r.html"><a href="supercell-r.html#data-loading-2"><i class="fa fa-check"></i><b>3.3.1</b> Data loading</a></li>
+<li class="chapter" data-level="3.3.2" data-path="supercell-r.html"><a href="supercell-r.html#filtering-steps-2"><i class="fa fa-check"></i><b>3.3.2</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.3.3" data-path="supercell-r.html"><a href="supercell-r.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.3</b> Building metacells</a></li>
+<li class="chapter" data-level="3.3.4" data-path="supercell-r.html"><a href="supercell-r.html#visualize-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Visualize metacells</a></li>
+<li class="chapter" data-level="3.3.5" data-path="supercell-r.html"><a href="supercell-r.html#metacell-qc-2"><i class="fa fa-check"></i><b>3.3.5</b> Metacell QC</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><a href="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><i class="fa fa-check"></i><b>4</b> Downstream analysis of metacells (for a discrete dataset)</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="standard-analysis-r.html"><a href="standard-analysis-r.html"><i class="fa fa-check"></i><b>4.1</b> Standard analysis (R)</a>
-<ul>
-<li class="chapter" data-level="4.1.1" data-path="standard-analysis-r.html"><a href="standard-analysis-r.html#dimensionality-reduction"><i class="fa fa-check"></i><b>4.1.1</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="4.1.2" data-path="standard-analysis-r.html"><a href="standard-analysis-r.html#clustering"><i class="fa fa-check"></i><b>4.1.2</b> Clustering</a></li>
-<li class="chapter" data-level="4.1.3" data-path="standard-analysis-r.html"><a href="standard-analysis-r.html#differential-expression-analysis"><i class="fa fa-check"></i><b>4.1.3</b> Differential expression analysis</a></li>
-</ul></li>
+<li class="chapter" data-level="4.1" data-path="standard-analysis-r.html"><a href="standard-analysis-r.html"><i class="fa fa-check"></i><b>4.1</b> Standard analysis (R)</a></li>
 <li class="chapter" data-level="4.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>4.2</b> Standard analysis (Python)</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>4.2.1</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="4.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering-1"><i class="fa fa-check"></i><b>4.2.2</b> Clustering</a></li>
-<li class="chapter" data-level="4.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>4.2.3</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="4.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction"><i class="fa fa-check"></i><b>4.2.1</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="4.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering"><i class="fa fa-check"></i><b>4.2.2</b> Clustering</a></li>
+<li class="chapter" data-level="4.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis"><i class="fa fa-check"></i><b>4.2.3</b> Differential expression analysis</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>4.3</b> Advanced analysis</a>
 <ul>
@@ -216,17 +221,248 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="supercell-r" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> SuperCell (R)<a href="supercell-r.html#supercell-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Under construction…</p>
+<div id="supercell-r" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> SuperCell (R)<a href="supercell-r.html#supercell-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section, we construct metacells using <a href="https://github.com/GfellerLab/SuperCell">SuperCell</a>. The code is adapted from the <a href="https://github.com/GfellerLab/SuperCell/blob/master/README.Rmd">author’s github documentation</a>.
+For more information on the method, please refer to the section <a href="SuperCell.html#SuperCell">2.2</a>.</p>
+<div id="importing-r-packages" class="section level4 unnumbered hasAnchor">
+<h4>Importing R packages<a href="supercell-r.html#importing-r-packages" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To run SuperCell, the following python packages need to be imported:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="supercell-r.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">system.file</span>(<span class="at">package=</span><span class="st">&#39;SuperCell&#39;</span>) <span class="sc">==</span> <span class="st">&quot;&quot;</span>){</span>
+<span id="cb54-2"><a href="supercell-r.html#cb54-2" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;GfellerLab/SuperCell&quot;</span>, <span class="at">force =</span> <span class="cn">TRUE</span>, <span class="at">upgrade =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb54-3"><a href="supercell-r.html#cb54-3" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb54-4"><a href="supercell-r.html#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SuperCell)</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="supercell-r.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb55-2"><a href="supercell-r.html#cb55-2" aria-hidden="true" tabindex="-1"></a>sys.path.append(<span class="st">&#39;./mc_QC/&#39;</span>)</span>
+<span id="cb55-3"><a href="supercell-r.html#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mc_QC</span>
+<span id="cb55-4"><a href="supercell-r.html#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb55-5"><a href="supercell-r.html#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb55-6"><a href="supercell-r.html#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> SEACells</span></code></pre></div>
+<p>If you don’t have these packages installed, please refer to the section 2 of chapter 1.</p>
 </div>
+<div id="data-loading-2" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Data loading<a href="supercell-r.html#data-loading-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Similarly to Metacell-2 and SEACells, we will run SuperCell on the single-cell dataset composed of XX peripheral blood mononuclear cells (PBMCs).
+Please follow the section 4 from Chapter 1 to retrieve these data from the scanpy package and save the data in the following file: “data/3k_pbmc/singlecell_anndata_filtered.h5ad”.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="supercell-r.html#cb56-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="ot">=</span> <span class="st">&quot;SuperCell&quot;</span></span>
+<span id="cb56-2"><a href="supercell-r.html#cb56-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="ot">=</span> <span class="st">&quot;3k_pbmc&quot;</span></span>
+<span id="cb56-3"><a href="supercell-r.html#cb56-3" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, proj_name, <span class="st">&quot;/singlecell_seurat_filtered.rds&quot;</span>))</span></code></pre></div>
+</div>
+<div id="filtering-steps-2" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Filtering steps<a href="supercell-r.html#filtering-steps-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In this tutorial, the data have been pre-filtered in the section XX of chapter XX.</p>
+</div>
+<div id="building-metacells-2" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Building metacells<a href="supercell-r.html#building-metacells-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Metacells construction using SuperCell requires one main inputs, <em>i.e.</em> a matrix of log-normalized gene expression data which will be used to compute PCA to build a knn graph for metacells identification.
+Important optional inputs are: i) the graining level (<code>gamma</code> parameter),
+ii) the number of neighbors to consider for the knn graph (<code>k.knn</code> parameter).</p>
+<div id="data-pre-processing-1" class="section level4 unnumbered hasAnchor">
+<h4>Data pre-processing<a href="supercell-r.html#data-pre-processing-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>SuperCell builds a knn graph based on a lower-dimensional embedding of the data. The computation of this embedding is performed internally in the <code>SCimplify</code> SuperCell function.<br />
+No pre-processing is thus required from the users.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="supercell-r.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
+<span id="cb57-2"><a href="supercell-r.html#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching SeuratObject</span></span>
+<span id="cb57-3"><a href="supercell-r.html#cb57-3" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(sc_data, <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>)</span>
+<span id="cb57-4"><a href="supercell-r.html#cb57-4" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(sc_data, <span class="at">nfeatures =</span> <span class="dv">1000</span>)</span>
+<span id="cb57-5"><a href="supercell-r.html#cb57-5" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(sc_data)</span>
+<span id="cb57-6"><a href="supercell-r.html#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Centering and scaling data matrix</span></span>
+<span id="cb57-7"><a href="supercell-r.html#cb57-7" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(sc_data, <span class="at">npcs =</span> <span class="dv">10</span>, <span class="at">features =</span> )</span>
+<span id="cb57-8"><a href="supercell-r.html#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PC_ 1 </span></span>
+<span id="cb57-9"><a href="supercell-r.html#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Positive:  LTB, CD2, ACAP1, STK17A, CTSW, CCL5, GIMAP5, AQP3, GZMA, CST7 </span></span>
+<span id="cb57-10"><a href="supercell-r.html#cb57-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     MAL, HOPX, GZMK, NKG7, KLRG1, LYAR, RIC3, PRF1, FAM107B, CCND3 </span></span>
+<span id="cb57-11"><a href="supercell-r.html#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CD79A, SRSF7, PASK, PTPN4, GZMH, GPR183, FGFBP2, TIGIT, TCL1A, ARID5B </span></span>
+<span id="cb57-12"><a href="supercell-r.html#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Negative:  CST3, TYROBP, LST1, AIF1, FTL, LYZ, FTH1, FCN1, S100A9, TYMP </span></span>
+<span id="cb57-13"><a href="supercell-r.html#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     FCER1G, CFD, LGALS1, S100A8, LGALS2, CTSS, IFITM3, PSAP, CFP, SAT1 </span></span>
+<span id="cb57-14"><a href="supercell-r.html#cb57-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     IFI30, COTL1, S100A11, NPC2, LGALS3, GSTP1, NCF2, PYCARD, CDA, GPX1 </span></span>
+<span id="cb57-15"><a href="supercell-r.html#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PC_ 2 </span></span>
+<span id="cb57-16"><a href="supercell-r.html#cb57-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Positive:  NKG7, CST7, GZMA, PRF1, GZMB, FGFBP2, CTSW, GNLY, CCL4, GZMH </span></span>
+<span id="cb57-17"><a href="supercell-r.html#cb57-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CCL5, FCGR3A, XCL2, CLIC3, SRGN, HOPX, S100A4, TTC38, IGFBP7, ID2 </span></span>
+<span id="cb57-18"><a href="supercell-r.html#cb57-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     ANXA1, ACTB, TMSB4X, APOBEC3G, KLRG1, LYAR, CD160, ABI3, HAVCR2, IFITM2 </span></span>
+<span id="cb57-19"><a href="supercell-r.html#cb57-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Negative:  CD79A, MS4A1, HLA-DQA1, HLA-DQB1, TCL1A, HLA-DRA, CD79B, CD74, HLA-DRB1, HLA-DPB1 </span></span>
+<span id="cb57-20"><a href="supercell-r.html#cb57-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     HLA-DMA, HLA-DRB5, HLA-DPA1, FCRLA, LTB, HVCN1, BLNK, P2RX5, IRF8, IGLL5 </span></span>
+<span id="cb57-21"><a href="supercell-r.html#cb57-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     SMIM14, PPP1R14A, C16orf74, MZB1, RP5-887A10.1, BTK, RP11-428G5.5, IL4R, PHACTR1, IGJ </span></span>
+<span id="cb57-22"><a href="supercell-r.html#cb57-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PC_ 3 </span></span>
+<span id="cb57-23"><a href="supercell-r.html#cb57-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Positive:  HLA-DPA1, HLA-DPB1, HLA-DRB5, HLA-DRB1, CD74, HLA-DQB1, HLA-DQA1, CD79B, HLA-DRA, CD79A </span></span>
+<span id="cb57-24"><a href="supercell-r.html#cb57-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     MS4A1, RBM3, HLA-DMA, IFITM2, TCL1A, CSNK2B, HVCN1, UBE2L6, YWHAB, IRF8 </span></span>
+<span id="cb57-25"><a href="supercell-r.html#cb57-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CTSS, PSMA7, UBXN1, S100A4, C1orf162, PYCARD, APOBEC3G, SMIM14, SRSF7, TYROBP </span></span>
+<span id="cb57-26"><a href="supercell-r.html#cb57-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Negative:  PPBP, PF4, SDPR, SPARC, GNG11, NRGN, HIST1H2AC, GP9, RGS18, TUBB1 </span></span>
+<span id="cb57-27"><a href="supercell-r.html#cb57-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CLU, AP001189.4, CD9, ITGA2B, PTCRA, CA2, TMEM40, ACRBP, MMD, TREML1 </span></span>
+<span id="cb57-28"><a href="supercell-r.html#cb57-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     SEPT5, RUFY1, MYL9, TSC22D1, MPP1, CMTM5, LY6G6F, GP1BA, RP11-367G6.3, CLEC1B </span></span>
+<span id="cb57-29"><a href="supercell-r.html#cb57-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PC_ 4 </span></span>
+<span id="cb57-30"><a href="supercell-r.html#cb57-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Positive:  HLA-DQA1, CD79B, CD79A, CD74, HLA-DQB1, HLA-DPB1, MS4A1, HLA-DPA1, HLA-DRB1, HLA-DRA </span></span>
+<span id="cb57-31"><a href="supercell-r.html#cb57-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     HLA-DRB5, TCL1A, GZMB, FGFBP2, HLA-DMA, NKG7, PRF1, HVCN1, CST7, GNLY </span></span>
+<span id="cb57-32"><a href="supercell-r.html#cb57-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     FCRLA, FCGR3A, GZMH, GZMA, CCL4, IRF8, BLNK, IGLL5, CLIC3, P2RX5 </span></span>
+<span id="cb57-33"><a href="supercell-r.html#cb57-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Negative:  FYB, MAL, S100A8, AQP3, TMSB4X, CD2, S100A9, S100A4, GIMAP4, RBP7 </span></span>
+<span id="cb57-34"><a href="supercell-r.html#cb57-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     GIMAP5, S100A12, LGALS2, ANXA1, FOLR3, LYZ, FCN1, PASK, MS4A6A, S100A11 </span></span>
+<span id="cb57-35"><a href="supercell-r.html#cb57-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CORO1B, AIF1, IL8, ATP5H, CRIP2, IL23A, PPA1, LTB, LGALS3BP, ASGR1 </span></span>
+<span id="cb57-36"><a href="supercell-r.html#cb57-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PC_ 5 </span></span>
+<span id="cb57-37"><a href="supercell-r.html#cb57-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Positive:  S100A8, LGALS2, S100A9, S100A12, RBP7, FGFBP2, FOLR3, MS4A6A, GZMB, CCL4 </span></span>
+<span id="cb57-38"><a href="supercell-r.html#cb57-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     CCL3, NKG7, GNLY, CST7, GSTP1, GZMA, PRF1, GZMH, ASGR1, CTSW </span></span>
+<span id="cb57-39"><a href="supercell-r.html#cb57-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     LYZ, CCL5, CLIC3, XCL2, TYROBP, IL8, FCN1, GPX1, FCGR1A, TTC38 </span></span>
+<span id="cb57-40"><a href="supercell-r.html#cb57-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Negative:  LTB, MS4A7, IFITM2, HN1, LILRB2, WARS, CTD-2006K23.1, AQP3, VMO1, GDI2 </span></span>
+<span id="cb57-41"><a href="supercell-r.html#cb57-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     ADA, ANXA5, NAAA, FCGR3A, CORO1B, ABRACL, CD2, PPM1N, ATP5C1, HSP90AA1 </span></span>
+<span id="cb57-42"><a href="supercell-r.html#cb57-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     TIMP1, ARL6IP5, ICAM2, COTL1, C1QA, OAS1, PPA1, MAL, ABI3, TNFSF10</span></span>
+<span id="cb57-43"><a href="supercell-r.html#cb57-43" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(sc_data, <span class="at">reduction =</span> <span class="st">&quot;pca&quot;</span>, <span class="at">dims =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>), <span class="at">n.neighbors =</span> <span class="dv">10</span>)</span>
+<span id="cb57-44"><a href="supercell-r.html#cb57-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span></span>
+<span id="cb57-45"><a href="supercell-r.html#cb57-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;</span></span>
+<span id="cb57-46"><a href="supercell-r.html#cb57-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This message will be shown once per session</span></span>
+<span id="cb57-47"><a href="supercell-r.html#cb57-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:33 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
+<span id="cb57-48"><a href="supercell-r.html#cb57-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:33 Read 2638 rows and found 10 numeric columns</span></span>
+<span id="cb57-49"><a href="supercell-r.html#cb57-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:33 Using Annoy for neighbor search, n_neighbors = 10</span></span>
+<span id="cb57-50"><a href="supercell-r.html#cb57-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:33 Building Annoy index with metric = cosine, n_trees = 50</span></span>
+<span id="cb57-51"><a href="supercell-r.html#cb57-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span></span>
+<span id="cb57-52"><a href="supercell-r.html#cb57-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span></span>
+<span id="cb57-53"><a href="supercell-r.html#cb57-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; **************************************************|</span></span>
+<span id="cb57-54"><a href="supercell-r.html#cb57-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:33 Writing NN index file to temp file /tmp/RtmpfxPN15/file9ea5737c903</span></span>
+<span id="cb57-55"><a href="supercell-r.html#cb57-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:33 Searching Annoy index using 1 thread, search_k = 1000</span></span>
+<span id="cb57-56"><a href="supercell-r.html#cb57-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:34 Annoy recall = 100%</span></span>
+<span id="cb57-57"><a href="supercell-r.html#cb57-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:34 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 10</span></span>
+<span id="cb57-58"><a href="supercell-r.html#cb57-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:34 Initializing from normalized Laplacian + noise (using irlba)</span></span>
+<span id="cb57-59"><a href="supercell-r.html#cb57-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:34 Commencing optimization for 500 epochs, with 34256 positive edges</span></span>
+<span id="cb57-60"><a href="supercell-r.html#cb57-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15:23:36 Optimization finished</span></span>
+<span id="cb57-61"><a href="supercell-r.html#cb57-61" aria-hidden="true" tabindex="-1"></a><span class="fu">UMAPPlot</span>(sc_data, <span class="at">group.by =</span> <span class="st">&quot;louvain&quot;</span>)</span></code></pre></div>
+<p><img src="21-MC_construction_discrete_files/figure-html/supercell-data-processing-1.png" width="672" /></p>
+</div>
+<div id="setting-up-supercell-parameters" class="section level4 unnumbered hasAnchor">
+<h4>Setting up SuperCell parameters<a href="supercell-r.html#setting-up-supercell-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In this tutorial, we will use in the SuperCell method using the 10 first principal components resulting from the PCA.
+We chose a graining level of 50 and a number of neighbors of 15 for knn.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="supercell-r.html#cb58-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">=</span> <span class="dv">50</span>   <span class="co"># the requested graining level.</span></span>
+<span id="cb58-2"><a href="supercell-r.html#cb58-2" aria-hidden="true" tabindex="-1"></a>k.knn <span class="ot">=</span> <span class="dv">15</span> <span class="co"># the number of neighbors considered to build the knn network.</span></span>
+<span id="cb58-3"><a href="supercell-r.html#cb58-3" aria-hidden="true" tabindex="-1"></a>nb.var.genes <span class="ot">=</span> <span class="dv">1000</span> <span class="co"># number of the top variable genes to use for dimensionality reduction </span></span></code></pre></div>
+</div>
+<div id="metacells-idenification" class="section level4 unnumbered hasAnchor">
+<h4>Metacells idenification<a href="supercell-r.html#metacells-idenification" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="supercell-r.html#cb59-1" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> SuperCell<span class="sc">::</span><span class="fu">SCimplify</span>(sc_data<span class="sc">@</span>assays<span class="sc">$</span>RNA<span class="sc">@</span>data,  <span class="co"># single-cell log-normalized gene expression data</span></span>
+<span id="cb59-2"><a href="supercell-r.html#cb59-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">k.knn =</span> k.knn, </span>
+<span id="cb59-3"><a href="supercell-r.html#cb59-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">gamma =</span> gamma, </span>
+<span id="cb59-4"><a href="supercell-r.html#cb59-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">n.var.genes =</span> nb.var.genes </span>
+<span id="cb59-5"><a href="supercell-r.html#cb59-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>SuperCell returns a list containing the following main elements:
+i) the single-cell assignments to metacells (<code>membership</code>),
+ii)</p>
+</div>
+<div id="retrieve-aggregated-metacell-data-2" class="section level4 unnumbered hasAnchor">
+<h4>Retrieve aggregated metacell data<a href="supercell-r.html#retrieve-aggregated-metacell-data-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The <code>supercell_GE()</code> function can be used to generate a metacell count matrix (aggregation of counts across all cells belonging to each metacell).
+Two modes can be used for single-cell aggregation, <em>i.e.</em> averaging or summing counts (using the <code>mode</code> parameter).</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="supercell-r.html#cb60-1" aria-hidden="true" tabindex="-1"></a>MC.GE <span class="ot">&lt;-</span> <span class="fu">supercell_GE</span>(sc_data<span class="sc">@</span>assays<span class="sc">$</span>RNA<span class="sc">@</span>counts, MC<span class="sc">$</span>membership, <span class="at">mode =</span> <span class="st">&quot;sum&quot;</span>)</span>
+<span id="cb60-2"><a href="supercell-r.html#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(MC.GE) </span>
+<span id="cb60-3"><a href="supercell-r.html#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 32738    53</span></span></code></pre></div>
+</div>
+</div>
+<div id="visualize-metacells-2" class="section level3 hasAnchor" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> Visualize metacells<a href="supercell-r.html#visualize-metacells-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can assign each metacell to a particular annotation using the <code>supercell_assign()</code> function.
+By default, this function assigns each metacell to a cluster with the largest Jaccard coefficient to avoid biases towards very rare or very abundant clusters.
+Alternatively, assignment can be performed using <code>relative</code> (may cause biases towards very small populations) or <code>absolute</code> (may cause biases towards large populations) abundance with <code>method = "relative"</code> or <code>method = "absolute"</code>, respectively.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="supercell-r.html#cb61-1" aria-hidden="true" tabindex="-1"></a>MC<span class="sc">$</span>annotation <span class="ot">&lt;-</span> <span class="fu">supercell_assign</span>(<span class="at">clusters =</span> sc_data<span class="sc">@</span>meta.data<span class="sc">$</span>louvain, <span class="co"># single-cell annotation</span></span>
+<span id="cb61-2"><a href="supercell-r.html#cb61-2" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">supercell_membership =</span> MC<span class="sc">$</span>membership, <span class="co"># single-cell assignment to metacells</span></span>
+<span id="cb61-3"><a href="supercell-r.html#cb61-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">method =</span> <span class="st">&quot;jaccard&quot;</span>)</span></code></pre></div>
+<p>The SuperCell package provides the <code>supercell_plot</code> function to visualize the metacell network, which is stored <code>MC</code> object in <code>graph.supercells</code>.
+The metacells can be colored with respect to a vector of annotation.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="supercell-r.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">supercell_plot</span>(</span>
+<span id="cb62-2"><a href="supercell-r.html#cb62-2" aria-hidden="true" tabindex="-1"></a>  MC<span class="sc">$</span>graph.supercells, </span>
+<span id="cb62-3"><a href="supercell-r.html#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> MC<span class="sc">$</span>annotation, </span>
+<span id="cb62-4"><a href="supercell-r.html#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1</span>, </span>
+<span id="cb62-5"><a href="supercell-r.html#cb62-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="sc">-</span>pi<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb62-6"><a href="supercell-r.html#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">main  =</span> <span class="st">&quot;Metacells colored by cell line assignment&quot;</span></span>
+<span id="cb62-7"><a href="supercell-r.html#cb62-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="21-MC_construction_discrete_files/figure-html/SuperCell-graph-1.png" width="672" /></p>
+<p>To visualize the metacells, we can project the metacells on the single-cell UMAP representation using the <code>plot.plot_2D</code> included in the SEACells package.
+To use this function we need to create a anndata object as well as to run UMAP on the single cell data.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="supercell-r.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(anndata)</span>
+<span id="cb63-2"><a href="supercell-r.html#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create anndata object from R </span></span>
+<span id="cb63-3"><a href="supercell-r.html#cb63-3" aria-hidden="true" tabindex="-1"></a>r_ad <span class="ot">&lt;-</span> <span class="fu">AnnData</span>(<span class="at">X =</span> Matrix<span class="sc">::</span><span class="fu">t</span>(sc_data<span class="sc">@</span>assays<span class="sc">$</span>RNA<span class="sc">@</span>counts),</span>
+<span id="cb63-4"><a href="supercell-r.html#cb63-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">obs =</span> sc_data<span class="sc">@</span>meta.data,</span>
+<span id="cb63-5"><a href="supercell-r.html#cb63-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">obsm =</span> <span class="fu">list</span>(<span class="at">X_pca =</span> sc_data<span class="sc">@</span>reductions<span class="sc">$</span>pca<span class="sc">@</span>cell.embeddings,</span>
+<span id="cb63-6"><a href="supercell-r.html#cb63-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">X_umap =</span> sc_data<span class="sc">@</span>reductions<span class="sc">$</span>umap<span class="sc">@</span>cell.embeddings)</span>
+<span id="cb63-7"><a href="supercell-r.html#cb63-7" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb63-8"><a href="supercell-r.html#cb63-8" aria-hidden="true" tabindex="-1"></a>r_ad<span class="sc">$</span>obs[<span class="st">&#39;membership&#39;</span>] <span class="ot">&lt;-</span> MC<span class="sc">$</span>membership </span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb64-1"><a href="supercell-r.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save anndata object in python environment </span></span>
+<span id="cb64-2"><a href="supercell-r.html#cb64-2" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> r.r_ad </span></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb65-1"><a href="supercell-r.html#cb65-1" aria-hidden="true" tabindex="-1"></a>mc_proj <span class="op">=</span> mc_QC.mc_visualize(ad, key<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>, group_by_name<span class="op">=</span><span class="st">&#39;membership&#39;</span>, colour_sc_name<span class="op">=</span><span class="st">&#39;membership&#39;</span>, colour_mc_name<span class="op">=</span><span class="st">&#39;membership&#39;</span>, colour_metacells<span class="op">=</span><span class="va">True</span>, legend_sc<span class="op">=</span><span class="va">None</span>, legend_mc<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb65-2"><a href="supercell-r.html#cb65-2" aria-hidden="true" tabindex="-1"></a>mc_proj.show()</span></code></pre></div>
+<p><img src="21-MC_construction_discrete_files/figure-html/SuperCell-umap-1.png" width="384" /></p>
+</div>
+<div id="metacell-qc-2" class="section level3 hasAnchor" number="3.3.5">
+<h3><span class="header-section-number">3.3.5</span> Metacell QC<a href="supercell-r.html#metacell-qc-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="compute-purity-compactness-and-separation-metrics-2" class="section level4 unnumbered hasAnchor">
+<h4>Compute purity, compactness and separation metrics<a href="supercell-r.html#compute-purity-compactness-and-separation-metrics-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The following code chunk adds a columns named <code>membership</code> and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data.
+This annotation will be used in the mc_QC package to compute metacells quality metrics.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="supercell-r.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(anndata)</span>
+<span id="cb66-2"><a href="supercell-r.html#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create anndata object from R</span></span>
+<span id="cb66-3"><a href="supercell-r.html#cb66-3" aria-hidden="true" tabindex="-1"></a>r_mc_ad <span class="ot">&lt;-</span> <span class="fu">AnnData</span>(<span class="at">X =</span> Matrix<span class="sc">::</span><span class="fu">t</span>(MC.GE),</span>
+<span id="cb66-4"><a href="supercell-r.html#cb66-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">obs =</span> <span class="fu">data.frame</span>(<span class="at">annotation =</span> MC<span class="sc">$</span>annotation))</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb67-1"><a href="supercell-r.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># save anndata object in python environment </span></span>
+<span id="cb67-2"><a href="supercell-r.html#cb67-2" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> r.r_mc_ad </span></code></pre></div>
+<p><strong>Size distribution</strong></p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb68-1"><a href="supercell-r.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_size = SEACells.plot.plot_SEACell_sizes(ad, bins=20)</span></span>
+<span id="cb68-2"><a href="supercell-r.html#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="supercell-r.html#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_ad.obs = pd.merge(mc_ad.obs, mc_size, left_index=True, right_index=True)</span></span>
+<span id="cb68-4"><a href="supercell-r.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="co">#mc_ad.obs</span></span></code></pre></div>
+<p>When available, we can use cell annotation to annotate each metacell to the most abundant cell category (<em>e.g.</em> cell type) composing the metacell.
+This also allows us to compute metacell purity. If the annotation considered is the cell type, the <strong>purity</strong> of a metacell is the proportion of the most abundant cell type within the metacell [ref SuperCell]</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb69-1"><a href="supercell-r.html#cb69-1" aria-hidden="true" tabindex="-1"></a>mc_purity <span class="op">=</span> mc_QC.purity(ad, annotation_label, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>)</span>
+<span id="cb69-2"><a href="supercell-r.html#cb69-2" aria-hidden="true" tabindex="-1"></a>mc_purity.head()</span>
+<span id="cb69-3"><a href="supercell-r.html#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     louvain  louvain_purity</span></span>
+<span id="cb69-4"><a href="supercell-r.html#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; membership                                 </span></span>
+<span id="cb69-5"><a href="supercell-r.html#cb69-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1.0             CD4 T cells        0.973684</span></span>
+<span id="cb69-6"><a href="supercell-r.html#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2.0             CD4 T cells        0.975610</span></span>
+<span id="cb69-7"><a href="supercell-r.html#cb69-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3.0             CD4 T cells        0.990476</span></span>
+<span id="cb69-8"><a href="supercell-r.html#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4.0             CD8 T cells        0.871287</span></span>
+<span id="cb69-9"><a href="supercell-r.html#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5.0         CD14+ Monocytes        0.764706</span></span>
+<span id="cb69-10"><a href="supercell-r.html#cb69-10" aria-hidden="true" tabindex="-1"></a><span class="co"># add purity to metadata</span></span>
+<span id="cb69-11"><a href="supercell-r.html#cb69-11" aria-hidden="true" tabindex="-1"></a>mc_ad.obs[<span class="st">&#39;purity&#39;</span>] <span class="op">=</span> <span class="bu">list</span>(mc_purity[annotation_label <span class="op">+</span> <span class="st">&quot;_purity&quot;</span>])</span></code></pre></div>
+<p>The <strong>compactness</strong> of a metacell is the variance of the components within the metacell [ref SEACells]</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb70-1"><a href="supercell-r.html#cb70-1" aria-hidden="true" tabindex="-1"></a>compactness <span class="op">=</span> mc_QC.compactness(ad, <span class="st">&#39;X_pca&#39;</span>, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>, DO_DC <span class="op">=</span> <span class="va">False</span>, name <span class="op">=</span> <span class="st">&#39;Compactness_PCA&#39;</span>, n_comp<span class="op">=</span><span class="dv">10</span>)[<span class="st">&#39;Compactness_PCA&#39;</span>]</span>
+<span id="cb70-2"><a href="supercell-r.html#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add compactness to metadata</span></span>
+<span id="cb70-3"><a href="supercell-r.html#cb70-3" aria-hidden="true" tabindex="-1"></a>mc_ad.obs[<span class="st">&#39;Compactness_PCA&#39;</span>] <span class="op">=</span> <span class="bu">list</span>(compactness)</span></code></pre></div>
+<p>The <strong>separation</strong> of a metacell is the distance to the closest metacell [ref SEACells]</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb71-1"><a href="supercell-r.html#cb71-1" aria-hidden="true" tabindex="-1"></a>separation <span class="op">=</span> mc_QC.separation(ad, <span class="st">&#39;X_pca&#39;</span>, MC_label <span class="op">=</span> <span class="st">&#39;membership&#39;</span>, DO_DC <span class="op">=</span> <span class="va">False</span>, name <span class="op">=</span> <span class="st">&#39;Separation_PCA&#39;</span>, n_comp<span class="op">=</span><span class="dv">10</span>)[<span class="st">&#39;Separation_PCA&#39;</span>]</span>
+<span id="cb71-2"><a href="supercell-r.html#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="co"># add separation to metadata</span></span>
+<span id="cb71-3"><a href="supercell-r.html#cb71-3" aria-hidden="true" tabindex="-1"></a>mc_ad.obs[<span class="st">&#39;Separation_PCA&#39;</span>] <span class="op">=</span> <span class="bu">list</span>(separation)</span></code></pre></div>
+<!-- The **inner normalized variance (INV)** of a metacell is the mean-normalized variance of gene expression within the metacell [ref MC-2] -->
+<!-- ```{python, warning = FALSE, message = FALSE, result = FALSE, eval = FALSE} -->
+<!-- mc_INV = mc_QC.mc_inner_normalized_var(ad, MC_label = 'membership') -->
+<!-- mc_INV_val = mc_INV.quantile(0.95, axis=1, numeric_only=True) -->
+<!-- mc_INV_val = pd.DataFrame(mc_INV_val.transpose()).set_axis(['INV'], axis=1, inplace=False) -->
+<!-- # add INV to metadata -->
+<!-- mc_ad.obs['INV'] = list(mc_INV_val["INV"]) -->
+<!-- ``` -->
+<div class="sourceCode" id="cb72"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb72-1"><a href="supercell-r.html#cb72-1" aria-hidden="true" tabindex="-1"></a>ad.uns[<span class="st">&#39;mc_obs&#39;</span>] <span class="op">=</span> mc_ad.obs</span>
+<span id="cb72-2"><a href="supercell-r.html#cb72-2" aria-hidden="true" tabindex="-1"></a>mc_QC.mc_visualize_continuous(ad, key<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>, group_by_name<span class="op">=</span><span class="st">&#39;membership&#39;</span>, </span>
+<span id="cb72-3"><a href="supercell-r.html#cb72-3" aria-hidden="true" tabindex="-1"></a>             colour_sc_name<span class="op">=</span><span class="st">&#39;louvain&#39;</span>,  colour_mc_name<span class="op">=</span><span class="st">&#39;purity&#39;</span>, colour_metacells<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb72-4"><a href="supercell-r.html#cb72-4" aria-hidden="true" tabindex="-1"></a>             legend_sc<span class="op">=</span><span class="va">None</span>, legend_mc<span class="op">=</span><span class="st">&#39;auto&#39;</span>, metacell_size<span class="op">=</span><span class="dv">30</span>)</span></code></pre></div>
+<p><img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-36-1.png" width="384" /></p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb73-1"><a href="supercell-r.html#cb73-1" aria-hidden="true" tabindex="-1"></a>             </span>
+<span id="cb73-2"><a href="supercell-r.html#cb73-2" aria-hidden="true" tabindex="-1"></a>mc_QC.mc_visualize_continuous(ad, key<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>, group_by_name<span class="op">=</span><span class="st">&#39;membership&#39;</span>, </span>
+<span id="cb73-3"><a href="supercell-r.html#cb73-3" aria-hidden="true" tabindex="-1"></a>             colour_sc_name<span class="op">=</span><span class="st">&#39;louvain&#39;</span>,  colour_mc_name<span class="op">=</span><span class="st">&#39;Compactness_PCA&#39;</span>, colour_metacells<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb73-4"><a href="supercell-r.html#cb73-4" aria-hidden="true" tabindex="-1"></a>             legend_sc<span class="op">=</span><span class="va">None</span>, legend_mc<span class="op">=</span><span class="st">&#39;auto&#39;</span>, metacell_size<span class="op">=</span><span class="dv">30</span>)   </span></code></pre></div>
+<p><img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-36-2.png" width="384" /></p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb74-1"><a href="supercell-r.html#cb74-1" aria-hidden="true" tabindex="-1"></a>             </span>
+<span id="cb74-2"><a href="supercell-r.html#cb74-2" aria-hidden="true" tabindex="-1"></a>mc_QC.mc_visualize_continuous(ad, key<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>, group_by_name<span class="op">=</span><span class="st">&#39;membership&#39;</span>, </span>
+<span id="cb74-3"><a href="supercell-r.html#cb74-3" aria-hidden="true" tabindex="-1"></a>             colour_sc_name<span class="op">=</span><span class="st">&#39;louvain&#39;</span>,  colour_mc_name<span class="op">=</span><span class="st">&#39;Separation_PCA&#39;</span>, colour_metacells<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb74-4"><a href="supercell-r.html#cb74-4" aria-hidden="true" tabindex="-1"></a>             legend_sc<span class="op">=</span><span class="va">None</span>, legend_mc<span class="op">=</span><span class="st">&#39;auto&#39;</span>, metacell_size<span class="op">=</span><span class="dv">30</span>)   </span></code></pre></div>
+<p><img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-36-3.png" width="384" /></p>
+<div id="save-output-2" class="section level5 unnumbered hasAnchor">
+<h5>Save output<a href="supercell-r.html#save-output-2" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div class="sourceCode" id="cb75"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb75-1"><a href="supercell-r.html#cb75-1" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">&#39;./data&#39;</span>, proj_name, <span class="ss">f&#39;metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad&#39;</span>))</span></code></pre></div>
+
+</div>
+</div>
+</div>
+</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="mc2-python.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="seacells-python.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="seacells-python.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="downstream-analysis-of-metacells-for-a-discrete-dataset.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

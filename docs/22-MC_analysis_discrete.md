@@ -11,11 +11,65 @@ Standard analysis includes dimensionality reduction, clustering, differential ex
 
 Under construction...
 
-### Dimensionality reduction 
+<!-- ### Dimensionality reduction  -->
+<!-- ```{r supercell-2-seurat, eval=FALSE} -->
+<!-- # MC.seurat <- supercell_2_Seurat( -->
+<!-- #   SC.GE = MC.GE,  -->
+<!-- #   SC = MC,  -->
+<!-- #   fields = c("cell_line", "purity"), -->
+<!-- #   var.genes = MC$genes.use, -->
+<!-- #   N.comp = 10 -->
+<!-- # ) -->
 
-### Clustering 
+<!-- DimPlot(MC.seurat, cols = .color.cell.type, reduction = "umap") -->
+<!-- ``` -->
 
-### Differential expression analysis 
+<!-- ### Clustering  -->
+
+<!-- ```{r r-mc-clustering, eval=FALSE} -->
+<!-- MC.seurat <- FindClusters(MC.seurat, resolution = 0.5) -->
+<!-- DimPlot(MC.seurat, reduction = "umap") -->
+<!-- ``` -->
+
+<!-- ### Differential expression analysis  -->
+
+<!-- ```{r r-mc-DEG, eval=FALSE} -->
+<!-- # Set idents to cell lines (as clusters are the same as cell lines) -->
+<!-- Idents(MC.seurat) <- "cell_line" -->
+<!-- levels(MC.seurat) <- sort(levels(Idents(MC.seurat))) -->
+
+<!-- # Compute upregulated genes in each cell line (versus other cells) -->
+<!-- MC.seurat.all.markers <-  FindAllMarkers( -->
+<!--   MC.seurat,  -->
+<!--   only.pos = TRUE, -->
+<!--   min.pct = 0.25,  -->
+<!--   logfc.threshold = 0.25,  -->
+<!--   test.use = "t" -->
+<!-- ) -->
+<!-- saveRDS(MC.seurat.all.markers, file = file.path(data.folder, "output", paste0("MC_gamma_", gamma, "_all_markers_seurat.Rds"))) -->
+
+<!-- # Top markers (select top markers of each cell line) -->
+<!-- MC.seurat.top.markers <- MC.seurat.all.markers %>% -->
+<!--    group_by(cluster) %>% -->
+<!--     slice_max(n = 2, order_by = avg_log2FC) -->
+
+<!-- MC.seurat.top.markers -->
+<!-- ``` -->
+
+<!-- ### Plot the expression of some markers -->
+
+<!-- ```{r r-mc-clustering, eval=FALSE} -->
+<!-- MC.seurat <- FindClusters(MC.seurat, resolution = 0.5) -->
+<!-- DimPlot(MC.seurat, reduction = "umap") -->
+<!-- ``` -->
+
+<!-- ### Plot gene-gene correlation at single-cell and metacell levels  -->
+
+
+<!-- ```{r r-mc-clustering, eval=FALSE} -->
+<!-- MC.seurat <- FindClusters(MC.seurat, resolution = 0.5) -->
+<!-- DimPlot(MC.seurat, reduction = "umap") -->
+<!-- ``` -->
 
 
 ## Standard analysis (Python) {#standard-analysis-Py}

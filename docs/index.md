@@ -1,11 +1,10 @@
 --- 
 title: "Metacell Tutorial"
 author: "Mariia Bilous, Léonard Hérault, Aurélie Gabriel, David Gfeller"
-date: "2023-07-12"
+date: "2023-07-24"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography:
-- book.bib
 - packages.bib
 description: |
   This is a tutorial about metacell construction and analysis.
@@ -82,27 +81,36 @@ The function to render book is `bookdown::render_book()`, this will take some ti
 
 ## Get data
 
+
 To get 3k PBMCs, use scanpy datasets af follows 
 
 ```python
 import scanpy as sc 
 import os
 
-adata = sc.datasets.pbmc3k()
+ad = sc.datasets.pbmc3k()
 adata_proc = sc.datasets.pbmc3k_processed()
 
-adata       = adata[adata_proc.obs_names].copy()
-adata.obs   = adata_proc.obs.copy()
-adata.uns   = adata_proc.uns.copy()
-adata.obsm  = adata_proc.obsm.copy()
-adata.obsp  = adata_proc.obsp.copy()
+ad       = ad[adata_proc.obs_names].copy()
+ad.obs   = adata_proc.obs.copy()
+ad.uns   = adata_proc.uns.copy()
+ad.obsm  = adata_proc.obsm.copy()
+ad.obsp  = adata_proc.obsp.copy()
 
-sc.pl.embedding(adata, 'X_umap', color='louvain')
-#> /Users/mariiabilous/Documents/PhD/UNIL/R/Metacell_tutorial/my_env_mc2/lib/python3.8/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
+raw_ad = sc.AnnData(ad.X.copy())
+raw_ad.obs_names, raw_ad.var_names = ad.obs_names, ad.var_names
+ad.raw = raw_ad
+
+sc.pl.embedding(ad, 'X_umap', color='louvain')
+#> /mnt/c/Aurelie/postdoc_UNIL/Metacell_tutorial/my_env/lib/python3.8/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
 #>   cax = scatter(
 ```
 
 <img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<!-- We pre-process the data using standard steps from scanpy .... -->
+<!-- ```{r supercell-standard-preproc, child='./functional_chunks/scanpy_standard_preproc.Rmd'} -->
+<!-- ``` -->
+
 
 
 ```python
@@ -111,6 +119,26 @@ directory = os.path.join("data", "3k_pbmc")
 if not os.path.exists(directory):
     os.makedirs(directory)
     
-adata.write_h5ad(os.path.join("data", "3k_pbmc", "singlecell_anndata_filtered.h5ad"))
+ad.write_h5ad(os.path.join("data", "3k_pbmc", "singlecell_anndata_filtered.h5ad"))
 ```
 
+
+
+```r
+library(reticulate)
+library(Seurat)
+#> Attaching SeuratObject
+raw_counts <- Matrix::t(as(py$ad$raw$X, "CsparseMatrix"))
+colnames(raw_counts) <- rownames(py$ad$obs)
+rownames(raw_counts) <- rownames(py$ad$var)
+
+# norm_counts <- Matrix::t(as(py$ad$X, "CsparseMatrix"))
+# colnames(norm_counts) <- rownames(py$ad$obs)
+# rownames(norm_counts) <- rownames(py$ad$var)
+
+pbmc <- CreateSeuratObject(counts = raw_counts, meta.data = py$ad$obs)
+#> Warning: Feature names cannot have underscores ('_'), replacing with dashes
+#> ('-')
+# pbmc@assays$RNA@data <- norm_counts
+saveRDS(pbmc, file = paste0("data/3k_pbmc/singlecell_seurat_filtered.rds"))
+```
