@@ -56,14 +56,15 @@ source my_env/bin/activate
 git clone https://github.com/dpeerlab/SEACells.git
 cd SEACells
 python setup.py install
-
 cd ..
-
 pip install -r SEACells_requirements.txt # here some packages have wrong/non-existing vision, so I manually changed their versions 
 pip install ipywidgets
 pip install jupyter
 
-pip install metacells
+# or pip install git+https://github.com/dpeerlab/SEACells 
+
+# Install new version of MC2 
+pip install git+https://github.com/tanaylab/metacells
 
 # in project dir
 echo 'RETICULATE_PYTHON=my_env/bin/python' > '.Renviron' 
@@ -100,6 +101,10 @@ adata.uns   = adata_proc.uns.copy()
 adata.obsm  = adata_proc.obsm.copy()
 adata.obsp  = adata_proc.obsp.copy()
 
+raw_ad = sc.AnnData(adata.X.copy())
+raw_ad.obs_names, raw_ad.var_names = adata.obs_names, adata.var_names
+adata.raw = raw_ad
+
 sc.pl.embedding(adata, 'X_umap', color='louvain')
 ```
 
@@ -112,3 +117,19 @@ if not os.path.exists(directory):
 adata.write_h5ad(os.path.join("data", "3k_pbmc", "singlecell_anndata_filtered.h5ad"))
 ```
 
+
+```{r, eval = T, collapse = T}
+library(reticulate)
+library(Seurat)
+raw_counts <- Matrix::t(as(py$adata$raw$X, "CsparseMatrix"))
+colnames(raw_counts) <- rownames(py$adata$obs)
+rownames(raw_counts) <- rownames(py$adata$var)
+
+# norm_counts <- Matrix::t(as(py$ad$X, "CsparseMatrix"))
+# colnames(norm_counts) <- rownames(py$ad$obs)
+# rownames(norm_counts) <- rownames(py$ad$var)
+
+pbmc <- CreateSeuratObject(counts = raw_counts, meta.data = py$adata$obs)
+# pbmc@assays$RNA@data <- norm_counts
+saveRDS(pbmc, file = paste0("data/3k_pbmc/singlecell_seurat_filtered.rds"))
+```

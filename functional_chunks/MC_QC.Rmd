@@ -23,7 +23,6 @@ compactness = mc_QC.compactness(ad, 'X_pca', MC_label = 'membership', DO_DC = Fa
 mc_ad.obs['Compactness_PCA'] = list(compactness)
 ```
 
-
 The **separation** of a metacell is the distance to the closest metacell [ref SEACells]
 ```{python}
 separation = mc_QC.separation(ad, 'X_pca', MC_label = 'membership', DO_DC = False, name = 'Separation_PCA', n_comp=10)['Separation_PCA']
@@ -32,15 +31,15 @@ mc_ad.obs['Separation_PCA'] = list(separation)
 ```
 
 
-<!-- The **inner normalized variance (INV)** of a metacell is the mean-normalized variance of gene expression within the metacell [ref MC-2] -->
-<!-- ```{python, warning = FALSE, message = FALSE, result = FALSE, eval = FALSE} -->
-<!-- mc_INV = mc_QC.mc_inner_normalized_var(ad, MC_label = 'membership') -->
+The **inner normalized variance (INV)** of a metacell is the mean-normalized variance of gene expression within the metacell [ref MC-2]
+```{python, warning = FALSE, message = FALSE, result = FALSE, eval = FALSE}
+mc_INV = mc_QC.mc_inner_normalized_var(ad=ad, MC_label = 'membership')
 
-<!-- mc_INV_val = mc_INV.quantile(0.95, axis=1, numeric_only=True) -->
-<!-- mc_INV_val = pd.DataFrame(mc_INV_val.transpose()).set_axis(['INV'], axis=1, inplace=False) -->
-<!-- # add INV to metadata -->
-<!-- mc_ad.obs['INV'] = list(mc_INV_val["INV"]) -->
-<!-- ``` -->
+mc_INV_val = mc_INV.quantile(0.95, axis=1, numeric_only=True)
+mc_INV_val = pd.DataFrame(mc_INV_val.transpose()).set_axis(['INV'], axis=1, copy=False)
+# add INV to metadata
+mc_ad.obs['INV'] = list(mc_INV_val["INV"])
+```
 
 ```{python, warning = FALSE, message=FALSE, fig.dim = c(15, 15)}
 ad.uns['mc_obs'] = mc_ad.obs
@@ -55,5 +54,9 @@ mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership',
 mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
              colour_sc_name='louvain',  colour_mc_name='Separation_PCA', colour_metacells=True, 
              legend_sc=None, legend_mc='auto', metacell_size=30)   
-
+             
+# mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership',
+#              colour_sc_name='louvain',  colour_mc_name='INV', colour_metacells=True,
+#              legend_sc=None, legend_mc='auto', metacell_size=30)
 ```
+
