@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4.2 Standard analysis (Python) | Metacell Tutorial</title>
+  <title>6.2 Standard analysis (Python) | Metacell Tutorial</title>
   <meta name="description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4.2 Standard analysis (Python) | Metacell Tutorial" />
+  <meta property="og:title" content="6.2 Standard analysis (Python) | Metacell Tutorial" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4.2 Standard analysis (Python) | Metacell Tutorial" />
+  <meta name="twitter:title" content="6.2 Standard analysis (Python) | Metacell Tutorial" />
   
   <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
   
@@ -23,15 +23,15 @@
 <meta name="author" content="Mariia Bilous, Léonard Hérault, Aurélie Gabriel, David Gfeller" />
 
 
-<meta name="date" content="2023-07-24" />
+<meta name="date" content="2023-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="standard-analysis-r.html"/>
-<link rel="next" href="advanced-analysis.html"/>
+<link rel="prev" href="standard-analysis-R.html"/>
+<link rel="next" href="weighted-analysis.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -140,67 +140,85 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Metacell Tutorial </a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> This tutorial</a></li>
+<li class="chapter" data-level="2" data-path="requirements.html"><a href="requirements.html"><i class="fa fa-check"></i><b>2</b> Requirements</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="book-structure.html"><a href="book-structure.html"><i class="fa fa-check"></i><b>1.1</b> Book structure</a></li>
-<li class="chapter" data-level="1.2" data-path="installation-and-requirements.html"><a href="installation-and-requirements.html"><i class="fa fa-check"></i><b>1.2</b> Installation and requirements</a></li>
-<li class="chapter" data-level="1.3" data-path="render-book.html"><a href="render-book.html"><i class="fa fa-check"></i><b>1.3</b> Render book</a></li>
-<li class="chapter" data-level="1.4" data-path="get-data.html"><a href="get-data.html"><i class="fa fa-check"></i><b>1.4</b> Get data</a></li>
+<li class="chapter" data-level="2.1" data-path="installations.html"><a href="installations.html"><i class="fa fa-check"></i><b>2.1</b> Installations</a></li>
+<li class="chapter" data-level="2.2" data-path="PBMC-data.html"><a href="PBMC-data.html"><i class="fa fa-check"></i><b>2.2</b> Retrieve the discrete dataset (PBMCs dataset)</a></li>
+<li class="chapter" data-level="2.3" data-path="CD34-data.html"><a href="CD34-data.html"><i class="fa fa-check"></i><b>2.3</b> Retrieve the continuous dataset (CD34 dataset)</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>2</b> The metacell concept</a>
+<li class="chapter" data-level="3" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>3</b> The metacell concept</a></li>
+<li class="chapter" data-level="4" data-path="Metacell-construction-chapter.html"><a href="Metacell-construction-chapter.html"><i class="fa fa-check"></i><b>4</b> Constructing metacells (for ‘discrete’ data)</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="MC2.html"><a href="MC2.html"><i class="fa fa-check"></i><b>2.1</b> Metacell (MC2)</a></li>
-<li class="chapter" data-level="2.2" data-path="SuperCell.html"><a href="SuperCell.html"><i class="fa fa-check"></i><b>2.2</b> SuperCell</a></li>
-<li class="chapter" data-level="2.3" data-path="SEACells.html"><a href="SEACells.html"><i class="fa fa-check"></i><b>2.3</b> SEACells</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="constructing-metacells-for-discrete-data.html"><a href="constructing-metacells-for-discrete-data.html"><i class="fa fa-check"></i><b>3</b> Constructing metacells (for ‘discrete’ data)</a>
+<li class="chapter" data-level="4.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html"><i class="fa fa-check"></i><b>4.1</b> SuperCell (R)</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="mc2-python.html"><a href="mc2-python.html"><i class="fa fa-check"></i><b>3.1</b> MC2 (Python)</a>
+<li class="chapter" data-level="4.1.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#method"><i class="fa fa-check"></i><b>4.1.1</b> Method</a></li>
+<li class="chapter" data-level="4.1.2" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#data-loading"><i class="fa fa-check"></i><b>4.1.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.1.3" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#filtering-steps"><i class="fa fa-check"></i><b>4.1.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.1.4" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#building-metacells"><i class="fa fa-check"></i><b>4.1.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.1.5" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#annotate-metacells-using-available-annotations"><i class="fa fa-check"></i><b>4.1.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="4.1.6" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#save-output"><i class="fa fa-check"></i><b>4.1.6</b> Save output</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="MC2-construction.html"><a href="MC2-construction.html"><i class="fa fa-check"></i><b>4.2</b> MC2 (Python)</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="mc2-python.html"><a href="mc2-python.html#data-loading"><i class="fa fa-check"></i><b>3.1.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.1.2" data-path="mc2-python.html"><a href="mc2-python.html#filtering-steps"><i class="fa fa-check"></i><b>3.1.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.1.3" data-path="mc2-python.html"><a href="mc2-python.html#building-metacells"><i class="fa fa-check"></i><b>3.1.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.1.4" data-path="mc2-python.html"><a href="mc2-python.html#visualize-metacells"><i class="fa fa-check"></i><b>3.1.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.1.5" data-path="mc2-python.html"><a href="mc2-python.html#metacell-qc"><i class="fa fa-check"></i><b>3.1.5</b> Metacell QC</a></li>
+<li class="chapter" data-level="4.2.1" data-path="MC2-construction.html"><a href="MC2-construction.html#method-1"><i class="fa fa-check"></i><b>4.2.1</b> Method</a></li>
+<li class="chapter" data-level="4.2.2" data-path="MC2-construction.html"><a href="MC2-construction.html#data-loading-1"><i class="fa fa-check"></i><b>4.2.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.2.3" data-path="MC2-construction.html"><a href="MC2-construction.html#filtering-steps-1"><i class="fa fa-check"></i><b>4.2.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.2.4" data-path="MC2-construction.html"><a href="MC2-construction.html#building-metacells-1"><i class="fa fa-check"></i><b>4.2.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.2.5" data-path="MC2-construction.html"><a href="MC2-construction.html#annotate-metacells-using-available-annotations-1"><i class="fa fa-check"></i><b>4.2.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="4.2.6" data-path="MC2-construction.html"><a href="MC2-construction.html#save-output-1"><i class="fa fa-check"></i><b>4.2.6</b> Save output</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="seacells-python.html"><a href="seacells-python.html"><i class="fa fa-check"></i><b>3.2</b> SEACells (Python)</a>
+<li class="chapter" data-level="4.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html"><i class="fa fa-check"></i><b>4.3</b> SEACells (Python)</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="seacells-python.html"><a href="seacells-python.html#data-loading-1"><i class="fa fa-check"></i><b>3.2.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.2.2" data-path="seacells-python.html"><a href="seacells-python.html#filtering-steps-1"><i class="fa fa-check"></i><b>3.2.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.2.3" data-path="seacells-python.html"><a href="seacells-python.html#building-metacells-1"><i class="fa fa-check"></i><b>3.2.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.2.4" data-path="seacells-python.html"><a href="seacells-python.html#visualize-metacells-1"><i class="fa fa-check"></i><b>3.2.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.2.5" data-path="seacells-python.html"><a href="seacells-python.html#metacell-qc-1"><i class="fa fa-check"></i><b>3.2.5</b> Metacell QC</a></li>
+<li class="chapter" data-level="4.3.1" data-path="SEACells-construction.html"><a href="SEACells-construction.html#method-2"><i class="fa fa-check"></i><b>4.3.1</b> Method</a></li>
+<li class="chapter" data-level="4.3.2" data-path="SEACells-construction.html"><a href="SEACells-construction.html#data-loading-2"><i class="fa fa-check"></i><b>4.3.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html#filtering-steps-2"><i class="fa fa-check"></i><b>4.3.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>4.3.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>4.3.5</b> Visualize metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="supercell-r.html"><a href="supercell-r.html"><i class="fa fa-check"></i><b>3.3</b> SuperCell (R)</a>
+<li class="chapter" data-level="4.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>4.4</b> Command line tool</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>5</b> Metacells QCs</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="supercell-r.html"><a href="supercell-r.html#data-loading-2"><i class="fa fa-check"></i><b>3.3.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.3.2" data-path="supercell-r.html"><a href="supercell-r.html#filtering-steps-2"><i class="fa fa-check"></i><b>3.3.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.3.3" data-path="supercell-r.html"><a href="supercell-r.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.3.4" data-path="supercell-r.html"><a href="supercell-r.html#visualize-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.3.5" data-path="supercell-r.html"><a href="supercell-r.html#metacell-qc-2"><i class="fa fa-check"></i><b>3.3.5</b> Metacell QC</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><a href="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><i class="fa fa-check"></i><b>4</b> Downstream analysis of metacells (for a discrete dataset)</a>
+<li class="chapter" data-level="5.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html"><i class="fa fa-check"></i><b>5.1</b> Quantitative metrics</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="standard-analysis-r.html"><a href="standard-analysis-r.html"><i class="fa fa-check"></i><b>4.1</b> Standard analysis (R)</a></li>
-<li class="chapter" data-level="4.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>4.2</b> Standard analysis (Python)</a>
+<li class="chapter" data-level="5.1.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#purity"><i class="fa fa-check"></i><b>5.1.1</b> Purity</a></li>
+<li class="chapter" data-level="5.1.2" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#compactness"><i class="fa fa-check"></i><b>5.1.2</b> Compactness</a></li>
+<li class="chapter" data-level="5.1.3" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#separation"><i class="fa fa-check"></i><b>5.1.3</b> Separation</a></li>
+<li class="chapter" data-level="5.1.4" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#inv"><i class="fa fa-check"></i><b>5.1.4</b> INV</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>5.2</b> Size distribution</a></li>
+<li class="chapter" data-level="5.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>5.3</b> Representativeness of metacells</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction"><i class="fa fa-check"></i><b>4.2.1</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="4.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering"><i class="fa fa-check"></i><b>4.2.2</b> Clustering</a></li>
-<li class="chapter" data-level="4.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis"><i class="fa fa-check"></i><b>4.2.3</b> Differential expression analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>4.3</b> Advanced analysis</a>
+<li class="chapter" data-level="6.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="advanced-analysis.html"><a href="advanced-analysis.html#grn"><i class="fa fa-check"></i><b>4.3.1</b> GRN</a></li>
+<li class="chapter" data-level="6.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>6.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>6.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>6.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>6.1.5</b> Visualize gene-gene correlation</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>4.4</b> Sample-weighted analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="command-line-tool-for-mc-construction.html"><a href="command-line-tool-for-mc-construction.html"><i class="fa fa-check"></i><b>5</b> Command line tool for MC construction</a></li>
-<li class="chapter" data-level="6" data-path="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><a href="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><i class="fa fa-check"></i><b>6</b> Comparison of metacells usage for a discrete and continuous data</a>
+<li class="chapter" data-level="6.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>6.2</b> Standard analysis (Python)</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="continuous-metacells-have-lower-purity.html"><a href="continuous-metacells-have-lower-purity.html"><i class="fa fa-check"></i><b>6.1</b> Continuous metacells have lower purity</a></li>
+<li class="chapter" data-level="6.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>6.2.1</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering-1"><i class="fa fa-check"></i><b>6.2.2</b> Clustering</a></li>
+<li class="chapter" data-level="6.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>6.2.3</b> Differential expression analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="data-integration-with-metacells.html"><a href="data-integration-with-metacells.html"><i class="fa fa-check"></i><b>7</b> Data integration with metacells</a></li>
+<li class="chapter" data-level="6.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>6.3</b> Sample-weighted analysis</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>6.3.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.3.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-2"><i class="fa fa-check"></i><b>6.3.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.3.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-2"><i class="fa fa-check"></i><b>6.3.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.3.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-2"><i class="fa fa-check"></i><b>6.3.4</b> Differential expression analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>6.4</b> Advanced analysis</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="advanced-analysis.html"><a href="advanced-analysis.html#GRN-analysis"><i class="fa fa-check"></i><b>6.4.1</b> GRN</a></li>
+<li class="chapter" data-level="6.4.2" data-path="advanced-analysis.html"><a href="advanced-analysis.html#integration"><i class="fa fa-check"></i><b>6.4.2</b> Integration of metacells</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -221,18 +239,87 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="standard-analysis-Py" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Standard analysis (Python)<a href="standard-analysis-Py.html#standard-analysis-Py" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Standard analysis includes dimensionality reduction, clustering, differential expression etc using <a href="https://scanpy-tutorials.readthedocs.io/en/latest/#">Scanpy</a> framework.</p>
-<p>Under construction…</p>
-<div id="dimensionality-reduction" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Dimensionality reduction<a href="standard-analysis-Py.html#dimensionality-reduction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="standard-analysis-Py" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Standard analysis (Python)<a href="standard-analysis-Py.html#standard-analysis-Py" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section, standard analysis includes dimensionality reduction, clustering, differential expression etc using <a href="https://scanpy-tutorials.readthedocs.io/en/latest/#">Scanpy</a> framework.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb82-1"><a href="standard-analysis-Py.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb82-2"><a href="standard-analysis-Py.html#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb82-3"><a href="standard-analysis-Py.html#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb82-4"><a href="standard-analysis-Py.html#cb82-4" aria-hidden="true" tabindex="-1"></a>sc.settings.verbosity <span class="op">=</span> <span class="dv">1</span> </span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb83-1"><a href="standard-analysis-Py.html#cb83-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">&quot;SEACells&quot;</span></span>
+<span id="cb83-2"><a href="standard-analysis-Py.html#cb83-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">&quot;3k_pbmc&quot;</span></span>
+<span id="cb83-3"><a href="standard-analysis-Py.html#cb83-3" aria-hidden="true" tabindex="-1"></a>annotation_column <span class="op">=</span> <span class="st">&quot;louvain&quot;</span></span>
+<span id="cb83-4"><a href="standard-analysis-Py.html#cb83-4" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> sc.read(os.path.join(<span class="st">&#39;./data&#39;</span>, proj_name, <span class="ss">f&#39;metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad&#39;</span>))</span></code></pre></div>
+<div id="dimensionality-reduction-1" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Dimensionality reduction<a href="standard-analysis-Py.html#dimensionality-reduction-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb84"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb84-1"><a href="standard-analysis-Py.html#cb84-1" aria-hidden="true" tabindex="-1"></a>adata.var_names_make_unique()  <span class="co"># this is unnecessary if using `var_names=&#39;gene_ids&#39;` in `sc.read_10x_mtx`</span></span>
+<span id="cb84-2"><a href="standard-analysis-Py.html#cb84-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-3"><a href="standard-analysis-Py.html#cb84-3" aria-hidden="true" tabindex="-1"></a>sc.pp.normalize_per_cell(adata)</span>
+<span id="cb84-4"><a href="standard-analysis-Py.html#cb84-4" aria-hidden="true" tabindex="-1"></a>sc.pp.log1p(adata)</span>
+<span id="cb84-5"><a href="standard-analysis-Py.html#cb84-5" aria-hidden="true" tabindex="-1"></a>sc.pp.highly_variable_genes(adata, n_top_genes<span class="op">=</span><span class="dv">2000</span>)</span>
+<span id="cb84-6"><a href="standard-analysis-Py.html#cb84-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-7"><a href="standard-analysis-Py.html#cb84-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Freeze the state of the AnnData object for later use in differential testing and visualizations of gene expression</span></span>
+<span id="cb84-8"><a href="standard-analysis-Py.html#cb84-8" aria-hidden="true" tabindex="-1"></a>adata.raw <span class="op">=</span> adata <span class="co"># step needd only if I use regress_out steps</span></span>
+<span id="cb84-9"><a href="standard-analysis-Py.html#cb84-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-10"><a href="standard-analysis-Py.html#cb84-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute PCA (highly variable genes will be used)</span></span>
+<span id="cb84-11"><a href="standard-analysis-Py.html#cb84-11" aria-hidden="true" tabindex="-1"></a>sc.tl.pca(adata, svd_solver<span class="op">=</span><span class="st">&#39;arpack&#39;</span>)</span>
+<span id="cb84-12"><a href="standard-analysis-Py.html#cb84-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-13"><a href="standard-analysis-Py.html#cb84-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the neighbor graph</span></span>
+<span id="cb84-14"><a href="standard-analysis-Py.html#cb84-14" aria-hidden="true" tabindex="-1"></a>sc.pp.neighbors(adata, n_neighbors<span class="op">=</span><span class="dv">15</span>, n_pcs<span class="op">=</span><span class="dv">30</span>)</span>
+<span id="cb84-15"><a href="standard-analysis-Py.html#cb84-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /mnt/c/Aurelie/postdoc_UNIL/Metacell_review/tuto/Metacell_tutorial/my_env/lib/python3.8/site-packages/umap/distances.py:1063: NumbaDeprecationWarning: The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span></span>
+<span id="cb84-16"><a href="standard-analysis-Py.html#cb84-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   @numba.jit()</span></span>
+<span id="cb84-17"><a href="standard-analysis-Py.html#cb84-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /mnt/c/Aurelie/postdoc_UNIL/Metacell_review/tuto/Metacell_tutorial/my_env/lib/python3.8/site-packages/umap/distances.py:1071: NumbaDeprecationWarning: The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span></span>
+<span id="cb84-18"><a href="standard-analysis-Py.html#cb84-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   @numba.jit()</span></span>
+<span id="cb84-19"><a href="standard-analysis-Py.html#cb84-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /mnt/c/Aurelie/postdoc_UNIL/Metacell_review/tuto/Metacell_tutorial/my_env/lib/python3.8/site-packages/umap/distances.py:1086: NumbaDeprecationWarning: The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span></span>
+<span id="cb84-20"><a href="standard-analysis-Py.html#cb84-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   @numba.jit()</span></span>
+<span id="cb84-21"><a href="standard-analysis-Py.html#cb84-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /mnt/c/Aurelie/postdoc_UNIL/Metacell_review/tuto/Metacell_tutorial/my_env/lib/python3.8/site-packages/umap/umap_.py:660: NumbaDeprecationWarning: The &#39;nopython&#39; keyword argument was not supplied to the &#39;numba.jit&#39; decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.</span></span>
+<span id="cb84-22"><a href="standard-analysis-Py.html#cb84-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   @numba.jit()</span></span>
+<span id="cb84-23"><a href="standard-analysis-Py.html#cb84-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-24"><a href="standard-analysis-Py.html#cb84-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Run umap</span></span>
+<span id="cb84-25"><a href="standard-analysis-Py.html#cb84-25" aria-hidden="true" tabindex="-1"></a>sc.tl.umap(adata)</span>
+<span id="cb84-26"><a href="standard-analysis-Py.html#cb84-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-27"><a href="standard-analysis-Py.html#cb84-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot metacells in the UMAP space</span></span>
+<span id="cb84-28"><a href="standard-analysis-Py.html#cb84-28" aria-hidden="true" tabindex="-1"></a>sc.pl.umap(adata, color<span class="op">=</span>[annotation_column], size <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb84-29"><a href="standard-analysis-Py.html#cb84-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /mnt/c/Aurelie/postdoc_UNIL/Metacell_review/tuto/Metacell_tutorial/my_env/lib/python3.8/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via &#39;c&#39;. Parameters &#39;cmap&#39; will be ignored</span></span>
+<span id="cb84-30"><a href="standard-analysis-Py.html#cb84-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   cax = scatter(</span></span></code></pre></div>
+<p><img src="30-MC_analysis_discrete_files/figure-html/py-mc-dim-reduc-1.png" width="672" /></p>
 </div>
-<div id="clustering" class="section level3 hasAnchor" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> Clustering<a href="standard-analysis-Py.html#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="clustering-1" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Clustering<a href="standard-analysis-Py.html#clustering-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Perform clustering on the metacell data.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb85-1"><a href="standard-analysis-Py.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run laiden graph-clustering</span></span>
+<span id="cb85-2"><a href="standard-analysis-Py.html#cb85-2" aria-hidden="true" tabindex="-1"></a>sc.tl.leiden(adata, neighbors_key <span class="op">=</span> <span class="st">&quot;neighbors&quot;</span>, resolution <span class="op">=</span> <span class="dv">2</span>)</span>
+<span id="cb85-3"><a href="standard-analysis-Py.html#cb85-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-4"><a href="standard-analysis-Py.html#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the metacells in the UMAP space and color by cluster</span></span>
+<span id="cb85-5"><a href="standard-analysis-Py.html#cb85-5" aria-hidden="true" tabindex="-1"></a>sc.pl.umap(adata, color<span class="op">=</span>[<span class="st">&#39;leiden&#39;</span>], size <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb85-6"><a href="standard-analysis-Py.html#cb85-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /mnt/c/Aurelie/postdoc_UNIL/Metacell_review/tuto/Metacell_tutorial/my_env/lib/python3.8/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via &#39;c&#39;. Parameters &#39;cmap&#39; will be ignored</span></span>
+<span id="cb85-7"><a href="standard-analysis-Py.html#cb85-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   cax = scatter(</span></span></code></pre></div>
+<p><img src="30-MC_analysis_discrete_files/figure-html/py-mc-clustering-3.png" width="672" /></p>
 </div>
-<div id="differential-expression-analysis" class="section level3 hasAnchor" number="4.2.3">
-<h3><span class="header-section-number">4.2.3</span> Differential expression analysis<a href="standard-analysis-Py.html#differential-expression-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="differential-expression-analysis-1" class="section level3 hasAnchor" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Differential expression analysis<a href="standard-analysis-Py.html#differential-expression-analysis-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Identify marker genes for each group of metacells.
+Note that here we use the clusters since the Megakaryocytes contain only one metacells.
+We visualize the top 3 markers for CD8 Tcells.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb86-1"><a href="standard-analysis-Py.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify marker genes</span></span>
+<span id="cb86-2"><a href="standard-analysis-Py.html#cb86-2" aria-hidden="true" tabindex="-1"></a>sc.tl.rank_genes_groups(adata, <span class="st">&#39;leiden&#39;</span>, method<span class="op">=</span><span class="st">&#39;wilcoxon&#39;</span>)</span>
+<span id="cb86-3"><a href="standard-analysis-Py.html#cb86-3" aria-hidden="true" tabindex="-1"></a>sc.pl.rank_genes_groups(adata, n_genes<span class="op">=</span><span class="dv">25</span>, sharey<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb86-4"><a href="standard-analysis-Py.html#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /mnt/c/Aurelie/postdoc_UNIL/Metacell_review/tuto/Metacell_tutorial/my_env/lib/python3.8/site-packages/scanpy/plotting/_tools/__init__.py:397: UserWarning: Attempting to set identical low and high ylims makes transformation singular; automatically expanding.</span></span>
+<span id="cb86-5"><a href="standard-analysis-Py.html#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   ax.set_ylim(ymin, ymax)</span></span></code></pre></div>
+<p><img src="30-MC_analysis_discrete_files/figure-html/py-mc-markers-5.png" width="2688" /></p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb87-1"><a href="standard-analysis-Py.html#cb87-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-2"><a href="standard-analysis-Py.html#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the top marker genes</span></span>
+<span id="cb87-3"><a href="standard-analysis-Py.html#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(adata.uns[<span class="st">&#39;rank_genes_groups&#39;</span>][<span class="st">&#39;names&#39;</span>]).head(<span class="dv">5</span>))</span>
+<span id="cb87-4"><a href="standard-analysis-Py.html#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        0       1      2        3         4       5      6          7</span></span>
+<span id="cb87-5"><a href="standard-analysis-Py.html#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0  RPL31   FOLR3   CD8A      LTB      CST3  STXBP2   XCL2  TNFRSF13C</span></span>
+<span id="cb87-6"><a href="standard-analysis-Py.html#cb87-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  RPL32  S100A9   CCL5  TNFRSF4  HLA-DRB5  MS4A4A  KLRF1      CD79A</span></span>
+<span id="cb87-7"><a href="standard-analysis-Py.html#cb87-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2   CCR7  S100A8   LYAR     AQP3  HLA-DRB1    RHOC  RAMP1       GNG7</span></span>
+<span id="cb87-8"><a href="standard-analysis-Py.html#cb87-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3   RPS6    BST1   CD8B   CD40LG  HLA-DPA1  CDKN1C  CLIC3   PPAPDC1B</span></span>
+<span id="cb87-9"><a href="standard-analysis-Py.html#cb87-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  RPS27   MGST1  KLRG1      CD2    TMSB10  FCER1G   PRF1    HLA-DOB</span></span>
+<span id="cb87-10"><a href="standard-analysis-Py.html#cb87-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-11"><a href="standard-analysis-Py.html#cb87-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize marker genes</span></span>
+<span id="cb87-12"><a href="standard-analysis-Py.html#cb87-12" aria-hidden="true" tabindex="-1"></a>sc.pl.violin(adata, [<span class="st">&#39;CD8A&#39;</span>, <span class="st">&#39;CCL5&#39;</span>, <span class="st">&#39;LYAR&#39;</span>], groupby<span class="op">=</span>annotation_column, size <span class="op">=</span> <span class="dv">2</span>, rotation <span class="op">=</span> <span class="dv">90</span>)</span></code></pre></div>
+<p><img src="30-MC_analysis_discrete_files/figure-html/py-mc-markers-6.png" width="2564" /></p>
 </div>
 </div>
             </section>
@@ -240,8 +327,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="standard-analysis-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="advanced-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="standard-analysis-R.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="weighted-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -272,7 +359,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/22-MC_analysis_discrete.Rmd",
+"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/30-MC_analysis_discrete.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -280,7 +367,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/22-MC_analysis_discrete.Rmd",
+"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/30-MC_analysis_discrete.Rmd",
 "text": null
 },
 "download": ["_main.pdf", "_main.epub"],

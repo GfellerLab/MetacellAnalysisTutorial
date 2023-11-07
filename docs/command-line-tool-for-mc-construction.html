@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Command line tool for MC construction | Metacell Tutorial</title>
+  <title>Chapter 4 Command line tool for MC construction | Metacell Tutorial</title>
   <meta name="description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Command line tool for MC construction | Metacell Tutorial" />
+  <meta property="og:title" content="Chapter 4 Command line tool for MC construction | Metacell Tutorial" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Command line tool for MC construction | Metacell Tutorial" />
+  <meta name="twitter:title" content="Chapter 4 Command line tool for MC construction | Metacell Tutorial" />
   
   <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
   
@@ -23,15 +23,15 @@
 <meta name="author" content="Mariia Bilous, Léonard Hérault, Aurélie Gabriel, David Gfeller" />
 
 
-<meta name="date" content="2023-07-24" />
+<meta name="date" content="2023-08-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="weighted-analysis.html"/>
-<link rel="next" href="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"/>
+<link rel="prev" href="seacells-python.html"/>
+<link rel="next" href="downstream-analysis-of-metacells-for-a-discrete-dataset.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -155,52 +155,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="constructing-metacells-for-discrete-data.html"><a href="constructing-metacells-for-discrete-data.html"><i class="fa fa-check"></i><b>3</b> Constructing metacells (for ‘discrete’ data)</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="mc2-python.html"><a href="mc2-python.html"><i class="fa fa-check"></i><b>3.1</b> MC2 (Python)</a>
+<li class="chapter" data-level="3.1" data-path="supercell-r.html"><a href="supercell-r.html"><i class="fa fa-check"></i><b>3.1</b> SuperCell (R)</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="mc2-python.html"><a href="mc2-python.html#data-loading"><i class="fa fa-check"></i><b>3.1.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.1.2" data-path="mc2-python.html"><a href="mc2-python.html#filtering-steps"><i class="fa fa-check"></i><b>3.1.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.1.3" data-path="mc2-python.html"><a href="mc2-python.html#building-metacells"><i class="fa fa-check"></i><b>3.1.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.1.4" data-path="mc2-python.html"><a href="mc2-python.html#visualize-metacells"><i class="fa fa-check"></i><b>3.1.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.1.5" data-path="mc2-python.html"><a href="mc2-python.html#metacell-qc"><i class="fa fa-check"></i><b>3.1.5</b> Metacell QC</a></li>
+<li class="chapter" data-level="3.1.1" data-path="supercell-r.html"><a href="supercell-r.html#data-loading"><i class="fa fa-check"></i><b>3.1.1</b> Data loading</a></li>
+<li class="chapter" data-level="3.1.2" data-path="supercell-r.html"><a href="supercell-r.html#filtering-steps"><i class="fa fa-check"></i><b>3.1.2</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.1.3" data-path="supercell-r.html"><a href="supercell-r.html#building-metacells"><i class="fa fa-check"></i><b>3.1.3</b> Building metacells</a></li>
+<li class="chapter" data-level="3.1.4" data-path="supercell-r.html"><a href="supercell-r.html#visualize-the-supercell-graph"><i class="fa fa-check"></i><b>3.1.4</b> Visualize the SuperCell graph</a></li>
+<li class="chapter" data-level="3.1.5" data-path="supercell-r.html"><a href="supercell-r.html#metacell-qc"><i class="fa fa-check"></i><b>3.1.5</b> Metacell QC</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="seacells-python.html"><a href="seacells-python.html"><i class="fa fa-check"></i><b>3.2</b> SEACells (Python)</a>
+<li class="chapter" data-level="3.2" data-path="mc2-python.html"><a href="mc2-python.html"><i class="fa fa-check"></i><b>3.2</b> MC2 (Python)</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="seacells-python.html"><a href="seacells-python.html#data-loading-1"><i class="fa fa-check"></i><b>3.2.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.2.2" data-path="seacells-python.html"><a href="seacells-python.html#filtering-steps-1"><i class="fa fa-check"></i><b>3.2.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.2.3" data-path="seacells-python.html"><a href="seacells-python.html#building-metacells-1"><i class="fa fa-check"></i><b>3.2.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.2.4" data-path="seacells-python.html"><a href="seacells-python.html#visualize-metacells-1"><i class="fa fa-check"></i><b>3.2.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.2.5" data-path="seacells-python.html"><a href="seacells-python.html#metacell-qc-1"><i class="fa fa-check"></i><b>3.2.5</b> Metacell QC</a></li>
+<li class="chapter" data-level="3.2.1" data-path="mc2-python.html"><a href="mc2-python.html#data-loading-1"><i class="fa fa-check"></i><b>3.2.1</b> Data loading</a></li>
+<li class="chapter" data-level="3.2.2" data-path="mc2-python.html"><a href="mc2-python.html#filtering-steps-1"><i class="fa fa-check"></i><b>3.2.2</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.2.3" data-path="mc2-python.html"><a href="mc2-python.html#building-metacells-1"><i class="fa fa-check"></i><b>3.2.3</b> Building metacells</a></li>
+<li class="chapter" data-level="3.2.4" data-path="mc2-python.html"><a href="mc2-python.html#visualize-metacells"><i class="fa fa-check"></i><b>3.2.4</b> Visualize metacells</a></li>
+<li class="chapter" data-level="3.2.5" data-path="mc2-python.html"><a href="mc2-python.html#metacell-qc-1"><i class="fa fa-check"></i><b>3.2.5</b> Metacell QC</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="supercell-r.html"><a href="supercell-r.html"><i class="fa fa-check"></i><b>3.3</b> SuperCell (R)</a>
+<li class="chapter" data-level="3.3" data-path="seacells-python.html"><a href="seacells-python.html"><i class="fa fa-check"></i><b>3.3</b> SEACells (Python)</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="supercell-r.html"><a href="supercell-r.html#data-loading-2"><i class="fa fa-check"></i><b>3.3.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.3.2" data-path="supercell-r.html"><a href="supercell-r.html#filtering-steps-2"><i class="fa fa-check"></i><b>3.3.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.3.3" data-path="supercell-r.html"><a href="supercell-r.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.3.4" data-path="supercell-r.html"><a href="supercell-r.html#visualize-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.3.5" data-path="supercell-r.html"><a href="supercell-r.html#metacell-qc-2"><i class="fa fa-check"></i><b>3.3.5</b> Metacell QC</a></li>
+<li class="chapter" data-level="3.3.1" data-path="seacells-python.html"><a href="seacells-python.html#data-loading-2"><i class="fa fa-check"></i><b>3.3.1</b> Data loading</a></li>
+<li class="chapter" data-level="3.3.2" data-path="seacells-python.html"><a href="seacells-python.html#filtering-steps-2"><i class="fa fa-check"></i><b>3.3.2</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.3.3" data-path="seacells-python.html"><a href="seacells-python.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.3</b> Building metacells</a></li>
+<li class="chapter" data-level="3.3.4" data-path="seacells-python.html"><a href="seacells-python.html#visualize-metacells-1"><i class="fa fa-check"></i><b>3.3.4</b> Visualize metacells</a></li>
+<li class="chapter" data-level="3.3.5" data-path="seacells-python.html"><a href="seacells-python.html#metacell-qc-2"><i class="fa fa-check"></i><b>3.3.5</b> Metacell QC</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><a href="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><i class="fa fa-check"></i><b>4</b> Downstream analysis of metacells (for a discrete dataset)</a>
+<li class="chapter" data-level="4" data-path="command-line-tool-for-mc-construction.html"><a href="command-line-tool-for-mc-construction.html"><i class="fa fa-check"></i><b>4</b> Command line tool for MC construction</a></li>
+<li class="chapter" data-level="5" data-path="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><a href="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><i class="fa fa-check"></i><b>5</b> Downstream analysis of metacells (for a discrete dataset)</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="standard-analysis-r.html"><a href="standard-analysis-r.html"><i class="fa fa-check"></i><b>4.1</b> Standard analysis (R)</a></li>
-<li class="chapter" data-level="4.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>4.2</b> Standard analysis (Python)</a>
+<li class="chapter" data-level="5.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>5.1</b> Standard analysis (R)</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction"><i class="fa fa-check"></i><b>4.2.1</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="4.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering"><i class="fa fa-check"></i><b>4.2.2</b> Clustering</a></li>
-<li class="chapter" data-level="4.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis"><i class="fa fa-check"></i><b>4.2.3</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="5.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>5.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="5.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>5.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="5.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>5.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="5.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>5.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="5.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#plot-the-expression-of-some-markers"><i class="fa fa-check"></i><b>5.1.5</b> Plot the expression of some markers</a></li>
+<li class="chapter" data-level="5.1.6" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#plot-gene-gene-correlation-at-single-cell-and-metacell-levels"><i class="fa fa-check"></i><b>5.1.6</b> Plot gene-gene correlation at single-cell and metacell levels</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>4.3</b> Advanced analysis</a>
+<li class="chapter" data-level="5.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>5.2</b> Standard analysis (Python)</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="advanced-analysis.html"><a href="advanced-analysis.html#grn"><i class="fa fa-check"></i><b>4.3.1</b> GRN</a></li>
+<li class="chapter" data-level="5.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>5.2.1</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="5.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering-1"><i class="fa fa-check"></i><b>5.2.2</b> Clustering</a></li>
+<li class="chapter" data-level="5.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>5.2.3</b> Differential expression analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>4.4</b> Sample-weighted analysis</a></li>
+<li class="chapter" data-level="5.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>5.3</b> Sample-weighted analysis</a></li>
+<li class="chapter" data-level="5.4" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>5.4</b> Advanced analysis</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="advanced-analysis.html"><a href="advanced-analysis.html#GRN-analysis"><i class="fa fa-check"></i><b>5.4.1</b> GRN</a></li>
+<li class="chapter" data-level="5.4.2" data-path="advanced-analysis.html"><a href="advanced-analysis.html#integration"><i class="fa fa-check"></i><b>5.4.2</b> Integration of metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="command-line-tool-for-mc-construction.html"><a href="command-line-tool-for-mc-construction.html"><i class="fa fa-check"></i><b>5</b> Command line tool for MC construction</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><a href="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><i class="fa fa-check"></i><b>6</b> Comparison of metacells usage for a discrete and continuous data</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="continuous-metacells-have-lower-purity.html"><a href="continuous-metacells-have-lower-purity.html"><i class="fa fa-check"></i><b>6.1</b> Continuous metacells have lower purity</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="data-integration-with-metacells.html"><a href="data-integration-with-metacells.html"><i class="fa fa-check"></i><b>7</b> Data integration with metacells</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -221,9 +229,108 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="command-line-tool-for-mc-construction" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Command line tool for MC construction<a href="command-line-tool-for-mc-construction.html#command-line-tool-for-mc-construction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="command-line-tool-for-mc-construction" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Command line tool for MC construction<a href="command-line-tool-for-mc-construction.html#command-line-tool-for-mc-construction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Add before that a QC section: and say that in a benchmark setting, some parameters need to be the same: k, nb pca, gamma, filtering?, latent space.
+In the next section we present command line tools that enables users to test the 3 tools to build metacells.</p>
 <p>Here is a command line tool to construct metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb87-1"><a href="command-line-tool-for-mc-construction.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="ex">setwd</span><span class="er">(</span><span class="st">&quot;MetacellToolkit_path&quot;</span><span class="kw">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb88-1"><a href="command-line-tool-for-mc-construction.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="va">proj_name</span><span class="op">=</span><span class="st">&quot;3k_pbmc&quot;</span></span>
+<span id="cb88-2"><a href="command-line-tool-for-mc-construction.html#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="va">MC_tool</span><span class="op">=</span><span class="st">&quot;SuperCell&quot;</span></span>
+<span id="cb88-3"><a href="command-line-tool-for-mc-construction.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="co"># input raw adata output adata</span></span>
+<span id="cb88-4"><a href="command-line-tool-for-mc-construction.html#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> cli/<span class="va">${MC_tool}</span>CL.R <span class="at">-i</span> data/<span class="va">${proj_name}</span>/singlecell_anndata_filtered.h5ad <span class="at">-o</span> data/<span class="va">${proj_name}</span>/<span class="va">${MC_tool}</span>/ <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
+<span id="cb88-5"><a href="command-line-tool-for-mc-construction.html#cb88-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-6"><a href="command-line-tool-for-mc-construction.html#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="co"># input raw adata output seurat</span></span>
+<span id="cb88-7"><a href="command-line-tool-for-mc-construction.html#cb88-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> cli/<span class="va">${MC_tool}</span>CL.R <span class="at">-i</span> data/<span class="va">${proj_name}</span>/singlecell_anndata_filtered.h5ad <span class="at">-o</span> data/<span class="va">${proj_name}</span>/<span class="va">${MC_tool}</span>/ <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> seurat</span>
+<span id="cb88-8"><a href="command-line-tool-for-mc-construction.html#cb88-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ARGS</span></span>
+<span id="cb88-9"><a href="command-line-tool-for-mc-construction.html#cb88-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; character(0)</span></span>
+<span id="cb88-10"><a href="command-line-tool-for-mc-construction.html#cb88-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-11"><a href="command-line-tool-for-mc-construction.html#cb88-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $input</span></span>
+<span id="cb88-12"><a href="command-line-tool-for-mc-construction.html#cb88-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;data/3k_pbmc/singlecell_anndata_filtered.h5ad&quot;</span></span>
+<span id="cb88-13"><a href="command-line-tool-for-mc-construction.html#cb88-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-14"><a href="command-line-tool-for-mc-construction.html#cb88-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $outdir</span></span>
+<span id="cb88-15"><a href="command-line-tool-for-mc-construction.html#cb88-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;data/3k_pbmc/SuperCell/&quot;</span></span>
+<span id="cb88-16"><a href="command-line-tool-for-mc-construction.html#cb88-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-17"><a href="command-line-tool-for-mc-construction.html#cb88-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $n.pc</span></span>
+<span id="cb88-18"><a href="command-line-tool-for-mc-construction.html#cb88-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 50</span></span>
+<span id="cb88-19"><a href="command-line-tool-for-mc-construction.html#cb88-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-20"><a href="command-line-tool-for-mc-construction.html#cb88-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $nFeatures</span></span>
+<span id="cb88-21"><a href="command-line-tool-for-mc-construction.html#cb88-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2000</span></span>
+<span id="cb88-22"><a href="command-line-tool-for-mc-construction.html#cb88-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-23"><a href="command-line-tool-for-mc-construction.html#cb88-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $k.knn</span></span>
+<span id="cb88-24"><a href="command-line-tool-for-mc-construction.html#cb88-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb88-25"><a href="command-line-tool-for-mc-construction.html#cb88-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-26"><a href="command-line-tool-for-mc-construction.html#cb88-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gamma</span></span>
+<span id="cb88-27"><a href="command-line-tool-for-mc-construction.html#cb88-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 50</span></span>
+<span id="cb88-28"><a href="command-line-tool-for-mc-construction.html#cb88-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-29"><a href="command-line-tool-for-mc-construction.html#cb88-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $output</span></span>
+<span id="cb88-30"><a href="command-line-tool-for-mc-construction.html#cb88-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;adata&quot;</span></span>
+<span id="cb88-31"><a href="command-line-tool-for-mc-construction.html#cb88-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-32"><a href="command-line-tool-for-mc-construction.html#cb88-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $nPCs</span></span>
+<span id="cb88-33"><a href="command-line-tool-for-mc-construction.html#cb88-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 50</span></span>
+<span id="cb88-34"><a href="command-line-tool-for-mc-construction.html#cb88-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-35"><a href="command-line-tool-for-mc-construction.html#cb88-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $isNorm</span></span>
+<span id="cb88-36"><a href="command-line-tool-for-mc-construction.html#cb88-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
+<span id="cb88-37"><a href="command-line-tool-for-mc-construction.html#cb88-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-38"><a href="command-line-tool-for-mc-construction.html#cb88-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes (&#39;-&#39;)</span></span>
+<span id="cb88-39"><a href="command-line-tool-for-mc-construction.html#cb88-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           used  (Mb) gc trigger  (Mb) max used  (Mb)</span></span>
+<span id="cb88-40"><a href="command-line-tool-for-mc-construction.html#cb88-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Ncells 2694980 144.0    4872347 260.3  4872347 260.3</span></span>
+<span id="cb88-41"><a href="command-line-tool-for-mc-construction.html#cb88-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Vcells 7938289  60.6   18438552 140.7 14602449 111.5</span></span>
+<span id="cb88-42"><a href="command-line-tool-for-mc-construction.html#cb88-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normalize data...&quot;</span></span>
+<span id="cb88-43"><a href="command-line-tool-for-mc-construction.html#cb88-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Identify Metacells...&quot;</span></span>
+<span id="cb88-44"><a href="command-line-tool-for-mc-construction.html#cb88-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Identify Metacells sequentially...&quot;</span></span>
+<span id="cb88-45"><a href="command-line-tool-for-mc-construction.html#cb88-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Treat SeuratProject cells&quot;</span></span>
+<span id="cb88-46"><a href="command-line-tool-for-mc-construction.html#cb88-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Identify 53 metacells using SuperCell...&quot;</span></span>
+<span id="cb88-47"><a href="command-line-tool-for-mc-construction.html#cb88-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: The following arguments are not used: row.names</span></span>
+<span id="cb88-48"><a href="command-line-tool-for-mc-construction.html#cb88-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Assign metadata to metacells and compute purities...&quot;</span></span>
+<span id="cb88-49"><a href="command-line-tool-for-mc-construction.html#cb88-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ARGS</span></span>
+<span id="cb88-50"><a href="command-line-tool-for-mc-construction.html#cb88-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; character(0)</span></span>
+<span id="cb88-51"><a href="command-line-tool-for-mc-construction.html#cb88-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-52"><a href="command-line-tool-for-mc-construction.html#cb88-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $input</span></span>
+<span id="cb88-53"><a href="command-line-tool-for-mc-construction.html#cb88-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;data/3k_pbmc/singlecell_anndata_filtered.h5ad&quot;</span></span>
+<span id="cb88-54"><a href="command-line-tool-for-mc-construction.html#cb88-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-55"><a href="command-line-tool-for-mc-construction.html#cb88-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $outdir</span></span>
+<span id="cb88-56"><a href="command-line-tool-for-mc-construction.html#cb88-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;data/3k_pbmc/SuperCell/&quot;</span></span>
+<span id="cb88-57"><a href="command-line-tool-for-mc-construction.html#cb88-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-58"><a href="command-line-tool-for-mc-construction.html#cb88-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $n.pc</span></span>
+<span id="cb88-59"><a href="command-line-tool-for-mc-construction.html#cb88-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 50</span></span>
+<span id="cb88-60"><a href="command-line-tool-for-mc-construction.html#cb88-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-61"><a href="command-line-tool-for-mc-construction.html#cb88-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $nFeatures</span></span>
+<span id="cb88-62"><a href="command-line-tool-for-mc-construction.html#cb88-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2000</span></span>
+<span id="cb88-63"><a href="command-line-tool-for-mc-construction.html#cb88-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-64"><a href="command-line-tool-for-mc-construction.html#cb88-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $k.knn</span></span>
+<span id="cb88-65"><a href="command-line-tool-for-mc-construction.html#cb88-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 30</span></span>
+<span id="cb88-66"><a href="command-line-tool-for-mc-construction.html#cb88-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-67"><a href="command-line-tool-for-mc-construction.html#cb88-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $gamma</span></span>
+<span id="cb88-68"><a href="command-line-tool-for-mc-construction.html#cb88-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 50</span></span>
+<span id="cb88-69"><a href="command-line-tool-for-mc-construction.html#cb88-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-70"><a href="command-line-tool-for-mc-construction.html#cb88-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $output</span></span>
+<span id="cb88-71"><a href="command-line-tool-for-mc-construction.html#cb88-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;seurat&quot;</span></span>
+<span id="cb88-72"><a href="command-line-tool-for-mc-construction.html#cb88-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-73"><a href="command-line-tool-for-mc-construction.html#cb88-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $nPCs</span></span>
+<span id="cb88-74"><a href="command-line-tool-for-mc-construction.html#cb88-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 50</span></span>
+<span id="cb88-75"><a href="command-line-tool-for-mc-construction.html#cb88-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-76"><a href="command-line-tool-for-mc-construction.html#cb88-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $isNorm</span></span>
+<span id="cb88-77"><a href="command-line-tool-for-mc-construction.html#cb88-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
+<span id="cb88-78"><a href="command-line-tool-for-mc-construction.html#cb88-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb88-79"><a href="command-line-tool-for-mc-construction.html#cb88-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes (&#39;-&#39;)</span></span>
+<span id="cb88-80"><a href="command-line-tool-for-mc-construction.html#cb88-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           used  (Mb) gc trigger  (Mb) max used  (Mb)</span></span>
+<span id="cb88-81"><a href="command-line-tool-for-mc-construction.html#cb88-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Ncells 2694980 144.0    4872518 260.3  4872518 260.3</span></span>
+<span id="cb88-82"><a href="command-line-tool-for-mc-construction.html#cb88-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Vcells 7938289  60.6   18438552 140.7 14602450 111.5</span></span>
+<span id="cb88-83"><a href="command-line-tool-for-mc-construction.html#cb88-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Normalize data...&quot;</span></span>
+<span id="cb88-84"><a href="command-line-tool-for-mc-construction.html#cb88-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Identify Metacells...&quot;</span></span>
+<span id="cb88-85"><a href="command-line-tool-for-mc-construction.html#cb88-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Identify Metacells sequentially...&quot;</span></span>
+<span id="cb88-86"><a href="command-line-tool-for-mc-construction.html#cb88-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Treat SeuratProject cells&quot;</span></span>
+<span id="cb88-87"><a href="command-line-tool-for-mc-construction.html#cb88-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Identify 53 metacells using SuperCell...&quot;</span></span>
+<span id="cb88-88"><a href="command-line-tool-for-mc-construction.html#cb88-88" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: The following arguments are not used: row.names</span></span>
+<span id="cb88-89"><a href="command-line-tool-for-mc-construction.html#cb88-89" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Assign metadata to metacells and compute purities...&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb89-1"><a href="command-line-tool-for-mc-construction.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="va">proj_name</span><span class="op">=</span><span class="st">&quot;3k_pbmc&quot;</span></span>
+<span id="cb89-2"><a href="command-line-tool-for-mc-construction.html#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="va">MC_tool</span><span class="op">=</span><span class="st">&quot;SEACells&quot;</span></span>
+<span id="cb89-3"><a href="command-line-tool-for-mc-construction.html#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="co"># input raw adata output adata</span></span>
+<span id="cb89-4"><a href="command-line-tool-for-mc-construction.html#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> cli/<span class="va">${MC_tool}</span>CL.R <span class="at">-i</span> data/<span class="va">${proj_name}</span>/singlecell_anndata_filtered.h5ad <span class="at">-o</span> data/<span class="va">${proj_name}</span>/<span class="va">${MC_tool}</span>/ <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
+<span id="cb89-5"><a href="command-line-tool-for-mc-construction.html#cb89-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-6"><a href="command-line-tool-for-mc-construction.html#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="co"># input raw adata output seurat</span></span>
+<span id="cb89-7"><a href="command-line-tool-for-mc-construction.html#cb89-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> cli/<span class="va">${MC_tool}</span>CL.R <span class="at">-i</span> data/<span class="va">${proj_name}</span>/singlecell_anndata_filtered.h5ad <span class="at">-o</span> data/<span class="va">${proj_name}</span>/<span class="va">${MC_tool}</span>/ <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> seurat</span></code></pre></div>
 
 </div>
             </section>
@@ -231,8 +338,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="weighted-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="seacells-python.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="downstream-analysis-of-metacells-for-a-discrete-dataset.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -263,7 +370,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/30-commandline_tool.Rmd",
+"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/22-commandline_tool.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -271,7 +378,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/30-commandline_tool.Rmd",
+"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/22-commandline_tool.Rmd",
 "text": null
 },
 "download": ["_main.pdf", "_main.epub"],

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4.4 Sample-weighted analysis | Metacell Tutorial</title>
+  <title>6.3 Sample-weighted analysis | Metacell Tutorial</title>
   <meta name="description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4.4 Sample-weighted analysis | Metacell Tutorial" />
+  <meta property="og:title" content="6.3 Sample-weighted analysis | Metacell Tutorial" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4.4 Sample-weighted analysis | Metacell Tutorial" />
+  <meta name="twitter:title" content="6.3 Sample-weighted analysis | Metacell Tutorial" />
   
   <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
   
@@ -23,15 +23,15 @@
 <meta name="author" content="Mariia Bilous, Léonard Hérault, Aurélie Gabriel, David Gfeller" />
 
 
-<meta name="date" content="2023-07-24" />
+<meta name="date" content="2023-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="advanced-analysis.html"/>
-<link rel="next" href="command-line-tool-for-mc-construction.html"/>
+<link rel="prev" href="standard-analysis-Py.html"/>
+<link rel="next" href="advanced-analysis.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -140,67 +140,85 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Metacell Tutorial </a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> This tutorial</a></li>
+<li class="chapter" data-level="2" data-path="requirements.html"><a href="requirements.html"><i class="fa fa-check"></i><b>2</b> Requirements</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="book-structure.html"><a href="book-structure.html"><i class="fa fa-check"></i><b>1.1</b> Book structure</a></li>
-<li class="chapter" data-level="1.2" data-path="installation-and-requirements.html"><a href="installation-and-requirements.html"><i class="fa fa-check"></i><b>1.2</b> Installation and requirements</a></li>
-<li class="chapter" data-level="1.3" data-path="render-book.html"><a href="render-book.html"><i class="fa fa-check"></i><b>1.3</b> Render book</a></li>
-<li class="chapter" data-level="1.4" data-path="get-data.html"><a href="get-data.html"><i class="fa fa-check"></i><b>1.4</b> Get data</a></li>
+<li class="chapter" data-level="2.1" data-path="installations.html"><a href="installations.html"><i class="fa fa-check"></i><b>2.1</b> Installations</a></li>
+<li class="chapter" data-level="2.2" data-path="PBMC-data.html"><a href="PBMC-data.html"><i class="fa fa-check"></i><b>2.2</b> Retrieve the discrete dataset (PBMCs dataset)</a></li>
+<li class="chapter" data-level="2.3" data-path="CD34-data.html"><a href="CD34-data.html"><i class="fa fa-check"></i><b>2.3</b> Retrieve the continuous dataset (CD34 dataset)</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>2</b> The metacell concept</a>
+<li class="chapter" data-level="3" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>3</b> The metacell concept</a></li>
+<li class="chapter" data-level="4" data-path="Metacell-construction-chapter.html"><a href="Metacell-construction-chapter.html"><i class="fa fa-check"></i><b>4</b> Constructing metacells (for ‘discrete’ data)</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="MC2.html"><a href="MC2.html"><i class="fa fa-check"></i><b>2.1</b> Metacell (MC2)</a></li>
-<li class="chapter" data-level="2.2" data-path="SuperCell.html"><a href="SuperCell.html"><i class="fa fa-check"></i><b>2.2</b> SuperCell</a></li>
-<li class="chapter" data-level="2.3" data-path="SEACells.html"><a href="SEACells.html"><i class="fa fa-check"></i><b>2.3</b> SEACells</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="constructing-metacells-for-discrete-data.html"><a href="constructing-metacells-for-discrete-data.html"><i class="fa fa-check"></i><b>3</b> Constructing metacells (for ‘discrete’ data)</a>
+<li class="chapter" data-level="4.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html"><i class="fa fa-check"></i><b>4.1</b> SuperCell (R)</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="mc2-python.html"><a href="mc2-python.html"><i class="fa fa-check"></i><b>3.1</b> MC2 (Python)</a>
+<li class="chapter" data-level="4.1.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#method"><i class="fa fa-check"></i><b>4.1.1</b> Method</a></li>
+<li class="chapter" data-level="4.1.2" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#data-loading"><i class="fa fa-check"></i><b>4.1.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.1.3" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#filtering-steps"><i class="fa fa-check"></i><b>4.1.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.1.4" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#building-metacells"><i class="fa fa-check"></i><b>4.1.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.1.5" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#annotate-metacells-using-available-annotations"><i class="fa fa-check"></i><b>4.1.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="4.1.6" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#save-output"><i class="fa fa-check"></i><b>4.1.6</b> Save output</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="MC2-construction.html"><a href="MC2-construction.html"><i class="fa fa-check"></i><b>4.2</b> MC2 (Python)</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="mc2-python.html"><a href="mc2-python.html#data-loading"><i class="fa fa-check"></i><b>3.1.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.1.2" data-path="mc2-python.html"><a href="mc2-python.html#filtering-steps"><i class="fa fa-check"></i><b>3.1.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.1.3" data-path="mc2-python.html"><a href="mc2-python.html#building-metacells"><i class="fa fa-check"></i><b>3.1.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.1.4" data-path="mc2-python.html"><a href="mc2-python.html#visualize-metacells"><i class="fa fa-check"></i><b>3.1.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.1.5" data-path="mc2-python.html"><a href="mc2-python.html#metacell-qc"><i class="fa fa-check"></i><b>3.1.5</b> Metacell QC</a></li>
+<li class="chapter" data-level="4.2.1" data-path="MC2-construction.html"><a href="MC2-construction.html#method-1"><i class="fa fa-check"></i><b>4.2.1</b> Method</a></li>
+<li class="chapter" data-level="4.2.2" data-path="MC2-construction.html"><a href="MC2-construction.html#data-loading-1"><i class="fa fa-check"></i><b>4.2.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.2.3" data-path="MC2-construction.html"><a href="MC2-construction.html#filtering-steps-1"><i class="fa fa-check"></i><b>4.2.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.2.4" data-path="MC2-construction.html"><a href="MC2-construction.html#building-metacells-1"><i class="fa fa-check"></i><b>4.2.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.2.5" data-path="MC2-construction.html"><a href="MC2-construction.html#annotate-metacells-using-available-annotations-1"><i class="fa fa-check"></i><b>4.2.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="4.2.6" data-path="MC2-construction.html"><a href="MC2-construction.html#save-output-1"><i class="fa fa-check"></i><b>4.2.6</b> Save output</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="seacells-python.html"><a href="seacells-python.html"><i class="fa fa-check"></i><b>3.2</b> SEACells (Python)</a>
+<li class="chapter" data-level="4.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html"><i class="fa fa-check"></i><b>4.3</b> SEACells (Python)</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="seacells-python.html"><a href="seacells-python.html#data-loading-1"><i class="fa fa-check"></i><b>3.2.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.2.2" data-path="seacells-python.html"><a href="seacells-python.html#filtering-steps-1"><i class="fa fa-check"></i><b>3.2.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.2.3" data-path="seacells-python.html"><a href="seacells-python.html#building-metacells-1"><i class="fa fa-check"></i><b>3.2.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.2.4" data-path="seacells-python.html"><a href="seacells-python.html#visualize-metacells-1"><i class="fa fa-check"></i><b>3.2.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.2.5" data-path="seacells-python.html"><a href="seacells-python.html#metacell-qc-1"><i class="fa fa-check"></i><b>3.2.5</b> Metacell QC</a></li>
+<li class="chapter" data-level="4.3.1" data-path="SEACells-construction.html"><a href="SEACells-construction.html#method-2"><i class="fa fa-check"></i><b>4.3.1</b> Method</a></li>
+<li class="chapter" data-level="4.3.2" data-path="SEACells-construction.html"><a href="SEACells-construction.html#data-loading-2"><i class="fa fa-check"></i><b>4.3.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html#filtering-steps-2"><i class="fa fa-check"></i><b>4.3.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>4.3.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>4.3.5</b> Visualize metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="supercell-r.html"><a href="supercell-r.html"><i class="fa fa-check"></i><b>3.3</b> SuperCell (R)</a>
+<li class="chapter" data-level="4.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>4.4</b> Command line tool</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>5</b> Metacells QCs</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="supercell-r.html"><a href="supercell-r.html#data-loading-2"><i class="fa fa-check"></i><b>3.3.1</b> Data loading</a></li>
-<li class="chapter" data-level="3.3.2" data-path="supercell-r.html"><a href="supercell-r.html#filtering-steps-2"><i class="fa fa-check"></i><b>3.3.2</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.3.3" data-path="supercell-r.html"><a href="supercell-r.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.3</b> Building metacells</a></li>
-<li class="chapter" data-level="3.3.4" data-path="supercell-r.html"><a href="supercell-r.html#visualize-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Visualize metacells</a></li>
-<li class="chapter" data-level="3.3.5" data-path="supercell-r.html"><a href="supercell-r.html#metacell-qc-2"><i class="fa fa-check"></i><b>3.3.5</b> Metacell QC</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><a href="downstream-analysis-of-metacells-for-a-discrete-dataset.html"><i class="fa fa-check"></i><b>4</b> Downstream analysis of metacells (for a discrete dataset)</a>
+<li class="chapter" data-level="5.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html"><i class="fa fa-check"></i><b>5.1</b> Quantitative metrics</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="standard-analysis-r.html"><a href="standard-analysis-r.html"><i class="fa fa-check"></i><b>4.1</b> Standard analysis (R)</a></li>
-<li class="chapter" data-level="4.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>4.2</b> Standard analysis (Python)</a>
+<li class="chapter" data-level="5.1.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#purity"><i class="fa fa-check"></i><b>5.1.1</b> Purity</a></li>
+<li class="chapter" data-level="5.1.2" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#compactness"><i class="fa fa-check"></i><b>5.1.2</b> Compactness</a></li>
+<li class="chapter" data-level="5.1.3" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#separation"><i class="fa fa-check"></i><b>5.1.3</b> Separation</a></li>
+<li class="chapter" data-level="5.1.4" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#inv"><i class="fa fa-check"></i><b>5.1.4</b> INV</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>5.2</b> Size distribution</a></li>
+<li class="chapter" data-level="5.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>5.3</b> Representativeness of metacells</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction"><i class="fa fa-check"></i><b>4.2.1</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="4.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering"><i class="fa fa-check"></i><b>4.2.2</b> Clustering</a></li>
-<li class="chapter" data-level="4.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis"><i class="fa fa-check"></i><b>4.2.3</b> Differential expression analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>4.3</b> Advanced analysis</a>
+<li class="chapter" data-level="6.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="advanced-analysis.html"><a href="advanced-analysis.html#grn"><i class="fa fa-check"></i><b>4.3.1</b> GRN</a></li>
+<li class="chapter" data-level="6.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>6.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>6.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>6.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>6.1.5</b> Visualize gene-gene correlation</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>4.4</b> Sample-weighted analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="command-line-tool-for-mc-construction.html"><a href="command-line-tool-for-mc-construction.html"><i class="fa fa-check"></i><b>5</b> Command line tool for MC construction</a></li>
-<li class="chapter" data-level="6" data-path="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><a href="comparison-of-metacells-usage-for-a-discrete-and-continuous-data.html"><i class="fa fa-check"></i><b>6</b> Comparison of metacells usage for a discrete and continuous data</a>
+<li class="chapter" data-level="6.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>6.2</b> Standard analysis (Python)</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="continuous-metacells-have-lower-purity.html"><a href="continuous-metacells-have-lower-purity.html"><i class="fa fa-check"></i><b>6.1</b> Continuous metacells have lower purity</a></li>
+<li class="chapter" data-level="6.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>6.2.1</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering-1"><i class="fa fa-check"></i><b>6.2.2</b> Clustering</a></li>
+<li class="chapter" data-level="6.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>6.2.3</b> Differential expression analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="data-integration-with-metacells.html"><a href="data-integration-with-metacells.html"><i class="fa fa-check"></i><b>7</b> Data integration with metacells</a></li>
+<li class="chapter" data-level="6.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>6.3</b> Sample-weighted analysis</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>6.3.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.3.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-2"><i class="fa fa-check"></i><b>6.3.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.3.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-2"><i class="fa fa-check"></i><b>6.3.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.3.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-2"><i class="fa fa-check"></i><b>6.3.4</b> Differential expression analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>6.4</b> Advanced analysis</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="advanced-analysis.html"><a href="advanced-analysis.html#GRN-analysis"><i class="fa fa-check"></i><b>6.4.1</b> GRN</a></li>
+<li class="chapter" data-level="6.4.2" data-path="advanced-analysis.html"><a href="advanced-analysis.html#integration"><i class="fa fa-check"></i><b>6.4.2</b> Integration of metacells</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -221,19 +239,114 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="weighted-analysis" class="section level2 hasAnchor" number="4.4">
-<h2><span class="header-section-number">4.4</span> Sample-weighted analysis<a href="weighted-analysis.html#weighted-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>One of the features of metacells are their size, which is a number of single cell it contains. Since metacells aggregate different number of cells, they also carry different amount of information. And thus, to better reproduce single-cell analysis, bigger metacells should have larger impact on the results than smaller metacells. For this, a sample-weighted analysis can be applied. Sample-weighted analysis is impleented in the SuperCell package.</p>
-
+<div id="weighted-analysis" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Sample-weighted analysis<a href="weighted-analysis.html#weighted-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Code has been modified but text should be updated in this section!</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="weighted-analysis.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat) </span>
+<span id="cb88-2"><a href="weighted-analysis.html#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb88-3"><a href="weighted-analysis.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb88-4"><a href="weighted-analysis.html#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SuperCell)</span></code></pre></div>
+<div id="load-metacell-seurat-object-1" class="section level3 hasAnchor" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> Load metacell Seurat object<a href="weighted-analysis.html#load-metacell-seurat-object-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will use Seurat objects containing the metacells counts data and their annotation (<em>e.g.</em> and cell-type annotation) and
+proceed with standard Seurat downstream analyses.
+Seurat objects containing metacells counts data and their annotation were generated at the end of sections …..
+These objects can also be generated using the command line described in chapter …</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="weighted-analysis.html#cb89-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="ot">=</span> <span class="st">&quot;SuperCell&quot;</span></span>
+<span id="cb89-2"><a href="weighted-analysis.html#cb89-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="ot">=</span> <span class="st">&quot;3k_pbmc&quot;</span></span>
+<span id="cb89-3"><a href="weighted-analysis.html#cb89-3" aria-hidden="true" tabindex="-1"></a>annotation_column <span class="ot">=</span> <span class="st">&quot;louvain&quot;</span></span>
+<span id="cb89-4"><a href="weighted-analysis.html#cb89-4" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">&#39;./data/&#39;</span>, proj_name, <span class="st">&#39;/metacell_&#39;</span>, MC_tool,<span class="st">&#39;.rds&#39;</span>))</span></code></pre></div>
 </div>
-<!-- </div> -->
+<div id="dimensionality-reduction-2" class="section level3 hasAnchor" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> Dimensionality reduction<a href="weighted-analysis.html#dimensionality-reduction-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As for single-cells, we normalize the raw counts (here aggregated raw counts) and we identify the most variable features in the metacells gene expression data.
+Based on these features, we run PCA and use the first principal components to obtain a two dimensionnal representation of the data using UMAP.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="weighted-analysis.html#cb90-1" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(MC.seurat, <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>)</span>
+<span id="cb90-2"><a href="weighted-analysis.html#cb90-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-3"><a href="weighted-analysis.html#cb90-3" aria-hidden="true" tabindex="-1"></a>MC_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">N.SC =</span> <span class="fu">ncol</span>(MC.seurat),</span>
+<span id="cb90-4"><a href="weighted-analysis.html#cb90-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">supercell_size =</span> MC.seurat<span class="sc">$</span>size)</span>
+<span id="cb90-5"><a href="weighted-analysis.html#cb90-5" aria-hidden="true" tabindex="-1"></a>MC_list<span class="sc">$</span>PCA <span class="ot">&lt;-</span> <span class="fu">supercell_prcomp</span>(</span>
+<span id="cb90-6"><a href="weighted-analysis.html#cb90-6" aria-hidden="true" tabindex="-1"></a>  Matrix<span class="sc">::</span><span class="fu">t</span>(<span class="fu">GetAssayData</span>(MC.seurat, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>)),</span>
+<span id="cb90-7"><a href="weighted-analysis.html#cb90-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">genes.use =</span> MC.seurat<span class="sc">@</span>misc<span class="sc">$</span>var_features,  <span class="co"># or a new set of HVG can be computed</span></span>
+<span id="cb90-8"><a href="weighted-analysis.html#cb90-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">supercell_size =</span> MC_list<span class="sc">$</span>supercell_size, <span class="co"># provide this parameter to run sample-weighted version of PCA,</span></span>
+<span id="cb90-9"><a href="weighted-analysis.html#cb90-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">k =</span> <span class="dv">10</span></span>
+<span id="cb90-10"><a href="weighted-analysis.html#cb90-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb90-11"><a href="weighted-analysis.html#cb90-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-12"><a href="weighted-analysis.html#cb90-12" aria-hidden="true" tabindex="-1"></a>MC_list<span class="sc">$</span>UMAP <span class="ot">&lt;-</span> <span class="fu">supercell_UMAP</span>(</span>
+<span id="cb90-13"><a href="weighted-analysis.html#cb90-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">SC =</span> MC_list,</span>
+<span id="cb90-14"><a href="weighted-analysis.html#cb90-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">PCA_name =</span> <span class="st">&quot;PCA&quot;</span>,</span>
+<span id="cb90-15"><a href="weighted-analysis.html#cb90-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_neighbors =</span> <span class="dv">50</span> <span class="co"># large number to repel cells </span></span>
+<span id="cb90-16"><a href="weighted-analysis.html#cb90-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb90-17"><a href="weighted-analysis.html#cb90-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-18"><a href="weighted-analysis.html#cb90-18" aria-hidden="true" tabindex="-1"></a><span class="fu">supercell_DimPlot</span>(<span class="at">SC =</span> MC_list, </span>
+<span id="cb90-19"><a href="weighted-analysis.html#cb90-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">groups =</span> MC.seurat<span class="sc">@</span>meta.data[, annotation_column],</span>
+<span id="cb90-20"><a href="weighted-analysis.html#cb90-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">dim.name =</span> <span class="st">&quot;UMAP&quot;</span>, </span>
+<span id="cb90-21"><a href="weighted-analysis.html#cb90-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">&quot;UMAP of metacells colored by cell type assignment&quot;</span>)</span>
+<span id="cb90-22"><a href="weighted-analysis.html#cb90-22" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-weighted-1.png" width="672" /></p>
+</div>
+<div id="clustering-2" class="section level3 hasAnchor" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> Clustering<a href="weighted-analysis.html#clustering-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="weighted-analysis.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute distance among metacells</span></span>
+<span id="cb91-2"><a href="weighted-analysis.html#cb91-2" aria-hidden="true" tabindex="-1"></a>D  <span class="ot">&lt;-</span> <span class="fu">dist</span>(MC_list<span class="sc">$</span>PCA<span class="sc">$</span>x)</span>
+<span id="cb91-3"><a href="weighted-analysis.html#cb91-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-4"><a href="weighted-analysis.html#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="co"># cluster metacells</span></span>
+<span id="cb91-5"><a href="weighted-analysis.html#cb91-5" aria-hidden="true" tabindex="-1"></a>MC_list<span class="sc">$</span>clustering  <span class="ot">&lt;-</span> <span class="fu">supercell_cluster</span>(<span class="at">D =</span> D, <span class="at">k =</span> <span class="dv">8</span>, <span class="at">supercell_size =</span> MC_list<span class="sc">$</span>supercell_size)</span>
+<span id="cb91-6"><a href="weighted-analysis.html#cb91-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-7"><a href="weighted-analysis.html#cb91-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot clustering result</span></span>
+<span id="cb91-8"><a href="weighted-analysis.html#cb91-8" aria-hidden="true" tabindex="-1"></a><span class="fu">supercell_DimPlot</span>(</span>
+<span id="cb91-9"><a href="weighted-analysis.html#cb91-9" aria-hidden="true" tabindex="-1"></a>  MC_list, </span>
+<span id="cb91-10"><a href="weighted-analysis.html#cb91-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">groups =</span> <span class="fu">factor</span>(MC_list<span class="sc">$</span>clustering<span class="sc">$</span>clustering),</span>
+<span id="cb91-11"><a href="weighted-analysis.html#cb91-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">dim.name =</span> <span class="st">&quot;UMAP&quot;</span>, </span>
+<span id="cb91-12"><a href="weighted-analysis.html#cb91-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">&quot;UMAP of metacells colored by metacell clustering&quot;</span>)</span>
+<span id="cb91-13"><a href="weighted-analysis.html#cb91-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-weighted-1.png" width="672" /></p>
+</div>
+<div id="differential-expression-analysis-2" class="section level3 hasAnchor" number="6.3.4">
+<h3><span class="header-section-number">6.3.4</span> Differential expression analysis<a href="weighted-analysis.html#differential-expression-analysis-2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="weighted-analysis.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute upregulated genes in each cell line (versus other cells)</span></span>
+<span id="cb92-2"><a href="weighted-analysis.html#cb92-2" aria-hidden="true" tabindex="-1"></a>MC.all.markers <span class="ot">&lt;-</span> <span class="fu">supercell_FindAllMarkers</span>(</span>
+<span id="cb92-3"><a href="weighted-analysis.html#cb92-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ge =</span> <span class="fu">GetAssayData</span>(MC.seurat, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>), </span>
+<span id="cb92-4"><a href="weighted-analysis.html#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">clusters =</span> MC.seurat<span class="sc">@</span>meta.data[, annotation_column], </span>
+<span id="cb92-5"><a href="weighted-analysis.html#cb92-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">supercell_size =</span> MC_list<span class="sc">$</span>supercell_size,</span>
+<span id="cb92-6"><a href="weighted-analysis.html#cb92-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">only.pos =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb92-7"><a href="weighted-analysis.html#cb92-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">min.pct =</span> <span class="dv">0</span>, </span>
+<span id="cb92-8"><a href="weighted-analysis.html#cb92-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">logfc.threshold =</span> <span class="fl">0.2</span></span>
+<span id="cb92-9"><a href="weighted-analysis.html#cb92-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p>We select the top markers for each cell-type:</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="weighted-analysis.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the output of `supercell_FindAllMarkers()` to be in the format of the `Seurat::FindAllMarkers()`</span></span>
+<span id="cb93-2"><a href="weighted-analysis.html#cb93-2" aria-hidden="true" tabindex="-1"></a>MC.all.markers.df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb93-3"><a href="weighted-analysis.html#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(cl <span class="cf">in</span> <span class="fu">names</span>(MC.all.markers)){</span>
+<span id="cb93-4"><a href="weighted-analysis.html#cb93-4" aria-hidden="true" tabindex="-1"></a>  cur <span class="ot">&lt;-</span> MC.all.markers[[cl]]</span>
+<span id="cb93-5"><a href="weighted-analysis.html#cb93-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb93-6"><a href="weighted-analysis.html#cb93-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.data.frame</span>(cur)){</span>
+<span id="cb93-7"><a href="weighted-analysis.html#cb93-7" aria-hidden="true" tabindex="-1"></a>    cur<span class="sc">$</span>cluster <span class="ot">&lt;-</span> cl</span>
+<span id="cb93-8"><a href="weighted-analysis.html#cb93-8" aria-hidden="true" tabindex="-1"></a>    cur<span class="sc">$</span>gene <span class="ot">&lt;-</span> <span class="fu">rownames</span>(cur)</span>
+<span id="cb93-9"><a href="weighted-analysis.html#cb93-9" aria-hidden="true" tabindex="-1"></a>    cur<span class="sc">$</span>avg_log2FC <span class="ot">&lt;-</span> cur<span class="sc">$</span>logFC</span>
+<span id="cb93-10"><a href="weighted-analysis.html#cb93-10" aria-hidden="true" tabindex="-1"></a>    MC.all.markers.df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(MC.all.markers.df, cur)</span>
+<span id="cb93-11"><a href="weighted-analysis.html#cb93-11" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb93-12"><a href="weighted-analysis.html#cb93-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb93-13"><a href="weighted-analysis.html#cb93-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-14"><a href="weighted-analysis.html#cb93-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Top markers (select top markers of each cell line)</span></span>
+<span id="cb93-15"><a href="weighted-analysis.html#cb93-15" aria-hidden="true" tabindex="-1"></a>MC.top.markers <span class="ot">&lt;-</span> MC.all.markers.df <span class="sc">%&gt;%</span></span>
+<span id="cb93-16"><a href="weighted-analysis.html#cb93-16" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span></span>
+<span id="cb93-17"><a href="weighted-analysis.html#cb93-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice_max</span>(<span class="at">n =</span> <span class="dv">2</span>, <span class="at">order_by =</span> avg_log2FC)</span></code></pre></div>
+<p>We visualize the top 5 markers for the XX cells.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="weighted-analysis.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Idents</span>(MC.seurat) <span class="ot">&lt;-</span> annotation_column</span>
+<span id="cb94-2"><a href="weighted-analysis.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="co"># genes.to.plot &lt;- MC.seurat.top.markers$gene[MC.seurat.top.markers$cluster == unique(MC.seurat@meta.data[,annotation_column])[1]]</span></span>
+<span id="cb94-3"><a href="weighted-analysis.html#cb94-3" aria-hidden="true" tabindex="-1"></a>genes.to.plot <span class="ot">&lt;-</span> MC.top.markers<span class="sc">$</span>gene[<span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">5</span>))]</span>
+<span id="cb94-4"><a href="weighted-analysis.html#cb94-4" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(MC.seurat, <span class="at">features =</span> genes.to.plot, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">pt.size =</span> <span class="fl">0.0</span>)  </span></code></pre></div>
+<p><img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-weighted-1.png" width="672" /></p>
+</div>
+</div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="advanced-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="command-line-tool-for-mc-construction.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="standard-analysis-Py.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="advanced-analysis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -264,7 +377,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/22-MC_analysis_discrete.Rmd",
+"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/30-MC_analysis_discrete.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -272,7 +385,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/22-MC_analysis_discrete.Rmd",
+"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/30-MC_analysis_discrete.Rmd",
 "text": null
 },
 "download": ["_main.pdf", "_main.epub"],

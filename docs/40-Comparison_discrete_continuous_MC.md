@@ -1,12 +1,10 @@
-# Comparison of metacells usage for a discrete and continuous data
+<!-- # Comparison of metacells usage for a discrete and continuous data -->
 
-Under construction...
+<!-- Under construction... -->
 
-## Continuous metacells have lower purity
+<!-- ## Continuous metacells have lower purity -->
+<!-- ```{r, child='./sub_pages/40-purity.Rmd'} -->
 
-
-[//]: # (Comparison of MC QC for discrete and continuous datasets in terms of purity)
-
-Under construction...
+<!-- ``` -->
 
 

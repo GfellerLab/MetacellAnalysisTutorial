@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4.1 SuperCell (R) | Metacell Tutorial</title>
+  <meta name="description" content="This is a tutorial about metacell construction and analysis." />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4.1 SuperCell (R) | Metacell Tutorial" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
+  <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4.1 SuperCell (R) | Metacell Tutorial" />
+  
+  <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
+  
+
+<meta name="author" content="Mariia Bilous, Léonard Hérault, Aurélie Gabriel, David Gfeller" />
+
+
+<meta name="date" content="2023-11-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="Metacell-construction-chapter.html"/>
+<link rel="next" href="MC2-construction.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Metacell Tutorial </a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> This tutorial</a></li>
+<li class="chapter" data-level="2" data-path="requirements.html"><a href="requirements.html"><i class="fa fa-check"></i><b>2</b> Requirements</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="installations.html"><a href="installations.html"><i class="fa fa-check"></i><b>2.1</b> Installations</a></li>
+<li class="chapter" data-level="2.2" data-path="PBMC-data.html"><a href="PBMC-data.html"><i class="fa fa-check"></i><b>2.2</b> Retrieve the discrete dataset (PBMCs dataset)</a></li>
+<li class="chapter" data-level="2.3" data-path="CD34-data.html"><a href="CD34-data.html"><i class="fa fa-check"></i><b>2.3</b> Retrieve the continuous dataset (CD34 dataset)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>3</b> The metacell concept</a></li>
+<li class="chapter" data-level="4" data-path="Metacell-construction-chapter.html"><a href="Metacell-construction-chapter.html"><i class="fa fa-check"></i><b>4</b> Constructing metacells (for ‘discrete’ data)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html"><i class="fa fa-check"></i><b>4.1</b> SuperCell (R)</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#method"><i class="fa fa-check"></i><b>4.1.1</b> Method</a></li>
+<li class="chapter" data-level="4.1.2" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#data-loading"><i class="fa fa-check"></i><b>4.1.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.1.3" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#filtering-steps"><i class="fa fa-check"></i><b>4.1.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.1.4" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#building-metacells"><i class="fa fa-check"></i><b>4.1.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.1.5" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#annotate-metacells-using-available-annotations"><i class="fa fa-check"></i><b>4.1.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="4.1.6" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#save-output"><i class="fa fa-check"></i><b>4.1.6</b> Save output</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="MC2-construction.html"><a href="MC2-construction.html"><i class="fa fa-check"></i><b>4.2</b> MC2 (Python)</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="MC2-construction.html"><a href="MC2-construction.html#method-1"><i class="fa fa-check"></i><b>4.2.1</b> Method</a></li>
+<li class="chapter" data-level="4.2.2" data-path="MC2-construction.html"><a href="MC2-construction.html#data-loading-1"><i class="fa fa-check"></i><b>4.2.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.2.3" data-path="MC2-construction.html"><a href="MC2-construction.html#filtering-steps-1"><i class="fa fa-check"></i><b>4.2.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.2.4" data-path="MC2-construction.html"><a href="MC2-construction.html#building-metacells-1"><i class="fa fa-check"></i><b>4.2.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.2.5" data-path="MC2-construction.html"><a href="MC2-construction.html#annotate-metacells-using-available-annotations-1"><i class="fa fa-check"></i><b>4.2.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="4.2.6" data-path="MC2-construction.html"><a href="MC2-construction.html#save-output-1"><i class="fa fa-check"></i><b>4.2.6</b> Save output</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html"><i class="fa fa-check"></i><b>4.3</b> SEACells (Python)</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="SEACells-construction.html"><a href="SEACells-construction.html#method-2"><i class="fa fa-check"></i><b>4.3.1</b> Method</a></li>
+<li class="chapter" data-level="4.3.2" data-path="SEACells-construction.html"><a href="SEACells-construction.html#data-loading-2"><i class="fa fa-check"></i><b>4.3.2</b> Data loading</a></li>
+<li class="chapter" data-level="4.3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html#filtering-steps-2"><i class="fa fa-check"></i><b>4.3.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="4.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>4.3.4</b> Building metacells</a></li>
+<li class="chapter" data-level="4.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>4.3.5</b> Visualize metacells</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>4.4</b> Command line tool</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>5</b> Metacells QCs</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html"><i class="fa fa-check"></i><b>5.1</b> Quantitative metrics</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#purity"><i class="fa fa-check"></i><b>5.1.1</b> Purity</a></li>
+<li class="chapter" data-level="5.1.2" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#compactness"><i class="fa fa-check"></i><b>5.1.2</b> Compactness</a></li>
+<li class="chapter" data-level="5.1.3" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#separation"><i class="fa fa-check"></i><b>5.1.3</b> Separation</a></li>
+<li class="chapter" data-level="5.1.4" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#inv"><i class="fa fa-check"></i><b>5.1.4</b> INV</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>5.2</b> Size distribution</a></li>
+<li class="chapter" data-level="5.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>5.3</b> Representativeness of metacells</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>6.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>6.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>6.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>6.1.5</b> Visualize gene-gene correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>6.2</b> Standard analysis (Python)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>6.2.1</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering-1"><i class="fa fa-check"></i><b>6.2.2</b> Clustering</a></li>
+<li class="chapter" data-level="6.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>6.2.3</b> Differential expression analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>6.3</b> Sample-weighted analysis</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>6.3.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.3.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-2"><i class="fa fa-check"></i><b>6.3.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.3.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-2"><i class="fa fa-check"></i><b>6.3.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.3.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-2"><i class="fa fa-check"></i><b>6.3.4</b> Differential expression analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>6.4</b> Advanced analysis</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="advanced-analysis.html"><a href="advanced-analysis.html#GRN-analysis"><i class="fa fa-check"></i><b>6.4.1</b> GRN</a></li>
+<li class="chapter" data-level="6.4.2" data-path="advanced-analysis.html"><a href="advanced-analysis.html#integration"><i class="fa fa-check"></i><b>6.4.2</b> Integration of metacells</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell Tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="SuperCell-construction" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> SuperCell (R)<a href="SuperCell-construction.html#SuperCell-construction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section, we construct metacells using the R package <a href="https://github.com/GfellerLab/SuperCell">SuperCell</a>.</p>
+<div id="method" class="section level3 hasAnchor" number="4.1.1">
+<h3><span class="header-section-number">4.1.1</span> Method<a href="SuperCell-construction.html#method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The SuperCell method first reduces the gene expression space using principal component analysis (PCA) and computes euclidean distances based on the reduced space.
+Using the euclidean distances, a single-cell kNN graph is built and metacells are identified by applying the walktrap community detection algorithm.
+The number of metacells obtained can be chosen by the user by defining the graining level parameter.</p>
+<p>The code provided in this section is adapted from the <a href="https://github.com/GfellerLab/SuperCell/blob/master/README.Rmd">author’s github documentation</a>.
+For more information on the method, please refer to our review <span class="citation">(<a href="#ref-Review" role="doc-biblioref"><strong>Review?</strong></a>)</span> and the original paper <span class="citation">(<a href="#ref-SuperCell" role="doc-biblioref"><strong>SuperCell?</strong></a>)</span>.</p>
+<div id="importing-r-packages" class="section level4 unnumbered hasAnchor">
+<h4>Importing R packages<a href="SuperCell-construction.html#importing-r-packages" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To run SuperCell, the following R package needs to be imported:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="SuperCell-construction.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">system.file</span>(<span class="at">package=</span><span class="st">&#39;SuperCell&#39;</span>) <span class="sc">==</span> <span class="st">&quot;&quot;</span>){</span>
+<span id="cb10-2"><a href="SuperCell-construction.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;GfellerLab/SuperCell&quot;</span>, <span class="at">force =</span> <span class="cn">TRUE</span>, <span class="at">upgrade =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-3"><a href="SuperCell-construction.html#cb10-3" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb10-4"><a href="SuperCell-construction.html#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SuperCell)</span></code></pre></div>
+</div>
+</div>
+<div id="data-loading" class="section level3 hasAnchor" number="4.1.2">
+<h3><span class="header-section-number">4.1.2</span> Data loading<a href="SuperCell-construction.html#data-loading" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will run SuperCell on a single-cell dataset composed of 2638 peripheral blood mononuclear cells (PBMCs) available in the scanpy package.
+Please follow the section <a href="PBMC-data.html#PBMC-data">2.2</a> to retrieve these data from the scanpy package, preprocess and save the data in the following file: “data/3k_pbmc/singlecell_seurat_filtered.rds”.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="SuperCell-construction.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(proj_name)</span>
+<span id="cb11-2"><a href="SuperCell-construction.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;3k_pbmc&quot;</span></span>
+<span id="cb11-3"><a href="SuperCell-construction.html#cb11-3" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, proj_name, <span class="st">&quot;/singlecell_seurat_filtered.rds&quot;</span>))</span></code></pre></div>
+</div>
+<div id="filtering-steps" class="section level3 hasAnchor" number="4.1.3">
+<h3><span class="header-section-number">4.1.3</span> Filtering steps<a href="SuperCell-construction.html#filtering-steps" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In this tutorial, the data have been pre-filtered and SuperCell does not require further filtering steps.</p>
+</div>
+<div id="building-metacells" class="section level3 hasAnchor" number="4.1.4">
+<h3><span class="header-section-number">4.1.4</span> Building metacells<a href="SuperCell-construction.html#building-metacells" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Metacells construction using SuperCell requires one main inputs, <em>i.e.</em> a matrix of log-normalized gene expression data which will be used to compute PCA to subsequently build a knn graph for metacells identification.
+Important optional inputs are:
+(i) the graining level (<code>gamma</code> parameter),
+(ii) the number of neighbors to consider for the knn graph (<code>k.knn</code> parameter),
+(iii) the number of principal components to use to generate the knn graph (<code>n.pc</code> parameter),
+and (iv) the number of most variable genes to consider for PCA (<code>n.var.genes</code> parameter).</p>
+<div id="data-pre-processing" class="section level4 unnumbered hasAnchor">
+<h4>Data pre-processing<a href="SuperCell-construction.html#data-pre-processing" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>SuperCell builds its knn graph based on Euclidean distances defined in the PCA space.
+PCA computation is performed on the log-normalized gene expression data in the <code>SCimplify</code> SuperCell function.
+<!-- In this example the single-cell data have been already log-normalized using scanpy (see \@ref(PBMC-data)). -->
+In the following code chunk, we use Seurat to normalize and visualize the data:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="SuperCell-construction.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
+<span id="cb12-2"><a href="SuperCell-construction.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching SeuratObject</span></span>
+<span id="cb12-3"><a href="SuperCell-construction.html#cb12-3" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(sc_data, <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>)</span>
+<span id="cb12-4"><a href="SuperCell-construction.html#cb12-4" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(sc_data, <span class="at">nfeatures =</span> <span class="dv">2000</span>)</span>
+<span id="cb12-5"><a href="SuperCell-construction.html#cb12-5" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(sc_data)</span>
+<span id="cb12-6"><a href="SuperCell-construction.html#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Centering and scaling data matrix</span></span>
+<span id="cb12-7"><a href="SuperCell-construction.html#cb12-7" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(sc_data, <span class="at">npcs =</span> <span class="dv">30</span>, <span class="at">verbose =</span> F)</span>
+<span id="cb12-8"><a href="SuperCell-construction.html#cb12-8" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(sc_data, <span class="at">reduction =</span> <span class="st">&quot;pca&quot;</span>, <span class="at">dims =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>), <span class="at">n.neighbors =</span> <span class="dv">15</span>, <span class="at">verbose =</span> F)</span>
+<span id="cb12-9"><a href="SuperCell-construction.html#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span></span>
+<span id="cb12-10"><a href="SuperCell-construction.html#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;</span></span>
+<span id="cb12-11"><a href="SuperCell-construction.html#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This message will be shown once per session</span></span>
+<span id="cb12-12"><a href="SuperCell-construction.html#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="fu">UMAPPlot</span>(sc_data, <span class="at">group.by =</span> annotation_label)</span></code></pre></div>
+<p><img src="21-MC_construction_discrete_files/figure-html/supercell-data-processing-1.png" width="672" /></p>
+</div>
+<div id="setting-up-supercell-parameters" class="section level4 unnumbered hasAnchor">
+<h4>Setting up SuperCell parameters<a href="SuperCell-construction.html#setting-up-supercell-parameters" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>In this tutorial, we will run SuperCell using the 30 first principal components resulting from the PCA.
+We chose a graining level of 25 and a number of neighbors of 15 for the knn step.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="SuperCell-construction.html#cb13-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="ot">=</span> <span class="dv">25</span> <span class="co"># the requested graining level.</span></span>
+<span id="cb13-2"><a href="SuperCell-construction.html#cb13-2" aria-hidden="true" tabindex="-1"></a>k_knn <span class="ot">=</span> <span class="dv">15</span> <span class="co"># the number of neighbors considered to build the knn network.</span></span>
+<span id="cb13-3"><a href="SuperCell-construction.html#cb13-3" aria-hidden="true" tabindex="-1"></a>nb_var_genes <span class="ot">=</span> <span class="dv">2000</span> <span class="co"># number of the top variable genes to use for dimensionality reduction </span></span>
+<span id="cb13-4"><a href="SuperCell-construction.html#cb13-4" aria-hidden="true" tabindex="-1"></a>nb_pc <span class="ot">=</span> <span class="dv">30</span> <span class="co"># the number of principal components to use.   </span></span></code></pre></div>
+</div>
+<div id="metacells-identification" class="section level4 unnumbered hasAnchor">
+<h4>Metacells identification<a href="SuperCell-construction.html#metacells-identification" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The metacells are identified using the <code>SCimplify</code> function from the SuperCell package.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="SuperCell-construction.html#cb14-1" aria-hidden="true" tabindex="-1"></a>MC <span class="ot">&lt;-</span> SuperCell<span class="sc">::</span><span class="fu">SCimplify</span>(Seurat<span class="sc">::</span><span class="fu">GetAssayData</span>(sc_data, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>),  <span class="co"># single-cell log-normalized gene expression data</span></span>
+<span id="cb14-2"><a href="SuperCell-construction.html#cb14-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">k.knn =</span> k_knn,</span>
+<span id="cb14-3"><a href="SuperCell-construction.html#cb14-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">gamma =</span> gamma,</span>
+<span id="cb14-4"><a href="SuperCell-construction.html#cb14-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n.var.genes =</span> nb_var_genes,  </span>
+<span id="cb14-5"><a href="SuperCell-construction.html#cb14-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n.pc =</span> nb_pc</span>
+<span id="cb14-6"><a href="SuperCell-construction.html#cb14-6" aria-hidden="true" tabindex="-1"></a>                           )</span></code></pre></div>
+<p><code>SCimplify</code> returns a list containing the following main elements:
+(i) the single-cell assignments to metacells (<code>membership</code>),
+(ii) the metacell sizes (<code>supercell_size</code>),
+(iii) the single-cell graph (<code>graph.singlecell</code>),
+(iv) the metacell graph (<code>graph.supercells</code>),
+(v) the genes used for metacell identification (<code>genes.use</code>).</p>
+</div>
+<div id="retrieve-aggregated-metacell-data" class="section level4 unnumbered hasAnchor">
+<h4>Retrieve aggregated metacell data<a href="SuperCell-construction.html#retrieve-aggregated-metacell-data" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The <code>supercell_GE()</code> function can be used to generate a metacell counts matrix (aggregation of gene expression across all cells belonging to each metacell).
+Two modes can be used for single-cell aggregation, <em>i.e.</em> averaging of log-normalized gene expression or summing up raw counts (using the <code>mode</code> parameter).
+Note that we provide raw counts for the aggregation in this tutorial to match the aggregation steps using PC2 and SEAcells (see <a href="MC2-construction.html#MC2-construction">4.2</a> and <a href="SEACells-construction.html#SEACells-construction">4.3</a>).
+Data normalization will thus be needed for downstream analyses on the metacell counts matrix.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="SuperCell-construction.html#cb15-1" aria-hidden="true" tabindex="-1"></a>MC.GE <span class="ot">&lt;-</span> <span class="fu">supercell_GE</span>(Seurat<span class="sc">::</span><span class="fu">GetAssayData</span>(sc_data, <span class="at">slot =</span> <span class="st">&quot;counts&quot;</span>),</span>
+<span id="cb15-2"><a href="SuperCell-construction.html#cb15-2" aria-hidden="true" tabindex="-1"></a>                      MC<span class="sc">$</span>membership,</span>
+<span id="cb15-3"><a href="SuperCell-construction.html#cb15-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">mode =</span>  <span class="st">&quot;sum&quot;</span></span>
+<span id="cb15-4"><a href="SuperCell-construction.html#cb15-4" aria-hidden="true" tabindex="-1"></a>                      )</span>
+<span id="cb15-5"><a href="SuperCell-construction.html#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(MC.GE) </span>
+<span id="cb15-6"><a href="SuperCell-construction.html#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 32738   106</span></span></code></pre></div>
+</div>
+</div>
+<div id="annotate-metacells-using-available-annotations" class="section level3 hasAnchor" number="4.1.5">
+<h3><span class="header-section-number">4.1.5</span> Annotate metacells (using available annotations)<a href="SuperCell-construction.html#annotate-metacells-using-available-annotations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We can assign each metacell to a particular annotation using the <code>supercell_assign()</code> function.
+By default, this function assigns each metacell to a cluster with the largest Jaccard coefficient to avoid biases towards very rare or very abundant clusters.
+Alternatively, assignment can be performed using <code>relative</code> (<code>method = "relative"</code>, may cause biases towards very small populations) or <code>absolute</code> (<code>method = "absolute"</code>, may cause biases towards large populations) abundance.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="SuperCell-construction.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(annotation_label)</span>
+<span id="cb16-2"><a href="SuperCell-construction.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   3k_pbmc </span></span>
+<span id="cb16-3"><a href="SuperCell-construction.html#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;louvain&quot;</span></span>
+<span id="cb16-4"><a href="SuperCell-construction.html#cb16-4" aria-hidden="true" tabindex="-1"></a>MC<span class="sc">$</span>annotation <span class="ot">&lt;-</span> <span class="fu">supercell_assign</span>(<span class="at">clusters =</span> sc_data<span class="sc">@</span>meta.data[, annotation_label], <span class="co"># single-cell annotation</span></span>
+<span id="cb16-5"><a href="SuperCell-construction.html#cb16-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">supercell_membership =</span> MC<span class="sc">$</span>membership, <span class="co"># single-cell assignment to metacells</span></span>
+<span id="cb16-6"><a href="SuperCell-construction.html#cb16-6" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">method =</span> <span class="st">&quot;jaccard&quot;</span></span>
+<span id="cb16-7"><a href="SuperCell-construction.html#cb16-7" aria-hidden="true" tabindex="-1"></a>                                  )</span>
+<span id="cb16-8"><a href="SuperCell-construction.html#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="SuperCell-construction.html#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(MC<span class="sc">$</span>annotation)</span>
+<span id="cb16-10"><a href="SuperCell-construction.html#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 1                 2                 3                 4 </span></span>
+<span id="cb16-11"><a href="SuperCell-construction.html#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &quot;CD14+ Monocytes&quot; &quot;CD14+ Monocytes&quot; &quot;CD14+ Monocytes&quot;     &quot;CD4 T cells&quot; </span></span>
+<span id="cb16-12"><a href="SuperCell-construction.html#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 5                 6 </span></span>
+<span id="cb16-13"><a href="SuperCell-construction.html#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     &quot;CD4 T cells&quot; &quot;Dendritic cells&quot;</span></span></code></pre></div>
+<p>The SuperCell package provides the <code>supercell_plot</code> function to visualize the metacell network (igraph object where number of nodes corresponds to number of metacells),
+which is stored in the <code>MC</code> list in <code>graph.supercells</code>.
+The metacells can be colored with respect to a vector of annotation.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="SuperCell-construction.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">supercell_plot</span>(</span>
+<span id="cb17-2"><a href="SuperCell-construction.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  MC<span class="sc">$</span>graph.supercells, </span>
+<span id="cb17-3"><a href="SuperCell-construction.html#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> MC<span class="sc">$</span>annotation, </span>
+<span id="cb17-4"><a href="SuperCell-construction.html#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1</span>, </span>
+<span id="cb17-5"><a href="SuperCell-construction.html#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> <span class="sc">-</span>pi<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb17-6"><a href="SuperCell-construction.html#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">main  =</span> <span class="st">&quot;Metacells colored by cell line assignment&quot;</span></span>
+<span id="cb17-7"><a href="SuperCell-construction.html#cb17-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<p><img src="21-MC_construction_discrete_files/figure-html/SuperCell-graph-1.png" width="672" /></p>
+</div>
+<div id="save-output" class="section level3 hasAnchor" number="4.1.6">
+<h3><span class="header-section-number">4.1.6</span> Save output<a href="SuperCell-construction.html#save-output" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For future downstream analyses in R (section <a href="standard-analysis-R.html#standard-analysis-R">6.1</a>), metacell counts can be saved in a Seurat object.
+Here we also save in the Seurat object the PCA components and genes used in SCimplify for future QC analysis (See <a href="QCs.html#QCs">5</a>).</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="SuperCell-construction.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(MC.GE) <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">ncol</span>(MC.GE))</span>
+<span id="cb18-2"><a href="SuperCell-construction.html#cb18-2" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> MC.GE, </span>
+<span id="cb18-3"><a href="SuperCell-construction.html#cb18-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">meta.data =</span> <span class="fu">data.frame</span>(<span class="at">size =</span> <span class="fu">as.vector</span>(<span class="fu">table</span>(MC<span class="sc">$</span>membership)))</span>
+<span id="cb18-4"><a href="SuperCell-construction.html#cb18-4" aria-hidden="true" tabindex="-1"></a>                                )</span>
+<span id="cb18-5"><a href="SuperCell-construction.html#cb18-5" aria-hidden="true" tabindex="-1"></a>MC.seurat[[annotation_label]] <span class="ot">&lt;-</span> MC<span class="sc">$</span>annotation</span>
+<span id="cb18-6"><a href="SuperCell-construction.html#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="SuperCell-construction.html#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># save single-cell membership to metacells in the MC.seurat object</span></span>
+<span id="cb18-8"><a href="SuperCell-construction.html#cb18-8" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">@</span>misc<span class="sc">$</span>cell_membership <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">row.names =</span> <span class="fu">names</span>(MC<span class="sc">$</span>membership), <span class="at">membership =</span> MC<span class="sc">$</span>membership)</span>
+<span id="cb18-9"><a href="SuperCell-construction.html#cb18-9" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">@</span>misc<span class="sc">$</span>var_features <span class="ot">&lt;-</span> MC<span class="sc">$</span>genes.use </span>
+<span id="cb18-10"><a href="SuperCell-construction.html#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="SuperCell-construction.html#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the PCA components and genes used in SCimplify  </span></span>
+<span id="cb18-12"><a href="SuperCell-construction.html#cb18-12" aria-hidden="true" tabindex="-1"></a>PCA.res <span class="ot">&lt;-</span> irlba<span class="sc">::</span><span class="fu">irlba</span>(<span class="fu">scale</span>(Matrix<span class="sc">::</span><span class="fu">t</span>(sc_data<span class="sc">@</span>assays<span class="sc">$</span>RNA<span class="sc">@</span>data[MC<span class="sc">$</span>genes.use, ])), <span class="at">nv =</span> nb_pc)</span>
+<span id="cb18-13"><a href="SuperCell-construction.html#cb18-13" aria-hidden="true" tabindex="-1"></a>pca.x <span class="ot">&lt;-</span> PCA.res<span class="sc">$</span>u <span class="sc">%*%</span> <span class="fu">diag</span>(PCA.res<span class="sc">$</span>d)</span>
+<span id="cb18-14"><a href="SuperCell-construction.html#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(pca.x) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(sc_data<span class="sc">@</span>assays<span class="sc">$</span>RNA<span class="sc">@</span>data)</span>
+<span id="cb18-15"><a href="SuperCell-construction.html#cb18-15" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">@</span>misc<span class="sc">$</span>sc.pca <span class="ot">&lt;-</span> <span class="fu">CreateDimReducObject</span>(</span>
+<span id="cb18-16"><a href="SuperCell-construction.html#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">embeddings =</span> pca.x,</span>
+<span id="cb18-17"><a href="SuperCell-construction.html#cb18-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">loadings =</span> PCA.res<span class="sc">$</span>v,</span>
+<span id="cb18-18"><a href="SuperCell-construction.html#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">key =</span> <span class="st">&quot;PC_&quot;</span>,</span>
+<span id="cb18-19"><a href="SuperCell-construction.html#cb18-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">assay =</span> <span class="st">&quot;RNA&quot;</span></span>
+<span id="cb18-20"><a href="SuperCell-construction.html#cb18-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-21"><a href="SuperCell-construction.html#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">&quot;Saving metacell object for the &quot;</span>, proj_name, <span class="st">&quot; dataset using &quot;</span>, MC_tool))</span>
+<span id="cb18-22"><a href="SuperCell-construction.html#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Saving metacell object for the 3k_pbmc dataset using SuperCell&quot;</span></span>
+<span id="cb18-23"><a href="SuperCell-construction.html#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(MC.seurat, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&#39;./data/&#39;</span>, proj_name, <span class="st">&#39;/metacell_&#39;</span>, MC_tool,<span class="st">&#39;.rds&#39;</span>))</span></code></pre></div>
+<p>We can also use the <code>supercell_2_Seurat()</code> function from the SuperCell package.
+This function takes as inputs the metacell count matrix (output of the SuperCell <code>supercell_GE()</code> function) and the output of the SuperCell <code>SCimplify()</code> function
+to output a Seurat object containing normalized metacells gene expression data as well as the first (<code>N.comp</code>) principal components of PCA performed internally using user defined set of genes (by default the genes used for metacells constructions).</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="SuperCell-construction.html#cb19-1" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">supercell_2_Seurat</span>(</span>
+<span id="cb19-2"><a href="SuperCell-construction.html#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">SC.GE =</span> MC.GE,</span>
+<span id="cb19-3"><a href="SuperCell-construction.html#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">SC =</span> MC,</span>
+<span id="cb19-4"><a href="SuperCell-construction.html#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fields =</span> <span class="fu">c</span>(<span class="st">&quot;annotation&quot;</span>, <span class="st">&quot;supercell_size&quot;</span>), <span class="co"># elements of MC to save as metacell metadata </span></span>
+<span id="cb19-5"><a href="SuperCell-construction.html#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">var.genes =</span> MC<span class="sc">$</span>genes.use,</span>
+<span id="cb19-6"><a href="SuperCell-construction.html#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">N.comp =</span> <span class="dv">10</span></span>
+<span id="cb19-7"><a href="SuperCell-construction.html#cb19-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-8"><a href="SuperCell-construction.html#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(MC.seurat, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&#39;./data/&#39;</span>, proj_name, <span class="st">&#39;/metacell_&#39;</span>, MC_tool,<span class="st">&#39;.rds&#39;</span>))</span></code></pre></div>
+<p>For future downstream analyses in python (section <a href="standard-analysis-Py.html#standard-analysis-Py">6.2</a>), metacell counts can be saved in an Anndata object:</p>
+<pre><code>#&gt;            used  (Mb) gc trigger   (Mb)  max used   (Mb)
+#&gt; Ncells  3064161 163.7    5181401  276.8   5181401  276.8
+#&gt; Vcells 18101117 138.2  225369907 1719.5 281711725 2149.3</code></pre>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Metacell-construction-chapter.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="MC2-construction.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/21-MC_construction_discrete.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/21-MC_construction_discrete.Rmd",
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,8 +1,9 @@
-# Constructing metacells (for 'discrete' data)
+# Constructing metacells (for 'discrete' data) {#Metacell-construction-chapter}
 
-In this chapter, we will demonstrate metacell construction using three different methods. MetaCell-2 (MC2) and SEACells in Pyhton and SuperCell in R. 
+In this chapter, we will demonstrate metacell construction using three different methods: SuperCell in R, MetaCell-2 (MC2) and SEACells in Pyhton. 
 
-For this, we will use a dataset of PBMCs from study. This dataset contains 30K cells and ... This is an example of a complex dataset with well defined cells types. For an example of more continuous data, see chapter \@ref(MC-continuous)
+For this, we will first use a dataset of PBMCs from study. This dataset contains around 3K cells which is an example of a dataset with well defined cell types. 
+For an example of more continuous data, see chapter \@ref(MC-continuous).
 
 
 
@@ -13,8 +14,243 @@ For this, we will use a dataset of PBMCs from study. This dataset contains 30K c
 #> findfont: Font family ['Lato'] not found. Falling back to DejaVu Sans.
 ```
 
+## SuperCell (R) {#SuperCell-construction}
 
-## MC2 (Python)
+
+
+[//]: # (Code to run mc construction with SuperCell for a discrete dataset)
+
+
+
+
+In this section, we construct metacells using the R package [SuperCell](https://github.com/GfellerLab/SuperCell). 
+
+### Method 
+
+The SuperCell method first reduces the gene expression space using principal component analysis (PCA) and computes euclidean distances based on the reduced space. 
+Using the euclidean distances, a single-cell kNN graph is built and metacells are identified by applying the walktrap community detection algorithm. 
+The number of metacells obtained can be chosen by the user by defining the graining level parameter.
+
+The code provided in this section is adapted from the [author's github documentation](https://github.com/GfellerLab/SuperCell/blob/master/README.Rmd).
+For more information on the method, please refer to our review @Review and the original paper @SuperCell.
+
+#### Importing R packages {-}
+
+To run SuperCell, the following R package needs to be imported:
+
+
+```r
+if(system.file(package='SuperCell') == ""){
+  remotes::install_github("GfellerLab/SuperCell", force = TRUE, upgrade = FALSE)
+} 
+library(SuperCell)
+```
+
+
+
+### Data loading
+We will run SuperCell on a single-cell dataset composed of 2638 peripheral blood mononuclear cells (PBMCs) available in the scanpy package.
+Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package, preprocess and save the data in the following file: "data/3k_pbmc/singlecell_seurat_filtered.rds".
+
+
+```r
+print(proj_name)
+#> [1] "3k_pbmc"
+sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
+```
+
+### Filtering steps
+
+In this tutorial, the data have been pre-filtered and SuperCell does not require further filtering steps.
+
+### Building metacells
+
+Metacells construction using SuperCell requires one main inputs, *i.e.* a matrix of log-normalized gene expression data which will be used to compute PCA to subsequently build a knn graph for metacells identification.
+Important optional inputs are: 
+(i) the graining level (`gamma` parameter), 
+(ii) the number of neighbors to consider for the knn graph (`k.knn` parameter), 
+(iii) the number of principal components to use to generate the knn graph (`n.pc` parameter), 
+and (iv) the number of most variable genes to consider for PCA (`n.var.genes` parameter). 
+
+#### Data pre-processing {-}
+
+SuperCell builds its knn graph based on Euclidean distances defined in the PCA space. 
+PCA computation is performed on the log-normalized gene expression data in the `SCimplify` SuperCell function. 
+<!-- In this example the single-cell data have been already log-normalized using scanpy (see \@ref(PBMC-data)). -->
+In the following code chunk, we use Seurat to normalize and visualize the data:
+
+
+```r
+library(Seurat)
+#> Attaching SeuratObject
+sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
+sc_data <- FindVariableFeatures(sc_data, nfeatures = 2000)
+sc_data <- ScaleData(sc_data)
+#> Centering and scaling data matrix
+sc_data <- RunPCA(sc_data, npcs = 30, verbose = F)
+sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 15, verbose = F)
+#> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
+#> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
+#> This message will be shown once per session
+UMAPPlot(sc_data, group.by = annotation_label)
+```
+
+<img src="21-MC_construction_discrete_files/figure-html/supercell-data-processing-1.png" width="672" />
+
+
+#### Setting up SuperCell parameters {-}
+
+In this tutorial, we will run SuperCell using the 30 first principal components resulting from the PCA.
+We chose a graining level of 25 and a number of neighbors of 15 for the knn step.
+
+
+```r
+gamma = 25 # the requested graining level.
+k_knn = 15 # the number of neighbors considered to build the knn network.
+nb_var_genes = 2000 # number of the top variable genes to use for dimensionality reduction 
+nb_pc = 30 # the number of principal components to use.   
+```
+
+#### Metacells identification {-}
+
+The metacells are identified using the `SCimplify` function from the SuperCell package.   
+
+```r
+MC <- SuperCell::SCimplify(Seurat::GetAssayData(sc_data, slot = "data"),  # single-cell log-normalized gene expression data
+                           k.knn = k_knn,
+                           gamma = gamma,
+                           n.var.genes = nb_var_genes,  
+                           n.pc = nb_pc
+                           )
+```
+
+`SCimplify` returns a list containing the following main elements: 
+(i) the single-cell assignments to metacells (`membership`),
+(ii) the metacell sizes (`supercell_size`), 
+(iii) the single-cell graph (`graph.singlecell`), 
+(iv) the metacell graph (`graph.supercells`),
+(v) the genes used for metacell identification (`genes.use`).
+
+#### Retrieve aggregated metacell data {-}
+
+The `supercell_GE()` function can be used to generate a metacell counts matrix (aggregation of gene expression across all cells belonging to each metacell). 
+Two modes can be used for single-cell aggregation, *i.e.* averaging of log-normalized gene expression or summing up raw counts (using the `mode` parameter).
+Note that we provide raw counts for the aggregation in this tutorial to match the aggregation steps using PC2 and SEAcells (see \@ref(MC2-construction) and \@ref(SEACells-construction)). 
+Data normalization will thus be needed for downstream analyses on the metacell counts matrix.
+
+
+```r
+MC.GE <- supercell_GE(Seurat::GetAssayData(sc_data, slot = "counts"),
+                      MC$membership,
+                      mode =  "sum"
+                      )
+dim(MC.GE) 
+#> [1] 32738   106
+```
+
+### Annotate metacells (using available annotations)
+
+
+We can assign each metacell to a particular annotation using the `supercell_assign()` function. 
+By default, this function assigns each metacell to a cluster with the largest Jaccard coefficient to avoid biases towards very rare or very abundant clusters. 
+Alternatively, assignment can be performed using `relative` (`method = "relative"`, may cause biases towards very small populations) or `absolute` (`method = "absolute"`, may cause biases towards large populations) abundance. 
+
+
+```r
+print(annotation_label)
+#>   3k_pbmc 
+#> "louvain"
+MC$annotation <- supercell_assign(clusters = sc_data@meta.data[, annotation_label], # single-cell annotation
+                                  supercell_membership = MC$membership, # single-cell assignment to metacells
+                                  method = "jaccard"
+                                  )
+
+head(MC$annotation)
+#>                 1                 2                 3                 4 
+#> "CD14+ Monocytes" "CD14+ Monocytes" "CD14+ Monocytes"     "CD4 T cells" 
+#>                 5                 6 
+#>     "CD4 T cells" "Dendritic cells"
+```
+
+
+The SuperCell package provides the `supercell_plot` function to visualize the metacell network (igraph object where number of nodes corresponds to number of metacells), 
+which is stored in the `MC` list in `graph.supercells`.
+The metacells can be colored with respect to a vector of annotation.
+
+
+```r
+supercell_plot(
+  MC$graph.supercells, 
+  group = MC$annotation, 
+  seed = 1, 
+  alpha = -pi/2,
+  main  = "Metacells colored by cell line assignment"
+)
+```
+
+<img src="21-MC_construction_discrete_files/figure-html/SuperCell-graph-1.png" width="672" />
+
+### Save output 
+
+For future downstream analyses in R (section \@ref(standard-analysis-R)), metacell counts can be saved in a Seurat object. 
+Here we also save in the Seurat object the PCA components and genes used in SCimplify for future QC analysis (See \@ref(QCs)). 
+
+
+```r
+colnames(MC.GE) <- as.character(1:ncol(MC.GE))
+MC.seurat <- CreateSeuratObject(counts = MC.GE, 
+                                meta.data = data.frame(size = as.vector(table(MC$membership)))
+                                )
+MC.seurat[[annotation_label]] <- MC$annotation
+
+# save single-cell membership to metacells in the MC.seurat object
+MC.seurat@misc$cell_membership <- data.frame(row.names = names(MC$membership), membership = MC$membership)
+MC.seurat@misc$var_features <- MC$genes.use 
+
+# Save the PCA components and genes used in SCimplify  
+PCA.res <- irlba::irlba(scale(Matrix::t(sc_data@assays$RNA@data[MC$genes.use, ])), nv = nb_pc)
+pca.x <- PCA.res$u %*% diag(PCA.res$d)
+rownames(pca.x) <- colnames(sc_data@assays$RNA@data)
+MC.seurat@misc$sc.pca <- CreateDimReducObject(
+  embeddings = pca.x,
+  loadings = PCA.res$v,
+  key = "PC_",
+  assay = "RNA"
+)
+print(paste0("Saving metacell object for the ", proj_name, " dataset using ", MC_tool))
+#> [1] "Saving metacell object for the 3k_pbmc dataset using SuperCell"
+saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
+```
+
+We can also use the `supercell_2_Seurat()` function from the SuperCell package. 
+This function takes as inputs the metacell count matrix (output of the SuperCell `supercell_GE()` function) and the output of the SuperCell `SCimplify()` function
+to output a Seurat object containing normalized metacells gene expression data as well as the first (`N.comp`) principal components of PCA performed internally using user defined set of genes (by default the genes used for metacells constructions).
+
+
+
+```r
+MC.seurat <- supercell_2_Seurat(
+  SC.GE = MC.GE,
+  SC = MC,
+  fields = c("annotation", "supercell_size"), # elements of MC to save as metacell metadata 
+  var.genes = MC$genes.use,
+  N.comp = 10
+)
+saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
+```
+
+For future downstream analyses in python (section \@ref(standard-analysis-Py)), metacell counts can be saved in an Anndata object: 
+
+
+```
+#>            used  (Mb) gc trigger   (Mb)  max used   (Mb)
+#> Ncells  3064161 163.7    5181401  276.8   5181401  276.8
+#> Vcells 18101117 138.2  225369907 1719.5 281711725 2149.3
+```
+
+
+
+## MC2 (Python) {#MC2-construction}
 
 
 
@@ -22,11 +258,23 @@ For this, we will use a dataset of PBMCs from study. This dataset contains 30K c
 
 
 
-In this section, we construct metacells using [Metacell-2 (MC2)](https://github.com/tanaylab/metacells). The code is adapted from the [author's tutorial](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html). For more information on the method, please refer to the section 1 of chapter 2. 
+In this section, we construct metacells using [Metacell-2 (MC2)](https://github.com/tanaylab/metacells) implemented in Python. 
+
+### Method 
+Metacell-2 (MC2) is a python tool to construct metacells and is the updated version of the MetaCell algorithm, which introduced the concept of metacell.
+MC2 applies a two-phase divide-and-conquer approach. Cells are randomly divided into piles of ~10k cells and 
+initial metacells are built applying a MetaCell-like approach per pile, i.e. based on a single-cell kNN graph built 
+from log-normalized counts using a set of highly variable genes. 
+Then, transcriptionally similar metacells are grouped into metagroup piles for the identification of final metacells and outliers identification.
+Note that prior to metacell identification, the MC2 framework recommends gene filtering steps. The choice of the genes used
+by the method is of high importance to assure good quality of the metacells.
+
+The code provided in this section is adapted from the [author's tutorial](https://tanaylab.github.io/metacells-vignettes/one-pass.html). 
+For more information on the method, please refer to our review @Review and the @MC2. 
 
 #### Importing python packages {-}
 
-To run Metacell-2, the following python packages need to be imported: 
+To run MC2, the following python packages need to be imported: 
 
 
 ```python
@@ -40,20 +288,18 @@ import seaborn as sns
 import metacells as mc
 ```
 
-
-```python
-import sys
-sys.path.append('./mc_QC/')
-import mc_QC
-```
-If you don't have these packages installed, please refer to the section 2 of chapter 1.
-
-
+<!-- ```{python mc2-QC-imports, eval = FALSE} -->
+<!-- import sys -->
+<!-- sys.path.append('./mc_QC/') -->
+<!-- import mc_QC -->
+<!-- ``` -->
+If you don't have these packages installed, please refer to the section \@ref(installations).
 
 
 
 ### Data loading 
-We will run Metacell-2 on a single-cell dataset composed of XX peripheral blood mononuclear cells (PBMCs). Please follow the section 4 from Chapter 1 to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+We will run Metacell-2 (MC2) on a single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
+Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
 
 
 
@@ -67,9 +313,10 @@ We will run Metacell-2 on a single-cell dataset composed of XX peripheral blood 
 MC_tool = "MC2"
 proj_name = "3k_pbmc"
 ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
+ad.X = ad.raw.X.copy()
 ```
 
-We initialize the name of the anndata (in the unstructured annotations) object using the `ut.set_name` function from the Metacells package.
+We initialize the name of the anndata (in the unstructured annotations) object using the `mc.ut.set_name()` function from the MC2 package.
 
 
 ```python
@@ -77,417 +324,352 @@ mc.ut.set_name(ad, proj_name)
 ```
 
 ### Filtering steps 
-
-Before building the metacells the Metacell-2 authors recommend to filter the single-cell data in two-steps (See [original vignette](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html)). 
-A first filtering step consists in filtering genes based on biological knowledge (*e.g.* mitochrondrial genes) or based on their expression levels. The latter genes include genes with zero expression or low expression levels, "noisy lonely genes" (*i.e.*, genes with high expression levels but no correlation with any other gene). 
-A second filtering step consists in filtering cells based on their UMI counts.
+MC2 requires that standard filtering steps such as doublet filtering are performed outside of the MC2 framework. 
+In addition to standard data filtering steps, the MC2 package proposes functions to filter the single-cell data at the gene and at the cell level (See [author's vignette](https://tanaylab.github.io/metacells-vignettes/one-pass.html)). 
+At the gene level, the filtering steps consist in excluding genes based on biological knowledge (*e.g.* mitochrondrial genes) as well as based on their expression levels. 
+The latter genes include genes with zero expression or low expression levels and "bursty lonely genes" (*i.e.*, genes with high expression levels but no correlation with any other gene). 
+At the cell level, filtering is performed based on cells UMI counts.
 
 #### Gene filtering {-}
 
-In section XX form Chapter XX, we pre-processed the raw scRNA-Seq data and excluded genes with low expression as well as mitochondrial genes. In the following code chunk, we identify additional genes to filter using the `analyze_clean_genes` and `pick_clean_genes` functions from the Metacells package, which returns three sets of genes: i) the known-to-be-excluded genes defined by the user as an array of gene names or gene names patterns, ii) the properly sampled genes, and iii) the "noisy lonely genes". 
+In the following code chunk, we exclude genes using the `mc.pl.exclude_genes()`function from the MC2 package. 
+Based on the authors vignette, we consider a minimal list of genes to exclude, *i.e.*, sex-specific and non-coding genes as well as the mitochondrial genes. 
+To complete this list of genes, an iterative approach can be used following the guidelines of the MC2 authors in a [second vignette](https://tanaylab.github.io/metacells-vignettes/iterative.html).
+The `mc.pl.exclude_genes()` function will filter out: 
+i) the known-to-be-excluded genes defined by the user as gene names or gene names patterns (`EXCLUDED_GENE_NAMES` and `EXCLUDED_GENE_PATTERNS` parameters respectively), 
+and ii) the "bursty lonely genes". 
 
 
 ```python
-excluded_gene_names = [] # for example, ['IGHMBP2', 'IGLL1', 'IGLL5', 'IGLON5', 'NEAT1', 'TMSB10', 'TMSB4X']
-excluded_gene_patterns = ['MT-.*']
-mc.pl.analyze_clean_genes(ad,
-                          excluded_gene_names=excluded_gene_names,
-                          excluded_gene_patterns=excluded_gene_patterns,
-                          random_seed=123456)
-#> set 3k_pbmc.var[properly_sampled_gene]: 16579 true (50.64%) out of 32738 bools
-#> set 3k_pbmc.var[excluded_gene]: 13 true (0.03971%) out of 32738 bools
-#> set 3k_pbmc.var[noisy_lonely_gene]: 0 true (0%) out of 32738 bools
+EXCLUDED_GENE_NAMES = ["XIST", "MALAT1", "NEAT1"] 
+EXCLUDED_GENE_PATTERNS = ['MT-.*']
 
-mc.pl.pick_clean_genes(ad)
-#> set 3k_pbmc.var[clean_gene]: 16566 true (50.6%) out of 32738 bools
-```
-
-#### Cell filtering {-}
-
-The first round of cell cleaning implies filtering out cell with very low and very hight UMI content (`properly_sampled_min_cell_total`, `properly_sampled_max_cell_total` parameters).  
-The second round includes cell filtering based on UMI counts in excluded genes (`properly_sampled_max_excluded_genes_fraction` parameter). 
-Since our dataset have been pre-filtered, very lenient cutoffs will be used in this tutorial (`properly_sampled_min_cell_total`, `properly_sampled_max_cell_total` and `properly_sampled_max_excluded_genes_fraction`) such that all the cells are kept for the metacell construction. 
-The following code chunk defines these parameters. To adapt them to your datasets, we advise you to explore the distributions of total UMI counts and UMI counts in excluded genes, as recommended and descrided in the Metacell-2 [original vignette](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html).
-
-
-```python
-### The first round of cell cleaning (high/low UMIs)
-properly_sampled_min_cell_total = 200 
-properly_sampled_max_cell_total = 10000 
-## The second round of cell cleaning (content of excluded genes, e.g., mito-genes)
-properly_sampled_max_excluded_genes_fraction = 0.25
-```
-
-The set of cells to be filtered is defined using the `analyze_clean_cells` and `pick_clean_cells` functions from the Metacell-2 package.
-
-
-```python
-mc.pl.analyze_clean_cells(
+mc.pl.exclude_genes(
     ad,
-    properly_sampled_min_cell_total = properly_sampled_min_cell_total,
-    properly_sampled_max_cell_total = properly_sampled_max_cell_total,
-    properly_sampled_max_excluded_genes_fraction = properly_sampled_max_excluded_genes_fraction
+    excluded_gene_names=EXCLUDED_GENE_NAMES,
+    excluded_gene_patterns=EXCLUDED_GENE_PATTERNS,
+    random_seed=123456
+)
+#> set 3k_pbmc.var[bursty_lonely_gene]: 0 true (0%) out of 32738 bools
+#> set 3k_pbmc.var[properly_sampled_gene]: 16579 true (50.64%) out of 32738 bools
+#> set 3k_pbmc.var[excluded_gene]: 16174 true (49.4%) out of 32738 bools
+```
+
+#### Cell filtering based on UMIs counts {-}
+
+In the MC2 framework, cells with very low and very high UMI content will be filtered out (`PROPERLY_SAMPLED_MIN_CELL_TOTAL`, `PROPERLY_SAMPLED_MAX_CELL_TOTAL` variables defining thresholds in the next code chunk).  
+Also, cell filtering based on UMI counts in excluded genes is also performed(`PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION` variable). 
+Since our dataset has been pre-filtered, very lenient cutoffs will be used in this tutorial. 
+The following code chunk defines these parameters. 
+To adapt them to your datasets, we advise you to explore the distributions of total UMI counts and UMI counts in excluded genes, as recommended and described in the MC2 [original vignette](https://tanaylab.github.io/metacells-vignettes/one-pass.html).
+
+
+```python
+PROPERLY_SAMPLED_MIN_CELL_TOTAL = 200 
+PROPERLY_SAMPLED_MAX_CELL_TOTAL = 10000 
+PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION = 0.25
+```
+
+The number of UMIs in excluded genes is computed using the `mc.tl.compute_excluded_gene_umis()` function and cells are filtered out using the `mc.pl.exclude_cells()` function.
+Additional cells can be filtered out by adding a cell description columns in the `obs` data frame in the anndata oject. This annotation should be a boolean indicating whether the cell should filtered out or not. 
+The name of this column should be provided to the `mc.pl.exclude_cells()` function via the `additional_cells_masks` parameter. 
+
+
+```python
+mc.tl.compute_excluded_gene_umis(ad)
+
+mc.pl.exclude_cells(
+    ad,
+    properly_sampled_min_cell_total=PROPERLY_SAMPLED_MIN_CELL_TOTAL,
+    properly_sampled_max_cell_total=PROPERLY_SAMPLED_MAX_CELL_TOTAL,
+    properly_sampled_max_excluded_genes_fraction=PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION # ,
+    # additional_cells_masks=["|doublet_cell"]
 )
 #> set 3k_pbmc.obs[properly_sampled_cell]: 2638 true (100%) out of 2638 bools
-mc.pl.pick_clean_cells(ad)
-#> set 3k_pbmc.obs[clean_cell]: 2638 true (100%) out of 2638 bools
+#> set 3k_pbmc.obs[excluded_cell]: 0 true (0%) out of 2638 bools
 ```
 
-After performing the two-step filtering (genes and cells), the "cleaned" data can be extracted using the `pl.extract_clean_data` prior to metacells construction.
+After performing the two-step filtering (genes and cells), the "cleaned" data can be extracted using the `mc.pl.extract_clean_data()` function.
 
 
 ```python
 # Extract clean dataset (with filtered cells and genes)
 ad = mc.pl.extract_clean_data(ad)
-#> set 3k_pbmc.clean.obs[full_cell_index]: 2638 int64s
-#> set 3k_pbmc.clean.var[full_gene_index]: 16566 int64s
+#> set 3k_pbmc.clean.obs[full_cell_index]: 2638 int32s
+#> set 3k_pbmc.clean.var[full_gene_index]: 16564 int32s
 ```
+
 
 ### Building metacells
 
-#### Estimate target_metacell_size (gamma) {-}
+#### Defining lateral genes {-}
 
-In contrast to the SuperCell and SEACells, Metacell-2 does not allow to explicitly obtain metacell data at a user-defined graining level. 
-Instead, to vary the graining level, we have to vary the `target_metacell_size` parameter, that is `160000` by default. Here we provide a chunk to calibrate this value to reach a desired graining level. 
-Please, increase or decrease the `scale` parameter if the obtained graining level (`gamma_obtained`) is lower or larger than the requested one (`gamma`).
+To build metacells, we need to define lateral genes, which are genes with strong biological signal which is independent of cell-state, *e.g.* cell-cycle genes. 
+These genes will be ignored for computing cells similarity and building metacells 
+but will be considered to define outlier cells (*i.e.*, expression levels of lateral genes should be consistent within metacells).
+In the following chunk, we consider a minimal list of lateral genes (provided by the MC2 authors) including cell-cycle and ribosomal genes and 
+mark them in the MC2 object using the `mc.pl.mark_lateral_genes()` function.
 
 
 ```python
-gamma   = 50 # graining level
-print(f'The requested graining level is {gamma}, lets estimate the target_metacell_size that should result in such graining level.')
-#> The requested graining level is 50, lets estimate the target_metacell_size that should result in such graining level.
 
-scale = 2 # increase or decrease if the obtained graining level (`gamma_obtained`) is significantly > or < then the requested one `gamma`
+LATERAL_GENE_NAMES = [
+    "ACSM3", "ANP32B", "APOE", "AURKA", "B2M", "BIRC5", "BTG2", "CALM1", "CD63", "CD69", "CDK4",
+    "CENPF", "CENPU", "CENPW", "CH17-373J23.1", "CKS1B", "CKS2", "COX4I1", "CXCR4", "DNAJB1",
+    "DONSON", "DUSP1", "DUT", "EEF1A1", "EEF1B2", "EIF3E", "EMP3", "FKBP4", "FOS", "FOSB", "FTH1",
+    "G0S2", "GGH", "GLTSCR2", "GMNN", "GNB2L1", "GPR183", "H2AFZ", "H3F3B", "HBM", "HIST1H1C",
+    "HIST1H2AC", "HIST1H2BG", "HIST1H4C", "HLA-A", "HLA-B", "HLA-C", "HLA-DMA", "HLA-DMB",
+    "HLA-DPA1", "HLA-DPB1", "HLA-DQA1", "HLA-DQB1", "HLA-DRA", "HLA-DRB1", "HLA-E", "HLA-F", "HMGA1",
+    "HMGB1", "HMGB2", "HMGB3", "HMGN2", "HNRNPAB", "HSP90AA1", "HSP90AB1", "HSPA1A", "HSPA1B",
+    "HSPA6", "HSPD1", "HSPE1", "HSPH1", "ID2", "IER2", "IGHA1", "IGHA2", "IGHD", "IGHG1", "IGHG2",
+    "IGHG3", "IGHG4", "IGHM", "IGKC", "IGKV1-12", "IGKV1-39", "IGKV1-5", "IGKV3-15", "IGKV4-1",
+    "IGLC2", "IGLC3", "IGLC6", "IGLC7", "IGLL1", "IGLL5", "IGLV2-34", "JUN", "JUNB", "KIAA0101",
+    "LEPROTL1", "LGALS1", "LINC01206", "LTB", "MCM3", "MCM4", "MCM7", "MKI67", "MT2A", "MYL12A",
+    "MYL6", "NASP", "NFKBIA", "NUSAP1", "PA2G4", "PCNA", "PDLIM1", "PLK3", "PPP1R15A", "PTMA",
+    "PTTG1", "RAN", "RANBP1", "RGCC", "RGS1", "RGS2", "RGS3", "RP11-1143G9.4", "RP11-160E2.6",
+    "RP11-53B5.1", "RP11-620J15.3", "RP5-1025A1.3", "RP5-1171I10.5", "RPS10", "RPS10-NUDT3", "RPS11",
+    "RPS12", "RPS13", "RPS14", "RPS15", "RPS15A", "RPS16", "RPS17", "RPS18", "RPS19", "RPS19BP1",
+    "RPS2", "RPS20", "RPS21", "RPS23", "RPS24", "RPS25", "RPS26", "RPS27", "RPS27A", "RPS27L",
+    "RPS28", "RPS29", "RPS3", "RPS3A", "RPS4X", "RPS4Y1", "RPS4Y2", "RPS5", "RPS6", "RPS6KA1",
+    "RPS6KA2", "RPS6KA2-AS1", "RPS6KA3", "RPS6KA4", "RPS6KA5", "RPS6KA6", "RPS6KB1", "RPS6KB2",
+    "RPS6KC1", "RPS6KL1", "RPS7", "RPS8", "RPS9", "RPSA", "RRM2", "SMC4", "SRGN", "SRSF7", "STMN1",
+    "TK1", "TMSB4X", "TOP2A", "TPX2", "TSC22D3", "TUBA1A", "TUBA1B", "TUBB", "TUBB4B", "TXN", "TYMS",
+    "UBA52", "UBC", "UBE2C", "UHRF1", "YBX1", "YPEL5", "ZFP36", "ZWINT"
+]
+LATERAL_GENE_PATTERNS = ["RP[LS].*"]  # Ribosomal
 
-# estimated mean UMI content in downsampled data
-total_umis_of_cells = mc.ut.get_o_numpy(ad, name='__x__', sum=True)
-est_downsample_UMI = np.quantile(np.array(total_umis_of_cells), 0.05)
+# This will mark as "lateral_gene" any genes that match the above, if they exist in the clean dataset.
+mc.pl.mark_lateral_genes(
+    ad,
+    lateral_gene_names=LATERAL_GENE_NAMES,
+    lateral_gene_patterns=LATERAL_GENE_PATTERNS,
+)
+#> set 3k_pbmc.clean.var[lateral_gene]: 225 true (1.358%) out of 16564 bools
+```
 
-target_metacell_size = int(est_downsample_UMI * gamma * scale)
-target_metacell_size
-#> 98900
+Some genes have higher variances than expected which could lead to false positive outlier identification.
+Users can mark those genes as *noisy genes* using the `mc.pl.mark_noisy_genes()` function. 
+
+```python
+
+NOISY_GENE_NAMES = [
+    "CCL3", "CCL4", "CCL5", "CXCL8", "DUSP1", "FOS", "G0S2", "HBB", "HIST1H4C", "IER2", "IGKC",
+    "IGLC2", "JUN", "JUNB", "KLRB1", "MT2A", "RPS26", "RPS4Y1", "TRBC1", "TUBA1B", "TUBB"
+]
+# This will mark as "noisy_gene" any genes that match the above, if they exist in the clean dataset.
+mc.pl.mark_noisy_genes(ad, noisy_gene_names=NOISY_GENE_NAMES)
+#> set 3k_pbmc.clean.var[noisy_gene]: 17 true (0.1026%) out of 16564 bools
+```
+
+To extend this list of lateral genes, users can use the `relate_to_lateral_genes` function to identify genes that are highly correlated with the predefined lateral genes.
+The use of this function is described in [the vignette from the MC2 authors](https://tanaylab.github.io/metacells-vignettes/iterative.html).
+
+#### Define target_metacell_size (graining level) {-}
+
+By default, MC2 will build metacells with a size of 96 cells per metacells. 
+Users can vary the `target_metacell_size` parameter to reach a desired graining level. 
+
+
+```python
+gamma = 25 
+target_metacell_size = gamma
 ```
 
 #### Metacells identification using the divide and conquer approach {-}
 
-Metacell-2 uses its own feature selection approach (*i.e.*, selection of genes used to build metacells). 
-Additionally, users can explicitly specify which features should be used by providing two arguments:  
-i) `feature_gene_names`, *i.e.*, genes that have to be included and, ii) `forbidden_gene_names`, *i.e.*, genes that have to be excluded. 
-Examples of forbidden are cell cycle genes which reflect true biological signal but could bias the metacells construction. The Metacell-2 [original vignette](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html) provides additional information to identify forbidden genes.
-The previous arguments for feature selection are taken as input by the `pl.divide_and_conquer_pipeline` function which builds the metacells. 
-Note that by default all cores of the system will be used for the metacells construction. More information are available on the [original vignette](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html) to change this behavior and adapt the number of cores (see `ut.set_processors_count`) or the number processed in parallel (see `pl.set_max_parallel_piles`).
+The construction of metacells by MC2 is performed using the `mc.pl.divide_and_conquer_pipeline()` function.
+Note that by default all cores of the system will be used for the metacells construction. 
+To change this behavior and adapt the number of cores the MC2 authors propose to use the `mc.pl.guess_max_parallel_piles()` and `mc.pl.set_max_parallel_piles()` functions 
+to adapt the number of processed in parallel depending on the available memory.
+
+The `mc.pl.divide_and_conquer_pipeline()` function associates each cell to a metacell or defines the cell as outlier. 
+These assignments are found in the `obs` layer of the anndata object.
 
 
 ```python
+max_parallel_piles = mc.pl.guess_max_parallel_piles(ad)
+mc.pl.set_max_parallel_piles(max_parallel_piles)
 mc.pl.divide_and_conquer_pipeline(
     ad,
-    #feature_gene_names   = feature_gene_names, # comment this line to allow Metacell2 selecting features
-    #forbidden_gene_names = forbidden_gene_names, # comment this line to allow Metacell2 selecting features
     target_metacell_size = target_metacell_size,
     random_seed = 123456)
-#> set 3k_pbmc.clean.var[rare_gene]: 0 true (0%) out of 16566 bools
-#> set 3k_pbmc.clean.var[rare_gene_module]: 16566 int32 elements with all outliers (100%)
+#> set 3k_pbmc.clean.var[selected_gene]: * -> False
+#> set 3k_pbmc.clean.var[rare_gene]: 0 true (0%) out of 16564 bools
+#> set 3k_pbmc.clean.var[rare_gene_module]: 16564 int32 elements with all outliers (100%)
 #> set 3k_pbmc.clean.obs[cells_rare_gene_module]: 2638 int32 elements with all outliers (100%)
 #> set 3k_pbmc.clean.obs[rare_cell]: 0 true (0%) out of 2638 bools
-#> set 3k_pbmc.clean.layers[downsampled]: csr_matrix 2638 X 16566 float32s (1218892 > 0)
-#> set 3k_pbmc.clean.uns[downsample_samples]: 989
-#> set 3k_pbmc.clean.var[high_top3_gene]: 552 true (3.332%) out of 16566 bools
-#> set 3k_pbmc.clean.var[high_total_gene]: 4519 true (27.28%) out of 16566 bools
-#> set 3k_pbmc.clean.var[high_relative_variance_gene]: 3027 true (18.27%) out of 16566 bools
-#> set 3k_pbmc.clean.var[feature_gene]: 293 true (1.769%) out of 16566 bools
-#> set 3k_pbmc.clean.obsp[obs_similarity]: ndarray 2638 X 2638 float32s
-#> set 3k_pbmc.clean.obsp[obs_outgoing_weights]: csr_matrix 2638 X 2638 float32s (117211 > 0)
-#> set 3k_pbmc.clean.obs[seed]: 496 outliers (18.8%) out of 2638 int32 elements with 61 groups with mean size 35.11
-#> set 3k_pbmc.clean.obs[candidate]: 6 outliers (0.2274%) out of 2638 int32 elements with 67 groups with mean size 39.28
-#> set 3k_pbmc.clean.var[gene_deviant_votes]: 942 positive (5.686%) out of 16566 int32s
-#> set 3k_pbmc.clean.obs[cell_deviant_votes]: 889 positive (33.7%) out of 2638 int32s
-#> set 3k_pbmc.clean.obs[dissolved]: 10 true (0.3791%) out of 2638 bools
-#> set 3k_pbmc.clean.obs[metacell]: 905 outliers (34.31%) out of 2638 int64 elements with 66 groups with mean size 26.26
-#> set 3k_pbmc.clean.obs[outlier]: 905 true (34.31%) out of 2638 bools
-#> set 3k_pbmc.clean.uns[pre_directs]: 0
-#> set 3k_pbmc.clean.uns[directs]: 1
-#> set 3k_pbmc.clean.var[pre_high_total_gene]: * <- 0
-#> set 3k_pbmc.clean.var[high_total_gene]: 4519 positive (27.28%) out of 16566 int32s
-#> set 3k_pbmc.clean.var[pre_high_relative_variance_gene]: * <- 0
-#> set 3k_pbmc.clean.var[high_relative_variance_gene]: 3027 positive (18.27%) out of 16566 int32s
-#> set 3k_pbmc.clean.var[forbidden_gene]: * <- False
-#> set 3k_pbmc.clean.var[pre_feature_gene]: * <- 0
-#> set 3k_pbmc.clean.var[feature_gene]: 293 positive (1.769%) out of 16566 int32s
-#> set 3k_pbmc.clean.var[pre_gene_deviant_votes]: * <- 0
-#> set 3k_pbmc.clean.obs[pre_cell_directs]: * <- 0
-#> set 3k_pbmc.clean.obs[cell_directs]: * <- 0
-#> set 3k_pbmc.clean.obs[pre_pile]: * <- -1
-#> set 3k_pbmc.clean.obs[pile]: * <- 0
-#> set 3k_pbmc.clean.obs[pre_candidate]: * <- -1
-#> set 3k_pbmc.clean.obs[pre_cell_deviant_votes]: * <- 0
-#> set 3k_pbmc.clean.obs[pre_dissolved]: * <- False
-#> set 3k_pbmc.clean.obs[pre_metacell]: * <- -1
+#> set 3k_pbmc.clean.var[selected_gene]: 256 true (1.546%) out of 16564 bools
+#> set 3k_pbmc.clean.obs[metacell]: 2638 int32s
+#> set 3k_pbmc.clean.obs[dissolved]: 45 true (1.706%) out of 2638 bools
+#> set 3k_pbmc.clean.obs[metacell_level]: 2638 int32s
 
 ad.obs.metacell.head
 #> <bound method NDFrame.head of index
-#> AAACATACAACCAC-1    36
-#> AAACATTGAGCTAC-1    14
-#> AAACATTGATCAGC-1    26
-#> AAACCGTGCTTCCG-1    62
-#> AAACCGTGTATGCG-1    -1
-#>                     ..
-#> TTTCGAACTCTCAT-1    62
-#> TTTCTACTGAGGCA-1    14
-#> TTTCTACTTCCTCG-1    -1
-#> TTTGCATGAGAGGC-1    28
-#> TTTGCATGCCTCAC-1    27
-#> Name: metacell, Length: 2638, dtype: int64>
+#> AAACATACAACCAC-1     66
+#> AAACATTGAGCTAC-1     87
+#> AAACATTGATCAGC-1     84
+#> AAACCGTGCTTCCG-1     91
+#> AAACCGTGTATGCG-1    110
+#>                    ... 
+#> TTTCGAACTCTCAT-1    112
+#> TTTCTACTGAGGCA-1     74
+#> TTTCTACTTCCTCG-1    113
+#> TTTGCATGAGAGGC-1     57
+#> TTTGCATGCCTCAC-1     82
+#> Name: metacell, Length: 2638, dtype: int32>
 ```
 
-#### Retrieve aggregated metacell data {-}
 
-The `pl.divide_and_conquer_pipeline` function associate each cell to a metacell or defines the cell as outlier. These assignments are found in the `obs` layer of the anndata object
-The function `pl.collect_metacells` should be used to subsequently retrieve an anndata object containing the data at the metacells level instead of the single-cell level. 
-
-
-```python
-
-mc_ad = mc.pl.collect_metacells(ad, name='metacells')
-#> set metacells.var[excluded_gene]: 0 true (0%) out of 16566 bools
-#> set metacells.var[clean_gene]: 16566 true (100%) out of 16566 bools
-#> set metacells.var[forbidden_gene]: 0 true (0%) out of 16566 bools
-#> set metacells.var[pre_feature_gene]: 0 positive (0%) out of 16566 int32s
-#> set metacells.var[feature_gene]: 293 positive (1.769%) out of 16566 int32s
-#> set metacells.obs[pile]: [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
-#> set metacells.obs[candidate]: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, -2, 35 ]
-mc_ad.shape
-#> (66, 16566)
-```
-
-**Comparing the obtained and requested graining level**
-
-In the following code chunk, we estimate whether a deviation of the obtained gamma from the requested gamma is acceptable. If not, we suggest to increase or decrease the `scale` parameter to approach the desired graining level.
-
-
-[//]: # (mc2 estimate deviation of obtained graining level)
-
-
-```python
-gamma_obtained = ad.shape[0]/mc_ad.shape[0]
-print(gamma_obtained)
-#> 39.96969696969697
-
-gamma_dev = (gamma_obtained - gamma)/gamma
-if abs(gamma_dev) < 0.3: 
-    gamma_dev = 0
-
-if gamma_dev < 0:
-    print("Increase `target_metacell_size` parameter by increasing `scale` and re-run metacell divide_and_conquer_pipeline() to get larger graining level")
-elif gamma_dev > 0:
-    print("Deacrease `target_metacell_size` parameter by decreasing `scale` and re-run metacell divide_and_conquer_pipeline() to get smaller graining level")
-elif gamma_dev == 0:
-    print("The obtained graining level is acceptable, no need to re-run the metacell divide_and_conquer_pipeline() with a new `target_metacell_size` ")
-#> The obtained graining level is acceptable, no need to re-run the metacell divide_and_conquer_pipeline() with a new `target_metacell_size`
-```
-
-If the obtained graining level is not acceptable and you updated `scale` parameter according to the suggestion, do not forget to re-run chunk \@ref(chunk:mc2-divide-n-conquer) \@ref(aggregate-mc2).
-
-### Visualize metacells
-
-The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data. 
-This annotation will be used in the mc_QC package to compute metacells quality metrics. We also save the single-cell metadata in the metacell anndata object.
+The following code chunk adds a columns (named `membership`) containing the single_cell assignments to the obs attribute in the single-cell anndata object. 
+The membership information is required to compute metacells quality metrics as shown in chapter \@ref(QCs). 
 
 
 ```python
 # make a membership -- index of metacells to which single cells belong to 
 ad.obs['membership'] = [int(i)+1 if i >= 0 else np.nan for i in ad.obs.metacell] 
+```
 
+#### Retrieve aggregated metacell data {-}
+
+The function `mc.pl.collect_metacells()` should be used to subsequently retrieve an anndata object containing the data at the metacells level instead of the single-cell level. 
+This function will store in the `X` data matrix of the anndata object a matrix of gene fraction (*i.e.*, the sum of all gene levels in a metacell sums to 1)
+and it will store the total UMIs per gene per metacell in the layer `total_umis`. 
+
+
+```python
+
+mc_ad = mc.pl.collect_metacells(ad, name='metacells', random_seed = 123456)
+#> set metacells.obs[grouped]: 122 int64s
+#> set metacells.obs[total_umis]: 122 float64s
+#> set metacells.layers[total_umis]: ndarray 122 X 16564 float32s
+#> set metacells.obs[__zeros_downsample_umis]: 122 int64s
+#> set metacells.layers[zeros]: ndarray 122 X 16564 int32s
+#> set 3k_pbmc.clean.obs[metacell_name]: 2638 <U8s
+#> set metacells.var[gene_ids]: 16564 objects
+#> set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 16564 bools
+#> set metacells.var[properly_sampled_gene]: 16564 true (100%) out of 16564 bools
+#> set metacells.var[excluded_gene]: 0 true (0%) out of 16564 bools
+#> set metacells.var[full_gene_index]: 16564 int32s
+#> set metacells.var[lateral_gene]: 225 true (1.358%) out of 16564 bools
+#> set metacells.var[noisy_gene]: 17 true (0.1026%) out of 16564 bools
+#> set metacells.var[selected_gene]: 256 true (1.546%) out of 16564 bools
+#> set metacells.var[rare_gene]: 0 true (0%) out of 16564 bools
+#> set metacells.var[rare_gene_module]: 16564 int32s
+#> set metacells.obs[metacells_rare_gene_module]: 122 int32s
+#> set metacells.obs[rare_metacell]: 0 true (0%) out of 122 bools
+#> set metacells.uns[outliers]: 161
+#> set metacells.uns[metacells_algorithm]: metacells.0.9.0
+mc_ad.shape
+#> (122, 16564)
+mc_ad.X.sum(axis=1)[:5] 
+#> matrix([[1.        ],
+#>         [1.        ],
+#>         [1.        ],
+#>         [1.        ],
+#>         [0.99999994]], dtype=float32)
+mc_ad.layers['total_umis']
+#> array([[1., 0., 0., ..., 0., 0., 0.],
+#>        [0., 0., 0., ..., 0., 1., 0.],
+#>        [0., 0., 0., ..., 0., 0., 2.],
+#>        ...,
+#>        [0., 0., 0., ..., 0., 2., 3.],
+#>        [0., 0., 0., ..., 0., 0., 0.],
+#>        [1., 0., 0., ..., 0., 1., 0.]], dtype=float32)
+```
+
+<!-- **Comparing the obtained and requested graining level** -->
+
+<!-- In the following code chunk, we estimate whether a deviation of the obtained gamma from the requested gamma is acceptable. If not, we suggest to increase or decrease the `target_metacell_size` parameter to approach the desired graining level. -->
+
+<!-- ```{r mc2-gamma-deviation, child='./functional_chunks/mc2_gamma_deviation.Rmd'} -->
+<!-- ``` -->
+
+### Annotate metacells (using available annotations)
+
+If single-cell annotations are available in the original single-cell anndata object. We can transfer these annotations to the metacell anndata object
+using the `mc.tl.convey_obs_to_group()` function which will associate each metacell to the most frequent annotation (categorical) or 
+averaged annotation (continuous) across the single-cells composing the metacell 
+(use of the `mc.ut.most_frequent` and `np.mean` respectively in the `mode` paratemer). 
+ 
+
+```python
+# Assign a single value for each metacell based on the cells.
+mc.tl.convey_obs_to_group(
+    adata=ad, gdata=mc_ad,
+    property_name=annotation_label, to_property_name=annotation_label,
+    method=mc.ut.most_frequent  # This is the default, for categorical data
+)
+#> set metacells.obs[louvain]: 122 <U17s
+
+# Compute the fraction of cells with each possible value in each metacell:
+mc.tl.convey_obs_fractions_to_group(  
+    adata=ad, gdata=mc_ad,
+    property_name=annotation_label, to_property_name=annotation_label
+)
+#> set metacells.obs[louvain_fraction_of_B cells]: 122 float64s
+#> set metacells.obs[louvain_fraction_of_CD14+ Monocytes]: 122 float64s
+#> set metacells.obs[louvain_fraction_of_CD4 T cells]: 122 float64s
+#> set metacells.obs[louvain_fraction_of_CD8 T cells]: 122 float64s
+#> set metacells.obs[louvain_fraction_of_Dendritic cells]: 122 float64s
+#> set metacells.obs[louvain_fraction_of_FCGR3A+ Monocytes]: 122 float64s
+#> set metacells.obs[louvain_fraction_of_Megakaryocytes]: 122 float64s
+#> set metacells.obs[louvain_fraction_of_NK cells]: 122 float64s
+```
+ 
+### Save output 
+
+For future downstream analyses in python (section \@ref(standard-analysis-Py)), we save the metacell counts in an Anndata object: 
+
+
+```python
 ## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object
 mc_ad.uns = ad.uns.copy()
 mc_ad.uns['sc.obs'] = ad.obs.copy()
 
 # save the requested gamma
 mc_ad.uns['gamma'] = gamma
-```
 
-####  Compute latent space for metacell QC {-}
-To visualize the metacells, we can project the metacells on the single-cell UMAP representation. To run UMAP, we will generate in the next code chunk a lower-dimentional embedding of the data, so far not needed since the MC2 methods builds metacells from gene expression data and not from latent space. 
-Also, note that some of the QC metrics (e.g., **compactness** and **separation**), that we will compute in the next section of this tutorial, are computed from this latent space. 
+# save metacell size
+mc_ad.obs.rename(columns={'grouped':'size'}, inplace = True)
 
-
-
-[//]: # (MC2 compute PCA for computation of compactness and separation)
-
-
-```python
-# Save count as a separate layer
-ad.layers['counts'] = ad.X
-
-# Copy the counts to ".raw" attribute of the anndata since it is necessary for downstream analysis
-# This step should be performed after filtering 
-raw_ad = sc.AnnData(ad.layers['counts'])
-raw_ad.obs_names, raw_ad.var_names = ad.obs_names, ad.var_names
-ad.raw = raw_ad
-
-
-# Normalize cells, log transform and compute highly variable genes
-sc.pp.normalize_per_cell(ad)
-sc.pp.log1p(ad)
-sc.pp.highly_variable_genes(ad, n_top_genes=1000)
-
-# Compute principal components - 
-
-n_comp    = 10
-sc.tl.pca(ad, n_comps=n_comp, use_highly_variable=True)
-
-
-# Compute UMAP for visualization 
-sc.pp.neighbors(ad, n_neighbors=10, n_pcs=n_comp)
-sc.tl.umap(ad)
-```
-To visualize the metacell projection on the single-cell UMAP, we use the `mc_visualize` function from the `mc_QC`, this function was adapted from the `plot.plot_2D` included in the SEACells package.
-
-
-```python
-mc_proj = mc_QC.mc_visualize(ad, key='X_umap', group_by_name='membership', colour_sc_name='louvain',  colour_mc_name='membership', colour_metacells=True, legend_sc=None, legend_mc=None)
-#> No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
-mc_proj.show()
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/mc2-comp-umap-1.png" width="384" />
-
-### Metacell QC
-
-####  Compute purity, compactness and separation metrics {-}
-
-
-
-**Size distribution**
-
-```python
-#mc_size = SEACells.plot.plot_SEACell_sizes(ad, bins=20)
-
-#mc_ad.obs = pd.merge(mc_ad.obs, mc_size, left_index=True, right_index=True)
-#mc_ad.obs
-```
-
-When available, we can use cell annotation to annotate each metacell to the most abundant cell category (*e.g.* cell type) composing the metacell. 
-This also allows us to compute metacell purity. If the annotation considered is the cell type, the **purity** of a metacell is the proportion of the most abundant cell type within the metacell [ref SuperCell]
-
-```python
-mc_purity = mc_QC.purity(ad, annotation_label, MC_label = 'membership')
-mc_purity.head()
-#>                 louvain  louvain_purity
-#> membership                             
-#> 1.0         CD8 T cells        0.857143
-#> 2.0         CD4 T cells        0.869565
-#> 3.0         CD4 T cells        0.961538
-#> 4.0             B cells        1.000000
-#> 5.0         CD4 T cells        0.782609
-# add purity to metadata
-mc_ad.obs['purity'] = list(mc_purity[annotation_label + "_purity"])
-```
-
-The **compactness** of a metacell is the variance of the components within the metacell [ref SEACells]
-
-```python
-compactness = mc_QC.compactness(ad, 'X_pca', MC_label = 'membership', DO_DC = False, name = 'Compactness_PCA', n_comp=10)['Compactness_PCA']
-# add compactness to metadata
-mc_ad.obs['Compactness_PCA'] = list(compactness)
-```
-
-
-The **separation** of a metacell is the distance to the closest metacell [ref SEACells]
-
-```python
-separation = mc_QC.separation(ad, 'X_pca', MC_label = 'membership', DO_DC = False, name = 'Separation_PCA', n_comp=10)['Separation_PCA']
-# add separation to metadata
-mc_ad.obs['Separation_PCA'] = list(separation)
-```
-
-
-<!-- The **inner normalized variance (INV)** of a metacell is the mean-normalized variance of gene expression within the metacell [ref MC-2] -->
-<!-- ```{python, warning = FALSE, message = FALSE, result = FALSE, eval = FALSE} -->
-<!-- mc_INV = mc_QC.mc_inner_normalized_var(ad, MC_label = 'membership') -->
-
-<!-- mc_INV_val = mc_INV.quantile(0.95, axis=1, numeric_only=True) -->
-<!-- mc_INV_val = pd.DataFrame(mc_INV_val.transpose()).set_axis(['INV'], axis=1, inplace=False) -->
-<!-- # add INV to metadata -->
-<!-- mc_ad.obs['INV'] = list(mc_INV_val["INV"]) -->
-<!-- ``` -->
-
-
-```python
-ad.uns['mc_obs'] = mc_ad.obs
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='purity', colour_metacells=True,
-             legend_sc=None, legend_mc='auto', metacell_size=30)
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-16-3.png" width="384" />
-
-```python
-             
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='Compactness_PCA', colour_metacells=True, 
-             legend_sc=None, legend_mc='auto', metacell_size=30)   
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-16-4.png" width="384" />
-
-```python
-             
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='Separation_PCA', colour_metacells=True, 
-             legend_sc=None, legend_mc='auto', metacell_size=30)   
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-16-5.png" width="384" />
-
-##### Save output {-}
-
-
-
-
-
-```python
+print("Saving metacell object for the "+ proj_name+ " dataset using "+ MC_tool)
+#> Saving metacell object for the 3k_pbmc dataset using MC2
 mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
 ```
 
+For future QCs and downstream analyses in R (section \@ref(standard-analysis-R)), we save the metacell counts in a Seurat object: 
+
+```r
+library(Seurat)
+library(anndata)
+library(reticulate)
+adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_MC2.h5ad"))
+
+# Save counts and metadata in a Seurat object
+countMatrix <-  Matrix::t(adata_mc$X)
+colnames(countMatrix) <- adata_mc$obs_names
+rownames(countMatrix) <- adata_mc$var_names
+MC.seurat <- CreateSeuratObject(counts = as(countMatrix, 'CsparseMatrix'), meta.data = as.data.frame(adata_mc$obs))
+#> Warning: Feature names cannot have underscores ('_'), replacing with dashes
+#> ('-')
+#> Warning: Invalid name supplied, making object name syntactically valid. New
+#> object name is
+#> sizetotal_umisX__zeros_downsample_umismetacells_rare_gene_modulerare_metacelllouvainlouvain_fraction_of_B.cellslouvain_fraction_of_CD14..Monocyteslouvain_fraction_of_CD4.T.cellslouvain_fraction_of_CD8.T.cellslouvain_fraction_of_Dendritic.cellslouvain_fraction_of_FCGR3A..Monocyteslouvain_fraction_of_Megakaryocyteslouvain_fraction_of_NK.cells;
+#> see ?make.names for more details on syntax validity
+MC.seurat@misc[["var_features"]] <- rownames(adata_mc$var)[which(adata_mc$var$selected_gene == T)] 
+
+# Save membership in misc
+MC.seurat@misc$cell_membership <- py$ad$obs['membership']
+saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_MC2.rds'))
+```
 
 
 
 
 
-## SEACells (Python)
+
+
+## SEACells (Python) {#SEACells-construction}
 
 
 
@@ -495,8 +677,17 @@ mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
 
 
 
-In this section, we construct metacells using [SEACells](https://github.com/dpeerlab/SEACells). The code is adapted from the [author's jupyter notebook](https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb). 
-For more information on the method, please refer to the section 3 of chapter 2. 
+In this section, we construct metacells using [SEACells](https://github.com/dpeerlab/SEACells). 
+
+### Method 
+The SEAcells method builds a single-cell kNN graph from the Euclidean distance in the principal component space (SVD for scATAC-seq) space. 
+Distances in the graph are transformed to affinity by applying an adaptive Gaussian kernel. 
+The affinity matrix is then decomposed into archetypes (linear combination of cells) and membership matrices (cells as a linear combination of archetypes).
+Single cells are assigned to a given metacell based on the maximum membership value of the corresponding archetype.
+
+
+The code provided in this section is adapted from the [author's jupyter notebook](https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb). 
+For more information on the method, please refer to our review @Review and the original paper @SEACells. 
 
 #### Importing python packages {-}
 
@@ -512,20 +703,14 @@ import random
 ```
 
 
-```python
-import sys
-sys.path.append('./mc_QC/')
-import mc_QC
-```
-
-If you don't have these packages installed, please refer to the section 2 of chapter 1.
+If you don't have these packages installed, please refer to the section \@ref(installations).
 
 
 
 
 ### Data loading 
-Similarly to Metacell-2, we will run SEACells on the single-cell dataset composed of XX peripheral blood mononuclear cells (PBMCs). 
-Please follow the section 4 from Chapter 1 to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
+Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
 
 
 
@@ -543,7 +728,7 @@ ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad")
 ```
 
 ### Filtering steps 
-In this tutorial, the data have been pre-filterd in the section XX of chapter XX.
+In this tutorial, the data have been pre-filterd and SEACells does not perform additionnal filtering.
 
 ### Building metacells
 
@@ -568,6 +753,7 @@ To build the kernel for archetypal analysis, SEACells requires a lower-dimension
 In the next code chunk, we follow standard pre-processing steps prior to PCA computation, *i.e.*, data normalization, log transformation, identification of highly variable genes.
 PCA components are saved in the `obsm` attribute of the anndata object.
 
+
 [//]: # (This file runs standard preprocessing steps with scanpy)
 
 
@@ -576,37 +762,38 @@ To pre-process the single-cell data, we are using standard pre-processing for si
 
 ```python
 # Normalize cells, log transform and compute highly variable genes
-sc.pp.normalize_per_cell(ad)
+sc.pp.normalize_per_cell(ad, 10000)
 sc.pp.log1p(ad)
-sc.pp.highly_variable_genes(ad, n_top_genes=1000)
+sc.pp.highly_variable_genes(ad, n_top_genes=2000)
 ```
 
 
 ```python
 # Compute principal components - 
-# Here we use 10 components to be consistent with our main tutorial, but fill free to explore other number of principal components to use 
 
-n_comp    = 10
+n_comp    = 30
 sc.tl.pca(ad, n_comps=n_comp, use_highly_variable=True)
 
 # Compute UMAP for visualization
-sc.pp.neighbors(ad, n_neighbors=10, n_pcs=n_comp)
+# Here we use 30 components to be consistent with our main tutorial, but fill free to explore other number of principal components to use 
+
+sc.pp.neighbors(ad, n_neighbors=15, n_pcs=30)
 sc.tl.umap(ad)
 ```
 
 #### Setting up SEACells parameters {-}
 
-In this tutorial, we will use in the SEACells model the 10 first principal components resulting from the PCA to build the knn graph which will be used to compute the kernel. 
+In this tutorial, we will use in the SEACells model the 30 first principal components resulting from the PCA to build the knn graph which will be used to compute the kernel. 
 The number of neighbors to considered for the knn graph can be fixed using the `n_neighbors` parameter (here 15).  
 As mentioned previously, users should provide as input the number of metacells required (`n_SEACells` parameter). This number can be defined as the ratio between the number of single cells and the desired graining level (`gamma` parameter in the following code chunk). 
-In this example, we choose a graining level of 50.  
+In this example, we choose a graining level of 25.  
 
 
 ```python
 build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
 n_waypoint_eigs = 10      # Number of eigenvalues to consider when initializing metacells
 n_neighbors = 15 # Number of neighbors used for graph construction 
-gamma = 50   # the requested graining level
+gamma = 25   # the requested graining level
 n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  
 ```
 
@@ -651,12 +838,12 @@ model.initialize_archetypes()
 #> Done.
 #> Sampling waypoints ...
 #> Done.
-#> Selecting 39 cells from waypoint initialization.
+#> Selecting 88 cells from waypoint initialization.
 #> Initializing residual matrix using greedy column selection
 #> Initializing f and g...
-#> Selecting 13 cells from greedy initialization.
+#> Selecting 17 cells from greedy initialization.
 #> 
-#>   0%|          | 0/23 [00:00<?, ?it/s]100%|##########| 23/23 [00:00<00:00, 441.29it/s]
+#>   0%|          | 0/27 [00:00<?, ?it/s]100%|##########| 27/27 [00:00<00:00, 275.01it/s]
 # Visualize the initialization 
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') 
 ```
@@ -679,8 +866,40 @@ model.fit(min_iter = 10, max_iter = 50)
 #> Completed iteration 10.
 #> Starting iteration 20.
 #> Completed iteration 20.
-#> Converged after 25 iterations.
+#> Starting iteration 30.
+#> Completed iteration 30.
+#> Starting iteration 40.
+#> Completed iteration 40.
+#> Converged after 46 iterations.
 model.plot_convergence()
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
+#> findfont: Font family 'Bitstream Vera Sans' not found.
 ```
 
 <img src="21-MC_construction_discrete_files/figure-html/seacells-model-fit-3.png" width="384" />
@@ -694,34 +913,34 @@ For more details on the soft assignments, please refer to the [SEACell paper](ht
 ```python
 membership = model.get_hard_assignments()
 membership.head
-#> <bound method NDFrame.head of                      SEACell
-#> index                       
-#> AAACATACAACCAC-1  SEACell-41
-#> AAACATTGAGCTAC-1   SEACell-1
-#> AAACATTGATCAGC-1   SEACell-4
-#> AAACCGTGCTTCCG-1  SEACell-19
-#> AAACCGTGTATGCG-1  SEACell-40
-#> ...                      ...
-#> TTTCGAACTCTCAT-1  SEACell-50
-#> TTTCTACTGAGGCA-1  SEACell-44
-#> TTTCTACTTCCTCG-1  SEACell-27
-#> TTTGCATGAGAGGC-1  SEACell-51
-#> TTTGCATGCCTCAC-1  SEACell-24
+#> <bound method NDFrame.head of                       SEACell
+#> index                        
+#> AAACATACAACCAC-1   SEACell-58
+#> AAACATTGAGCTAC-1   SEACell-69
+#> AAACATTGATCAGC-1    SEACell-0
+#> AAACCGTGCTTCCG-1   SEACell-47
+#> AAACCGTGTATGCG-1   SEACell-57
+#> ...                       ...
+#> TTTCGAACTCTCAT-1    SEACell-1
+#> TTTCTACTGAGGCA-1  SEACell-101
+#> TTTCTACTTCCTCG-1   SEACell-30
+#> TTTGCATGAGAGGC-1   SEACell-69
+#> TTTGCATGCCTCAC-1   SEACell-23
 #> 
 #> [2638 rows x 1 columns]>
 ad.obs["SEACell"].head
 #> <bound method NDFrame.head of index
-#> AAACATACAACCAC-1    SEACell-41
-#> AAACATTGAGCTAC-1     SEACell-1
-#> AAACATTGATCAGC-1     SEACell-4
-#> AAACCGTGCTTCCG-1    SEACell-19
-#> AAACCGTGTATGCG-1    SEACell-40
-#>                        ...    
-#> TTTCGAACTCTCAT-1    SEACell-50
-#> TTTCTACTGAGGCA-1    SEACell-44
-#> TTTCTACTTCCTCG-1    SEACell-27
-#> TTTGCATGAGAGGC-1    SEACell-51
-#> TTTGCATGCCTCAC-1    SEACell-24
+#> AAACATACAACCAC-1     SEACell-58
+#> AAACATTGAGCTAC-1     SEACell-69
+#> AAACATTGATCAGC-1      SEACell-0
+#> AAACCGTGCTTCCG-1     SEACell-47
+#> AAACCGTGTATGCG-1     SEACell-57
+#>                        ...     
+#> TTTCGAACTCTCAT-1      SEACell-1
+#> TTTCTACTGAGGCA-1    SEACell-101
+#> TTTCTACTTCCTCG-1     SEACell-30
+#> TTTGCATGAGAGGC-1     SEACell-69
+#> TTTGCATGCCTCAC-1     SEACell-23
 #> Name: SEACell, Length: 2638, dtype: object>
 ```
 
@@ -729,11 +948,13 @@ ad.obs["SEACell"].head
 
 The `core.summarize_by_SEACell` function can be used to generate a metacell count matrix (aggregation of counts across all cells belonging to each metacell).  
 
-
 ```python
-mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw')
-#>   0%|          | 0/52 [00:00<?, ?it/s]100%|##########| 52/52 [00:00<00:00, 564.32it/s]
+mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
+#>   0%|          | 0/105 [00:00<?, ?it/s] 51%|#####1    | 54/105 [00:00<00:00, 532.25it/s]100%|##########| 105/105 [00:00<00:00, 545.47it/s]
 ```
+#### Annotate metacells {-}
+Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 
+allowed us to annotate the metacells to the most common cell type in each metacell.
 
 ### Visualize metacells
 
@@ -746,458 +967,102 @@ SEACells.plot.plot_2D(ad, key='X_umap', colour_metacells=True)
 
 <img src="21-MC_construction_discrete_files/figure-html/seacells-umap-5.png" width="480" />
 
-### Metacell QC
-####  Compute purity, compactness and separation metrics {-}
+<!-- The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data. -->
+<!-- This annotation will be used to compute metacells quality metrics. -->
 
-The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data. 
-This annotation will be used in the mc_QC package to compute metacells quality metrics.
-
-
-```python
-# make `membership` numeric
-d = {x: int(i)+1 for i, x in enumerate(mc_ad.obs_names)}
-ad.obs.merge(membership)
-ad.obs['membership'] = [d[x] for x in membership.SEACell]
-#mc_QC.mc_visualize(ad, key='X_umap', group_by_name='SEACell', colour_sc_name='louvain',  colour_mc_name='SEACell', colour_metacells=True, legend_sc='full', legend_mc=None)
-```
-
-
-
-**Size distribution**
-
-```python
-#mc_size = SEACells.plot.plot_SEACell_sizes(ad, bins=20)
-
-#mc_ad.obs = pd.merge(mc_ad.obs, mc_size, left_index=True, right_index=True)
-#mc_ad.obs
-```
-
-When available, we can use cell annotation to annotate each metacell to the most abundant cell category (*e.g.* cell type) composing the metacell. 
-This also allows us to compute metacell purity. If the annotation considered is the cell type, the **purity** of a metacell is the proportion of the most abundant cell type within the metacell [ref SuperCell]
-
-```python
-mc_purity = mc_QC.purity(ad, annotation_label, MC_label = 'membership')
-mc_purity.head()
-#>                     louvain  louvain_purity
-#> membership                                 
-#> 1               CD8 T cells        0.741379
-#> 2                   B cells        0.967213
-#> 3               CD4 T cells        0.941860
-#> 4           CD14+ Monocytes        0.950000
-#> 5                  NK cells        1.000000
-# add purity to metadata
-mc_ad.obs['purity'] = list(mc_purity[annotation_label + "_purity"])
-```
-
-The **compactness** of a metacell is the variance of the components within the metacell [ref SEACells]
-
-```python
-compactness = mc_QC.compactness(ad, 'X_pca', MC_label = 'membership', DO_DC = False, name = 'Compactness_PCA', n_comp=10)['Compactness_PCA']
-# add compactness to metadata
-mc_ad.obs['Compactness_PCA'] = list(compactness)
-```
-
-
-The **separation** of a metacell is the distance to the closest metacell [ref SEACells]
-
-```python
-separation = mc_QC.separation(ad, 'X_pca', MC_label = 'membership', DO_DC = False, name = 'Separation_PCA', n_comp=10)['Separation_PCA']
-# add separation to metadata
-mc_ad.obs['Separation_PCA'] = list(separation)
-```
-
-
-<!-- The **inner normalized variance (INV)** of a metacell is the mean-normalized variance of gene expression within the metacell [ref MC-2] -->
-<!-- ```{python, warning = FALSE, message = FALSE, result = FALSE, eval = FALSE} -->
-<!-- mc_INV = mc_QC.mc_inner_normalized_var(ad, MC_label = 'membership') -->
-
-<!-- mc_INV_val = mc_INV.quantile(0.95, axis=1, numeric_only=True) -->
-<!-- mc_INV_val = pd.DataFrame(mc_INV_val.transpose()).set_axis(['INV'], axis=1, inplace=False) -->
-<!-- # add INV to metadata -->
-<!-- mc_ad.obs['INV'] = list(mc_INV_val["INV"]) -->
+<!-- ```{python seacells-membership, cache = TO_CACHE, warning = FALSE, message = FALSE} -->
+<!-- # make `membership` numeric -->
+<!-- d = {x: int(i)+1 for i, x in enumerate(mc_ad.obs_names)} -->
+<!-- ad.obs.merge(membership) -->
+<!-- ad.obs['membership'] = [d[x] for x in membership.SEACell] -->
 <!-- ``` -->
 
-
-```python
-ad.uns['mc_obs'] = mc_ad.obs
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='purity', colour_metacells=True,
-             legend_sc=None, legend_mc='auto', metacell_size=30)
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-28-7.png" width="384" />
-
-```python
-             
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='Compactness_PCA', colour_metacells=True, 
-             legend_sc=None, legend_mc='auto', metacell_size=30)   
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-28-8.png" width="384" />
-
-```python
-             
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='Separation_PCA', colour_metacells=True, 
-             legend_sc=None, legend_mc='auto', metacell_size=30)   
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-28-9.png" width="384" />
-
 ##### Save output {-}
-
-
+For future downstream analyses in python (section \@ref(standard-analysis-Py)), we save the metacell counts in an Anndata object: 
 
 
 ```python
+print("Saving metacell object for the "+ proj_name+ " dataset using "+ MC_tool)
+#> Saving metacell object for the 3k_pbmc dataset using SEACells
+
+# Save metacell sizes 
+label_df = ad.obs[['SEACell']].reset_index()
+mc_ad.obs = mc_ad.obs.join(pd.DataFrame(label_df.groupby('SEACell').count().iloc[:, 0]).rename(columns={'index':'size'}))
+
+# save pca used to compute metacells
+mc_ad.uns['var_features']=ad.var_names[ad.var.highly_variable].tolist()
+mc_ad.uns['sc.pca']=ad.obsm['X_pca'] 
+mc_ad.uns['sc.umap']=ad.obsm['X_umap'] 
 mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
 ```
 
-
-
-
-
-
-
-## SuperCell (R)
-
-
-
-[//]: # (Code to run mc construction with SuperCell for a discrete dataset)
-
-
-
-
-In this section, we construct metacells using [SuperCell](https://github.com/GfellerLab/SuperCell). The code is adapted from the [author's github documentation](https://github.com/GfellerLab/SuperCell/blob/master/README.Rmd).
-For more information on the method, please refer to the section \@ref(SuperCell).
-
-#### Importing R packages {-}
-
-To run SuperCell, the following python packages need to be imported:
-
-
-```r
-if(system.file(package='SuperCell') == ""){
-  remotes::install_github("GfellerLab/SuperCell", force = TRUE, upgrade = FALSE)
-} 
-library(SuperCell)
-```
-
-
-```python
-import sys
-sys.path.append('./mc_QC/')
-import mc_QC
-import pandas as pd
-import scanpy as sc
-import SEACells
-```
-
-If you don't have these packages installed, please refer to the section 2 of chapter 1.
-
-
-
-### Data loading
-Similarly to Metacell-2 and SEACells, we will run SuperCell on the single-cell dataset composed of XX peripheral blood mononuclear cells (PBMCs).
-Please follow the section 4 from Chapter 1 to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
-
-
-```r
-MC_tool = "SuperCell"
-proj_name = "3k_pbmc"
-sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
-```
-
-### Filtering steps
-In this tutorial, the data have been pre-filtered in the section XX of chapter XX.
-
-### Building metacells
-
-Metacells construction using SuperCell requires one main inputs, *i.e.* a matrix of log-normalized gene expression data which will be used to compute PCA to build a knn graph for metacells identification.
-Important optional inputs are: i) the graining level (`gamma` parameter), 
-ii) the number of neighbors to consider for the knn graph (`k.knn` parameter). 
-
-#### Data pre-processing {-}
-
-SuperCell builds a knn graph based on a lower-dimensional embedding of the data. The computation of this embedding is performed internally in the `SCimplify` SuperCell function.  
-No pre-processing is thus required from the users.
+For future downstream analyses in R (section \@ref(standard-analysis-R)), we save the metacell counts in a Seurat object: 
 
 ```r
 library(Seurat)
-#> Attaching SeuratObject
-sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
-sc_data <- FindVariableFeatures(sc_data, nfeatures = 1000)
-sc_data <- ScaleData(sc_data)
-#> Centering and scaling data matrix
-sc_data <- RunPCA(sc_data, npcs = 10, features = )
-#> PC_ 1 
-#> Positive:  LTB, CD2, ACAP1, STK17A, CTSW, CCL5, GIMAP5, AQP3, GZMA, CST7 
-#> 	   MAL, HOPX, GZMK, NKG7, KLRG1, LYAR, RIC3, PRF1, FAM107B, CCND3 
-#> 	   CD79A, SRSF7, PASK, PTPN4, GZMH, GPR183, FGFBP2, TIGIT, TCL1A, ARID5B 
-#> Negative:  CST3, TYROBP, LST1, AIF1, FTL, LYZ, FTH1, FCN1, S100A9, TYMP 
-#> 	   FCER1G, CFD, LGALS1, S100A8, LGALS2, CTSS, IFITM3, PSAP, CFP, SAT1 
-#> 	   IFI30, COTL1, S100A11, NPC2, LGALS3, GSTP1, NCF2, PYCARD, CDA, GPX1 
-#> PC_ 2 
-#> Positive:  NKG7, CST7, GZMA, PRF1, GZMB, FGFBP2, CTSW, GNLY, CCL4, GZMH 
-#> 	   CCL5, FCGR3A, XCL2, CLIC3, SRGN, HOPX, S100A4, TTC38, IGFBP7, ID2 
-#> 	   ANXA1, ACTB, TMSB4X, APOBEC3G, KLRG1, LYAR, CD160, ABI3, HAVCR2, IFITM2 
-#> Negative:  CD79A, MS4A1, HLA-DQA1, HLA-DQB1, TCL1A, HLA-DRA, CD79B, CD74, HLA-DRB1, HLA-DPB1 
-#> 	   HLA-DMA, HLA-DRB5, HLA-DPA1, FCRLA, LTB, HVCN1, BLNK, P2RX5, IRF8, IGLL5 
-#> 	   SMIM14, PPP1R14A, C16orf74, MZB1, RP5-887A10.1, BTK, RP11-428G5.5, IL4R, PHACTR1, IGJ 
-#> PC_ 3 
-#> Positive:  HLA-DPA1, HLA-DPB1, HLA-DRB5, HLA-DRB1, CD74, HLA-DQB1, HLA-DQA1, CD79B, HLA-DRA, CD79A 
-#> 	   MS4A1, RBM3, HLA-DMA, IFITM2, TCL1A, CSNK2B, HVCN1, UBE2L6, YWHAB, IRF8 
-#> 	   CTSS, PSMA7, UBXN1, S100A4, C1orf162, PYCARD, APOBEC3G, SMIM14, SRSF7, TYROBP 
-#> Negative:  PPBP, PF4, SDPR, SPARC, GNG11, NRGN, HIST1H2AC, GP9, RGS18, TUBB1 
-#> 	   CLU, AP001189.4, CD9, ITGA2B, PTCRA, CA2, TMEM40, ACRBP, MMD, TREML1 
-#> 	   SEPT5, RUFY1, MYL9, TSC22D1, MPP1, CMTM5, LY6G6F, GP1BA, RP11-367G6.3, CLEC1B 
-#> PC_ 4 
-#> Positive:  HLA-DQA1, CD79B, CD79A, CD74, HLA-DQB1, HLA-DPB1, MS4A1, HLA-DPA1, HLA-DRB1, HLA-DRA 
-#> 	   HLA-DRB5, TCL1A, GZMB, FGFBP2, HLA-DMA, NKG7, PRF1, HVCN1, CST7, GNLY 
-#> 	   FCRLA, FCGR3A, GZMH, GZMA, CCL4, IRF8, BLNK, IGLL5, CLIC3, P2RX5 
-#> Negative:  FYB, MAL, S100A8, AQP3, TMSB4X, CD2, S100A9, S100A4, GIMAP4, RBP7 
-#> 	   GIMAP5, S100A12, LGALS2, ANXA1, FOLR3, LYZ, FCN1, PASK, MS4A6A, S100A11 
-#> 	   CORO1B, AIF1, IL8, ATP5H, CRIP2, IL23A, PPA1, LTB, LGALS3BP, ASGR1 
-#> PC_ 5 
-#> Positive:  S100A8, LGALS2, S100A9, S100A12, RBP7, FGFBP2, FOLR3, MS4A6A, GZMB, CCL4 
-#> 	   CCL3, NKG7, GNLY, CST7, GSTP1, GZMA, PRF1, GZMH, ASGR1, CTSW 
-#> 	   LYZ, CCL5, CLIC3, XCL2, TYROBP, IL8, FCN1, GPX1, FCGR1A, TTC38 
-#> Negative:  LTB, MS4A7, IFITM2, HN1, LILRB2, WARS, CTD-2006K23.1, AQP3, VMO1, GDI2 
-#> 	   ADA, ANXA5, NAAA, FCGR3A, CORO1B, ABRACL, CD2, PPM1N, ATP5C1, HSP90AA1 
-#> 	   TIMP1, ARL6IP5, ICAM2, COTL1, C1QA, OAS1, PPA1, MAL, ABI3, TNFSF10
-sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:10), n.neighbors = 10)
-#> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
-#> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
-#> This message will be shown once per session
-#> 15:23:33 UMAP embedding parameters a = 0.9922 b = 1.112
-#> 15:23:33 Read 2638 rows and found 10 numeric columns
-#> 15:23:33 Using Annoy for neighbor search, n_neighbors = 10
-#> 15:23:33 Building Annoy index with metric = cosine, n_trees = 50
-#> 0%   10   20   30   40   50   60   70   80   90   100%
-#> [----|----|----|----|----|----|----|----|----|----|
-#> **************************************************|
-#> 15:23:33 Writing NN index file to temp file /tmp/RtmpfxPN15/file9ea5737c903
-#> 15:23:33 Searching Annoy index using 1 thread, search_k = 1000
-#> 15:23:34 Annoy recall = 100%
-#> 15:23:34 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 10
-#> 15:23:34 Initializing from normalized Laplacian + noise (using irlba)
-#> 15:23:34 Commencing optimization for 500 epochs, with 34256 positive edges
-#> 15:23:36 Optimization finished
-UMAPPlot(sc_data, group.by = "louvain")
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/supercell-data-processing-1.png" width="672" />
-
-#### Setting up SuperCell parameters {-}
-
-In this tutorial, we will use in the SuperCell method using the 10 first principal components resulting from the PCA.
-We chose a graining level of 50 and a number of neighbors of 15 for knn.
-
-
-```r
-gamma = 50   # the requested graining level.
-k.knn = 15 # the number of neighbors considered to build the knn network.
-nb.var.genes = 1000 # number of the top variable genes to use for dimensionality reduction 
-```
-
-#### Metacells idenification {-}
-
-
-```r
-MC <- SuperCell::SCimplify(sc_data@assays$RNA@data,  # single-cell log-normalized gene expression data
-                k.knn = k.knn, 
-                gamma = gamma, 
-                n.var.genes = nb.var.genes 
-)
-```
-
-SuperCell returns a list containing the following main elements: 
-i) the single-cell assignments to metacells (`membership`),
-ii)
-
-#### Retrieve aggregated metacell data {-}
-
-The `supercell_GE()` function can be used to generate a metacell count matrix (aggregation of counts across all cells belonging to each metacell). 
-Two modes can be used for single-cell aggregation, *i.e.* averaging or summing counts (using the `mode` parameter).    
-
-
-```r
-MC.GE <- supercell_GE(sc_data@assays$RNA@counts, MC$membership, mode = "sum")
-dim(MC.GE) 
-#> [1] 32738    53
-```
-
-### Visualize metacells
-
-We can assign each metacell to a particular annotation using the `supercell_assign()` function. 
-By default, this function assigns each metacell to a cluster with the largest Jaccard coefficient to avoid biases towards very rare or very abundant clusters. 
-Alternatively, assignment can be performed using `relative` (may cause biases towards very small populations) or `absolute` (may cause biases towards large populations) abundance with `method = "relative"` or `method = "absolute"`, respectively. 
-
-
-```r
-MC$annotation <- supercell_assign(clusters = sc_data@meta.data$louvain, # single-cell annotation
-                                  supercell_membership = MC$membership, # single-cell assignment to metacells
-                                  method = "jaccard")
-```
-
-The SuperCell package provides the `supercell_plot` function to visualize the metacell network, which is stored `MC` object in `graph.supercells`.
-The metacells can be colored with respect to a vector of annotation.
-
-
-```r
-supercell_plot(
-  MC$graph.supercells, 
-  group = MC$annotation, 
-  seed = 1, 
-  alpha = -pi/2,
-  main  = "Metacells colored by cell line assignment"
-)
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/SuperCell-graph-1.png" width="672" />
-
-To visualize the metacells, we can project the metacells on the single-cell UMAP representation using the `plot.plot_2D` included in the SEACells package.
-To use this function we need to create a anndata object as well as to run UMAP on the single cell data.
-
-
-```r
 library(anndata)
-# Create anndata object from R 
-r_ad <- AnnData(X = Matrix::t(sc_data@assays$RNA@counts),
-                obs = sc_data@meta.data,
-                obsm = list(X_pca = sc_data@reductions$pca@cell.embeddings,
-                            X_umap = sc_data@reductions$umap@cell.embeddings)
-                )
-r_ad$obs['membership'] <- MC$membership 
-```
+library(reticulate)
+adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_SEACells.h5ad"))
 
-
-```python
-# save anndata object in python environment 
-ad = r.r_ad 
-```
-
-
-```python
-mc_proj = mc_QC.mc_visualize(ad, key='X_umap', group_by_name='membership', colour_sc_name='membership', colour_mc_name='membership', colour_metacells=True, legend_sc=None, legend_mc=None)
-mc_proj.show()
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/SuperCell-umap-1.png" width="384" />
-
-### Metacell QC
-####  Compute purity, compactness and separation metrics {-}
-
-The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data.
-This annotation will be used in the mc_QC package to compute metacells quality metrics.
-
-
-```r
-library(anndata)
-# Create anndata object from R
-r_mc_ad <- AnnData(X = Matrix::t(MC.GE),
-                   obs = data.frame(annotation = MC$annotation))
-```
-
-
-```python
-# save anndata object in python environment 
-mc_ad = r.r_mc_ad 
+# Save counts and metadata in a Seurat object
+countMatrix <-  Matrix::t(adata_mc$X)
+colnames(countMatrix) <- adata_mc$obs_names
+rownames(countMatrix) <- adata_mc$var_names
+MC.seurat <- CreateSeuratObject(counts = as(countMatrix, 'CsparseMatrix'), meta.data = as.data.frame(adata_mc$obs))
+#> Warning: Feature names cannot have underscores ('_'), replacing with dashes
+#> ('-')
+# MC.seurat@misc[["sc.pca"]] <- adata_mc$uns$sc.pca
+# MC.seurat@misc[["sc.umap"]] <- adata_mc$uns$sc.umap
+MC.seurat@misc[["var_features"]] <- adata_mc$uns$var_features 
+pca.res <- adata_mc$uns$sc.pca
+rownames(pca.res) <- rownames(py$ad$obs)
+MC.seurat@misc$sc.pca <- CreateDimReducObject(
+  embeddings = pca.res,
+  key = "PC_",
+  assay = "RNA"
+)
+#> Warning: No columnames present in cell embeddings, setting to 'PC_1:30'
+# Save membership in misc
+MC.seurat@misc$cell_membership <- data.frame(row.names = rownames(py$membership), membership = py$membership$SEACell)
+saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_SEACells.rds'))
 ```
 
 
 
-**Size distribution**
 
-```python
-#mc_size = SEACells.plot.plot_SEACell_sizes(ad, bins=20)
 
-#mc_ad.obs = pd.merge(mc_ad.obs, mc_size, left_index=True, right_index=True)
-#mc_ad.obs
-```
 
-When available, we can use cell annotation to annotate each metacell to the most abundant cell category (*e.g.* cell type) composing the metacell. 
-This also allows us to compute metacell purity. If the annotation considered is the cell type, the **purity** of a metacell is the proportion of the most abundant cell type within the metacell [ref SuperCell]
 
-```python
-mc_purity = mc_QC.purity(ad, annotation_label, MC_label = 'membership')
-mc_purity.head()
-#>                     louvain  louvain_purity
-#> membership                                 
-#> 1.0             CD4 T cells        0.973684
-#> 2.0             CD4 T cells        0.975610
-#> 3.0             CD4 T cells        0.990476
-#> 4.0             CD8 T cells        0.871287
-#> 5.0         CD14+ Monocytes        0.764706
-# add purity to metadata
-mc_ad.obs['purity'] = list(mc_purity[annotation_label + "_purity"])
-```
+## Command line tool {#command-line}
+We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
+The command line tool take multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
+which is for example required in a benchmark setting.
 
-The **compactness** of a metacell is the variance of the components within the metacell [ref SEACells]
 
-```python
-compactness = mc_QC.compactness(ad, 'X_pca', MC_label = 'membership', DO_DC = False, name = 'Compactness_PCA', n_comp=10)['Compactness_PCA']
-# add compactness to metadata
-mc_ad.obs['Compactness_PCA'] = list(compactness)
+
+```bash
+setwd("MetacellToolkit/")
 ```
 
 
-The **separation** of a metacell is the distance to the closest metacell [ref SEACells]
+```bash
+proj_name="3k_pbmc"
+MC_tool="SuperCell"
+# input raw adata output adata
+Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata
 
-```python
-separation = mc_QC.separation(ad, 'X_pca', MC_label = 'membership', DO_DC = False, name = 'Separation_PCA', n_comp=10)['Separation_PCA']
-# add separation to metadata
-mc_ad.obs['Separation_PCA'] = list(separation)
-```
-
-
-<!-- The **inner normalized variance (INV)** of a metacell is the mean-normalized variance of gene expression within the metacell [ref MC-2] -->
-<!-- ```{python, warning = FALSE, message = FALSE, result = FALSE, eval = FALSE} -->
-<!-- mc_INV = mc_QC.mc_inner_normalized_var(ad, MC_label = 'membership') -->
-
-<!-- mc_INV_val = mc_INV.quantile(0.95, axis=1, numeric_only=True) -->
-<!-- mc_INV_val = pd.DataFrame(mc_INV_val.transpose()).set_axis(['INV'], axis=1, inplace=False) -->
-<!-- # add INV to metadata -->
-<!-- mc_ad.obs['INV'] = list(mc_INV_val["INV"]) -->
-<!-- ``` -->
-
-
-```python
-ad.uns['mc_obs'] = mc_ad.obs
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='purity', colour_metacells=True,
-             legend_sc=None, legend_mc='auto', metacell_size=30)
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-36-1.png" width="384" />
-
-```python
-             
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='Compactness_PCA', colour_metacells=True, 
-             legend_sc=None, legend_mc='auto', metacell_size=30)   
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-36-2.png" width="384" />
-
-```python
-             
-mc_QC.mc_visualize_continuous(ad, key='X_umap', group_by_name='membership', 
-             colour_sc_name='louvain',  colour_mc_name='Separation_PCA', colour_metacells=True, 
-             legend_sc=None, legend_mc='auto', metacell_size=30)   
-```
-
-<img src="21-MC_construction_discrete_files/figure-html/unnamed-chunk-36-3.png" width="384" />
-
-##### Save output {-}
-
-
-
-
-```python
-mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
+# input raw adata output seurat
+Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat
 ```
 
 
 
+```bash
+proj_name="3k_pbmc"
+MC_tool="SEACells"
+# input raw adata output adata
+Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata
+
+# input raw adata output seurat
+Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat
+```
