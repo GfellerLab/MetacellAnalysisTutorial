@@ -8,12 +8,20 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 
-In this section, we construct metacells using [SuperCell](https://github.com/GfellerLab/SuperCell). The code is adapted from the [author's github documentation](https://github.com/GfellerLab/SuperCell/blob/master/README.Rmd).
-For more information on the method, please refer to the section \@ref(SuperCell).
+In this section, we construct metacells using the R package [SuperCell](https://github.com/GfellerLab/SuperCell). 
+
+### Method 
+
+The SuperCell method first reduces the gene expression space using principal component analysis (PCA) and computes euclidean distances based on the reduced space. 
+Using the euclidean distances, a single-cell kNN graph is built and metacells are identified by applying the walktrap community detection algorithm. 
+The number of metacells obtained can be chosen by the user by defining the graining level parameter.
+
+The code provided in this section is adapted from the [author's github documentation](https://github.com/GfellerLab/SuperCell/blob/master/README.Rmd).
+For more information on the method, please refer to our review @Review and the original paper @SuperCell.
 
 #### Importing R packages {-}
 
-To run SuperCell, the following python packages need to be imported:
+To run SuperCell, the following R package needs to be imported:
 
 ```{r SuperCell-packages, eval = TRUE}
 if(system.file(package='SuperCell') == ""){
@@ -22,122 +30,129 @@ if(system.file(package='SuperCell') == ""){
 library(SuperCell)
 ```
 
-```{python SuperCell-python-imports, eval = FALSE}
-import sys
-sys.path.append('./mc_QC/')
-import mc_QC
-import pandas as pd
-import scanpy as sc
-import SEACells
-```
-
-If you don't have these packages installed, please refer to the section 2 of chapter 1.
-
 ```{r SuperCell-r-global-parameters, echo = FALSE}
 ## Parameters
 MC_tool = "SuperCell"
 
 ## Here we can modify dataset
-proj_name = c("cell_lines", "3k_pbmc")[2]
+proj_name = c("cell_lines", "3k_pbmc", "cd34_multiome","10k_pbmc")[2]
 
-annotation_label = list('cell_lines'='cell_line',
-                   '3k_pbmc'='louvain')[proj_name]
+annotation_label = unlist(list('cell_lines'='cell_line',
+                               '3k_pbmc'='louvain',
+                               'cd34_multiome'='celltype',
+                               "10k_pbmc" = "seurat_annotations")[proj_name])
 ```
-```{python SuperCell-py-global-parameters, echo = FALSE}
-## Parameters
-MC_tool = "SuperCell"
 
-## Here we can modify dataset
-proj_name = ["cell_lines", "3k_pbmc"][1]
-
-annotation_label = {'cell_lines':'cell_line',
-                   '3k_pbmc':'louvain'}[proj_name]
-```
 ### Data loading
-Similarly to Metacell-2 and SEACells, we will run SuperCell on the single-cell dataset composed of XX peripheral blood mononuclear cells (PBMCs).
-Please follow the section 4 from Chapter 1 to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+We will run SuperCell on a single-cell dataset composed of 2638 peripheral blood mononuclear cells (PBMCs) available in the scanpy package.
+Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package, preprocess and save the data in the following file: "data/3k_pbmc/singlecell_seurat_filtered.rds".
 
 ```{r SuperCell-load-data-noEval, eval = TRUE, echo = TRUE}
-MC_tool = "SuperCell"
-proj_name = "3k_pbmc"
+print(proj_name)
 sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
 ```
 
 ### Filtering steps
-In this tutorial, the data have been pre-filtered in the section XX of chapter XX.
+
+In this tutorial, the data have been pre-filtered and SuperCell does not require further filtering steps.
 
 ### Building metacells
 
-Metacells construction using SuperCell requires one main inputs, *i.e.* a matrix of log-normalized gene expression data which will be used to compute PCA to build a knn graph for metacells identification.
-Important optional inputs are: i) the graining level (`gamma` parameter), 
-ii) the number of neighbors to consider for the knn graph (`k.knn` parameter). 
+Metacells construction using SuperCell requires one main inputs, *i.e.* a matrix of log-normalized gene expression data which will be used to compute PCA to subsequently build a knn graph for metacells identification.
+Important optional inputs are: 
+(i) the graining level (`gamma` parameter), 
+(ii) the number of neighbors to consider for the knn graph (`k.knn` parameter), 
+(iii) the number of principal components to use to generate the knn graph (`n.pc` parameter), 
+and (iv) the number of most variable genes to consider for PCA (`n.var.genes` parameter). 
 
 #### Data pre-processing {-}
 
-SuperCell builds a knn graph based on a lower-dimensional embedding of the data. The computation of this embedding is performed internally in the `SCimplify` SuperCell function.  
-No pre-processing is thus required from the users.
-```{r supercell-data-processing, cache = TO_CACHE, evaluate = FALSE}
+SuperCell builds its knn graph based on Euclidean distances defined in the PCA space. 
+PCA computation is performed on the log-normalized gene expression data in the `SCimplify` SuperCell function. 
+<!-- In this example the single-cell data have been already log-normalized using scanpy (see \@ref(PBMC-data)). -->
+In the following code chunk, we use Seurat to normalize and visualize the data:
+
+```{r supercell-data-processing, cache = TO_CACHE, evaluate = TRUE}
 library(Seurat)
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
-sc_data <- FindVariableFeatures(sc_data, nfeatures = 1000)
+sc_data <- FindVariableFeatures(sc_data, nfeatures = 2000)
 sc_data <- ScaleData(sc_data)
-sc_data <- RunPCA(sc_data, npcs = 10, features = )
-sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:10), n.neighbors = 10)
-UMAPPlot(sc_data, group.by = "louvain")
+sc_data <- RunPCA(sc_data, npcs = 30, verbose = F)
+sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 15, verbose = F)
+UMAPPlot(sc_data, group.by = annotation_label)
 ```
+
 
 #### Setting up SuperCell parameters {-}
 
-In this tutorial, we will use in the SuperCell method using the 10 first principal components resulting from the PCA.
-We chose a graining level of 50 and a number of neighbors of 15 for knn.
+In this tutorial, we will run SuperCell using the 30 first principal components resulting from the PCA.
+We chose a graining level of 25 and a number of neighbors of 15 for the knn step.
 
 ```{r SuperCell-parameters}
-gamma = 50   # the requested graining level.
-k.knn = 15 # the number of neighbors considered to build the knn network.
-nb.var.genes = 1000 # number of the top variable genes to use for dimensionality reduction 
+gamma = 25 # the requested graining level.
+k_knn = 15 # the number of neighbors considered to build the knn network.
+nb_var_genes = 2000 # number of the top variable genes to use for dimensionality reduction 
+nb_pc = 30 # the number of principal components to use.   
 ```
 
-#### Metacells idenification {-}
+#### Metacells identification {-}
 
+The metacells are identified using the `SCimplify` function from the SuperCell package.   
 ```{r supercell-run, cache = TO_CACHE}
-MC <- SuperCell::SCimplify(sc_data@assays$RNA@data,  # single-cell log-normalized gene expression data
-                k.knn = k.knn, 
-                gamma = gamma, 
-                n.var.genes = nb.var.genes 
-)
+MC <- SuperCell::SCimplify(Seurat::GetAssayData(sc_data, slot = "data"),  # single-cell log-normalized gene expression data
+                           k.knn = k_knn,
+                           gamma = gamma,
+                           n.var.genes = nb_var_genes,  
+                           n.pc = nb_pc
+                           )
 ```
 
-SuperCell returns a list containing the following main elements: 
-i) the single-cell assignments to metacells (`membership`),
-ii)
+`SCimplify` returns a list containing the following main elements: 
+(i) the single-cell assignments to metacells (`membership`),
+(ii) the metacell sizes (`supercell_size`), 
+(iii) the single-cell graph (`graph.singlecell`), 
+(iv) the metacell graph (`graph.supercells`),
+(v) the genes used for metacell identification (`genes.use`).
 
 #### Retrieve aggregated metacell data {-}
 
-The `supercell_GE()` function can be used to generate a metacell count matrix (aggregation of counts across all cells belonging to each metacell). 
-Two modes can be used for single-cell aggregation, *i.e.* averaging or summing counts (using the `mode` parameter).    
+The `supercell_GE()` function can be used to generate a metacell counts matrix (aggregation of gene expression across all cells belonging to each metacell). 
+Two modes can be used for single-cell aggregation, *i.e.* averaging of log-normalized gene expression or summing up raw counts (using the `mode` parameter).
+Note that we provide raw counts for the aggregation in this tutorial to match the aggregation steps using PC2 and SEAcells (see \@ref(MC2-construction) and \@ref(SEACells-construction)). 
+Data normalization will thus be needed for downstream analyses on the metacell counts matrix.
 
 ```{r SuperCell-aggregate, cache = TO_CACHE}
-MC.GE <- supercell_GE(sc_data@assays$RNA@counts, MC$membership, mode = "sum")
+MC.GE <- supercell_GE(Seurat::GetAssayData(sc_data, slot = "counts"),
+                      MC$membership,
+                      mode =  "sum"
+                      )
 dim(MC.GE) 
 ```
 
-### Visualize metacells
+### Annotate metacells (using available annotations)
+
 
 We can assign each metacell to a particular annotation using the `supercell_assign()` function. 
 By default, this function assigns each metacell to a cluster with the largest Jaccard coefficient to avoid biases towards very rare or very abundant clusters. 
-Alternatively, assignment can be performed using `relative` (may cause biases towards very small populations) or `absolute` (may cause biases towards large populations) abundance with `method = "relative"` or `method = "absolute"`, respectively. 
+Alternatively, assignment can be performed using `relative` (`method = "relative"`, may cause biases towards very small populations) or `absolute` (`method = "absolute"`, may cause biases towards large populations) abundance. 
 
-```{r SuperCell-annpotation, cache = TO_CACHE, warning = FALSE, message = FALSE, results = FALSE}
-MC$annotation <- supercell_assign(clusters = sc_data@meta.data$louvain, # single-cell annotation
+```{r SuperCell-annpotation, cache = TO_CACHE, warning = FALSE, message = FALSE}
+print(annotation_label)
+MC$annotation <- supercell_assign(clusters = sc_data@meta.data[, annotation_label], # single-cell annotation
                                   supercell_membership = MC$membership, # single-cell assignment to metacells
-                                  method = "jaccard")
+                                  method = "jaccard"
+                                  )
+
+head(MC$annotation)
 
 ```
 
-The SuperCell package provides the `supercell_plot` function to visualize the metacell network, which is stored `MC` object in `graph.supercells`.
+
+The SuperCell package provides the `supercell_plot` function to visualize the metacell network (igraph object where number of nodes corresponds to number of metacells), 
+which is stored in the `MC` list in `graph.supercells`.
 The metacells can be colored with respect to a vector of annotation.
 
-```{r SuperCell-graph, cache = TO_CACHE, warning = FALSE, message = FALSE, results = FALSE}
+```{r SuperCell-graph, cache = TO_CACHE, warning = FALSE, message = FALSE}
 supercell_plot(
   MC$graph.supercells, 
   group = MC$annotation, 
@@ -147,56 +162,56 @@ supercell_plot(
 )
 ```
 
-To visualize the metacells, we can project the metacells on the single-cell UMAP representation using the `plot.plot_2D` included in the SEACells package.
-To use this function we need to create a anndata object as well as to run UMAP on the single cell data.
+### Save output 
 
-```{r create-r-anndata}
-library(anndata)
-# Create anndata object from R 
-r_ad <- AnnData(X = Matrix::t(sc_data@assays$RNA@counts),
-                obs = sc_data@meta.data,
-                obsm = list(X_pca = sc_data@reductions$pca@cell.embeddings,
-                            X_umap = sc_data@reductions$umap@cell.embeddings)
-                )
-r_ad$obs['membership'] <- MC$membership 
-``` 
+For future downstream analyses in R (section \@ref(standard-analysis-R)), metacell counts can be saved in a Seurat object. 
+Here we also save in the Seurat object the PCA components and genes used in SCimplify for future QC analysis (See \@ref(QCs)). 
 
-```{python create-py-anndata}
-# save anndata object in python environment 
-ad = r.r_ad 
-``` 
+```{r SuperCell-r-save, cache = TO_CACHE, warning = FALSE, message = FALSE}
+colnames(MC.GE) <- as.character(1:ncol(MC.GE))
+MC.seurat <- CreateSeuratObject(counts = MC.GE, 
+                                meta.data = data.frame(size = as.vector(table(MC$membership)))
+                                )
+MC.seurat[[annotation_label]] <- MC$annotation
 
-```{python SuperCell-umap, cache = TO_CACHE, warning = FALSE, message = FALSE, results = FALSE}
-mc_proj = mc_QC.mc_visualize(ad, key='X_umap', group_by_name='membership', colour_sc_name='membership', colour_mc_name='membership', colour_metacells=True, legend_sc=None, legend_mc=None)
-mc_proj.show()
+# save single-cell membership to metacells in the MC.seurat object
+MC.seurat@misc$cell_membership <- data.frame(row.names = names(MC$membership), membership = MC$membership)
+MC.seurat@misc$var_features <- MC$genes.use 
+
+# Save the PCA components and genes used in SCimplify  
+PCA.res <- irlba::irlba(scale(Matrix::t(sc_data@assays$RNA@data[MC$genes.use, ])), nv = nb_pc)
+pca.x <- PCA.res$u %*% diag(PCA.res$d)
+rownames(pca.x) <- colnames(sc_data@assays$RNA@data)
+MC.seurat@misc$sc.pca <- CreateDimReducObject(
+  embeddings = pca.x,
+  loadings = PCA.res$v,
+  key = "PC_",
+  assay = "RNA"
+)
+print(paste0("Saving metacell object for the ", proj_name, " dataset using ", MC_tool))
+saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
-### Metacell QC
-####  Compute purity, compactness and separation metrics {-}
+We can also use the `supercell_2_Seurat()` function from the SuperCell package. 
+This function takes as inputs the metacell count matrix (output of the SuperCell `supercell_GE()` function) and the output of the SuperCell `SCimplify()` function
+to output a Seurat object containing normalized metacells gene expression data as well as the first (`N.comp`) principal components of PCA performed internally using user defined set of genes (by default the genes used for metacells constructions).
 
-The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data.
-This annotation will be used in the mc_QC package to compute metacells quality metrics.
 
-```{r SuperCell-mc-r-anndata, cache = TO_CACHE, warning = FALSE, message = FALSE, results = FALSE}
-library(anndata)
-# Create anndata object from R
-r_mc_ad <- AnnData(X = Matrix::t(MC.GE),
-                   obs = data.frame(annotation = MC$annotation))
+```{r SuperCell-r-save2, eval = FALSE}
+MC.seurat <- supercell_2_Seurat(
+  SC.GE = MC.GE,
+  SC = MC,
+  fields = c("annotation", "supercell_size"), # elements of MC to save as metacell metadata 
+  var.genes = MC$genes.use,
+  N.comp = 10
+)
+saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
-```{python mc-create-py-anndata}
-# save anndata object in python environment 
-mc_ad = r.r_mc_ad 
-``` 
+For future downstream analyses in python (section \@ref(standard-analysis-Py)), metacell counts can be saved in an Anndata object: 
 
-```{r SuperCell-qc, child = './functional_chunks/MC_QC.Rmd'}
-```
-
-##### Save output {-}
-```{r SuperCell-save, child = './functional_chunks/save_mc_anndata.Rmd'}
-```
-
-```{r SuperCell-remove-variables, include = FALSE}
-rm(seurat_data)
+```{r SuperCell-remove-variables, include = TRUE, echo = FALSE}
+rm(sc_data, MC, MC.GE, MC.seurat)
+gc()
 ```
 
