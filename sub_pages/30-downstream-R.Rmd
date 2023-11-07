@@ -1,0 +1,132 @@
+
+[//]: # (Standard downstream analysis of metacells using R (Seurat))
+
+```{r, include=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+In this tutorial, standard analysis includes dimensionality reduction, clustering and differential expression using the [Seurat](https://satijalab.org/seurat/) framework.
+
+```{r r-libraries, eval=TRUE}
+library(Seurat) 
+library(dplyr)
+library(ggplot2)
+```
+
+### Load metacell Seurat object
+
+We will use Seurat objects containing the metacells counts data and their annotation (*e.g.* and cell-type annotation) and
+proceed with standard Seurat downstream analyses.
+Seurat objects containing metacells counts data and their annotation were generated at the end of sections .....
+These objects can also be generated using the command line described in chapter ...
+
+```{r r-mc-loading, eval=TRUE}
+MC_tool = "SuperCell"
+proj_name = "3k_pbmc"
+annotation_column = "louvain"
+MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
+```
+
+
+### Dimensionality reduction
+
+As for single-cells, we normalize the raw counts (here aggregated raw counts) and we identify the most variable features in the metacells gene expression data.
+Based on these features, we run PCA and use the first principal components to obtain a two dimensionnal representation of the data using UMAP.
+
+```{r r-mc-dim-reduc, eval=TRUE}
+Idents(MC.seurat) <- annotation_column
+MC.seurat <- NormalizeData(MC.seurat, normalization.method = "LogNormalize")
+MC.seurat <- FindVariableFeatures(MC.seurat, nfeatures = 2000)
+MC.seurat <- ScaleData(MC.seurat)
+MC.seurat <- RunPCA(MC.seurat, verbose = F)
+MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F)
+DimPlot(MC.seurat, reduction = "umap")
+```
+
+### Clustering
+
+We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:
+```{r r-mc-clustering, eval=TRUE}
+MC.seurat <- FindNeighbors(MC.seurat, dims = 1:30)
+MC.seurat <- FindClusters(MC.seurat, resolution = 2)
+DimPlot(MC.seurat, reduction = "umap", group.by = "seurat_clusters")
+```
+
+### Differential expression analysis
+
+```{r r-mc-DEG, eval=TRUE}
+# Set idents to metacell annotation 
+Idents(MC.seurat) <- annotation_column
+levels(MC.seurat) <- sort(levels(Idents(MC.seurat)))
+
+# Compute upregulated genes in group of metacells (versus other metacells)
+MC.seurat.all.markers <-  FindAllMarkers(
+  MC.seurat,
+  only.pos = TRUE,
+  min.pct = 0.25,
+  logfc.threshold = 0.25,
+  test.use = "t"
+)
+```
+
+We select the top markers for each cell-type: 
+```{r r-mc-topMarkers, eval=TRUE}
+# Top markers (select top markers of each metacell population)
+MC.seurat.top.markers <- MC.seurat.all.markers %>%
+   group_by(cluster) %>%
+    slice_max(n = 5, order_by = avg_log2FC)
+
+MC.seurat.top.markers
+```
+
+
+We visualize the top 5 markers for the XX cells.
+```{r r-mc-plot-genes, eval=TRUE}
+# genes.to.plot <- MC.seurat.top.markers$gene[MC.seurat.top.markers$cluster == unique(MC.seurat@meta.data[,annotation_column])[1]]
+genes.to.plot <- MC.seurat.top.markers$gene[c(seq(1, 20, 5))]
+VlnPlot(MC.seurat, features = genes.to.plot, ncol = 4, pt.size = 0.0)  
+```
+
+### Visualize gene-gene correlation 
+
+We can use the `supercell_GeneGenePlot` function from the SuperCell package to visualize the correlation between marker genes of a cell-type: 
+(i) at the single-cell level and
+(ii) at the metacell level.
+
+For that, we load the single-cell data from which the metacells were derived.
+```{r r-load-single-cell, eval=TRUE}
+print(proj_name)
+sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
+sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
+```
+
+
+```{r r-sc-plot-genes, eval=TRUE}
+library(SuperCell)
+cell_type_markers <- MC.seurat.top.markers[MC.seurat.top.markers$cluster == "CD8 T cells", ]
+gene_x <- cell_type_markers$gene[1:2]  
+gene_y <- cell_type_markers$gene[3:4] 
+
+alpha <- 0.7
+
+p.sc <- supercell_GeneGenePlot(
+  GetAssayData(sc_data, slot = "data"),
+  gene_x = gene_x,
+  gene_y = gene_y,
+  clusters = sc_data@meta.data[, annotation_column],
+  sort.by.corr = F,
+  alpha = alpha
+)
+p.sc$p
+```
+
+```{r r-MC-plot-genes, eval=TRUE}
+
+p.MC <- supercell_GeneGenePlot(GetAssayData(MC.seurat, slot = "data"), 
+                               gene_x = gene_x, 
+                               gene_y = gene_y, 
+                               clusters = MC.seurat@meta.data[ ,annotation_column],  
+                               sort.by.corr = F, 
+                               alpha = alpha)
+p.MC$p
+```

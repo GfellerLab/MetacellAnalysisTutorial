@@ -1,0 +1,77 @@
+
+[//]: # (Standard downstream analysis of metacells using Py (Scanpy))
+
+```{r, include=FALSE}
+# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+In this section, standard analysis includes dimensionality reduction, clustering, differential expression etc using [Scanpy](https://scanpy-tutorials.readthedocs.io/en/latest/#) framework.
+
+```{python, eval = TRUE}
+import numpy as np
+import pandas as pd
+import scanpy as sc
+sc.settings.verbosity = 1 
+```
+
+
+```{python, eval = TRUE}
+MC_tool = "SEACells"
+proj_name = "3k_pbmc"
+annotation_column = "louvain"
+adata = sc.read(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
+```
+
+### Dimensionality reduction
+```{python py-mc-dim-reduc, eval = TRUE}
+adata.var_names_make_unique()  # this is unnecessary if using `var_names='gene_ids'` in `sc.read_10x_mtx`
+
+sc.pp.normalize_per_cell(adata)
+sc.pp.log1p(adata)
+sc.pp.highly_variable_genes(adata, n_top_genes=2000)
+
+# Freeze the state of the AnnData object for later use in differential testing and visualizations of gene expression
+adata.raw = adata # step needd only if I use regress_out steps
+
+# Compute PCA (highly variable genes will be used)
+sc.tl.pca(adata, svd_solver='arpack')
+
+# Compute the neighbor graph
+sc.pp.neighbors(adata, n_neighbors=15, n_pcs=30)
+
+# Run umap
+sc.tl.umap(adata)
+
+# Plot metacells in the UMAP space
+sc.pl.umap(adata, color=[annotation_column], size = 100)
+
+```
+
+### Clustering
+
+Perform clustering on the metacell data.
+```{python py-mc-clustering, eval = TRUE}
+# run laiden graph-clustering
+sc.tl.leiden(adata, neighbors_key = "neighbors", resolution = 2)
+
+# plot the metacells in the UMAP space and color by cluster
+sc.pl.umap(adata, color=['leiden'], size = 100)
+```
+
+### Differential expression analysis
+
+Identify marker genes for each group of metacells. 
+Note that here we use the clusters since the Megakaryocytes contain only one metacells.
+We visualize the top 3 markers for CD8 Tcells.
+```{python py-mc-markers, eval = TRUE}
+# Identify marker genes
+sc.tl.rank_genes_groups(adata, 'leiden', method='wilcoxon')
+sc.pl.rank_genes_groups(adata, n_genes=25, sharey=False)
+
+# Show the top marker genes
+print(pd.DataFrame(adata.uns['rank_genes_groups']['names']).head(5))
+
+# Visualize marker genes
+sc.pl.violin(adata, ['CD8A', 'CCL5', 'LYAR'], groupby=annotation_column, size = 2, rotation = 90)
+```
