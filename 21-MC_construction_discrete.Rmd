@@ -1,10 +1,11 @@
-# Constructing metacells (for 'discrete' data)
+# Constructing metacells (for 'discrete' data) {#Metacell-construction-chapter}
 
-In this chapter, we will demonstrate metacell construction using three different methods. MetaCell-2 (MC2) and SEACells in Pyhton and SuperCell in R. 
+In this chapter, we will demonstrate metacell construction using three different methods: SuperCell in R, MetaCell-2 (MC2) and SEACells in Pyhton. 
 
-For this, we will use a dataset of PBMCs from study. This dataset contains 30K cells and ... This is an example of a complex dataset with well defined cells types. For an example of more continuous data, see chapter \@ref(MC-continuous)
+For this, we will first use a dataset of PBMCs from study. This dataset contains around 3K cells which is an example of a dataset with well defined cell types. 
+For an example of more continuous data, see chapter \@ref(MC-continuous).
 
-```{r include=FALSE}
+```{r include=TRUE, echo = FALSE}
 TO_CACHE <- FALSE
 ```
 
@@ -24,31 +25,56 @@ import seaborn as sns
 import metacells as mc
 import SEACells
 import random 
-
-import sys
-sys.path.append('./mc_QC/') 
-import mc_QC
-```
-
-
-## MC2 (Python)
-
-```{r, child = './sub_pages/21-mc2.Rmd'}
+import warnings
+warnings.filterwarnings('ignore')
 
 ```
 
-
-## SuperCell (R)
-
+## SuperCell (R) {#SuperCell-construction}
 
 ```{r, child='./sub_pages/21-supercell.Rmd'}
-#yet to write, make sure to somehow clean environment before moving into a new MC construction
 ```
 
 
+## MC2 (Python) {#MC2-construction}
 
-## SEACells (Python)
+```{r, child = './sub_pages/21-mc2.Rmd'}
+```
+
+
+## SEACells (Python) {#SEACells-construction}
 
 ```{r child='./sub_pages/21-seacells.Rmd'}
-# replce the code below with a single `./sub_pages/21-seacells.Rmd` file
+```
+
+
+## Command line tool {#command-line}
+We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
+The command line tool take multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
+which is for example required in a benchmark setting.
+
+
+```{bash, commandlines_setup, eval = FALSE}
+setwd("MetacellToolkit/")
+```
+
+```{bash, SuperCell-command, eval = FALSE}
+proj_name="3k_pbmc"
+MC_tool="SuperCell"
+# input raw adata output adata
+Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata
+
+# input raw adata output seurat
+Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat
+```
+
+
+```{bash, SEACells-command, eval = FALSE}
+proj_name="3k_pbmc"
+MC_tool="SEACells"
+# input raw adata output adata
+Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata
+
+# input raw adata output seurat
+Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat
 ```
