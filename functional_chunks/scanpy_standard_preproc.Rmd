@@ -5,19 +5,20 @@ To pre-process the single-cell data, we are using standard pre-processing for si
 
 ```{python data-normalization, message = FALSE, cache = TO_CACHE}
 # Normalize cells, log transform and compute highly variable genes
-sc.pp.normalize_per_cell(ad)
+sc.pp.normalize_per_cell(ad, 10000)
 sc.pp.log1p(ad)
-sc.pp.highly_variable_genes(ad, n_top_genes=1000)
+sc.pp.highly_variable_genes(ad, n_top_genes=2000)
 ```
 
 ```{python dim-reduction, cache = TO_CACHE, message = FALSE, warning = FALSE}
 # Compute principal components - 
-# Here we use 10 components to be consistent with our main tutorial, but fill free to explore other number of principal components to use 
 
-n_comp    = 10
+n_comp    = 30
 sc.tl.pca(ad, n_comps=n_comp, use_highly_variable=True)
 
 # Compute UMAP for visualization
-sc.pp.neighbors(ad, n_neighbors=10, n_pcs=n_comp)
+# Here we use 30 components to be consistent with our main tutorial, but fill free to explore other number of principal components to use 
+
+sc.pp.neighbors(ad, n_neighbors=15, n_pcs=30)
 sc.tl.umap(ad)
 ```
