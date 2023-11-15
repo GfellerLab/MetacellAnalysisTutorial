@@ -2,7 +2,6 @@
 [//]: # (Code to run mc construction with SEACells for a discrete dataset)
 
 ```{r, include=FALSE}
-# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
@@ -16,7 +15,7 @@ Single cells are assigned to a given metacell based on the maximum membership va
 
 
 The code provided in this section is adapted from the [author's jupyter notebook](https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb). 
-For more information on the method, please refer to our review @Review and the original paper @SEACells. 
+For more information on the method, please refer to our review @Review and the original paper [@SEACells]. 
 
 #### Importing python packages {-}
 
@@ -52,6 +51,7 @@ Please follow the section \@ref(PBMC-data) to retrieve these data from the scanp
 
 ```{r seacells-load-data, child='./functional_chunks/load_anndata.Rmd'}
 ```
+
 ```{python seacell-load-data-noEval, eval = FALSE, echo = TRUE}
 MC_tool = "SEACells"
 proj_name = "3k_pbmc"

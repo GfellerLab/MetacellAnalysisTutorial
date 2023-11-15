@@ -1,0 +1,83 @@
+@Book{xie2015,
+  title = {Dynamic Documents with {R} and knitr},
+  author = {Yihui Xie},
+  publisher = {Chapman and Hall/CRC},
+  address = {Boca Raton, Florida},
+  year = {2015},
+  edition = {2nd},
+  note = {ISBN 978-1498716963},
+  url = {http://yihui.org/knitr/},
+}
+
+@article{MC2,
+	title = {A divide and conquer metacell algorithm for scalable {scRNA}-seq analysis},
+	url = {http://biorxiv.org/content/early/2021/08/08/2021.08.08.453314.abstract},
+	doi = {10.1101/2021.08.08.453314},
+	abstract = {Scaling scRNA-seq to profile millions of cells is increasingly feasible. Such data is crucial for the construction of high-resolution maps of transcriptional manifolds. But current analysis strategies, in particular dimensionality reduction and two-phase clustering, offers only limited scaling and sensitivity to define such manifolds. Here we introduce Metacell-2, a recursive divide and conquer algorithm allowing efficient decomposition of scRNA-seq datasets of any size into small and cohesive groups of cells denoted as metacells. We show the algorithm outperforms current solutions in time, memory and quality. Importantly, Metacell-2 also improves outlier cell detection and rare cell type identification, as we exemplify by analysis of human bone marrow cell atlas and mouse embryonic data. Metacell-2 is implemented over the scanpy framework for easy integration in any analysis pipeline.},
+	journal = {bioRxiv},
+	author = {Ben-Kiki, Oren and Bercovich, Akhiad and Lifshitz, Aviezer and Tanay, Amos},
+	month = aug,
+	year = {2021},
+	pages = {2021.08.08.453314},
+}
+
+
+@article{baran_metacell_2019,
+	title = {{MetaCell}: {Analysis} of single-cell {RNA}-seq data using {K}-nn graph partitions},
+	issn = {1474760X},
+	doi = {10.1186/s13059-019-1812-2},
+	abstract = {scRNA-seq profiles each represent a highly partial sample of mRNA molecules from a unique cell that can never be resampled, and robust analysis must separate the sampling effect from biological variance. We describe a methodology for partitioning scRNA-seq datasets into metacells: disjoint and homogenous groups of profiles that could have been resampled from the same cell. Unlike clustering analysis, our algorithm specializes at obtaining granular as opposed to maximal groups. We show how to use metacells as building blocks for complex quantitative transcriptional maps while avoiding data smoothing. Our algorithms are implemented in the MetaCell R/C++ software package.},
+	journal = {Genome Biology},
+	author = {Baran, Yael and Bercovich, Akhiad and Sebe-Pedros, Arnau and Lubling, Yaniv and Giladi, Amir and Chomsky, Elad and Meir, Zohar and Hoichman, Michael and Lifshitz, Aviezer and Tanay, Amos},
+	year = {2019},
+	pmid = {31604482},
+	keywords = {scRNA-seq, RNA-seq, Clustering, Graph partition, Multinomial distribution, Sampling variance, Smoothing},
+}
+
+
+
+@article{SuperCell,
+	title = {Metacells untangle large and complex single-cell transcriptome networks},
+	volume = {23},
+	copyright = {All rights reserved},
+	issn = {1471-2105},
+	url = {https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-022-04861-1},
+	doi = {10.1186/s12859-022-04861-1},
+	abstract = {Abstract
+            
+              Background
+              Single-cell RNA sequencing (scRNA-seq) technologies offer unique opportunities for exploring heterogeneous cell populations. However, in-depth single-cell transcriptomic characterization of complex tissues often requires profiling tens to hundreds of thousands of cells. Such large numbers of cells represent an important hurdle for downstream analyses, interpretation and visualization.
+            
+            
+              Results
+              We develop a framework called SuperCell to merge highly similar cells into metacells and perform standard scRNA-seq data analyses at the metacell level. Our systematic benchmarking demonstrates that metacells not only preserve but often improve the results of downstream analyses including visualization, clustering, differential expression, cell type annotation, gene correlation, imputation, RNA velocity and data integration. By capitalizing on the redundancy inherent to scRNA-seq data, metacells significantly facilitate and accelerate the construction and interpretation of single-cell atlases, as demonstrated by the integration of 1.46 million cells from COVID-19 patients in less than two hours on a standard desktop.
+            
+            
+              Conclusions
+              SuperCell is a framework to build and analyze metacells in a way that efficiently preserves the results of scRNA-seq data analyses while significantly accelerating and facilitating them.},
+	language = {en},
+	number = {1},
+	urldate = {2022-08-15},
+	journal = {BMC Bioinformatics},
+	author = {Bilous, Mariia and Tran, Loc and Cianciaruso, Chiara and Gabriel, Aurélie and Michel, Hugo and Carmona, Santiago J. and Pittet, Mikael J. and Gfeller, David},
+	month = aug,
+	year = {2022},
+	pages = {336},
+}
+
+
+@article{SEACells,
+	title = {{SEACells} infers transcriptional and epigenomic cellular states from single-cell genomics data},
+	issn = {1087-0156, 1546-1696},
+	url = {https://www.nature.com/articles/s41587-023-01716-9},
+	doi = {10.1038/s41587-023-01716-9},
+	abstract = {Abstract
+            Metacells are cell groupings derived from single-cell sequencing data that represent highly granular, distinct cell states. Here we present single-cell aggregation of cell states (SEACells), an algorithm for identifying metacells that overcome the sparsity of single-cell data while retaining heterogeneity obscured by traditional cell clustering. SEACells outperforms existing algorithms in identifying comprehensive, compact and well-separated metacells in both RNA and assay for transposase-accessible chromatin (ATAC) modalities across datasets with discrete cell types and continuous trajectories. We demonstrate the use of SEACells to improve gene–peak associations, compute ATAC gene scores and infer the activities of critical regulators during differentiation. Metacell-level analysis scales to large datasets and is particularly well suited for patient cohorts, where per-patient aggregation provides more robust units for data integration. We use our metacells to reveal expression dynamics and gradual reconfiguration of the chromatin landscape during hematopoietic differentiation and to uniquely identify CD4 T cell differentiation and activation states associated with disease onset and severity in a Coronavirus Disease 2019 (COVID-19) patient cohort.},
+	language = {en},
+	urldate = {2023-04-18},
+	journal = {Nature Biotechnology},
+	author = {Persad, Sitara and Choo, Zi-Ning and Dien, Christine and Sohail, Noor and Masilionis, Ignas and Chaligné, Ronan and Nawy, Tal and Brown, Chrysothemis C. and Sharma, Roshan and Pe’er, Itsik and Setty, Manu and Pe’er, Dana},
+	month = mar,
+	year = {2023},
+}
+
