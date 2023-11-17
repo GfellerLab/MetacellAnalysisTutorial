@@ -15,7 +15,7 @@ Import packages:
 # if(system.file(package='MetacellToolkit') == ""){
 #   remotes::install_github("GfellerLab/MetacellAnalysisToolkit@dev_ag", force = TRUE, upgrade = FALSE)
 # } 
-library(MetacellToolkit)
+library(MetacellAnalysisToolkit)
 library(Seurat)
 ```
 
@@ -132,18 +132,10 @@ To use this function we need the data at the single-cell level (or at least an l
 
 ```{r visualize_metacells}
 
-convert_to_num <- function(original_names){
-  conversion_vect <- 1:length(unique(original_names))
-  names(conversion_vect) <- unique(original_names)
-  return(conversion_vect[original_names])
-} 
-named_membership <- convert_to_num(membership_df$membership)
-names(named_membership) <- rownames(membership_df)
-
 mc_projection(
   sc.obj = sc_data, 
-  mc.obj = mc_data, 
-  membership = named_membership, 
+  mc.obj = mc_data,
+  cell.membership = membership_df,
   sc.reduction = "umap", 
   sc.label = unlist(annotation_label), # single cells will be colored according the sc.label  
   metacell.label = unlist(annotation_label) # metacells cell will be colored according the metacell.label
@@ -158,7 +150,7 @@ Metacells can also be colored by a continuous variable such as one of the QC met
 mc_projection(
   sc.obj = sc_data, 
   mc.obj = mc_data, 
-  membership = named_membership, 
+  cell.membership = membership_df,
   sc.reduction = "umap", 
   sc.label = unlist(annotation_label), # single cells will be colored according the sc.label  
   continuous_metric = TRUE,
