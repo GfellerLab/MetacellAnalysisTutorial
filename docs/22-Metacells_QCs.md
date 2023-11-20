@@ -12,9 +12,10 @@ Import packages:
 
 ```r
 # if(system.file(package='MetacellToolkit') == ""){
-#   remotes::install_github("GfellerLab/MetacellToolkit@dev_ag", force = TRUE, upgrade = FALSE)
+#   remotes::install_github("GfellerLab/MetacellAnalysisToolkit@dev_ag", force = TRUE, upgrade = FALSE)
 # } 
-library(MetacellToolkit)
+library(MetacellAnalysisToolkit)
+library(Seurat)
 ```
 
 To explore metacells QCs, we need to load: 
@@ -36,11 +37,10 @@ mc_data = readRDS(paste0('data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ### Purity
 When available, cell annotations can be used to annotate each metacell to the most abundant cell category (*e.g.* cell type) composing the metacell (see chapter \@ref(Metacell-construction-chapter)). 
 This also allows us to compute metacell purity. If the annotation considered is the cell type, the **purity** of a metacell is the proportion of the most abundant 
-cell type within the metacell @SuperCell.
+cell type within the metacell [@SuperCell].
 
 ```r
 mc_data$purity <- mc_purity(membership = mc_data@misc$cell_membership$membership, annotation = sc_data@meta.data[, annotation_label])
-#> Loading required package: SeuratObject
 qc_boxplot(mc.obj = mc_data, qc.metrics = "purity")
 ```
 
@@ -53,7 +53,7 @@ qc_boxplot(mc.obj = mc_data, qc.metrics = "purity", split.by = annotation_label)
 <img src="22-Metacells_QCs_files/figure-html/compute_purity-2.png" width="672" />
 
 ### Compactness
-The **compactness** of a metacell is the variance of the components within the metacell @SEACells.
+The **compactness** of a metacell is the variance of the components within the metacell [@SEACells].
 The lower the compactness value the better.
 
 This metric as well as the separation metric are computed based on a low embedding of the single-cell data (e.g., PCA). 
@@ -81,18 +81,20 @@ mc_data$compactness <- mc_compactness(cell.membership = membership_df, sc.obj = 
                                       sc.reduction = "pca", n.components = 30, diffusion.components = T)
 #> Computing compactness ...
 qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness")
+#> Warning: Removed 28 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_compactness-1.png" width="672" />
 
 ```r
 qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness", split.by = annotation_label)
+#> Warning: Removed 28 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_compactness-2.png" width="672" />
 
 ### Separation
-The **separation** of a metacell is the distance to the closest metacell @SEACells. 
+The **separation** of a metacell is the distance to the closest metacell [@SEACells]. 
 The higher the separation value the better.
 
 
@@ -121,12 +123,15 @@ ggplot(data.frame(compactness = log(mc_data$compactness), separation = log(mc_da
   geom_point()+
   geom_smooth(method=lm) + ggpubr::stat_cor(method = "spearman")
 #> `geom_smooth()` using formula = 'y ~ x'
+#> Warning: Removed 28 rows containing non-finite values (`stat_smooth()`).
+#> Warning: Removed 28 rows containing non-finite values (`stat_cor()`).
+#> Warning: Removed 28 rows containing missing values (`geom_point()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/comparison_compactness_separation-1.png" width="672" />
 
 ### INV
-The **inner normalized variance (INV)** of a metacell is the mean-normalized variance of gene expression within the metacell @MC2.  
+The **inner normalized variance (INV)** of a metacell is the mean-normalized variance of gene expression within the metacell [@MC2].  
 The lower the INV value the better. 
 Note that it is the only metric that is latent-space independent.
 
@@ -137,12 +142,14 @@ mc_data$INV <- mc_INV(cell.membership = membership_df, sc.obj = sc_data, group.l
 #> Normalizing data ...
 #> Computing INV ...
 qc_boxplot(mc.obj = mc_data, qc.metrics = "INV")
+#> Warning: Removed 28 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_INV-1.png" width="672" />
 
 ```r
 qc_boxplot(mc.obj = mc_data, qc.metrics = "INV", split.by = annotation_label)
+#> Warning: Removed 28 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_INV-2.png" width="672" />
@@ -182,18 +189,10 @@ To use this function we need the data at the single-cell level (or at least an l
 
 ```r
 
-convert_to_num <- function(original_names){
-  conversion_vect <- 1:length(unique(original_names))
-  names(conversion_vect) <- unique(original_names)
-  return(conversion_vect[original_names])
-} 
-named_membership <- convert_to_num(membership_df$membership)
-names(named_membership) <- rownames(membership_df)
-
 mc_projection(
   sc.obj = sc_data, 
-  mc.obj = mc_data, 
-  membership = named_membership, 
+  mc.obj = mc_data,
+  cell.membership = membership_df,
   sc.reduction = "umap", 
   sc.label = unlist(annotation_label), # single cells will be colored according the sc.label  
   metacell.label = unlist(annotation_label) # metacells cell will be colored according the metacell.label
@@ -210,7 +209,7 @@ Metacells can also be colored by a continuous variable such as one of the QC met
 mc_projection(
   sc.obj = sc_data, 
   mc.obj = mc_data, 
-  membership = named_membership, 
+  cell.membership = membership_df,
   sc.reduction = "umap", 
   sc.label = unlist(annotation_label), # single cells will be colored according the sc.label  
   continuous_metric = TRUE,
