@@ -1,0 +1,274 @@
+---
+title: "Metacell analysis on a continuous dataset"
+author: "Leonard Herault, Aurelie Gabriel, Mariia Bilous, David Gfeller"
+date: "`r Sys.Date()`"
+---
+
+In this example we will analyse differentiating hematopoietic stem cells (Human CD34+).
+Note that we retrieved the RNA data from a 10X multiome experiment but we won't analyse the ATAC modality.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setting up the environment
+
+
+```{r}
+library(reticulate)
+conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
+
+Sys.setenv(RETICULATE_PYTHON = conda_env)
+```
+
+
+```{r}
+#source("SCimplifyAffinityMatrix.R")
+library(SuperCell)
+library(Seurat)
+library(anndata)
+library(MetacellAnalysisToolkit)
+library(ggplot2)
+```
+## Metacell building
+Here we will use the MCAT bash command line to build the metacells with MetaCell2 and SuperCell. 
+
+### Building metacell with MetaCell2
+We use MetaCell2 (`-t MetaCell`) to identify metacells at a gamma of 50 (`-g 50`). We specify that we want a Seurat .rds object in ouput (`-s seurat`).
+```{bash}
+../MetacellAnalysisToolkit/cli/MCAT -t MetaCell -i ../MetacellAnalysisToolkit/get_data/cd34_multiome_rna.h5ad -o MCAT_output/MetaCell/cd34/ -g 50 -s seurat
+```
+
+
+
+### Building metacell with SuperCell
+We use SuperCell (`-t SuperCell`) to identify metacells at a gamma of 50 (`-g 50`). We specify that we want a Seurat .rds object in ouput (`-s seurat`).
+We use 2000 highly variable genes (HVGs,  `-f 2000`) to compute a PCA from which we use 50 components (`-n 50`) to make a k = 30 knn (`-k 30`) graph on which we identify the metacells.
+```{bash}
+../MetacellAnalysisToolkit/cli/MCAT -t SuperCell -i ../MetacellAnalysisToolkit/get_data/cd34_multiome_rna.h5ad -o MCAT_output/SuperCell/cd34/ -f 2000 -g 50 -n 50 -k 30 -s seurat
+```
+
+## Short downstream analysis of the metacells
+
+### MetaCell2 metacells
+We load the object obtained with MCAT
+```{r}
+cd34.metacell <- readRDS("MCAT_output/MetaCell/cd34/mc_Seurat.rds")
+cd34.metacell
+```
+We Normalize the metacells data, identify the HVGs, and we make a classical dimensionality reduction (first a PCA and then vizualisation with a UMAP).
+```{r}
+cd34.metacell <- NormalizeData(cd34.metacell)
+cd34.metacell <- FindVariableFeatures(cd34.metacell)
+cd34.metacell <- ScaleData(cd34.metacell)
+cd34.metacell <- RunPCA(cd34.metacell)
+cd34.metacell <- RunUMAP(cd34.metacell,dims = c(1:50),min.dist = 0.5)
+```
+
+Plot the results using Seurat.
+```{r}
+umap.metacell <- UMAPPlot(cd34.metacell,group.by = "celltype",label = T)
+umap.metacell
+```
+We correctly retrieve the two main differentiation path of CD34+ cells.
+In one hand, Megakaryocyte Erythrocyte Progenitor (MEP) fate with GATA2 and then GATA1 transcription factor expression.
+On the other, Lymphoid Myeloid Multipotent Progenitor (LMPP) fate with SPI1 transcription factor expression.
+```{r}
+genes <- c("CD34","GATA2","GATA1","SPI1")
+marker.metacell.umaps <- lapply(genes, FUN = function(x){
+  plot <- FeaturePlot(cd34.metacell, features = x)
+  }
+)
+marker.metacell.umaps
+```
+When analyzing metacells it's a good idea to plot their size on these. We can do it with ggplot.
+```{r}
+data <- cbind(umap.metacell$data,cd34.metacell$size)
+colnames(data)[length(colnames(data))] <- "size"
+ggplot(data,aes(x= UMAP_1,y=UMAP_2,color = celltype)) + geom_point(aes(size=size)) + theme_classic()
+```
+```{r}
+lapply(marker.metacell.umaps,FUN = function(x){
+  data <- cbind(x$data,cd34.metacell$size)
+  colnames(data)[length(colnames(data))] <- "size"
+  gene <- colnames(data)[length(colnames(data))-1]
+  ggplot(data,aes(x= UMAP_1,y=UMAP_2,size=size,colour = .data[[gene]])) + geom_point() + 
+    scale_color_gradientn(colors =  c("lightgrey", "blue"), 
+                          guide = "colorbar")  +
+  theme_classic() + ggtitle(gene)
+} )
+
+```
+### SuperCell metacells
+
+We can do the same with the metacells obtained with SuperCell
+
+We load the object obtained with MCAT
+```{r}
+cd34.supercell <- readRDS("MCAT_output/SuperCell/cd34/mc_Seurat.rds")
+cd34.supercell
+```
+We Normalize the supercells data, identify the HVGs, and we make a classical dimensionality reduction (first a PCA and then vizualisation with a UMAP).
+```{r}
+cd34.supercell <- NormalizeData(cd34.supercell)
+cd34.supercell <- FindVariableFeatures(cd34.supercell)
+cd34.supercell <- ScaleData(cd34.supercell)
+cd34.supercell <- RunPCA(cd34.supercell)
+cd34.supercell <- RunUMAP(cd34.supercell,dims = c(1:50),min.dist = 0.5)
+```
+
+Plot the results using Seurat.
+```{r}
+umap.supercell <- UMAPPlot(cd34.supercell,group.by = "celltype",label = T)
+umap.supercell
+```
+We correctly retrieve the two main differentiation path of CD34+ cells.
+In one hand, Megakaryocyte Erythrocyte Progenitor (MEP) fate with GATA2 and then GATA1 transcription factor expression.
+On the other, Lymphoid Myeloid Multipotent Progenitor (LMPP) fate with SPI1 transcription factor expression.
+```{r}
+genes <- c("CD34","GATA2","GATA1","SPI1")
+marker.supercell.umaps <- lapply(genes, FUN = function(x){
+  plot <- FeaturePlot(cd34.supercell, features = x)
+  }
+)
+marker.supercell.umaps
+```
+When analyzing supercells it's a good idea to plot their size on these. We can do it with ggplot.
+```{r}
+data <- cbind(umap.supercell$data,cd34.supercell$size)
+colnames(data)[length(colnames(data))] <- "size"
+ggplot(data,aes(x= UMAP_1,y=UMAP_2,color = celltype)) + geom_point(aes(size=size)) + theme_classic()
+```
+
+```{r}
+lapply(marker.supercell.umaps,FUN = function(x){
+  data <- cbind(x$data,cd34.supercell$size)
+  colnames(data)[length(colnames(data))] <- "size"
+  gene <- colnames(data)[length(colnames(data))-1]
+  ggplot(data,aes(x= UMAP_1,y=UMAP_2,size=size,colour = .data[[gene]])) + geom_point() + 
+    scale_color_gradientn(colors =  c("lightgrey", "blue"), 
+                          guide = "colorbar")  +
+  theme_classic() + ggtitle(gene)
+} )
+
+```
+
+## Quality control with the MetacellAnalysisToolkit package
+
+### Loading single-cell data
+
+First we need to load the single cell data and make a classical dimentionality reduction analysis.
+```{r}
+cd34.singlecells <- read_h5ad("../MetacellAnalysisToolkit/get_data/cd34_multiome_rna.h5ad")
+cd34.singlecells <- CreateSeuratObject(counts = Matrix::t(cd34.singlecells$X),meta.data = cd34.singlecells$obs)
+cd34.singlecells <- NormalizeData(cd34.singlecells)
+cd34.singlecells <- FindVariableFeatures(cd34.singlecells)
+cd34.singlecells <- ScaleData(cd34.singlecells)
+cd34.singlecells <- RunPCA(cd34.singlecells)
+cd34.singlecells <- RunUMAP(cd34.singlecells,dims = c(1:50))
+```
+
+```{r}
+UMAPPlot(cd34.singlecells,group.by = "celltype",label = T)
+```
+### Visualization of metacells in single-cell space
+
+Now we can plot metacells from MetaCell2 in the single cell space.
+```{r}
+mc_projection(
+  sc.obj = cd34.singlecells,
+  mc.obj = cd34.metacell,
+  cell.membership = cd34.metacell@misc$membership,
+  sc.reduction = "umap",
+  sc.label = "celltype", # single cells will be colored according the sc.label
+  metacell.label = "celltype" # metacells cell will be colored according the metacell.label
+  ) + theme_classic()
+```
+And same for metacells obtained with SuperCell.
+```{r}
+mc_projection(
+  sc.obj = cd34.singlecells,
+  mc.obj = cd34.supercell,
+  cell.membership = cd34.supercell@misc$cell_membership,
+  sc.reduction = "umap",
+  sc.label = "celltype", # single cells will be colored according the sc.label
+  metacell.label = "celltype" # metacells cell will be colored according the metacell.label
+  ) + theme_classic()
+```
+### Compactness and separation
+
+We can compute the compactness and separation of the metacells from the single cell pca. 
+With the `mc_compactnness` we can use the approach of SEACells by computing these metrics in a diffusion map obtained from the pca.
+
+First for MetaCell2 metacells
+
+
+
+
+```{r}
+cd34.metacell$compactness <- mc_compactness(cell.membership = cd34.metacell@misc$cell_membership, sc.obj = cd34.singlecells,
+                                      sc.reduction = "pca", n.components = 50, diffusion.components = T)
+
+## Computing compactness ...
+
+qc_boxplot(mc.obj = cd34.metacell, qc.metrics = "compactness")
+```
+
+```{r}
+cd34.metacell$separation <- mc_separation(cell.membership = cd34.metacell@misc$cell_membership, sc.obj = cd34.singlecells,
+                                      sc.reduction = "pca", n.components = 50, diffusion.components = T)
+
+## Computing compactness ...
+
+qc_boxplot(mc.obj = cd34.metacell, qc.metrics = "separation")
+```
+Same for metacell obtained with SuperCell.
+```{r}
+cd34.supercell$compactness <- mc_compactness(cell.membership = cd34.supercell@misc$cell_membership, sc.obj = cd34.singlecells,
+                                      sc.reduction = "pca", n.components = 50, diffusion.components = T)
+
+## Computing compactness ...
+
+qc_boxplot(mc.obj = cd34.supercell, qc.metrics = "compactness")
+```
+
+```{r}
+cd34.supercell$separation <- mc_separation(cell.membership = cd34.supercell@misc$cell_membership, sc.obj = cd34.singlecells,
+                                      sc.reduction = "pca", n.components = 50, diffusion.components = T)
+
+## Computing compactness ...
+
+qc_boxplot(mc.obj = cd34.supercell, qc.metrics = "separation")
+```
+### Inner normalized variance (INV)
+We can compute the INV for the metacells as defined in MetaCell paper.
+
+```{r}
+cd34.supercell$INV <- mc_INV(cell.membership = cd34.supercell@misc$cell_membership, sc.obj = cd34.singlecells)
+cd34.metacell$INV <- mc_INV(cell.membership = cd34.metacell@misc$cell_membership, sc.obj = cd34.singlecells)
+
+```
+
+
+Comparison of MetaCell2 and SuperCell for compactness (lower the better).
+
+```{r}
+cd34.metacell$tool <- "MetaCell2"
+cd34.supercell$tool <- "SuperCell"
+data.metrics <- rbind(cd34.metacell@meta.data[,c("tool","INV","compactness","separation")],cd34.supercell@meta.data[,c("tool","INV","compactness","separation")])
+
+ggplot(data.metrics,aes(y=compactness,x=tool,fill = tool)) + geom_boxplot()
+```
+Comparison of MetaCell2 and SuperCell for separation (higher the better).
+
+```{r}
+ggplot(data.metrics,aes(y=separation,x=tool,fill = tool)) + geom_boxplot()
+```
+
+Comparison of MetaCell2 and SuperCell for INV (lower the better).
+
+```{r}
+ggplot(data.metrics,aes(y=INV,x=tool,fill = tool)) + geom_boxplot()
+
+```
+
