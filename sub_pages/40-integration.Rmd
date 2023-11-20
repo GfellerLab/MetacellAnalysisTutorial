@@ -3,11 +3,8 @@
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
-In this section, we will work with the Human Cell Lung Atlas core [HLCA](https://www.nature.com/articles/s41591-023-02327-2)
-gathering around 580,000 cells from 107 individuals distributed in 166 samples.
-
-The aim of this tutorial is to show how you can use metacells to analyze a very large dataset using a reasonable amount of time and memory.
-For this we will use here **SuperCell** via the **MCAT** command line tool.
+In this section, we will first perform the integration in an unsupervised mode, i.e., without considering the single-cell annotation. 
+For a supervised version, please refer to section \@ref(integration_supervised).
 
 ###  Data loading
 Please follow the section \@ref(HLCA-data) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".

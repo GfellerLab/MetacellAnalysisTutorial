@@ -189,6 +189,9 @@ saveRDS(cd34, file = file.path("data/CD34/singlecell_seurat_filtered.rds"))
 
 ## Retrieve the lung atlas dataset {#HLCA-data}
 
+This dataset will be used for the integration of a large number of single-cell datasets at the level of metacells (see section \@ref(integration)).
+Considering, the large size of the data to download, if you don't consider running the integration analysis, you can skip this part of the tutorial.
+
 ### Downloading the atlas
 
 To illustrate how metacells can be used in the context of single-cell data integration,
