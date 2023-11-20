@@ -81,14 +81,14 @@ mc_data$compactness <- mc_compactness(cell.membership = membership_df, sc.obj = 
                                       sc.reduction = "pca", n.components = 30, diffusion.components = T)
 #> Computing compactness ...
 qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness")
-#> Warning: Removed 28 rows containing non-finite values (`stat_boxplot()`).
+#> Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_compactness-1.png" width="672" />
 
 ```r
 qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness", split.by = annotation_label)
-#> Warning: Removed 28 rows containing non-finite values (`stat_boxplot()`).
+#> Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_compactness-2.png" width="672" />
@@ -123,9 +123,9 @@ ggplot(data.frame(compactness = log(mc_data$compactness), separation = log(mc_da
   geom_point()+
   geom_smooth(method=lm) + ggpubr::stat_cor(method = "spearman")
 #> `geom_smooth()` using formula = 'y ~ x'
-#> Warning: Removed 28 rows containing non-finite values (`stat_smooth()`).
-#> Warning: Removed 28 rows containing non-finite values (`stat_cor()`).
-#> Warning: Removed 28 rows containing missing values (`geom_point()`).
+#> Warning: Removed 15 rows containing non-finite values (`stat_smooth()`).
+#> Warning: Removed 15 rows containing non-finite values (`stat_cor()`).
+#> Warning: Removed 15 rows containing missing values (`geom_point()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/comparison_compactness_separation-1.png" width="672" />
@@ -142,14 +142,14 @@ mc_data$INV <- mc_INV(cell.membership = membership_df, sc.obj = sc_data, group.l
 #> Normalizing data ...
 #> Computing INV ...
 qc_boxplot(mc.obj = mc_data, qc.metrics = "INV")
-#> Warning: Removed 28 rows containing non-finite values (`stat_boxplot()`).
+#> Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_INV-1.png" width="672" />
 
 ```r
 qc_boxplot(mc.obj = mc_data, qc.metrics = "INV", split.by = annotation_label)
-#> Warning: Removed 28 rows containing non-finite values (`stat_boxplot()`).
+#> Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_INV-2.png" width="672" />

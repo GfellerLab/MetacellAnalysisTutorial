@@ -45,7 +45,7 @@ please follow the instructions provided in the README of our MetacellAnalysisToo
 library(reticulate)
 conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
 
-use_condaenv(conda_env[2] )
+use_condaenv(conda_env)
 ```
 
 ### Without conda
