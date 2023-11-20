@@ -10,27 +10,13 @@ If you are interested in sample-weighted analysis, where metacell size is taken 
 ```
 
 
-## Standard analysis (Python) {#standard-analysis-Py}
-```{r, child='./sub_pages/30-downstream-Py.Rmd'}
-```
+<!-- ## Standard analysis (Python) {#standard-analysis-Py} -->
+<!-- ```{r, child='./sub_pages/30-downstream-Py.Rmd'} -->
+<!-- ``` -->
 
 
 ## Sample-weighted analysis {#weighted-analysis}
 ```{r, child='./sub_pages/30-downstream-weighted.Rmd'}
 ```
-
-## Advanced analysis
-
-### GRN {#GRN-analysis}
-
-<!-- ```{r, child='./sub_pages/30-GRN.Rmd'} -->
-<!-- ``` -->
-
-### Integration of metacells {#integration}
-
-<!-- Under construction.... -->
-
-
-
 
 
