@@ -1,0 +1,10 @@
+# Integration of metacells {#integration}
+
+## Unsupervised integration {#integration_unsupervised}
+```{r, child='./sub_pages/40-integration.Rmd'}
+```
+
+## Supervised integration {#integration_supervised}
+
+```{r, child='./sub_pages/40-integration_supervised.Rmd'}
+```

@@ -44,7 +44,7 @@ To build a conda environment containing the three metacell building tools used i
 please follow the instructions provided in the README of our MetacellAnalysisToolkit [github repository](https://github.com/GfellerLab/MetacellToolkit).
 
 
-```{r, eval = TRUE}
+```{r, eval = FALSE}
 library(reticulate)
 conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
 
@@ -179,7 +179,7 @@ library(Seurat)
 library(anndata)
 adata <- anndata::read_h5ad(file.path("data/CD34/singlecell_anndata_filtered.h5ad"))
 
-raw_counts <- Matrix::t(as(adata$raw$X, "CsparseMatrix"))
+raw_counts <- Matrix::t(adata$raw$X)
 colnames(raw_counts) <- rownames(adata$obs)
 rownames(raw_counts) <- rownames(adata$var)
 
