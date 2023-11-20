@@ -48,33 +48,32 @@ warnings.filterwarnings('ignore')
 ```
 
 
-## Metacell Analysis Toolkit (MCAT) {#command-line}
-We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
-The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
-which is for example required in a benchmark setting.
+<!-- We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset. -->
+<!-- The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level. -->
+<!-- which is for example required in a benchmark setting. -->
 
 
-```{bash, commandlines_setup, eval = FALSE}
-setwd("MetacellToolkit/")
-```
+<!-- ```{bash, commandlines_setup, eval = FALSE} -->
+<!-- setwd("MetacellToolkit/") -->
+<!-- ``` -->
 
-```{bash, SuperCell-command, eval = FALSE}
-proj_name="3k_pbmc"
-MC_tool="SuperCell"
-# input raw adata output adata
-Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata
+<!-- ```{bash, SuperCell-command, eval = FALSE} -->
+<!-- proj_name="3k_pbmc" -->
+<!-- MC_tool="SuperCell" -->
+<!-- # input raw adata output adata -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata -->
 
-# input raw adata output seurat
-Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat
-```
+<!-- # input raw adata output seurat -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat -->
+<!-- ``` -->
 
 
-```{bash, SEACells-command, eval = FALSE}
-proj_name="3k_pbmc"
-MC_tool="SEACells"
-# input raw adata output adata
-Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata
+<!-- ```{bash, SEACells-command, eval = FALSE} -->
+<!-- proj_name="3k_pbmc" -->
+<!-- MC_tool="SEACells" -->
+<!-- # input raw adata output adata -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata -->
 
-# input raw adata output seurat
-Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat
-```
+<!-- # input raw adata output seurat -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat -->
+<!-- ``` -->
