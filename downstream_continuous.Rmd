@@ -167,13 +167,13 @@ cd34.singlecells <- ScaleData(cd34.singlecells)
 cd34.singlecells <- RunPCA(cd34.singlecells)
 cd34.singlecells <- RunUMAP(cd34.singlecells,dims = c(1:50))
 ```
-
+Plot single cell data.
 ```{r}
 UMAPPlot(cd34.singlecells,group.by = "celltype",label = T)
 ```
 ### Visualization of metacells in single-cell space
 
-Now we can plot metacells from MetaCell2 in the single cell space.
+Now we can plot metacells from MetaCell2 in the single-cell space.
 ```{r}
 mc_projection(
   sc.obj = cd34.singlecells,
@@ -201,10 +201,6 @@ We can compute the compactness and separation of the metacells from the single c
 With the `mc_compactnness` we can use the approach of SEACells by computing these metrics in a diffusion map obtained from the pca.
 
 First for MetaCell2 metacells
-
-
-
-
 ```{r}
 cd34.metacell$compactness <- mc_compactness(cell.membership = cd34.metacell@misc$cell_membership, sc.obj = cd34.singlecells,
                                       sc.reduction = "pca", n.components = 50, diffusion.components = T)
@@ -241,7 +237,7 @@ cd34.supercell$separation <- mc_separation(cell.membership = cd34.supercell@misc
 qc_boxplot(mc.obj = cd34.supercell, qc.metrics = "separation")
 ```
 ### Inner normalized variance (INV)
-We can compute the INV for the metacells as defined in MetaCell paper.
+We can compute the INV for the MetaCell2 and SuperCell metacells as defined in MetaCell paper.
 
 ```{r}
 cd34.supercell$INV <- mc_INV(cell.membership = cd34.supercell@misc$cell_membership, sc.obj = cd34.singlecells)
