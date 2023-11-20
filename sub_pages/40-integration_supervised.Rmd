@@ -77,9 +77,8 @@ gc()
 ```
 
 ```{r results = FALSE, message=FALSE, warning=FALSE}
-datasets <- list.dirs("data/HLCA/datasets/", full.names = F, recursive = F)
 
-metacell.files <- sapply(datasets[1:5], FUN = function(x){paste0("data/HLCA/datasets/",x,"/sup_mc/mc_adata.h5ad")})
+metacell.files <- sapply(datasets, FUN = function(x){paste0("data/HLCA/datasets/",x,"/sup_mc/mc_adata.h5ad")})
 
 metacell.objs <- lapply(X = metacell.files, function(X){
   adata <- read_h5ad(X)

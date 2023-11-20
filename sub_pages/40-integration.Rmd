@@ -187,7 +187,7 @@ anchors <- FindIntegrationAnchors(object.list = metacell.objs,
 remove(metacell.objs) # We don't need the object list anymore
 gc()
 
-combined.mc <- IntegrateData(anchorset = anchors,k.weight = 50) # we have to update the k.weight parameters because the smallest dataset contain less than 100 metacells
+combined.mc <- IntegrateData(anchorset = anchors,k.weight = 40) # we have to update the k.weight parameters because the smallest dataset contain less than 100 metacells
 ```
 
 Check the obtained object.
