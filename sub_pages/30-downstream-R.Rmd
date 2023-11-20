@@ -69,7 +69,7 @@ We perform diffrential analysis to identify the markers of our cluster 3 as an e
 # Set idents to metacell annotation 
 Idents(MC.seurat) <- "SCclustering"
 
-cells_markers <- FindMarkers(MC.seurat, ident.1 = "3", only.pos = TRUE)
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "4", only.pos = TRUE)
 head(cells_markers)
 ```
 
