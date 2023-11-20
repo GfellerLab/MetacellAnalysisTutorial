@@ -61,7 +61,7 @@ We load the .h5ad objects and directly convert them in Seurat objects to benefit
 
 ```{r results = FALSE, message=FALSE, warning=FALSE}
 datasets <- list.dirs("data/HLCA/datasets/", full.names = F, recursive = F)
-metacell.files <- sapply(datasets[1:5] , FUN = function(x){paste0("data/HLCA/datasets/",x,"/mc_adata.h5ad")})
+metacell.files <- sapply(datasets, FUN = function(x){paste0("data/HLCA/datasets/",x,"/mc_adata.h5ad")})
 
 metacell.objs <- lapply(X = metacell.files, function(X){
   adata <- read_h5ad(X)
@@ -160,7 +160,7 @@ metacell.objs <- lapply(X = metacell.objs, FUN = function(x) {
 anchors <- FindIntegrationAnchors(object.list = metacell.objs,
                                        anchor.features = features,
                                        reduction = "rpca",
-                                       reference = c(1,2,5), #,9,11 the 5 biggest datasets (in term of metacell number) are used as reference
+                                       reference = c(1,2,5,9,11), # the 5 biggest datasets (in term of metacell number) are used as reference
                                        dims = 1:30)
 
 remove(metacell.objs) # We don't need the object list anymore

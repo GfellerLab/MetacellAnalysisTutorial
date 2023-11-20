@@ -64,7 +64,7 @@ We load the .h5ad objects and directly convert them in Seurat objects to benefit
 ```{r results = FALSE, message=FALSE, warning=FALSE}
 datasets <- list.dirs("data/HLCA/datasets/", full.names = F, recursive = F)
 
-metacell.files <- sapply(datasets[1:5], FUN = function(x){paste0("data/HLCA/datasets/",x,"/sup_mc/mc_adata.h5ad")})
+metacell.files <- sapply(datasets, FUN = function(x){paste0("data/HLCA/datasets/",x,"/sup_mc/mc_adata.h5ad")})
 
 metacell.objs <- lapply(X = metacell.files, function(X){
   adata <- read_h5ad(X)
@@ -171,7 +171,7 @@ combined.mc <- Run.STACAS(object.list = metacell.objs,
                           min.sample.size = 80,
                           k.weight = 80, #smallest dataset contains 86 metacells
                           cell.labels = "ann", # Note that by not you can use STACAS in its unsupervised mode
-                          reference = c(1,2,5), # ,5,9,11 the 5 biggest datasets are used as reference
+                          reference = c(1,2,5,9,11), # the 5 biggest datasets are used as reference
                           dims = 1:30)
 
 tf_integration <- Sys.time()
