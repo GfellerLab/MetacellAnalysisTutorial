@@ -2,7 +2,6 @@
 [//]: # (Code to run mc construction with SuperCell for a discrete dataset)
 
 ```{r, include=FALSE}
-# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 ```
@@ -17,7 +16,7 @@ Using the euclidean distances, a single-cell kNN graph is built and metacells ar
 The number of metacells obtained can be chosen by the user by defining the graining level parameter.
 
 The code provided in this section is adapted from the [author's github documentation](https://github.com/GfellerLab/SuperCell/blob/master/README.Rmd).
-For more information on the method, please refer to our review @Review and the original paper @SuperCell.
+For more information on the method, please refer to our review @Review and the original paper [@SuperCell].
 
 #### Importing R packages {-}
 
@@ -35,12 +34,13 @@ library(SuperCell)
 MC_tool = "SuperCell"
 
 ## Here we can modify dataset
-proj_name = c("cell_lines", "3k_pbmc", "cd34_multiome","10k_pbmc")[2]
+proj_name = c("cell_lines", "3k_pbmc", "CD34","10k_pbmc")[2]
 
 annotation_label = unlist(list('cell_lines'='cell_line',
                                '3k_pbmc'='louvain',
-                               'cd34_multiome'='celltype',
+                               'CD34'='celltype',
                                "10k_pbmc" = "seurat_annotations")[proj_name])
+
 ```
 
 ### Data loading
@@ -49,6 +49,16 @@ Please follow the section \@ref(PBMC-data) to retrieve these data from the scanp
 
 ```{r SuperCell-load-data-noEval, eval = TRUE, echo = TRUE}
 print(proj_name)
+celltype_colors <- c(
+  "CD14+ Monocytes"    = "#E69F00",  # orange
+  "B cells"            = "#56B4E9",  # sky blue
+  "CD4 T cells"        = "#009E73",  # bluish green
+  "NK cells"           = "#F0E442",  # yellow
+  "CD8 T cells"        = "#0072B2",  # blue
+  "FCGR3A+ Monocytes"  = "#D55E00",  # vermillion
+  "Dendritic cells"    = "#CC79A7",  # reddish purple
+  "Megakaryocytes"     = "#000000"   # black
+)
 sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
 ```
 
@@ -58,7 +68,7 @@ In this tutorial, the data have been pre-filtered and SuperCell does not require
 
 ### Building metacells
 
-Metacells construction using SuperCell requires one main inputs, *i.e.* a matrix of log-normalized gene expression data which will be used to compute PCA to subsequently build a knn graph for metacells identification.
+Metacells construction using SuperCell requires one main input, *i.e.* a matrix of log-normalized gene expression data which will be used to compute PCA to subsequently build a knn graph for metacells identification.
 Important optional inputs are: 
 (i) the graining level (`gamma` parameter), 
 (ii) the number of neighbors to consider for the knn graph (`k.knn` parameter), 
@@ -69,7 +79,6 @@ and (iv) the number of most variable genes to consider for PCA (`n.var.genes` pa
 
 SuperCell builds its knn graph based on Euclidean distances defined in the PCA space. 
 PCA computation is performed on the log-normalized gene expression data in the `SCimplify` SuperCell function. 
-<!-- In this example the single-cell data have been already log-normalized using scanpy (see \@ref(PBMC-data)). -->
 In the following code chunk, we use Seurat to normalize and visualize the data:
 
 ```{r supercell-data-processing, cache = TO_CACHE, evaluate = TRUE}
@@ -77,9 +86,9 @@ library(Seurat)
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
 sc_data <- FindVariableFeatures(sc_data, nfeatures = 2000)
 sc_data <- ScaleData(sc_data)
-sc_data <- RunPCA(sc_data, npcs = 30, verbose = F)
+sc_data <- RunPCA(sc_data, npcs = 50, verbose = F)
 sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 15, verbose = F)
-UMAPPlot(sc_data, group.by = annotation_label)
+UMAPPlot(sc_data, group.by = annotation_label, cols = celltype_colors)
 ```
 
 
@@ -89,10 +98,10 @@ In this tutorial, we will run SuperCell using the 30 first principal components 
 We chose a graining level of 25 and a number of neighbors of 15 for the knn step.
 
 ```{r SuperCell-parameters}
-gamma = 25 # the requested graining level.
+gamma = 10 # the requested graining level.
 k_knn = 15 # the number of neighbors considered to build the knn network.
 nb_var_genes = 2000 # number of the top variable genes to use for dimensionality reduction 
-nb_pc = 30 # the number of principal components to use.   
+nb_pc = 50 # the number of principal components to use.   
 ```
 
 #### Metacells identification {-}
@@ -102,8 +111,9 @@ The metacells are identified using the `SCimplify` function from the SuperCell p
 MC <- SuperCell::SCimplify(Seurat::GetAssayData(sc_data, slot = "data"),  # single-cell log-normalized gene expression data
                            k.knn = k_knn,
                            gamma = gamma,
-                           n.var.genes = nb_var_genes,  
-                           n.pc = nb_pc
+                           # n.var.genes = nb_var_genes,  
+                           n.pc = nb_pc,
+                           genes.use = Seurat::VariableFeatures(sc_data)
                            )
 ```
 
@@ -140,7 +150,7 @@ Alternatively, assignment can be performed using `relative` (`method = "relative
 print(annotation_label)
 MC$annotation <- supercell_assign(clusters = sc_data@meta.data[, annotation_label], # single-cell annotation
                                   supercell_membership = MC$membership, # single-cell assignment to metacells
-                                  method = "jaccard"
+                                  method = "absolute"
                                   )
 
 head(MC$annotation)
@@ -209,6 +219,14 @@ saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.r
 ```
 
 For future downstream analyses in python (section \@ref(standard-analysis-Py)), metacell counts can be saved in an Anndata object: 
+```{r SuperCell-py-save, cache = TO_CACHE, message = FALSE, warning = FALSE}
+MC.seurat.ad <- anndata::AnnData(
+  X = Matrix::t(Seurat::GetAssayData(MC.seurat, slot = "counts")),
+  obs = MC.seurat@meta.data
+)
+
+anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_name, '/metacell_', MC_tool,'.h5ad'))
+```
 
 ```{r SuperCell-remove-variables, include = TRUE, echo = FALSE}
 rm(sc_data, MC, MC.GE, MC.seurat)

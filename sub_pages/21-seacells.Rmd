@@ -2,7 +2,6 @@
 [//]: # (Code to run mc construction with SEACells for a discrete dataset)
 
 ```{r, include=FALSE}
-# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
@@ -16,7 +15,7 @@ Single cells are assigned to a given metacell based on the maximum membership va
 
 
 The code provided in this section is adapted from the [author's jupyter notebook](https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb). 
-For more information on the method, please refer to our review @Review and the original paper @SEACells. 
+For more information on the method, please refer to our review @Review and the original paper [@SEACells]. 
 
 #### Importing python packages {-}
 
@@ -50,9 +49,7 @@ annotation_label = {'cell_lines':'cell_line',
 Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
 Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
 
-```{r seacells-load-data, child='./functional_chunks/load_anndata.Rmd'}
-```
-```{python seacell-load-data-noEval, eval = FALSE, echo = TRUE}
+```{python seacell-load-data-noEval, eval = TRUE, echo = TRUE}
 MC_tool = "SEACells"
 proj_name = "3k_pbmc"
 ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
@@ -95,7 +92,7 @@ In this example, we choose a graining level of 25.
 
 ```{python seacells-parameters}
 build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
-n_waypoint_eigs = 10      # Number of eigenvalues to consider when initializing metacells
+n_waypoint_eigs = 30      # Number of eigenvalues to consider when initializing metacells
 n_neighbors = 15 # Number of neighbors used for graph construction 
 gamma = 25   # the requested graining level
 n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  

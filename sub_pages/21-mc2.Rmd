@@ -2,7 +2,6 @@
 [//]: # (Chunk to run MC-2 metacell construction for a discrete -pbmcs- dataset)
 
 ```{r, include=FALSE}
-# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
@@ -18,7 +17,7 @@ Note that prior to metacell identification, the MC2 framework recommends gene fi
 by the method is of high importance to assure good quality of the metacells.
 
 The code provided in this section is adapted from the [author's tutorial](https://tanaylab.github.io/metacells-vignettes/one-pass.html). 
-For more information on the method, please refer to our review @Review and the @MC2. 
+For more information on the method, please refer to our review @Review and the original paper [@MC2]. 
 
 #### Importing python packages {-}
 
@@ -35,11 +34,7 @@ import seaborn as sns
 import metacells as mc
 ```
 
-<!-- ```{python mc2-QC-imports, eval = FALSE} -->
-<!-- import sys -->
-<!-- sys.path.append('./mc_QC/') -->
-<!-- import mc_QC -->
-<!-- ``` -->
+
 If you don't have these packages installed, please refer to the section \@ref(installations).
 
 ```{python mc2-parameters, eval = TRUE, echo = FALSE}
@@ -58,6 +53,7 @@ We will run Metacell-2 (MC2) on a single-cell dataset composed of around 3000 pe
 Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
 ```{r load-data, child='./functional_chunks/load_anndata.Rmd'}
 ```
+
 ```{python load-data-noEval, eval = FALSE, echo = TRUE}
 MC_tool = "MC2"
 proj_name = "3k_pbmc"
@@ -254,13 +250,6 @@ mc_ad.X.sum(axis=1)[:5]
 mc_ad.layers['total_umis']
 
 ```
-
-<!-- **Comparing the obtained and requested graining level** -->
-
-<!-- In the following code chunk, we estimate whether a deviation of the obtained gamma from the requested gamma is acceptable. If not, we suggest to increase or decrease the `target_metacell_size` parameter to approach the desired graining level. -->
-
-<!-- ```{r mc2-gamma-deviation, child='./functional_chunks/mc2_gamma_deviation.Rmd'} -->
-<!-- ``` -->
 
 ### Annotate metacells (using available annotations)
 

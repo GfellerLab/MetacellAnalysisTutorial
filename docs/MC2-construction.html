@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4.2 MC2 (Python) | Metacell Tutorial</title>
+  <title>3.2 MC2 (Python) | Metacell Tutorial</title>
   <meta name="description" content="This is a tutorial about metacell construction and analysis." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4.2 MC2 (Python) | Metacell Tutorial" />
+  <meta property="og:title" content="3.2 MC2 (Python) | Metacell Tutorial" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4.2 MC2 (Python) | Metacell Tutorial" />
+  <meta name="twitter:title" content="3.2 MC2 (Python) | Metacell Tutorial" />
   
   <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
   
 
-<meta name="author" content="Mariia Bilous, Léonard Hérault, Aurélie Gabriel, David Gfeller" />
+<meta name="author" content="Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller" />
 
 
-<meta name="date" content="2023-11-07" />
+<meta name="date" content="2023-11-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -122,6 +122,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <style type="text/css">
   
   div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -140,85 +162,112 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Metacell Tutorial </a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> This tutorial</a></li>
-<li class="chapter" data-level="2" data-path="requirements.html"><a href="requirements.html"><i class="fa fa-check"></i><b>2</b> Requirements</a>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>This tutorial</a></li>
+<li class="chapter" data-level="1" data-path="requirements.html"><a href="requirements.html"><i class="fa fa-check"></i><b>1</b> Requirements</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="installations.html"><a href="installations.html"><i class="fa fa-check"></i><b>2.1</b> Installations</a></li>
-<li class="chapter" data-level="2.2" data-path="PBMC-data.html"><a href="PBMC-data.html"><i class="fa fa-check"></i><b>2.2</b> Retrieve the discrete dataset (PBMCs dataset)</a></li>
-<li class="chapter" data-level="2.3" data-path="CD34-data.html"><a href="CD34-data.html"><i class="fa fa-check"></i><b>2.3</b> Retrieve the continuous dataset (CD34 dataset)</a></li>
+<li class="chapter" data-level="1.1" data-path="installations.html"><a href="installations.html"><i class="fa fa-check"></i><b>1.1</b> Installations</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="installations.html"><a href="installations.html#using-conda-recommended"><i class="fa fa-check"></i><b>1.1.1</b> Using conda (recommended)</a></li>
+<li class="chapter" data-level="1.1.2" data-path="installations.html"><a href="installations.html#without-conda"><i class="fa fa-check"></i><b>1.1.2</b> Without conda</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>3</b> The metacell concept</a></li>
-<li class="chapter" data-level="4" data-path="Metacell-construction-chapter.html"><a href="Metacell-construction-chapter.html"><i class="fa fa-check"></i><b>4</b> Constructing metacells (for ‘discrete’ data)</a>
+<li class="chapter" data-level="1.2" data-path="PBMC-data.html"><a href="PBMC-data.html"><i class="fa fa-check"></i><b>1.2</b> Retrieve a discrete dataset (PBMCs dataset)</a></li>
+<li class="chapter" data-level="1.3" data-path="CD34-data.html"><a href="CD34-data.html"><i class="fa fa-check"></i><b>1.3</b> Retrieve a continuous dataset (CD34 dataset)</a></li>
+<li class="chapter" data-level="1.4" data-path="HLCA-data.html"><a href="HLCA-data.html"><i class="fa fa-check"></i><b>1.4</b> Retrieve the lung atlas dataset</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html"><i class="fa fa-check"></i><b>4.1</b> SuperCell (R)</a>
-<ul>
-<li class="chapter" data-level="4.1.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#method"><i class="fa fa-check"></i><b>4.1.1</b> Method</a></li>
-<li class="chapter" data-level="4.1.2" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#data-loading"><i class="fa fa-check"></i><b>4.1.2</b> Data loading</a></li>
-<li class="chapter" data-level="4.1.3" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#filtering-steps"><i class="fa fa-check"></i><b>4.1.3</b> Filtering steps</a></li>
-<li class="chapter" data-level="4.1.4" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#building-metacells"><i class="fa fa-check"></i><b>4.1.4</b> Building metacells</a></li>
-<li class="chapter" data-level="4.1.5" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#annotate-metacells-using-available-annotations"><i class="fa fa-check"></i><b>4.1.5</b> Annotate metacells (using available annotations)</a></li>
-<li class="chapter" data-level="4.1.6" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#save-output"><i class="fa fa-check"></i><b>4.1.6</b> Save output</a></li>
-</ul></li>
-<li class="chapter" data-level="4.2" data-path="MC2-construction.html"><a href="MC2-construction.html"><i class="fa fa-check"></i><b>4.2</b> MC2 (Python)</a>
-<ul>
-<li class="chapter" data-level="4.2.1" data-path="MC2-construction.html"><a href="MC2-construction.html#method-1"><i class="fa fa-check"></i><b>4.2.1</b> Method</a></li>
-<li class="chapter" data-level="4.2.2" data-path="MC2-construction.html"><a href="MC2-construction.html#data-loading-1"><i class="fa fa-check"></i><b>4.2.2</b> Data loading</a></li>
-<li class="chapter" data-level="4.2.3" data-path="MC2-construction.html"><a href="MC2-construction.html#filtering-steps-1"><i class="fa fa-check"></i><b>4.2.3</b> Filtering steps</a></li>
-<li class="chapter" data-level="4.2.4" data-path="MC2-construction.html"><a href="MC2-construction.html#building-metacells-1"><i class="fa fa-check"></i><b>4.2.4</b> Building metacells</a></li>
-<li class="chapter" data-level="4.2.5" data-path="MC2-construction.html"><a href="MC2-construction.html#annotate-metacells-using-available-annotations-1"><i class="fa fa-check"></i><b>4.2.5</b> Annotate metacells (using available annotations)</a></li>
-<li class="chapter" data-level="4.2.6" data-path="MC2-construction.html"><a href="MC2-construction.html#save-output-1"><i class="fa fa-check"></i><b>4.2.6</b> Save output</a></li>
-</ul></li>
-<li class="chapter" data-level="4.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html"><i class="fa fa-check"></i><b>4.3</b> SEACells (Python)</a>
-<ul>
-<li class="chapter" data-level="4.3.1" data-path="SEACells-construction.html"><a href="SEACells-construction.html#method-2"><i class="fa fa-check"></i><b>4.3.1</b> Method</a></li>
-<li class="chapter" data-level="4.3.2" data-path="SEACells-construction.html"><a href="SEACells-construction.html#data-loading-2"><i class="fa fa-check"></i><b>4.3.2</b> Data loading</a></li>
-<li class="chapter" data-level="4.3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html#filtering-steps-2"><i class="fa fa-check"></i><b>4.3.3</b> Filtering steps</a></li>
-<li class="chapter" data-level="4.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>4.3.4</b> Building metacells</a></li>
-<li class="chapter" data-level="4.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>4.3.5</b> Visualize metacells</a></li>
-</ul></li>
-<li class="chapter" data-level="4.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>4.4</b> Command line tool</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>5</b> Metacells QCs</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html"><i class="fa fa-check"></i><b>5.1</b> Quantitative metrics</a>
-<ul>
-<li class="chapter" data-level="5.1.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#purity"><i class="fa fa-check"></i><b>5.1.1</b> Purity</a></li>
-<li class="chapter" data-level="5.1.2" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#compactness"><i class="fa fa-check"></i><b>5.1.2</b> Compactness</a></li>
-<li class="chapter" data-level="5.1.3" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#separation"><i class="fa fa-check"></i><b>5.1.3</b> Separation</a></li>
-<li class="chapter" data-level="5.1.4" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#inv"><i class="fa fa-check"></i><b>5.1.4</b> INV</a></li>
-</ul></li>
-<li class="chapter" data-level="5.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>5.2</b> Size distribution</a></li>
-<li class="chapter" data-level="5.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>5.3</b> Representativeness of metacells</a></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>6.1.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="6.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>6.1.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="6.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>6.1.3</b> Clustering</a></li>
-<li class="chapter" data-level="6.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Differential expression analysis</a></li>
-<li class="chapter" data-level="6.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>6.1.5</b> Visualize gene-gene correlation</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html"><i class="fa fa-check"></i><b>6.2</b> Standard analysis (Python)</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>6.2.1</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="6.2.2" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#clustering-1"><i class="fa fa-check"></i><b>6.2.2</b> Clustering</a></li>
-<li class="chapter" data-level="6.2.3" data-path="standard-analysis-Py.html"><a href="standard-analysis-Py.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>6.2.3</b> Differential expression analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="6.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>6.3</b> Sample-weighted analysis</a>
-<ul>
-<li class="chapter" data-level="6.3.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>6.3.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="6.3.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-2"><i class="fa fa-check"></i><b>6.3.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="6.3.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-2"><i class="fa fa-check"></i><b>6.3.3</b> Clustering</a></li>
-<li class="chapter" data-level="6.3.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-2"><i class="fa fa-check"></i><b>6.3.4</b> Differential expression analysis</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="advanced-analysis.html"><a href="advanced-analysis.html"><i class="fa fa-check"></i><b>6.4</b> Advanced analysis</a>
-<ul>
-<li class="chapter" data-level="6.4.1" data-path="advanced-analysis.html"><a href="advanced-analysis.html#GRN-analysis"><i class="fa fa-check"></i><b>6.4.1</b> GRN</a></li>
-<li class="chapter" data-level="6.4.2" data-path="advanced-analysis.html"><a href="advanced-analysis.html#integration"><i class="fa fa-check"></i><b>6.4.2</b> Integration of metacells</a></li>
+<li class="chapter" data-level="1.4.1" data-path="HLCA-data.html"><a href="HLCA-data.html#downloading-the-atlas"><i class="fa fa-check"></i><b>1.4.1</b> Downloading the atlas</a></li>
+<li class="chapter" data-level="1.4.2" data-path="HLCA-data.html"><a href="HLCA-data.html#splitting-atlas-by-datasets"><i class="fa fa-check"></i><b>1.4.2</b> Splitting atlas by datasets</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="2" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>2</b> The metacell concept</a></li>
+<li class="chapter" data-level="3" data-path="Metacell-construction-chapter.html"><a href="Metacell-construction-chapter.html"><i class="fa fa-check"></i><b>3</b> Constructing metacells</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html"><i class="fa fa-check"></i><b>3.1</b> SuperCell (R)</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#method"><i class="fa fa-check"></i><b>3.1.1</b> Method</a></li>
+<li class="chapter" data-level="3.1.2" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#data-loading"><i class="fa fa-check"></i><b>3.1.2</b> Data loading</a></li>
+<li class="chapter" data-level="3.1.3" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#filtering-steps"><i class="fa fa-check"></i><b>3.1.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.1.4" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#building-metacells"><i class="fa fa-check"></i><b>3.1.4</b> Building metacells</a></li>
+<li class="chapter" data-level="3.1.5" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#annotate-metacells-using-available-annotations"><i class="fa fa-check"></i><b>3.1.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="3.1.6" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#save-output"><i class="fa fa-check"></i><b>3.1.6</b> Save output</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="MC2-construction.html"><a href="MC2-construction.html"><i class="fa fa-check"></i><b>3.2</b> MC2 (Python)</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="MC2-construction.html"><a href="MC2-construction.html#method-1"><i class="fa fa-check"></i><b>3.2.1</b> Method</a></li>
+<li class="chapter" data-level="3.2.2" data-path="MC2-construction.html"><a href="MC2-construction.html#data-loading-1"><i class="fa fa-check"></i><b>3.2.2</b> Data loading</a></li>
+<li class="chapter" data-level="3.2.3" data-path="MC2-construction.html"><a href="MC2-construction.html#filtering-steps-1"><i class="fa fa-check"></i><b>3.2.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.2.4" data-path="MC2-construction.html"><a href="MC2-construction.html#building-metacells-1"><i class="fa fa-check"></i><b>3.2.4</b> Building metacells</a></li>
+<li class="chapter" data-level="3.2.5" data-path="MC2-construction.html"><a href="MC2-construction.html#annotate-metacells-using-available-annotations-1"><i class="fa fa-check"></i><b>3.2.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="3.2.6" data-path="MC2-construction.html"><a href="MC2-construction.html#save-output-1"><i class="fa fa-check"></i><b>3.2.6</b> Save output</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html"><i class="fa fa-check"></i><b>3.3</b> SEACells (Python)</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="SEACells-construction.html"><a href="SEACells-construction.html#method-2"><i class="fa fa-check"></i><b>3.3.1</b> Method</a></li>
+<li class="chapter" data-level="3.3.2" data-path="SEACells-construction.html"><a href="SEACells-construction.html#data-loading-2"><i class="fa fa-check"></i><b>3.3.2</b> Data loading</a></li>
+<li class="chapter" data-level="3.3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html#filtering-steps-2"><i class="fa fa-check"></i><b>3.3.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Building metacells</a></li>
+<li class="chapter" data-level="3.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>3.3.5</b> Visualize metacells</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>3.4</b> Metacell Analysis Toolkit (MCAT)</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>4</b> Metacells QCs</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html"><i class="fa fa-check"></i><b>4.1</b> Quantitative metrics</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#purity"><i class="fa fa-check"></i><b>4.1.1</b> Purity</a></li>
+<li class="chapter" data-level="4.1.2" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#compactness"><i class="fa fa-check"></i><b>4.1.2</b> Compactness</a></li>
+<li class="chapter" data-level="4.1.3" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#separation"><i class="fa fa-check"></i><b>4.1.3</b> Separation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#inv"><i class="fa fa-check"></i><b>4.1.4</b> INV</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>4.2</b> Size distribution</a></li>
+<li class="chapter" data-level="4.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>4.3</b> Representativeness of metacells</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>5</b> Downstream analysis of metacells</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>5.1</b> Standard analysis (R)</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>5.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="5.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>5.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="5.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>5.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="5.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>5.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="5.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>5.1.5</b> Visualize gene-gene correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>5.2</b> Sample-weighted analysis</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>5.2.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="5.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>5.2.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="5.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>5.2.3</b> Clustering</a></li>
+<li class="chapter" data-level="5.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>5.2.4</b> Differential expression analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>6</b> Integration of metacells</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>6.1</b> Unsupervised integration</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>6.1.1</b> Data loading</a></li>
+<li class="chapter" data-level="6.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment"><i class="fa fa-check"></i><b>6.1.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="6.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>6.1.3</b> Building metacell</a></li>
+<li class="chapter" data-level="6.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>6.1.4</b> Loading metacell objects</a></li>
+<li class="chapter" data-level="6.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>6.1.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="6.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>6.1.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="6.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>6.1.7</b> Seurat integration</a></li>
+<li class="chapter" data-level="6.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>6.1.8</b> Downstream analysis</a></li>
+<li class="chapter" data-level="6.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>6.1.9</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>6.2</b> Supervised integration</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>6.2.1</b> Data loading</a></li>
+<li class="chapter" data-level="6.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>6.2.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="6.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>6.2.3</b> Constructing supervised metacell</a></li>
+<li class="chapter" data-level="6.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>6.2.4</b> Load metacell objects</a></li>
+<li class="chapter" data-level="6.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>6.2.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="6.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>6.2.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="6.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>6.2.7</b> STACAS integration</a></li>
+<li class="chapter" data-level="6.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>6.2.8</b> Comparison with unsupervised analysis</a></li>
+<li class="chapter" data-level="6.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>6.2.9</b> Downstream analysis</a></li>
+<li class="chapter" data-level="6.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>6.2.10</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -239,11 +288,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="MC2-construction" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> MC2 (Python)<a href="MC2-construction.html#MC2-construction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="MC2-construction" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> MC2 (Python)<a href="MC2-construction.html#MC2-construction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In this section, we construct metacells using <a href="https://github.com/tanaylab/metacells">Metacell-2 (MC2)</a> implemented in Python.</p>
-<div id="method-1" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> Method<a href="MC2-construction.html#method-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="method-1" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Method<a href="MC2-construction.html#method-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Metacell-2 (MC2) is a python tool to construct metacells and is the updated version of the MetaCell algorithm, which introduced the concept of metacell.
 MC2 applies a two-phase divide-and-conquer approach. Cells are randomly divided into piles of ~10k cells and
 initial metacells are built applying a MetaCell-like approach per pile, i.e. based on a single-cell kNN graph built
@@ -252,39 +301,34 @@ Then, transcriptionally similar metacells are grouped into metagroup piles for t
 Note that prior to metacell identification, the MC2 framework recommends gene filtering steps. The choice of the genes used
 by the method is of high importance to assure good quality of the metacells.</p>
 <p>The code provided in this section is adapted from the <a href="https://tanaylab.github.io/metacells-vignettes/one-pass.html">author’s tutorial</a>.
-For more information on the method, please refer to our review <span class="citation">(<a href="#ref-Review" role="doc-biblioref"><strong>Review?</strong></a>)</span> and the <span class="citation">(<a href="#ref-MC2" role="doc-biblioref"><strong>MC2?</strong></a>)</span>.</p>
+For more information on the method, please refer to our review<span class="citation"><a href="#fn12" class="footnote-ref" id="fnref12"><sup>12</sup></a></span> and the original paper.<span class="citation"><a href="#fn13" class="footnote-ref" id="fnref13"><sup>13</sup></a></span></p>
 <div id="importing-python-packages" class="section level4 unnumbered hasAnchor">
 <h4>Importing python packages<a href="MC2-construction.html#importing-python-packages" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To run MC2, the following python packages need to be imported:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="MC2-construction.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb21-2"><a href="MC2-construction.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb21-3"><a href="MC2-construction.html#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb21-4"><a href="MC2-construction.html#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anndata <span class="im">as</span> ad</span>
-<span id="cb21-5"><a href="MC2-construction.html#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
-<span id="cb21-6"><a href="MC2-construction.html#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb21-7"><a href="MC2-construction.html#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb21-8"><a href="MC2-construction.html#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> metacells <span class="im">as</span> mc</span></code></pre></div>
-<!-- ```{python mc2-QC-imports, eval = FALSE} -->
-<!-- import sys -->
-<!-- sys.path.append('./mc_QC/') -->
-<!-- import mc_QC -->
-<!-- ``` -->
-<p>If you don’t have these packages installed, please refer to the section <a href="installations.html#installations">2.1</a>.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="MC2-construction.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb26-2"><a href="MC2-construction.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb26-3"><a href="MC2-construction.html#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb26-4"><a href="MC2-construction.html#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anndata <span class="im">as</span> ad</span>
+<span id="cb26-5"><a href="MC2-construction.html#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb26-6"><a href="MC2-construction.html#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb26-7"><a href="MC2-construction.html#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb26-8"><a href="MC2-construction.html#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> metacells <span class="im">as</span> mc</span></code></pre></div>
+<p>If you don’t have these packages installed, please refer to the section <a href="installations.html#installations">1.1</a>.</p>
 </div>
 </div>
-<div id="data-loading-1" class="section level3 hasAnchor" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> Data loading<a href="MC2-construction.html#data-loading-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="data-loading-1" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Data loading<a href="MC2-construction.html#data-loading-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We will run Metacell-2 (MC2) on a single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs).
-Please follow the section <a href="PBMC-data.html#PBMC-data">2.2</a> to retrieve these data from the scanpy package and save the data in the following file: “data/3k_pbmc/singlecell_anndata_filtered.h5ad”.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="MC2-construction.html#cb22-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">&quot;MC2&quot;</span></span>
-<span id="cb22-2"><a href="MC2-construction.html#cb22-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">&quot;3k_pbmc&quot;</span></span>
-<span id="cb22-3"><a href="MC2-construction.html#cb22-3" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read(os.path.join(<span class="st">&quot;data&quot;</span>, proj_name, <span class="st">&quot;singlecell_anndata_filtered.h5ad&quot;</span>))</span>
-<span id="cb22-4"><a href="MC2-construction.html#cb22-4" aria-hidden="true" tabindex="-1"></a>ad.X <span class="op">=</span> ad.raw.X.copy()</span></code></pre></div>
+Please follow the section <a href="PBMC-data.html#PBMC-data">1.2</a> to retrieve these data from the scanpy package and save the data in the following file: “data/3k_pbmc/singlecell_anndata_filtered.h5ad”.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="MC2-construction.html#cb27-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">&quot;MC2&quot;</span></span>
+<span id="cb27-2"><a href="MC2-construction.html#cb27-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">&quot;3k_pbmc&quot;</span></span>
+<span id="cb27-3"><a href="MC2-construction.html#cb27-3" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read(os.path.join(<span class="st">&quot;data&quot;</span>, proj_name, <span class="st">&quot;singlecell_anndata_filtered.h5ad&quot;</span>))</span>
+<span id="cb27-4"><a href="MC2-construction.html#cb27-4" aria-hidden="true" tabindex="-1"></a>ad.X <span class="op">=</span> ad.raw.X.copy()</span></code></pre></div>
 <p>We initialize the name of the anndata (in the unstructured annotations) object using the <code>mc.ut.set_name()</code> function from the MC2 package.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="MC2-construction.html#cb23-1" aria-hidden="true" tabindex="-1"></a>mc.ut.set_name(ad, proj_name)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="MC2-construction.html#cb28-1" aria-hidden="true" tabindex="-1"></a>mc.ut.set_name(ad, proj_name)</span></code></pre></div>
 </div>
-<div id="filtering-steps-1" class="section level3 hasAnchor" number="4.2.3">
-<h3><span class="header-section-number">4.2.3</span> Filtering steps<a href="MC2-construction.html#filtering-steps-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="filtering-steps-1" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> Filtering steps<a href="MC2-construction.html#filtering-steps-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>MC2 requires that standard filtering steps such as doublet filtering are performed outside of the MC2 framework.
 In addition to standard data filtering steps, the MC2 package proposes functions to filter the single-cell data at the gene and at the cell level (See <a href="https://tanaylab.github.io/metacells-vignettes/one-pass.html">author’s vignette</a>).
 At the gene level, the filtering steps consist in excluding genes based on biological knowledge (<em>e.g.</em> mitochrondrial genes) as well as based on their expression levels.
@@ -298,18 +342,18 @@ To complete this list of genes, an iterative approach can be used following the 
 The <code>mc.pl.exclude_genes()</code> function will filter out:
 i) the known-to-be-excluded genes defined by the user as gene names or gene names patterns (<code>EXCLUDED_GENE_NAMES</code> and <code>EXCLUDED_GENE_PATTERNS</code> parameters respectively),
 and ii) the “bursty lonely genes”.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="MC2-construction.html#cb24-1" aria-hidden="true" tabindex="-1"></a>EXCLUDED_GENE_NAMES <span class="op">=</span> [<span class="st">&quot;XIST&quot;</span>, <span class="st">&quot;MALAT1&quot;</span>, <span class="st">&quot;NEAT1&quot;</span>] </span>
-<span id="cb24-2"><a href="MC2-construction.html#cb24-2" aria-hidden="true" tabindex="-1"></a>EXCLUDED_GENE_PATTERNS <span class="op">=</span> [<span class="st">&#39;MT-.*&#39;</span>]</span>
-<span id="cb24-3"><a href="MC2-construction.html#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="MC2-construction.html#cb24-4" aria-hidden="true" tabindex="-1"></a>mc.pl.exclude_genes(</span>
-<span id="cb24-5"><a href="MC2-construction.html#cb24-5" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb24-6"><a href="MC2-construction.html#cb24-6" aria-hidden="true" tabindex="-1"></a>    excluded_gene_names<span class="op">=</span>EXCLUDED_GENE_NAMES,</span>
-<span id="cb24-7"><a href="MC2-construction.html#cb24-7" aria-hidden="true" tabindex="-1"></a>    excluded_gene_patterns<span class="op">=</span>EXCLUDED_GENE_PATTERNS,</span>
-<span id="cb24-8"><a href="MC2-construction.html#cb24-8" aria-hidden="true" tabindex="-1"></a>    random_seed<span class="op">=</span><span class="dv">123456</span></span>
-<span id="cb24-9"><a href="MC2-construction.html#cb24-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb24-10"><a href="MC2-construction.html#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.var[bursty_lonely_gene]: 0 true (0%) out of 32738 bools</span></span>
-<span id="cb24-11"><a href="MC2-construction.html#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.var[properly_sampled_gene]: 16579 true (50.64%) out of 32738 bools</span></span>
-<span id="cb24-12"><a href="MC2-construction.html#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.var[excluded_gene]: 16174 true (49.4%) out of 32738 bools</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="MC2-construction.html#cb29-1" aria-hidden="true" tabindex="-1"></a>EXCLUDED_GENE_NAMES <span class="op">=</span> [<span class="st">&quot;XIST&quot;</span>, <span class="st">&quot;MALAT1&quot;</span>, <span class="st">&quot;NEAT1&quot;</span>] </span>
+<span id="cb29-2"><a href="MC2-construction.html#cb29-2" aria-hidden="true" tabindex="-1"></a>EXCLUDED_GENE_PATTERNS <span class="op">=</span> [<span class="st">&#39;MT-.*&#39;</span>]</span>
+<span id="cb29-3"><a href="MC2-construction.html#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="MC2-construction.html#cb29-4" aria-hidden="true" tabindex="-1"></a>mc.pl.exclude_genes(</span>
+<span id="cb29-5"><a href="MC2-construction.html#cb29-5" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb29-6"><a href="MC2-construction.html#cb29-6" aria-hidden="true" tabindex="-1"></a>    excluded_gene_names<span class="op">=</span>EXCLUDED_GENE_NAMES,</span>
+<span id="cb29-7"><a href="MC2-construction.html#cb29-7" aria-hidden="true" tabindex="-1"></a>    excluded_gene_patterns<span class="op">=</span>EXCLUDED_GENE_PATTERNS,</span>
+<span id="cb29-8"><a href="MC2-construction.html#cb29-8" aria-hidden="true" tabindex="-1"></a>    random_seed<span class="op">=</span><span class="dv">123456</span></span>
+<span id="cb29-9"><a href="MC2-construction.html#cb29-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-10"><a href="MC2-construction.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.var[bursty_lonely_gene]: 0 true (0%) out of 32738 bools</span></span>
+<span id="cb29-11"><a href="MC2-construction.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.var[properly_sampled_gene]: 16579 true (50.64%) out of 32738 bools</span></span>
+<span id="cb29-12"><a href="MC2-construction.html#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.var[excluded_gene]: 16174 true (49.4%) out of 32738 bools</span></span></code></pre></div>
 </div>
 <div id="cell-filtering-based-on-umis-counts" class="section level4 unnumbered hasAnchor">
 <h4>Cell filtering based on UMIs counts<a href="MC2-construction.html#cell-filtering-based-on-umis-counts" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -318,32 +362,32 @@ Also, cell filtering based on UMI counts in excluded genes is also performed(<co
 Since our dataset has been pre-filtered, very lenient cutoffs will be used in this tutorial.
 The following code chunk defines these parameters.
 To adapt them to your datasets, we advise you to explore the distributions of total UMI counts and UMI counts in excluded genes, as recommended and described in the MC2 <a href="https://tanaylab.github.io/metacells-vignettes/one-pass.html">original vignette</a>.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="MC2-construction.html#cb25-1" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MIN_CELL_TOTAL <span class="op">=</span> <span class="dv">200</span> </span>
-<span id="cb25-2"><a href="MC2-construction.html#cb25-2" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MAX_CELL_TOTAL <span class="op">=</span> <span class="dv">10000</span> </span>
-<span id="cb25-3"><a href="MC2-construction.html#cb25-3" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION <span class="op">=</span> <span class="fl">0.25</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="MC2-construction.html#cb30-1" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MIN_CELL_TOTAL <span class="op">=</span> <span class="dv">200</span> </span>
+<span id="cb30-2"><a href="MC2-construction.html#cb30-2" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MAX_CELL_TOTAL <span class="op">=</span> <span class="dv">10000</span> </span>
+<span id="cb30-3"><a href="MC2-construction.html#cb30-3" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION <span class="op">=</span> <span class="fl">0.25</span></span></code></pre></div>
 <p>The number of UMIs in excluded genes is computed using the <code>mc.tl.compute_excluded_gene_umis()</code> function and cells are filtered out using the <code>mc.pl.exclude_cells()</code> function.
 Additional cells can be filtered out by adding a cell description columns in the <code>obs</code> data frame in the anndata oject. This annotation should be a boolean indicating whether the cell should filtered out or not.
 The name of this column should be provided to the <code>mc.pl.exclude_cells()</code> function via the <code>additional_cells_masks</code> parameter.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="MC2-construction.html#cb26-1" aria-hidden="true" tabindex="-1"></a>mc.tl.compute_excluded_gene_umis(ad)</span>
-<span id="cb26-2"><a href="MC2-construction.html#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="MC2-construction.html#cb26-3" aria-hidden="true" tabindex="-1"></a>mc.pl.exclude_cells(</span>
-<span id="cb26-4"><a href="MC2-construction.html#cb26-4" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb26-5"><a href="MC2-construction.html#cb26-5" aria-hidden="true" tabindex="-1"></a>    properly_sampled_min_cell_total<span class="op">=</span>PROPERLY_SAMPLED_MIN_CELL_TOTAL,</span>
-<span id="cb26-6"><a href="MC2-construction.html#cb26-6" aria-hidden="true" tabindex="-1"></a>    properly_sampled_max_cell_total<span class="op">=</span>PROPERLY_SAMPLED_MAX_CELL_TOTAL,</span>
-<span id="cb26-7"><a href="MC2-construction.html#cb26-7" aria-hidden="true" tabindex="-1"></a>    properly_sampled_max_excluded_genes_fraction<span class="op">=</span>PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION <span class="co"># ,</span></span>
-<span id="cb26-8"><a href="MC2-construction.html#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># additional_cells_masks=[&quot;|doublet_cell&quot;]</span></span>
-<span id="cb26-9"><a href="MC2-construction.html#cb26-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-10"><a href="MC2-construction.html#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.obs[properly_sampled_cell]: 2638 true (100%) out of 2638 bools</span></span>
-<span id="cb26-11"><a href="MC2-construction.html#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.obs[excluded_cell]: 0 true (0%) out of 2638 bools</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="MC2-construction.html#cb31-1" aria-hidden="true" tabindex="-1"></a>mc.tl.compute_excluded_gene_umis(ad)</span>
+<span id="cb31-2"><a href="MC2-construction.html#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="MC2-construction.html#cb31-3" aria-hidden="true" tabindex="-1"></a>mc.pl.exclude_cells(</span>
+<span id="cb31-4"><a href="MC2-construction.html#cb31-4" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb31-5"><a href="MC2-construction.html#cb31-5" aria-hidden="true" tabindex="-1"></a>    properly_sampled_min_cell_total<span class="op">=</span>PROPERLY_SAMPLED_MIN_CELL_TOTAL,</span>
+<span id="cb31-6"><a href="MC2-construction.html#cb31-6" aria-hidden="true" tabindex="-1"></a>    properly_sampled_max_cell_total<span class="op">=</span>PROPERLY_SAMPLED_MAX_CELL_TOTAL,</span>
+<span id="cb31-7"><a href="MC2-construction.html#cb31-7" aria-hidden="true" tabindex="-1"></a>    properly_sampled_max_excluded_genes_fraction<span class="op">=</span>PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION <span class="co"># ,</span></span>
+<span id="cb31-8"><a href="MC2-construction.html#cb31-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># additional_cells_masks=[&quot;|doublet_cell&quot;]</span></span>
+<span id="cb31-9"><a href="MC2-construction.html#cb31-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-10"><a href="MC2-construction.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.obs[properly_sampled_cell]: 2638 true (100%) out of 2638 bools</span></span>
+<span id="cb31-11"><a href="MC2-construction.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.obs[excluded_cell]: 0 true (0%) out of 2638 bools</span></span></code></pre></div>
 <p>After performing the two-step filtering (genes and cells), the “cleaned” data can be extracted using the <code>mc.pl.extract_clean_data()</code> function.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="MC2-construction.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract clean dataset (with filtered cells and genes)</span></span>
-<span id="cb27-2"><a href="MC2-construction.html#cb27-2" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> mc.pl.extract_clean_data(ad)</span>
-<span id="cb27-3"><a href="MC2-construction.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[full_cell_index]: 2638 int32s</span></span>
-<span id="cb27-4"><a href="MC2-construction.html#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[full_gene_index]: 16564 int32s</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="MC2-construction.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract clean dataset (with filtered cells and genes)</span></span>
+<span id="cb32-2"><a href="MC2-construction.html#cb32-2" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> mc.pl.extract_clean_data(ad)</span>
+<span id="cb32-3"><a href="MC2-construction.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[full_cell_index]: 2638 int32s</span></span>
+<span id="cb32-4"><a href="MC2-construction.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[full_gene_index]: 16564 int32s</span></span></code></pre></div>
 </div>
 </div>
-<div id="building-metacells-1" class="section level3 hasAnchor" number="4.2.4">
-<h3><span class="header-section-number">4.2.4</span> Building metacells<a href="MC2-construction.html#building-metacells-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="building-metacells-1" class="section level3 hasAnchor" number="3.2.4">
+<h3><span class="header-section-number">3.2.4</span> Building metacells<a href="MC2-construction.html#building-metacells-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="defining-lateral-genes" class="section level4 unnumbered hasAnchor">
 <h4>Defining lateral genes<a href="MC2-construction.html#defining-lateral-genes" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To build metacells, we need to define lateral genes, which are genes with strong biological signal which is independent of cell-state, <em>e.g.</em> cell-cycle genes.
@@ -351,49 +395,49 @@ These genes will be ignored for computing cells similarity and building metacell
 but will be considered to define outlier cells (<em>i.e.</em>, expression levels of lateral genes should be consistent within metacells).
 In the following chunk, we consider a minimal list of lateral genes (provided by the MC2 authors) including cell-cycle and ribosomal genes and
 mark them in the MC2 object using the <code>mc.pl.mark_lateral_genes()</code> function.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="MC2-construction.html#cb28-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-2"><a href="MC2-construction.html#cb28-2" aria-hidden="true" tabindex="-1"></a>LATERAL_GENE_NAMES <span class="op">=</span> [</span>
-<span id="cb28-3"><a href="MC2-construction.html#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ACSM3&quot;</span>, <span class="st">&quot;ANP32B&quot;</span>, <span class="st">&quot;APOE&quot;</span>, <span class="st">&quot;AURKA&quot;</span>, <span class="st">&quot;B2M&quot;</span>, <span class="st">&quot;BIRC5&quot;</span>, <span class="st">&quot;BTG2&quot;</span>, <span class="st">&quot;CALM1&quot;</span>, <span class="st">&quot;CD63&quot;</span>, <span class="st">&quot;CD69&quot;</span>, <span class="st">&quot;CDK4&quot;</span>,</span>
-<span id="cb28-4"><a href="MC2-construction.html#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;CENPF&quot;</span>, <span class="st">&quot;CENPU&quot;</span>, <span class="st">&quot;CENPW&quot;</span>, <span class="st">&quot;CH17-373J23.1&quot;</span>, <span class="st">&quot;CKS1B&quot;</span>, <span class="st">&quot;CKS2&quot;</span>, <span class="st">&quot;COX4I1&quot;</span>, <span class="st">&quot;CXCR4&quot;</span>, <span class="st">&quot;DNAJB1&quot;</span>,</span>
-<span id="cb28-5"><a href="MC2-construction.html#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DONSON&quot;</span>, <span class="st">&quot;DUSP1&quot;</span>, <span class="st">&quot;DUT&quot;</span>, <span class="st">&quot;EEF1A1&quot;</span>, <span class="st">&quot;EEF1B2&quot;</span>, <span class="st">&quot;EIF3E&quot;</span>, <span class="st">&quot;EMP3&quot;</span>, <span class="st">&quot;FKBP4&quot;</span>, <span class="st">&quot;FOS&quot;</span>, <span class="st">&quot;FOSB&quot;</span>, <span class="st">&quot;FTH1&quot;</span>,</span>
-<span id="cb28-6"><a href="MC2-construction.html#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;G0S2&quot;</span>, <span class="st">&quot;GGH&quot;</span>, <span class="st">&quot;GLTSCR2&quot;</span>, <span class="st">&quot;GMNN&quot;</span>, <span class="st">&quot;GNB2L1&quot;</span>, <span class="st">&quot;GPR183&quot;</span>, <span class="st">&quot;H2AFZ&quot;</span>, <span class="st">&quot;H3F3B&quot;</span>, <span class="st">&quot;HBM&quot;</span>, <span class="st">&quot;HIST1H1C&quot;</span>,</span>
-<span id="cb28-7"><a href="MC2-construction.html#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HIST1H2AC&quot;</span>, <span class="st">&quot;HIST1H2BG&quot;</span>, <span class="st">&quot;HIST1H4C&quot;</span>, <span class="st">&quot;HLA-A&quot;</span>, <span class="st">&quot;HLA-B&quot;</span>, <span class="st">&quot;HLA-C&quot;</span>, <span class="st">&quot;HLA-DMA&quot;</span>, <span class="st">&quot;HLA-DMB&quot;</span>,</span>
-<span id="cb28-8"><a href="MC2-construction.html#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HLA-DPA1&quot;</span>, <span class="st">&quot;HLA-DPB1&quot;</span>, <span class="st">&quot;HLA-DQA1&quot;</span>, <span class="st">&quot;HLA-DQB1&quot;</span>, <span class="st">&quot;HLA-DRA&quot;</span>, <span class="st">&quot;HLA-DRB1&quot;</span>, <span class="st">&quot;HLA-E&quot;</span>, <span class="st">&quot;HLA-F&quot;</span>, <span class="st">&quot;HMGA1&quot;</span>,</span>
-<span id="cb28-9"><a href="MC2-construction.html#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HMGB1&quot;</span>, <span class="st">&quot;HMGB2&quot;</span>, <span class="st">&quot;HMGB3&quot;</span>, <span class="st">&quot;HMGN2&quot;</span>, <span class="st">&quot;HNRNPAB&quot;</span>, <span class="st">&quot;HSP90AA1&quot;</span>, <span class="st">&quot;HSP90AB1&quot;</span>, <span class="st">&quot;HSPA1A&quot;</span>, <span class="st">&quot;HSPA1B&quot;</span>,</span>
-<span id="cb28-10"><a href="MC2-construction.html#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HSPA6&quot;</span>, <span class="st">&quot;HSPD1&quot;</span>, <span class="st">&quot;HSPE1&quot;</span>, <span class="st">&quot;HSPH1&quot;</span>, <span class="st">&quot;ID2&quot;</span>, <span class="st">&quot;IER2&quot;</span>, <span class="st">&quot;IGHA1&quot;</span>, <span class="st">&quot;IGHA2&quot;</span>, <span class="st">&quot;IGHD&quot;</span>, <span class="st">&quot;IGHG1&quot;</span>, <span class="st">&quot;IGHG2&quot;</span>,</span>
-<span id="cb28-11"><a href="MC2-construction.html#cb28-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;IGHG3&quot;</span>, <span class="st">&quot;IGHG4&quot;</span>, <span class="st">&quot;IGHM&quot;</span>, <span class="st">&quot;IGKC&quot;</span>, <span class="st">&quot;IGKV1-12&quot;</span>, <span class="st">&quot;IGKV1-39&quot;</span>, <span class="st">&quot;IGKV1-5&quot;</span>, <span class="st">&quot;IGKV3-15&quot;</span>, <span class="st">&quot;IGKV4-1&quot;</span>,</span>
-<span id="cb28-12"><a href="MC2-construction.html#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;IGLC2&quot;</span>, <span class="st">&quot;IGLC3&quot;</span>, <span class="st">&quot;IGLC6&quot;</span>, <span class="st">&quot;IGLC7&quot;</span>, <span class="st">&quot;IGLL1&quot;</span>, <span class="st">&quot;IGLL5&quot;</span>, <span class="st">&quot;IGLV2-34&quot;</span>, <span class="st">&quot;JUN&quot;</span>, <span class="st">&quot;JUNB&quot;</span>, <span class="st">&quot;KIAA0101&quot;</span>,</span>
-<span id="cb28-13"><a href="MC2-construction.html#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;LEPROTL1&quot;</span>, <span class="st">&quot;LGALS1&quot;</span>, <span class="st">&quot;LINC01206&quot;</span>, <span class="st">&quot;LTB&quot;</span>, <span class="st">&quot;MCM3&quot;</span>, <span class="st">&quot;MCM4&quot;</span>, <span class="st">&quot;MCM7&quot;</span>, <span class="st">&quot;MKI67&quot;</span>, <span class="st">&quot;MT2A&quot;</span>, <span class="st">&quot;MYL12A&quot;</span>,</span>
-<span id="cb28-14"><a href="MC2-construction.html#cb28-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;MYL6&quot;</span>, <span class="st">&quot;NASP&quot;</span>, <span class="st">&quot;NFKBIA&quot;</span>, <span class="st">&quot;NUSAP1&quot;</span>, <span class="st">&quot;PA2G4&quot;</span>, <span class="st">&quot;PCNA&quot;</span>, <span class="st">&quot;PDLIM1&quot;</span>, <span class="st">&quot;PLK3&quot;</span>, <span class="st">&quot;PPP1R15A&quot;</span>, <span class="st">&quot;PTMA&quot;</span>,</span>
-<span id="cb28-15"><a href="MC2-construction.html#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;PTTG1&quot;</span>, <span class="st">&quot;RAN&quot;</span>, <span class="st">&quot;RANBP1&quot;</span>, <span class="st">&quot;RGCC&quot;</span>, <span class="st">&quot;RGS1&quot;</span>, <span class="st">&quot;RGS2&quot;</span>, <span class="st">&quot;RGS3&quot;</span>, <span class="st">&quot;RP11-1143G9.4&quot;</span>, <span class="st">&quot;RP11-160E2.6&quot;</span>,</span>
-<span id="cb28-16"><a href="MC2-construction.html#cb28-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RP11-53B5.1&quot;</span>, <span class="st">&quot;RP11-620J15.3&quot;</span>, <span class="st">&quot;RP5-1025A1.3&quot;</span>, <span class="st">&quot;RP5-1171I10.5&quot;</span>, <span class="st">&quot;RPS10&quot;</span>, <span class="st">&quot;RPS10-NUDT3&quot;</span>, <span class="st">&quot;RPS11&quot;</span>,</span>
-<span id="cb28-17"><a href="MC2-construction.html#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS12&quot;</span>, <span class="st">&quot;RPS13&quot;</span>, <span class="st">&quot;RPS14&quot;</span>, <span class="st">&quot;RPS15&quot;</span>, <span class="st">&quot;RPS15A&quot;</span>, <span class="st">&quot;RPS16&quot;</span>, <span class="st">&quot;RPS17&quot;</span>, <span class="st">&quot;RPS18&quot;</span>, <span class="st">&quot;RPS19&quot;</span>, <span class="st">&quot;RPS19BP1&quot;</span>,</span>
-<span id="cb28-18"><a href="MC2-construction.html#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS2&quot;</span>, <span class="st">&quot;RPS20&quot;</span>, <span class="st">&quot;RPS21&quot;</span>, <span class="st">&quot;RPS23&quot;</span>, <span class="st">&quot;RPS24&quot;</span>, <span class="st">&quot;RPS25&quot;</span>, <span class="st">&quot;RPS26&quot;</span>, <span class="st">&quot;RPS27&quot;</span>, <span class="st">&quot;RPS27A&quot;</span>, <span class="st">&quot;RPS27L&quot;</span>,</span>
-<span id="cb28-19"><a href="MC2-construction.html#cb28-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS28&quot;</span>, <span class="st">&quot;RPS29&quot;</span>, <span class="st">&quot;RPS3&quot;</span>, <span class="st">&quot;RPS3A&quot;</span>, <span class="st">&quot;RPS4X&quot;</span>, <span class="st">&quot;RPS4Y1&quot;</span>, <span class="st">&quot;RPS4Y2&quot;</span>, <span class="st">&quot;RPS5&quot;</span>, <span class="st">&quot;RPS6&quot;</span>, <span class="st">&quot;RPS6KA1&quot;</span>,</span>
-<span id="cb28-20"><a href="MC2-construction.html#cb28-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS6KA2&quot;</span>, <span class="st">&quot;RPS6KA2-AS1&quot;</span>, <span class="st">&quot;RPS6KA3&quot;</span>, <span class="st">&quot;RPS6KA4&quot;</span>, <span class="st">&quot;RPS6KA5&quot;</span>, <span class="st">&quot;RPS6KA6&quot;</span>, <span class="st">&quot;RPS6KB1&quot;</span>, <span class="st">&quot;RPS6KB2&quot;</span>,</span>
-<span id="cb28-21"><a href="MC2-construction.html#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS6KC1&quot;</span>, <span class="st">&quot;RPS6KL1&quot;</span>, <span class="st">&quot;RPS7&quot;</span>, <span class="st">&quot;RPS8&quot;</span>, <span class="st">&quot;RPS9&quot;</span>, <span class="st">&quot;RPSA&quot;</span>, <span class="st">&quot;RRM2&quot;</span>, <span class="st">&quot;SMC4&quot;</span>, <span class="st">&quot;SRGN&quot;</span>, <span class="st">&quot;SRSF7&quot;</span>, <span class="st">&quot;STMN1&quot;</span>,</span>
-<span id="cb28-22"><a href="MC2-construction.html#cb28-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;TK1&quot;</span>, <span class="st">&quot;TMSB4X&quot;</span>, <span class="st">&quot;TOP2A&quot;</span>, <span class="st">&quot;TPX2&quot;</span>, <span class="st">&quot;TSC22D3&quot;</span>, <span class="st">&quot;TUBA1A&quot;</span>, <span class="st">&quot;TUBA1B&quot;</span>, <span class="st">&quot;TUBB&quot;</span>, <span class="st">&quot;TUBB4B&quot;</span>, <span class="st">&quot;TXN&quot;</span>, <span class="st">&quot;TYMS&quot;</span>,</span>
-<span id="cb28-23"><a href="MC2-construction.html#cb28-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;UBA52&quot;</span>, <span class="st">&quot;UBC&quot;</span>, <span class="st">&quot;UBE2C&quot;</span>, <span class="st">&quot;UHRF1&quot;</span>, <span class="st">&quot;YBX1&quot;</span>, <span class="st">&quot;YPEL5&quot;</span>, <span class="st">&quot;ZFP36&quot;</span>, <span class="st">&quot;ZWINT&quot;</span></span>
-<span id="cb28-24"><a href="MC2-construction.html#cb28-24" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb28-25"><a href="MC2-construction.html#cb28-25" aria-hidden="true" tabindex="-1"></a>LATERAL_GENE_PATTERNS <span class="op">=</span> [<span class="st">&quot;RP[LS].*&quot;</span>]  <span class="co"># Ribosomal</span></span>
-<span id="cb28-26"><a href="MC2-construction.html#cb28-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-27"><a href="MC2-construction.html#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="co"># This will mark as &quot;lateral_gene&quot; any genes that match the above, if they exist in the clean dataset.</span></span>
-<span id="cb28-28"><a href="MC2-construction.html#cb28-28" aria-hidden="true" tabindex="-1"></a>mc.pl.mark_lateral_genes(</span>
-<span id="cb28-29"><a href="MC2-construction.html#cb28-29" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb28-30"><a href="MC2-construction.html#cb28-30" aria-hidden="true" tabindex="-1"></a>    lateral_gene_names<span class="op">=</span>LATERAL_GENE_NAMES,</span>
-<span id="cb28-31"><a href="MC2-construction.html#cb28-31" aria-hidden="true" tabindex="-1"></a>    lateral_gene_patterns<span class="op">=</span>LATERAL_GENE_PATTERNS,</span>
-<span id="cb28-32"><a href="MC2-construction.html#cb28-32" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb28-33"><a href="MC2-construction.html#cb28-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[lateral_gene]: 225 true (1.358%) out of 16564 bools</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="MC2-construction.html#cb33-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-2"><a href="MC2-construction.html#cb33-2" aria-hidden="true" tabindex="-1"></a>LATERAL_GENE_NAMES <span class="op">=</span> [</span>
+<span id="cb33-3"><a href="MC2-construction.html#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;ACSM3&quot;</span>, <span class="st">&quot;ANP32B&quot;</span>, <span class="st">&quot;APOE&quot;</span>, <span class="st">&quot;AURKA&quot;</span>, <span class="st">&quot;B2M&quot;</span>, <span class="st">&quot;BIRC5&quot;</span>, <span class="st">&quot;BTG2&quot;</span>, <span class="st">&quot;CALM1&quot;</span>, <span class="st">&quot;CD63&quot;</span>, <span class="st">&quot;CD69&quot;</span>, <span class="st">&quot;CDK4&quot;</span>,</span>
+<span id="cb33-4"><a href="MC2-construction.html#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;CENPF&quot;</span>, <span class="st">&quot;CENPU&quot;</span>, <span class="st">&quot;CENPW&quot;</span>, <span class="st">&quot;CH17-373J23.1&quot;</span>, <span class="st">&quot;CKS1B&quot;</span>, <span class="st">&quot;CKS2&quot;</span>, <span class="st">&quot;COX4I1&quot;</span>, <span class="st">&quot;CXCR4&quot;</span>, <span class="st">&quot;DNAJB1&quot;</span>,</span>
+<span id="cb33-5"><a href="MC2-construction.html#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;DONSON&quot;</span>, <span class="st">&quot;DUSP1&quot;</span>, <span class="st">&quot;DUT&quot;</span>, <span class="st">&quot;EEF1A1&quot;</span>, <span class="st">&quot;EEF1B2&quot;</span>, <span class="st">&quot;EIF3E&quot;</span>, <span class="st">&quot;EMP3&quot;</span>, <span class="st">&quot;FKBP4&quot;</span>, <span class="st">&quot;FOS&quot;</span>, <span class="st">&quot;FOSB&quot;</span>, <span class="st">&quot;FTH1&quot;</span>,</span>
+<span id="cb33-6"><a href="MC2-construction.html#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;G0S2&quot;</span>, <span class="st">&quot;GGH&quot;</span>, <span class="st">&quot;GLTSCR2&quot;</span>, <span class="st">&quot;GMNN&quot;</span>, <span class="st">&quot;GNB2L1&quot;</span>, <span class="st">&quot;GPR183&quot;</span>, <span class="st">&quot;H2AFZ&quot;</span>, <span class="st">&quot;H3F3B&quot;</span>, <span class="st">&quot;HBM&quot;</span>, <span class="st">&quot;HIST1H1C&quot;</span>,</span>
+<span id="cb33-7"><a href="MC2-construction.html#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HIST1H2AC&quot;</span>, <span class="st">&quot;HIST1H2BG&quot;</span>, <span class="st">&quot;HIST1H4C&quot;</span>, <span class="st">&quot;HLA-A&quot;</span>, <span class="st">&quot;HLA-B&quot;</span>, <span class="st">&quot;HLA-C&quot;</span>, <span class="st">&quot;HLA-DMA&quot;</span>, <span class="st">&quot;HLA-DMB&quot;</span>,</span>
+<span id="cb33-8"><a href="MC2-construction.html#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HLA-DPA1&quot;</span>, <span class="st">&quot;HLA-DPB1&quot;</span>, <span class="st">&quot;HLA-DQA1&quot;</span>, <span class="st">&quot;HLA-DQB1&quot;</span>, <span class="st">&quot;HLA-DRA&quot;</span>, <span class="st">&quot;HLA-DRB1&quot;</span>, <span class="st">&quot;HLA-E&quot;</span>, <span class="st">&quot;HLA-F&quot;</span>, <span class="st">&quot;HMGA1&quot;</span>,</span>
+<span id="cb33-9"><a href="MC2-construction.html#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HMGB1&quot;</span>, <span class="st">&quot;HMGB2&quot;</span>, <span class="st">&quot;HMGB3&quot;</span>, <span class="st">&quot;HMGN2&quot;</span>, <span class="st">&quot;HNRNPAB&quot;</span>, <span class="st">&quot;HSP90AA1&quot;</span>, <span class="st">&quot;HSP90AB1&quot;</span>, <span class="st">&quot;HSPA1A&quot;</span>, <span class="st">&quot;HSPA1B&quot;</span>,</span>
+<span id="cb33-10"><a href="MC2-construction.html#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;HSPA6&quot;</span>, <span class="st">&quot;HSPD1&quot;</span>, <span class="st">&quot;HSPE1&quot;</span>, <span class="st">&quot;HSPH1&quot;</span>, <span class="st">&quot;ID2&quot;</span>, <span class="st">&quot;IER2&quot;</span>, <span class="st">&quot;IGHA1&quot;</span>, <span class="st">&quot;IGHA2&quot;</span>, <span class="st">&quot;IGHD&quot;</span>, <span class="st">&quot;IGHG1&quot;</span>, <span class="st">&quot;IGHG2&quot;</span>,</span>
+<span id="cb33-11"><a href="MC2-construction.html#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;IGHG3&quot;</span>, <span class="st">&quot;IGHG4&quot;</span>, <span class="st">&quot;IGHM&quot;</span>, <span class="st">&quot;IGKC&quot;</span>, <span class="st">&quot;IGKV1-12&quot;</span>, <span class="st">&quot;IGKV1-39&quot;</span>, <span class="st">&quot;IGKV1-5&quot;</span>, <span class="st">&quot;IGKV3-15&quot;</span>, <span class="st">&quot;IGKV4-1&quot;</span>,</span>
+<span id="cb33-12"><a href="MC2-construction.html#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;IGLC2&quot;</span>, <span class="st">&quot;IGLC3&quot;</span>, <span class="st">&quot;IGLC6&quot;</span>, <span class="st">&quot;IGLC7&quot;</span>, <span class="st">&quot;IGLL1&quot;</span>, <span class="st">&quot;IGLL5&quot;</span>, <span class="st">&quot;IGLV2-34&quot;</span>, <span class="st">&quot;JUN&quot;</span>, <span class="st">&quot;JUNB&quot;</span>, <span class="st">&quot;KIAA0101&quot;</span>,</span>
+<span id="cb33-13"><a href="MC2-construction.html#cb33-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;LEPROTL1&quot;</span>, <span class="st">&quot;LGALS1&quot;</span>, <span class="st">&quot;LINC01206&quot;</span>, <span class="st">&quot;LTB&quot;</span>, <span class="st">&quot;MCM3&quot;</span>, <span class="st">&quot;MCM4&quot;</span>, <span class="st">&quot;MCM7&quot;</span>, <span class="st">&quot;MKI67&quot;</span>, <span class="st">&quot;MT2A&quot;</span>, <span class="st">&quot;MYL12A&quot;</span>,</span>
+<span id="cb33-14"><a href="MC2-construction.html#cb33-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;MYL6&quot;</span>, <span class="st">&quot;NASP&quot;</span>, <span class="st">&quot;NFKBIA&quot;</span>, <span class="st">&quot;NUSAP1&quot;</span>, <span class="st">&quot;PA2G4&quot;</span>, <span class="st">&quot;PCNA&quot;</span>, <span class="st">&quot;PDLIM1&quot;</span>, <span class="st">&quot;PLK3&quot;</span>, <span class="st">&quot;PPP1R15A&quot;</span>, <span class="st">&quot;PTMA&quot;</span>,</span>
+<span id="cb33-15"><a href="MC2-construction.html#cb33-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;PTTG1&quot;</span>, <span class="st">&quot;RAN&quot;</span>, <span class="st">&quot;RANBP1&quot;</span>, <span class="st">&quot;RGCC&quot;</span>, <span class="st">&quot;RGS1&quot;</span>, <span class="st">&quot;RGS2&quot;</span>, <span class="st">&quot;RGS3&quot;</span>, <span class="st">&quot;RP11-1143G9.4&quot;</span>, <span class="st">&quot;RP11-160E2.6&quot;</span>,</span>
+<span id="cb33-16"><a href="MC2-construction.html#cb33-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RP11-53B5.1&quot;</span>, <span class="st">&quot;RP11-620J15.3&quot;</span>, <span class="st">&quot;RP5-1025A1.3&quot;</span>, <span class="st">&quot;RP5-1171I10.5&quot;</span>, <span class="st">&quot;RPS10&quot;</span>, <span class="st">&quot;RPS10-NUDT3&quot;</span>, <span class="st">&quot;RPS11&quot;</span>,</span>
+<span id="cb33-17"><a href="MC2-construction.html#cb33-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS12&quot;</span>, <span class="st">&quot;RPS13&quot;</span>, <span class="st">&quot;RPS14&quot;</span>, <span class="st">&quot;RPS15&quot;</span>, <span class="st">&quot;RPS15A&quot;</span>, <span class="st">&quot;RPS16&quot;</span>, <span class="st">&quot;RPS17&quot;</span>, <span class="st">&quot;RPS18&quot;</span>, <span class="st">&quot;RPS19&quot;</span>, <span class="st">&quot;RPS19BP1&quot;</span>,</span>
+<span id="cb33-18"><a href="MC2-construction.html#cb33-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS2&quot;</span>, <span class="st">&quot;RPS20&quot;</span>, <span class="st">&quot;RPS21&quot;</span>, <span class="st">&quot;RPS23&quot;</span>, <span class="st">&quot;RPS24&quot;</span>, <span class="st">&quot;RPS25&quot;</span>, <span class="st">&quot;RPS26&quot;</span>, <span class="st">&quot;RPS27&quot;</span>, <span class="st">&quot;RPS27A&quot;</span>, <span class="st">&quot;RPS27L&quot;</span>,</span>
+<span id="cb33-19"><a href="MC2-construction.html#cb33-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS28&quot;</span>, <span class="st">&quot;RPS29&quot;</span>, <span class="st">&quot;RPS3&quot;</span>, <span class="st">&quot;RPS3A&quot;</span>, <span class="st">&quot;RPS4X&quot;</span>, <span class="st">&quot;RPS4Y1&quot;</span>, <span class="st">&quot;RPS4Y2&quot;</span>, <span class="st">&quot;RPS5&quot;</span>, <span class="st">&quot;RPS6&quot;</span>, <span class="st">&quot;RPS6KA1&quot;</span>,</span>
+<span id="cb33-20"><a href="MC2-construction.html#cb33-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS6KA2&quot;</span>, <span class="st">&quot;RPS6KA2-AS1&quot;</span>, <span class="st">&quot;RPS6KA3&quot;</span>, <span class="st">&quot;RPS6KA4&quot;</span>, <span class="st">&quot;RPS6KA5&quot;</span>, <span class="st">&quot;RPS6KA6&quot;</span>, <span class="st">&quot;RPS6KB1&quot;</span>, <span class="st">&quot;RPS6KB2&quot;</span>,</span>
+<span id="cb33-21"><a href="MC2-construction.html#cb33-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;RPS6KC1&quot;</span>, <span class="st">&quot;RPS6KL1&quot;</span>, <span class="st">&quot;RPS7&quot;</span>, <span class="st">&quot;RPS8&quot;</span>, <span class="st">&quot;RPS9&quot;</span>, <span class="st">&quot;RPSA&quot;</span>, <span class="st">&quot;RRM2&quot;</span>, <span class="st">&quot;SMC4&quot;</span>, <span class="st">&quot;SRGN&quot;</span>, <span class="st">&quot;SRSF7&quot;</span>, <span class="st">&quot;STMN1&quot;</span>,</span>
+<span id="cb33-22"><a href="MC2-construction.html#cb33-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;TK1&quot;</span>, <span class="st">&quot;TMSB4X&quot;</span>, <span class="st">&quot;TOP2A&quot;</span>, <span class="st">&quot;TPX2&quot;</span>, <span class="st">&quot;TSC22D3&quot;</span>, <span class="st">&quot;TUBA1A&quot;</span>, <span class="st">&quot;TUBA1B&quot;</span>, <span class="st">&quot;TUBB&quot;</span>, <span class="st">&quot;TUBB4B&quot;</span>, <span class="st">&quot;TXN&quot;</span>, <span class="st">&quot;TYMS&quot;</span>,</span>
+<span id="cb33-23"><a href="MC2-construction.html#cb33-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;UBA52&quot;</span>, <span class="st">&quot;UBC&quot;</span>, <span class="st">&quot;UBE2C&quot;</span>, <span class="st">&quot;UHRF1&quot;</span>, <span class="st">&quot;YBX1&quot;</span>, <span class="st">&quot;YPEL5&quot;</span>, <span class="st">&quot;ZFP36&quot;</span>, <span class="st">&quot;ZWINT&quot;</span></span>
+<span id="cb33-24"><a href="MC2-construction.html#cb33-24" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb33-25"><a href="MC2-construction.html#cb33-25" aria-hidden="true" tabindex="-1"></a>LATERAL_GENE_PATTERNS <span class="op">=</span> [<span class="st">&quot;RP[LS].*&quot;</span>]  <span class="co"># Ribosomal</span></span>
+<span id="cb33-26"><a href="MC2-construction.html#cb33-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-27"><a href="MC2-construction.html#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="co"># This will mark as &quot;lateral_gene&quot; any genes that match the above, if they exist in the clean dataset.</span></span>
+<span id="cb33-28"><a href="MC2-construction.html#cb33-28" aria-hidden="true" tabindex="-1"></a>mc.pl.mark_lateral_genes(</span>
+<span id="cb33-29"><a href="MC2-construction.html#cb33-29" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb33-30"><a href="MC2-construction.html#cb33-30" aria-hidden="true" tabindex="-1"></a>    lateral_gene_names<span class="op">=</span>LATERAL_GENE_NAMES,</span>
+<span id="cb33-31"><a href="MC2-construction.html#cb33-31" aria-hidden="true" tabindex="-1"></a>    lateral_gene_patterns<span class="op">=</span>LATERAL_GENE_PATTERNS,</span>
+<span id="cb33-32"><a href="MC2-construction.html#cb33-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb33-33"><a href="MC2-construction.html#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[lateral_gene]: 225 true (1.358%) out of 16564 bools</span></span></code></pre></div>
 <p>Some genes have higher variances than expected which could lead to false positive outlier identification.
 Users can mark those genes as <em>noisy genes</em> using the <code>mc.pl.mark_noisy_genes()</code> function.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="MC2-construction.html#cb29-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-2"><a href="MC2-construction.html#cb29-2" aria-hidden="true" tabindex="-1"></a>NOISY_GENE_NAMES <span class="op">=</span> [</span>
-<span id="cb29-3"><a href="MC2-construction.html#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;CCL3&quot;</span>, <span class="st">&quot;CCL4&quot;</span>, <span class="st">&quot;CCL5&quot;</span>, <span class="st">&quot;CXCL8&quot;</span>, <span class="st">&quot;DUSP1&quot;</span>, <span class="st">&quot;FOS&quot;</span>, <span class="st">&quot;G0S2&quot;</span>, <span class="st">&quot;HBB&quot;</span>, <span class="st">&quot;HIST1H4C&quot;</span>, <span class="st">&quot;IER2&quot;</span>, <span class="st">&quot;IGKC&quot;</span>,</span>
-<span id="cb29-4"><a href="MC2-construction.html#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;IGLC2&quot;</span>, <span class="st">&quot;JUN&quot;</span>, <span class="st">&quot;JUNB&quot;</span>, <span class="st">&quot;KLRB1&quot;</span>, <span class="st">&quot;MT2A&quot;</span>, <span class="st">&quot;RPS26&quot;</span>, <span class="st">&quot;RPS4Y1&quot;</span>, <span class="st">&quot;TRBC1&quot;</span>, <span class="st">&quot;TUBA1B&quot;</span>, <span class="st">&quot;TUBB&quot;</span></span>
-<span id="cb29-5"><a href="MC2-construction.html#cb29-5" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb29-6"><a href="MC2-construction.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This will mark as &quot;noisy_gene&quot; any genes that match the above, if they exist in the clean dataset.</span></span>
-<span id="cb29-7"><a href="MC2-construction.html#cb29-7" aria-hidden="true" tabindex="-1"></a>mc.pl.mark_noisy_genes(ad, noisy_gene_names<span class="op">=</span>NOISY_GENE_NAMES)</span>
-<span id="cb29-8"><a href="MC2-construction.html#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[noisy_gene]: 17 true (0.1026%) out of 16564 bools</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="MC2-construction.html#cb34-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-2"><a href="MC2-construction.html#cb34-2" aria-hidden="true" tabindex="-1"></a>NOISY_GENE_NAMES <span class="op">=</span> [</span>
+<span id="cb34-3"><a href="MC2-construction.html#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;CCL3&quot;</span>, <span class="st">&quot;CCL4&quot;</span>, <span class="st">&quot;CCL5&quot;</span>, <span class="st">&quot;CXCL8&quot;</span>, <span class="st">&quot;DUSP1&quot;</span>, <span class="st">&quot;FOS&quot;</span>, <span class="st">&quot;G0S2&quot;</span>, <span class="st">&quot;HBB&quot;</span>, <span class="st">&quot;HIST1H4C&quot;</span>, <span class="st">&quot;IER2&quot;</span>, <span class="st">&quot;IGKC&quot;</span>,</span>
+<span id="cb34-4"><a href="MC2-construction.html#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;IGLC2&quot;</span>, <span class="st">&quot;JUN&quot;</span>, <span class="st">&quot;JUNB&quot;</span>, <span class="st">&quot;KLRB1&quot;</span>, <span class="st">&quot;MT2A&quot;</span>, <span class="st">&quot;RPS26&quot;</span>, <span class="st">&quot;RPS4Y1&quot;</span>, <span class="st">&quot;TRBC1&quot;</span>, <span class="st">&quot;TUBA1B&quot;</span>, <span class="st">&quot;TUBB&quot;</span></span>
+<span id="cb34-5"><a href="MC2-construction.html#cb34-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb34-6"><a href="MC2-construction.html#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This will mark as &quot;noisy_gene&quot; any genes that match the above, if they exist in the clean dataset.</span></span>
+<span id="cb34-7"><a href="MC2-construction.html#cb34-7" aria-hidden="true" tabindex="-1"></a>mc.pl.mark_noisy_genes(ad, noisy_gene_names<span class="op">=</span>NOISY_GENE_NAMES)</span>
+<span id="cb34-8"><a href="MC2-construction.html#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[noisy_gene]: 17 true (0.1026%) out of 16564 bools</span></span></code></pre></div>
 <p>To extend this list of lateral genes, users can use the <code>relate_to_lateral_genes</code> function to identify genes that are highly correlated with the predefined lateral genes.
 The use of this function is described in <a href="https://tanaylab.github.io/metacells-vignettes/iterative.html">the vignette from the MC2 authors</a>.</p>
 </div>
@@ -401,8 +445,8 @@ The use of this function is described in <a href="https://tanaylab.github.io/met
 <h4>Define target_metacell_size (graining level)<a href="MC2-construction.html#define-target_metacell_size-graining-level" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>By default, MC2 will build metacells with a size of 96 cells per metacells.
 Users can vary the <code>target_metacell_size</code> parameter to reach a desired graining level.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="MC2-construction.html#cb30-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">25</span> </span>
-<span id="cb30-2"><a href="MC2-construction.html#cb30-2" aria-hidden="true" tabindex="-1"></a>target_metacell_size <span class="op">=</span> gamma</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="MC2-construction.html#cb35-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">25</span> </span>
+<span id="cb35-2"><a href="MC2-construction.html#cb35-2" aria-hidden="true" tabindex="-1"></a>target_metacell_size <span class="op">=</span> gamma</span></code></pre></div>
 </div>
 <div id="metacells-identification-using-the-divide-and-conquer-approach" class="section level4 unnumbered hasAnchor">
 <h4>Metacells identification using the divide and conquer approach<a href="MC2-construction.html#metacells-identification-using-the-divide-and-conquer-approach" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -412,157 +456,166 @@ To change this behavior and adapt the number of cores the MC2 authors propose to
 to adapt the number of processed in parallel depending on the available memory.</p>
 <p>The <code>mc.pl.divide_and_conquer_pipeline()</code> function associates each cell to a metacell or defines the cell as outlier.
 These assignments are found in the <code>obs</code> layer of the anndata object.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="MC2-construction.html#cb31-1" aria-hidden="true" tabindex="-1"></a>max_parallel_piles <span class="op">=</span> mc.pl.guess_max_parallel_piles(ad)</span>
-<span id="cb31-2"><a href="MC2-construction.html#cb31-2" aria-hidden="true" tabindex="-1"></a>mc.pl.set_max_parallel_piles(max_parallel_piles)</span>
-<span id="cb31-3"><a href="MC2-construction.html#cb31-3" aria-hidden="true" tabindex="-1"></a>mc.pl.divide_and_conquer_pipeline(</span>
-<span id="cb31-4"><a href="MC2-construction.html#cb31-4" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb31-5"><a href="MC2-construction.html#cb31-5" aria-hidden="true" tabindex="-1"></a>    target_metacell_size <span class="op">=</span> target_metacell_size,</span>
-<span id="cb31-6"><a href="MC2-construction.html#cb31-6" aria-hidden="true" tabindex="-1"></a>    random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
-<span id="cb31-7"><a href="MC2-construction.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[selected_gene]: * -&gt; False</span></span>
-<span id="cb31-8"><a href="MC2-construction.html#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[rare_gene]: 0 true (0%) out of 16564 bools</span></span>
-<span id="cb31-9"><a href="MC2-construction.html#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[rare_gene_module]: 16564 int32 elements with all outliers (100%)</span></span>
-<span id="cb31-10"><a href="MC2-construction.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[cells_rare_gene_module]: 2638 int32 elements with all outliers (100%)</span></span>
-<span id="cb31-11"><a href="MC2-construction.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[rare_cell]: 0 true (0%) out of 2638 bools</span></span>
-<span id="cb31-12"><a href="MC2-construction.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[selected_gene]: 256 true (1.546%) out of 16564 bools</span></span>
-<span id="cb31-13"><a href="MC2-construction.html#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[metacell]: 2638 int32s</span></span>
-<span id="cb31-14"><a href="MC2-construction.html#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[dissolved]: 45 true (1.706%) out of 2638 bools</span></span>
-<span id="cb31-15"><a href="MC2-construction.html#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[metacell_level]: 2638 int32s</span></span>
-<span id="cb31-16"><a href="MC2-construction.html#cb31-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-17"><a href="MC2-construction.html#cb31-17" aria-hidden="true" tabindex="-1"></a>ad.obs.metacell.head</span>
-<span id="cb31-18"><a href="MC2-construction.html#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of index</span></span>
-<span id="cb31-19"><a href="MC2-construction.html#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATACAACCAC-1     66</span></span>
-<span id="cb31-20"><a href="MC2-construction.html#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGAGCTAC-1     87</span></span>
-<span id="cb31-21"><a href="MC2-construction.html#cb31-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGATCAGC-1     84</span></span>
-<span id="cb31-22"><a href="MC2-construction.html#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGCTTCCG-1     91</span></span>
-<span id="cb31-23"><a href="MC2-construction.html#cb31-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGTATGCG-1    110</span></span>
-<span id="cb31-24"><a href="MC2-construction.html#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    ... </span></span>
-<span id="cb31-25"><a href="MC2-construction.html#cb31-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCGAACTCTCAT-1    112</span></span>
-<span id="cb31-26"><a href="MC2-construction.html#cb31-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTGAGGCA-1     74</span></span>
-<span id="cb31-27"><a href="MC2-construction.html#cb31-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTTCCTCG-1    113</span></span>
-<span id="cb31-28"><a href="MC2-construction.html#cb31-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGAGAGGC-1     57</span></span>
-<span id="cb31-29"><a href="MC2-construction.html#cb31-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGCCTCAC-1     82</span></span>
-<span id="cb31-30"><a href="MC2-construction.html#cb31-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Name: metacell, Length: 2638, dtype: int32&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="MC2-construction.html#cb36-1" aria-hidden="true" tabindex="-1"></a>max_parallel_piles <span class="op">=</span> mc.pl.guess_max_parallel_piles(ad)</span>
+<span id="cb36-2"><a href="MC2-construction.html#cb36-2" aria-hidden="true" tabindex="-1"></a>mc.pl.set_max_parallel_piles(max_parallel_piles)</span>
+<span id="cb36-3"><a href="MC2-construction.html#cb36-3" aria-hidden="true" tabindex="-1"></a>mc.pl.divide_and_conquer_pipeline(</span>
+<span id="cb36-4"><a href="MC2-construction.html#cb36-4" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb36-5"><a href="MC2-construction.html#cb36-5" aria-hidden="true" tabindex="-1"></a>    target_metacell_size <span class="op">=</span> target_metacell_size,</span>
+<span id="cb36-6"><a href="MC2-construction.html#cb36-6" aria-hidden="true" tabindex="-1"></a>    random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
+<span id="cb36-7"><a href="MC2-construction.html#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[selected_gene]: * -&gt; False</span></span>
+<span id="cb36-8"><a href="MC2-construction.html#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[rare_gene]: 0 true (0%) out of 16564 bools</span></span>
+<span id="cb36-9"><a href="MC2-construction.html#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[rare_gene_module]: 16564 int32 elements with all outliers (100%)</span></span>
+<span id="cb36-10"><a href="MC2-construction.html#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[cells_rare_gene_module]: 2638 int32 elements with all outliers (100%)</span></span>
+<span id="cb36-11"><a href="MC2-construction.html#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[rare_cell]: 0 true (0%) out of 2638 bools</span></span>
+<span id="cb36-12"><a href="MC2-construction.html#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.var[selected_gene]: 256 true (1.546%) out of 16564 bools</span></span>
+<span id="cb36-13"><a href="MC2-construction.html#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[metacell]: 2638 int32s</span></span>
+<span id="cb36-14"><a href="MC2-construction.html#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[dissolved]: 45 true (1.706%) out of 2638 bools</span></span>
+<span id="cb36-15"><a href="MC2-construction.html#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[metacell_level]: 2638 int32s</span></span>
+<span id="cb36-16"><a href="MC2-construction.html#cb36-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-17"><a href="MC2-construction.html#cb36-17" aria-hidden="true" tabindex="-1"></a>ad.obs.metacell.head</span>
+<span id="cb36-18"><a href="MC2-construction.html#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of index</span></span>
+<span id="cb36-19"><a href="MC2-construction.html#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATACAACCAC-1     66</span></span>
+<span id="cb36-20"><a href="MC2-construction.html#cb36-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGAGCTAC-1     87</span></span>
+<span id="cb36-21"><a href="MC2-construction.html#cb36-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGATCAGC-1     84</span></span>
+<span id="cb36-22"><a href="MC2-construction.html#cb36-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGCTTCCG-1     91</span></span>
+<span id="cb36-23"><a href="MC2-construction.html#cb36-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGTATGCG-1    110</span></span>
+<span id="cb36-24"><a href="MC2-construction.html#cb36-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                    ... </span></span>
+<span id="cb36-25"><a href="MC2-construction.html#cb36-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCGAACTCTCAT-1    112</span></span>
+<span id="cb36-26"><a href="MC2-construction.html#cb36-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTGAGGCA-1     74</span></span>
+<span id="cb36-27"><a href="MC2-construction.html#cb36-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTTCCTCG-1    113</span></span>
+<span id="cb36-28"><a href="MC2-construction.html#cb36-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGAGAGGC-1     57</span></span>
+<span id="cb36-29"><a href="MC2-construction.html#cb36-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGCCTCAC-1     82</span></span>
+<span id="cb36-30"><a href="MC2-construction.html#cb36-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Name: metacell, Length: 2638, dtype: int32&gt;</span></span></code></pre></div>
 <p>The following code chunk adds a columns (named <code>membership</code>) containing the single_cell assignments to the obs attribute in the single-cell anndata object.
-The membership information is required to compute metacells quality metrics as shown in chapter <a href="QCs.html#QCs">5</a>.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="MC2-construction.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a membership -- index of metacells to which single cells belong to </span></span>
-<span id="cb32-2"><a href="MC2-construction.html#cb32-2" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">&#39;membership&#39;</span>] <span class="op">=</span> [<span class="bu">int</span>(i)<span class="op">+</span><span class="dv">1</span> <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> np.nan <span class="cf">for</span> i <span class="kw">in</span> ad.obs.metacell] </span></code></pre></div>
+The membership information is required to compute metacells quality metrics as shown in chapter <a href="QCs.html#QCs">4</a>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="MC2-construction.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a membership -- index of metacells to which single cells belong to </span></span>
+<span id="cb37-2"><a href="MC2-construction.html#cb37-2" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">&#39;membership&#39;</span>] <span class="op">=</span> [<span class="bu">int</span>(i)<span class="op">+</span><span class="dv">1</span> <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> np.nan <span class="cf">for</span> i <span class="kw">in</span> ad.obs.metacell] </span></code></pre></div>
 </div>
 <div id="retrieve-aggregated-metacell-data-1" class="section level4 unnumbered hasAnchor">
 <h4>Retrieve aggregated metacell data<a href="MC2-construction.html#retrieve-aggregated-metacell-data-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The function <code>mc.pl.collect_metacells()</code> should be used to subsequently retrieve an anndata object containing the data at the metacells level instead of the single-cell level.
 This function will store in the <code>X</code> data matrix of the anndata object a matrix of gene fraction (<em>i.e.</em>, the sum of all gene levels in a metacell sums to 1)
 and it will store the total UMIs per gene per metacell in the layer <code>total_umis</code>.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="MC2-construction.html#cb33-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-2"><a href="MC2-construction.html#cb33-2" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> mc.pl.collect_metacells(ad, name<span class="op">=</span><span class="st">&#39;metacells&#39;</span>, random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
-<span id="cb33-3"><a href="MC2-construction.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[grouped]: 122 int64s</span></span>
-<span id="cb33-4"><a href="MC2-construction.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[total_umis]: 122 float64s</span></span>
-<span id="cb33-5"><a href="MC2-construction.html#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.layers[total_umis]: ndarray 122 X 16564 float32s</span></span>
-<span id="cb33-6"><a href="MC2-construction.html#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[__zeros_downsample_umis]: 122 int64s</span></span>
-<span id="cb33-7"><a href="MC2-construction.html#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.layers[zeros]: ndarray 122 X 16564 int32s</span></span>
-<span id="cb33-8"><a href="MC2-construction.html#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[metacell_name]: 2638 &lt;U8s</span></span>
-<span id="cb33-9"><a href="MC2-construction.html#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[gene_ids]: 16564 objects</span></span>
-<span id="cb33-10"><a href="MC2-construction.html#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 16564 bools</span></span>
-<span id="cb33-11"><a href="MC2-construction.html#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[properly_sampled_gene]: 16564 true (100%) out of 16564 bools</span></span>
-<span id="cb33-12"><a href="MC2-construction.html#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[excluded_gene]: 0 true (0%) out of 16564 bools</span></span>
-<span id="cb33-13"><a href="MC2-construction.html#cb33-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[full_gene_index]: 16564 int32s</span></span>
-<span id="cb33-14"><a href="MC2-construction.html#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[lateral_gene]: 225 true (1.358%) out of 16564 bools</span></span>
-<span id="cb33-15"><a href="MC2-construction.html#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[noisy_gene]: 17 true (0.1026%) out of 16564 bools</span></span>
-<span id="cb33-16"><a href="MC2-construction.html#cb33-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[selected_gene]: 256 true (1.546%) out of 16564 bools</span></span>
-<span id="cb33-17"><a href="MC2-construction.html#cb33-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[rare_gene]: 0 true (0%) out of 16564 bools</span></span>
-<span id="cb33-18"><a href="MC2-construction.html#cb33-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[rare_gene_module]: 16564 int32s</span></span>
-<span id="cb33-19"><a href="MC2-construction.html#cb33-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[metacells_rare_gene_module]: 122 int32s</span></span>
-<span id="cb33-20"><a href="MC2-construction.html#cb33-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[rare_metacell]: 0 true (0%) out of 122 bools</span></span>
-<span id="cb33-21"><a href="MC2-construction.html#cb33-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.uns[outliers]: 161</span></span>
-<span id="cb33-22"><a href="MC2-construction.html#cb33-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.uns[metacells_algorithm]: metacells.0.9.0</span></span>
-<span id="cb33-23"><a href="MC2-construction.html#cb33-23" aria-hidden="true" tabindex="-1"></a>mc_ad.shape</span>
-<span id="cb33-24"><a href="MC2-construction.html#cb33-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (122, 16564)</span></span>
-<span id="cb33-25"><a href="MC2-construction.html#cb33-25" aria-hidden="true" tabindex="-1"></a>mc_ad.X.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)[:<span class="dv">5</span>] </span>
-<span id="cb33-26"><a href="MC2-construction.html#cb33-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; matrix([[1.        ],</span></span>
-<span id="cb33-27"><a href="MC2-construction.html#cb33-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
-<span id="cb33-28"><a href="MC2-construction.html#cb33-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
-<span id="cb33-29"><a href="MC2-construction.html#cb33-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
-<span id="cb33-30"><a href="MC2-construction.html#cb33-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [0.99999994]], dtype=float32)</span></span>
-<span id="cb33-31"><a href="MC2-construction.html#cb33-31" aria-hidden="true" tabindex="-1"></a>mc_ad.layers[<span class="st">&#39;total_umis&#39;</span>]</span>
-<span id="cb33-32"><a href="MC2-construction.html#cb33-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; array([[1., 0., 0., ..., 0., 0., 0.],</span></span>
-<span id="cb33-33"><a href="MC2-construction.html#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 0., ..., 0., 1., 0.],</span></span>
-<span id="cb33-34"><a href="MC2-construction.html#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 0., ..., 0., 0., 2.],</span></span>
-<span id="cb33-35"><a href="MC2-construction.html#cb33-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        ...,</span></span>
-<span id="cb33-36"><a href="MC2-construction.html#cb33-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 0., ..., 0., 2., 3.],</span></span>
-<span id="cb33-37"><a href="MC2-construction.html#cb33-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 0., ..., 0., 0., 0.],</span></span>
-<span id="cb33-38"><a href="MC2-construction.html#cb33-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [1., 0., 0., ..., 0., 1., 0.]], dtype=float32)</span></span></code></pre></div>
-<!-- **Comparing the obtained and requested graining level** -->
-<!-- In the following code chunk, we estimate whether a deviation of the obtained gamma from the requested gamma is acceptable. If not, we suggest to increase or decrease the `target_metacell_size` parameter to approach the desired graining level. -->
-<!-- ```{r mc2-gamma-deviation, child='./functional_chunks/mc2_gamma_deviation.Rmd'} -->
-<!-- ``` -->
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="MC2-construction.html#cb38-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-2"><a href="MC2-construction.html#cb38-2" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> mc.pl.collect_metacells(ad, name<span class="op">=</span><span class="st">&#39;metacells&#39;</span>, random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
+<span id="cb38-3"><a href="MC2-construction.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[grouped]: 122 int64s</span></span>
+<span id="cb38-4"><a href="MC2-construction.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[total_umis]: 122 float64s</span></span>
+<span id="cb38-5"><a href="MC2-construction.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.layers[total_umis]: ndarray 122 X 16564 float32s</span></span>
+<span id="cb38-6"><a href="MC2-construction.html#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[__zeros_downsample_umis]: 122 int64s</span></span>
+<span id="cb38-7"><a href="MC2-construction.html#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.layers[zeros]: ndarray 122 X 16564 int32s</span></span>
+<span id="cb38-8"><a href="MC2-construction.html#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set 3k_pbmc.clean.obs[metacell_name]: 2638 &lt;U8s</span></span>
+<span id="cb38-9"><a href="MC2-construction.html#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[gene_ids]: 16564 objects</span></span>
+<span id="cb38-10"><a href="MC2-construction.html#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 16564 bools</span></span>
+<span id="cb38-11"><a href="MC2-construction.html#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[properly_sampled_gene]: 16564 true (100%) out of 16564 bools</span></span>
+<span id="cb38-12"><a href="MC2-construction.html#cb38-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[excluded_gene]: 0 true (0%) out of 16564 bools</span></span>
+<span id="cb38-13"><a href="MC2-construction.html#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[full_gene_index]: 16564 int32s</span></span>
+<span id="cb38-14"><a href="MC2-construction.html#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[lateral_gene]: 225 true (1.358%) out of 16564 bools</span></span>
+<span id="cb38-15"><a href="MC2-construction.html#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[noisy_gene]: 17 true (0.1026%) out of 16564 bools</span></span>
+<span id="cb38-16"><a href="MC2-construction.html#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[selected_gene]: 256 true (1.546%) out of 16564 bools</span></span>
+<span id="cb38-17"><a href="MC2-construction.html#cb38-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[rare_gene]: 0 true (0%) out of 16564 bools</span></span>
+<span id="cb38-18"><a href="MC2-construction.html#cb38-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[rare_gene_module]: 16564 int32s</span></span>
+<span id="cb38-19"><a href="MC2-construction.html#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[metacells_rare_gene_module]: 122 int32s</span></span>
+<span id="cb38-20"><a href="MC2-construction.html#cb38-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[rare_metacell]: 0 true (0%) out of 122 bools</span></span>
+<span id="cb38-21"><a href="MC2-construction.html#cb38-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.uns[outliers]: 161</span></span>
+<span id="cb38-22"><a href="MC2-construction.html#cb38-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.uns[metacells_algorithm]: metacells.0.9.0</span></span>
+<span id="cb38-23"><a href="MC2-construction.html#cb38-23" aria-hidden="true" tabindex="-1"></a>mc_ad.shape</span>
+<span id="cb38-24"><a href="MC2-construction.html#cb38-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (122, 16564)</span></span>
+<span id="cb38-25"><a href="MC2-construction.html#cb38-25" aria-hidden="true" tabindex="-1"></a>mc_ad.X.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)[:<span class="dv">5</span>] </span>
+<span id="cb38-26"><a href="MC2-construction.html#cb38-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; matrix([[1.        ],</span></span>
+<span id="cb38-27"><a href="MC2-construction.html#cb38-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
+<span id="cb38-28"><a href="MC2-construction.html#cb38-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
+<span id="cb38-29"><a href="MC2-construction.html#cb38-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
+<span id="cb38-30"><a href="MC2-construction.html#cb38-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [0.99999994]], dtype=float32)</span></span>
+<span id="cb38-31"><a href="MC2-construction.html#cb38-31" aria-hidden="true" tabindex="-1"></a>mc_ad.layers[<span class="st">&#39;total_umis&#39;</span>]</span>
+<span id="cb38-32"><a href="MC2-construction.html#cb38-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; array([[1., 0., 0., ..., 0., 0., 0.],</span></span>
+<span id="cb38-33"><a href="MC2-construction.html#cb38-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 0., ..., 0., 1., 0.],</span></span>
+<span id="cb38-34"><a href="MC2-construction.html#cb38-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 0., ..., 0., 0., 2.],</span></span>
+<span id="cb38-35"><a href="MC2-construction.html#cb38-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        ...,</span></span>
+<span id="cb38-36"><a href="MC2-construction.html#cb38-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 0., ..., 0., 2., 3.],</span></span>
+<span id="cb38-37"><a href="MC2-construction.html#cb38-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 0., 0., ..., 0., 0., 0.],</span></span>
+<span id="cb38-38"><a href="MC2-construction.html#cb38-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [1., 0., 0., ..., 0., 1., 0.]], dtype=float32)</span></span></code></pre></div>
 </div>
 </div>
-<div id="annotate-metacells-using-available-annotations-1" class="section level3 hasAnchor" number="4.2.5">
-<h3><span class="header-section-number">4.2.5</span> Annotate metacells (using available annotations)<a href="MC2-construction.html#annotate-metacells-using-available-annotations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="annotate-metacells-using-available-annotations-1" class="section level3 hasAnchor" number="3.2.5">
+<h3><span class="header-section-number">3.2.5</span> Annotate metacells (using available annotations)<a href="MC2-construction.html#annotate-metacells-using-available-annotations-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If single-cell annotations are available in the original single-cell anndata object. We can transfer these annotations to the metacell anndata object
 using the <code>mc.tl.convey_obs_to_group()</code> function which will associate each metacell to the most frequent annotation (categorical) or
 averaged annotation (continuous) across the single-cells composing the metacell
 (use of the <code>mc.ut.most_frequent</code> and <code>np.mean</code> respectively in the <code>mode</code> paratemer).</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="MC2-construction.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign a single value for each metacell based on the cells.</span></span>
-<span id="cb34-2"><a href="MC2-construction.html#cb34-2" aria-hidden="true" tabindex="-1"></a>mc.tl.convey_obs_to_group(</span>
-<span id="cb34-3"><a href="MC2-construction.html#cb34-3" aria-hidden="true" tabindex="-1"></a>    adata<span class="op">=</span>ad, gdata<span class="op">=</span>mc_ad,</span>
-<span id="cb34-4"><a href="MC2-construction.html#cb34-4" aria-hidden="true" tabindex="-1"></a>    property_name<span class="op">=</span>annotation_label, to_property_name<span class="op">=</span>annotation_label,</span>
-<span id="cb34-5"><a href="MC2-construction.html#cb34-5" aria-hidden="true" tabindex="-1"></a>    method<span class="op">=</span>mc.ut.most_frequent  <span class="co"># This is the default, for categorical data</span></span>
-<span id="cb34-6"><a href="MC2-construction.html#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb34-7"><a href="MC2-construction.html#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain]: 122 &lt;U17s</span></span>
-<span id="cb34-8"><a href="MC2-construction.html#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-9"><a href="MC2-construction.html#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the fraction of cells with each possible value in each metacell:</span></span>
-<span id="cb34-10"><a href="MC2-construction.html#cb34-10" aria-hidden="true" tabindex="-1"></a>mc.tl.convey_obs_fractions_to_group(  </span>
-<span id="cb34-11"><a href="MC2-construction.html#cb34-11" aria-hidden="true" tabindex="-1"></a>    adata<span class="op">=</span>ad, gdata<span class="op">=</span>mc_ad,</span>
-<span id="cb34-12"><a href="MC2-construction.html#cb34-12" aria-hidden="true" tabindex="-1"></a>    property_name<span class="op">=</span>annotation_label, to_property_name<span class="op">=</span>annotation_label</span>
-<span id="cb34-13"><a href="MC2-construction.html#cb34-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb34-14"><a href="MC2-construction.html#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_B cells]: 122 float64s</span></span>
-<span id="cb34-15"><a href="MC2-construction.html#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_CD14+ Monocytes]: 122 float64s</span></span>
-<span id="cb34-16"><a href="MC2-construction.html#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_CD4 T cells]: 122 float64s</span></span>
-<span id="cb34-17"><a href="MC2-construction.html#cb34-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_CD8 T cells]: 122 float64s</span></span>
-<span id="cb34-18"><a href="MC2-construction.html#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_Dendritic cells]: 122 float64s</span></span>
-<span id="cb34-19"><a href="MC2-construction.html#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_FCGR3A+ Monocytes]: 122 float64s</span></span>
-<span id="cb34-20"><a href="MC2-construction.html#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_Megakaryocytes]: 122 float64s</span></span>
-<span id="cb34-21"><a href="MC2-construction.html#cb34-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_NK cells]: 122 float64s</span></span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="MC2-construction.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign a single value for each metacell based on the cells.</span></span>
+<span id="cb39-2"><a href="MC2-construction.html#cb39-2" aria-hidden="true" tabindex="-1"></a>mc.tl.convey_obs_to_group(</span>
+<span id="cb39-3"><a href="MC2-construction.html#cb39-3" aria-hidden="true" tabindex="-1"></a>    adata<span class="op">=</span>ad, gdata<span class="op">=</span>mc_ad,</span>
+<span id="cb39-4"><a href="MC2-construction.html#cb39-4" aria-hidden="true" tabindex="-1"></a>    property_name<span class="op">=</span>annotation_label, to_property_name<span class="op">=</span>annotation_label,</span>
+<span id="cb39-5"><a href="MC2-construction.html#cb39-5" aria-hidden="true" tabindex="-1"></a>    method<span class="op">=</span>mc.ut.most_frequent  <span class="co"># This is the default, for categorical data</span></span>
+<span id="cb39-6"><a href="MC2-construction.html#cb39-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-7"><a href="MC2-construction.html#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain]: 122 &lt;U17s</span></span>
+<span id="cb39-8"><a href="MC2-construction.html#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="MC2-construction.html#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the fraction of cells with each possible value in each metacell:</span></span>
+<span id="cb39-10"><a href="MC2-construction.html#cb39-10" aria-hidden="true" tabindex="-1"></a>mc.tl.convey_obs_fractions_to_group(  </span>
+<span id="cb39-11"><a href="MC2-construction.html#cb39-11" aria-hidden="true" tabindex="-1"></a>    adata<span class="op">=</span>ad, gdata<span class="op">=</span>mc_ad,</span>
+<span id="cb39-12"><a href="MC2-construction.html#cb39-12" aria-hidden="true" tabindex="-1"></a>    property_name<span class="op">=</span>annotation_label, to_property_name<span class="op">=</span>annotation_label</span>
+<span id="cb39-13"><a href="MC2-construction.html#cb39-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb39-14"><a href="MC2-construction.html#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_B cells]: 122 float64s</span></span>
+<span id="cb39-15"><a href="MC2-construction.html#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_CD14+ Monocytes]: 122 float64s</span></span>
+<span id="cb39-16"><a href="MC2-construction.html#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_CD4 T cells]: 122 float64s</span></span>
+<span id="cb39-17"><a href="MC2-construction.html#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_CD8 T cells]: 122 float64s</span></span>
+<span id="cb39-18"><a href="MC2-construction.html#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_Dendritic cells]: 122 float64s</span></span>
+<span id="cb39-19"><a href="MC2-construction.html#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_FCGR3A+ Monocytes]: 122 float64s</span></span>
+<span id="cb39-20"><a href="MC2-construction.html#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_Megakaryocytes]: 122 float64s</span></span>
+<span id="cb39-21"><a href="MC2-construction.html#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[louvain_fraction_of_NK cells]: 122 float64s</span></span></code></pre></div>
 </div>
-<div id="save-output-1" class="section level3 hasAnchor" number="4.2.6">
-<h3><span class="header-section-number">4.2.6</span> Save output<a href="MC2-construction.html#save-output-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>For future downstream analyses in python (section <a href="standard-analysis-Py.html#standard-analysis-Py">6.2</a>), we save the metacell counts in an Anndata object:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="MC2-construction.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object</span></span>
-<span id="cb35-2"><a href="MC2-construction.html#cb35-2" aria-hidden="true" tabindex="-1"></a>mc_ad.uns <span class="op">=</span> ad.uns.copy()</span>
-<span id="cb35-3"><a href="MC2-construction.html#cb35-3" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;sc.obs&#39;</span>] <span class="op">=</span> ad.obs.copy()</span>
-<span id="cb35-4"><a href="MC2-construction.html#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-5"><a href="MC2-construction.html#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co"># save the requested gamma</span></span>
-<span id="cb35-6"><a href="MC2-construction.html#cb35-6" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;gamma&#39;</span>] <span class="op">=</span> gamma</span>
-<span id="cb35-7"><a href="MC2-construction.html#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-8"><a href="MC2-construction.html#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save metacell size</span></span>
-<span id="cb35-9"><a href="MC2-construction.html#cb35-9" aria-hidden="true" tabindex="-1"></a>mc_ad.obs.rename(columns<span class="op">=</span>{<span class="st">&#39;grouped&#39;</span>:<span class="st">&#39;size&#39;</span>}, inplace <span class="op">=</span> <span class="va">True</span>)</span>
-<span id="cb35-10"><a href="MC2-construction.html#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-11"><a href="MC2-construction.html#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Saving metacell object for the &quot;</span><span class="op">+</span> proj_name<span class="op">+</span> <span class="st">&quot; dataset using &quot;</span><span class="op">+</span> MC_tool)</span>
-<span id="cb35-12"><a href="MC2-construction.html#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Saving metacell object for the 3k_pbmc dataset using MC2</span></span>
-<span id="cb35-13"><a href="MC2-construction.html#cb35-13" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">&#39;./data&#39;</span>, proj_name, <span class="ss">f&#39;metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad&#39;</span>))</span></code></pre></div>
-<p>For future QCs and downstream analyses in R (section <a href="standard-analysis-R.html#standard-analysis-R">6.1</a>), we save the metacell counts in a Seurat object:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="MC2-construction.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
-<span id="cb36-2"><a href="MC2-construction.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(anndata)</span>
-<span id="cb36-3"><a href="MC2-construction.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
-<span id="cb36-4"><a href="MC2-construction.html#cb36-4" aria-hidden="true" tabindex="-1"></a>adata_mc <span class="ot">&lt;-</span> <span class="fu">read_h5ad</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, py<span class="sc">$</span>proj_name, <span class="st">&quot;/metacell_MC2.h5ad&quot;</span>))</span>
-<span id="cb36-5"><a href="MC2-construction.html#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="MC2-construction.html#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Save counts and metadata in a Seurat object</span></span>
-<span id="cb36-7"><a href="MC2-construction.html#cb36-7" aria-hidden="true" tabindex="-1"></a>countMatrix <span class="ot">&lt;-</span>  Matrix<span class="sc">::</span><span class="fu">t</span>(adata_mc<span class="sc">$</span>X)</span>
-<span id="cb36-8"><a href="MC2-construction.html#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(countMatrix) <span class="ot">&lt;-</span> adata_mc<span class="sc">$</span>obs_names</span>
-<span id="cb36-9"><a href="MC2-construction.html#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(countMatrix) <span class="ot">&lt;-</span> adata_mc<span class="sc">$</span>var_names</span>
-<span id="cb36-10"><a href="MC2-construction.html#cb36-10" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> <span class="fu">as</span>(countMatrix, <span class="st">&#39;CsparseMatrix&#39;</span>), <span class="at">meta.data =</span> <span class="fu">as.data.frame</span>(adata_mc<span class="sc">$</span>obs))</span>
-<span id="cb36-11"><a href="MC2-construction.html#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes</span></span>
-<span id="cb36-12"><a href="MC2-construction.html#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (&#39;-&#39;)</span></span>
-<span id="cb36-13"><a href="MC2-construction.html#cb36-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Invalid name supplied, making object name syntactically valid. New</span></span>
-<span id="cb36-14"><a href="MC2-construction.html#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; object name is</span></span>
-<span id="cb36-15"><a href="MC2-construction.html#cb36-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sizetotal_umisX__zeros_downsample_umismetacells_rare_gene_modulerare_metacelllouvainlouvain_fraction_of_B.cellslouvain_fraction_of_CD14..Monocyteslouvain_fraction_of_CD4.T.cellslouvain_fraction_of_CD8.T.cellslouvain_fraction_of_Dendritic.cellslouvain_fraction_of_FCGR3A..Monocyteslouvain_fraction_of_Megakaryocyteslouvain_fraction_of_NK.cells;</span></span>
-<span id="cb36-16"><a href="MC2-construction.html#cb36-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; see ?make.names for more details on syntax validity</span></span>
-<span id="cb36-17"><a href="MC2-construction.html#cb36-17" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">@</span>misc[[<span class="st">&quot;var_features&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">rownames</span>(adata_mc<span class="sc">$</span>var)[<span class="fu">which</span>(adata_mc<span class="sc">$</span>var<span class="sc">$</span>selected_gene <span class="sc">==</span> T)] </span>
-<span id="cb36-18"><a href="MC2-construction.html#cb36-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-19"><a href="MC2-construction.html#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Save membership in misc</span></span>
-<span id="cb36-20"><a href="MC2-construction.html#cb36-20" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">@</span>misc<span class="sc">$</span>cell_membership <span class="ot">&lt;-</span> py<span class="sc">$</span>ad<span class="sc">$</span>obs[<span class="st">&#39;membership&#39;</span>]</span>
-<span id="cb36-21"><a href="MC2-construction.html#cb36-21" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(MC.seurat, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&#39;./data/&#39;</span>, py<span class="sc">$</span>proj_name, <span class="st">&#39;/metacell_MC2.rds&#39;</span>))</span></code></pre></div>
+<div id="save-output-1" class="section level3 hasAnchor" number="3.2.6">
+<h3><span class="header-section-number">3.2.6</span> Save output<a href="MC2-construction.html#save-output-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For future downstream analyses in python (section <a href="#standard-analysis-Py"><strong>??</strong></a>), we save the metacell counts in an Anndata object:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="MC2-construction.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object</span></span>
+<span id="cb40-2"><a href="MC2-construction.html#cb40-2" aria-hidden="true" tabindex="-1"></a>mc_ad.uns <span class="op">=</span> ad.uns.copy()</span>
+<span id="cb40-3"><a href="MC2-construction.html#cb40-3" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;sc.obs&#39;</span>] <span class="op">=</span> ad.obs.copy()</span>
+<span id="cb40-4"><a href="MC2-construction.html#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="MC2-construction.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># save the requested gamma</span></span>
+<span id="cb40-6"><a href="MC2-construction.html#cb40-6" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;gamma&#39;</span>] <span class="op">=</span> gamma</span>
+<span id="cb40-7"><a href="MC2-construction.html#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="MC2-construction.html#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save metacell size</span></span>
+<span id="cb40-9"><a href="MC2-construction.html#cb40-9" aria-hidden="true" tabindex="-1"></a>mc_ad.obs.rename(columns<span class="op">=</span>{<span class="st">&#39;grouped&#39;</span>:<span class="st">&#39;size&#39;</span>}, inplace <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb40-10"><a href="MC2-construction.html#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="MC2-construction.html#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Saving metacell object for the &quot;</span><span class="op">+</span> proj_name<span class="op">+</span> <span class="st">&quot; dataset using &quot;</span><span class="op">+</span> MC_tool)</span>
+<span id="cb40-12"><a href="MC2-construction.html#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Saving metacell object for the 3k_pbmc dataset using MC2</span></span>
+<span id="cb40-13"><a href="MC2-construction.html#cb40-13" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">&#39;./data&#39;</span>, proj_name, <span class="ss">f&#39;metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad&#39;</span>))</span></code></pre></div>
+<p>For future QCs and downstream analyses in R (section <a href="standard-analysis-R.html#standard-analysis-R">5.1</a>), we save the metacell counts in a Seurat object:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="MC2-construction.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
+<span id="cb41-2"><a href="MC2-construction.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(anndata)</span>
+<span id="cb41-3"><a href="MC2-construction.html#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb41-4"><a href="MC2-construction.html#cb41-4" aria-hidden="true" tabindex="-1"></a>adata_mc <span class="ot">&lt;-</span> <span class="fu">read_h5ad</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, py<span class="sc">$</span>proj_name, <span class="st">&quot;/metacell_MC2.h5ad&quot;</span>))</span>
+<span id="cb41-5"><a href="MC2-construction.html#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="MC2-construction.html#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Save counts and metadata in a Seurat object</span></span>
+<span id="cb41-7"><a href="MC2-construction.html#cb41-7" aria-hidden="true" tabindex="-1"></a>countMatrix <span class="ot">&lt;-</span>  Matrix<span class="sc">::</span><span class="fu">t</span>(adata_mc<span class="sc">$</span>X)</span>
+<span id="cb41-8"><a href="MC2-construction.html#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(countMatrix) <span class="ot">&lt;-</span> adata_mc<span class="sc">$</span>obs_names</span>
+<span id="cb41-9"><a href="MC2-construction.html#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(countMatrix) <span class="ot">&lt;-</span> adata_mc<span class="sc">$</span>var_names</span>
+<span id="cb41-10"><a href="MC2-construction.html#cb41-10" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> <span class="fu">as</span>(countMatrix, <span class="st">&#39;CsparseMatrix&#39;</span>), <span class="at">meta.data =</span> <span class="fu">as.data.frame</span>(adata_mc<span class="sc">$</span>obs))</span>
+<span id="cb41-11"><a href="MC2-construction.html#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Feature names cannot have underscores (&#39;_&#39;), replacing with dashes</span></span>
+<span id="cb41-12"><a href="MC2-construction.html#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (&#39;-&#39;)</span></span>
+<span id="cb41-13"><a href="MC2-construction.html#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: Invalid name supplied, making object name syntactically valid. New</span></span>
+<span id="cb41-14"><a href="MC2-construction.html#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; object name is</span></span>
+<span id="cb41-15"><a href="MC2-construction.html#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sizetotal_umisX__zeros_downsample_umismetacells_rare_gene_modulerare_metacelllouvainlouvain_fraction_of_B.cellslouvain_fraction_of_CD14..Monocyteslouvain_fraction_of_CD4.T.cellslouvain_fraction_of_CD8.T.cellslouvain_fraction_of_Dendritic.cellslouvain_fraction_of_FCGR3A..Monocyteslouvain_fraction_of_Megakaryocyteslouvain_fraction_of_NK.cells;</span></span>
+<span id="cb41-16"><a href="MC2-construction.html#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; see ?make.names for more details on syntax validity</span></span>
+<span id="cb41-17"><a href="MC2-construction.html#cb41-17" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">@</span>misc[[<span class="st">&quot;var_features&quot;</span>]] <span class="ot">&lt;-</span> <span class="fu">rownames</span>(adata_mc<span class="sc">$</span>var)[<span class="fu">which</span>(adata_mc<span class="sc">$</span>var<span class="sc">$</span>selected_gene <span class="sc">==</span> T)] </span>
+<span id="cb41-18"><a href="MC2-construction.html#cb41-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-19"><a href="MC2-construction.html#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Save membership in misc</span></span>
+<span id="cb41-20"><a href="MC2-construction.html#cb41-20" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">@</span>misc<span class="sc">$</span>cell_membership <span class="ot">&lt;-</span> py<span class="sc">$</span>ad<span class="sc">$</span>obs[<span class="st">&#39;membership&#39;</span>]</span>
+<span id="cb41-21"><a href="MC2-construction.html#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(MC.seurat, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&#39;./data/&#39;</span>, py<span class="sc">$</span>proj_name, <span class="st">&#39;/metacell_MC2.rds&#39;</span>))</span></code></pre></div>
 </div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-MC2" class="csl-entry">
+Ben-Kiki, Oren, Akhiad Bercovich, Aviezer Lifshitz, and Amos Tanay. <span>“A Divide and Conquer Metacell Algorithm for Scalable <span class="nocase">scRNA</span>-Seq Analysis.”</span> <em>bioRxiv</em>, August 2021, 2021.08.08.453314. <a href="https://doi.org/10.1101/2021.08.08.453314">https://doi.org/10.1101/2021.08.08.453314</a>.
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="12">
+<li id="fn12"><p><a href="#ref-Review" role="doc-biblioref"><strong>Review?</strong></a><a href="MC2-construction.html#fnref12" class="footnote-back">↩︎</a></p></li>
+<li id="fn13"><p><a href="#ref-MC2" role="doc-biblioref">Ben-Kiki et al., <span>“A Divide and Conquer Metacell Algorithm for Scalable <span class="nocase">scRNA</span>-Seq Analysis”</span></a>.<a href="MC2-construction.html#fnref13" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
             </section>
 

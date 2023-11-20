@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6.1 Unsupervised integration | Metacell Tutorial</title>
+  <meta name="description" content="This is a tutorial about metacell construction and analysis." />
+  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6.1 Unsupervised integration | Metacell Tutorial" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
+  <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6.1 Unsupervised integration | Metacell Tutorial" />
+  
+  <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
+  
+
+<meta name="author" content="Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller" />
+
+
+<meta name="date" content="2023-11-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="integration.html"/>
+<link rel="next" href="integration_supervised.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Metacell Tutorial </a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>This tutorial</a></li>
+<li class="chapter" data-level="1" data-path="requirements.html"><a href="requirements.html"><i class="fa fa-check"></i><b>1</b> Requirements</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="installations.html"><a href="installations.html"><i class="fa fa-check"></i><b>1.1</b> Installations</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="installations.html"><a href="installations.html#using-conda-recommended"><i class="fa fa-check"></i><b>1.1.1</b> Using conda (recommended)</a></li>
+<li class="chapter" data-level="1.1.2" data-path="installations.html"><a href="installations.html#without-conda"><i class="fa fa-check"></i><b>1.1.2</b> Without conda</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="PBMC-data.html"><a href="PBMC-data.html"><i class="fa fa-check"></i><b>1.2</b> Retrieve a discrete dataset (PBMCs dataset)</a></li>
+<li class="chapter" data-level="1.3" data-path="CD34-data.html"><a href="CD34-data.html"><i class="fa fa-check"></i><b>1.3</b> Retrieve a continuous dataset (CD34 dataset)</a></li>
+<li class="chapter" data-level="1.4" data-path="HLCA-data.html"><a href="HLCA-data.html"><i class="fa fa-check"></i><b>1.4</b> Retrieve the lung atlas dataset</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="HLCA-data.html"><a href="HLCA-data.html#downloading-the-atlas"><i class="fa fa-check"></i><b>1.4.1</b> Downloading the atlas</a></li>
+<li class="chapter" data-level="1.4.2" data-path="HLCA-data.html"><a href="HLCA-data.html#splitting-atlas-by-datasets"><i class="fa fa-check"></i><b>1.4.2</b> Splitting atlas by datasets</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>2</b> The metacell concept</a></li>
+<li class="chapter" data-level="3" data-path="Metacell-construction-chapter.html"><a href="Metacell-construction-chapter.html"><i class="fa fa-check"></i><b>3</b> Constructing metacells</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html"><i class="fa fa-check"></i><b>3.1</b> SuperCell (R)</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#method"><i class="fa fa-check"></i><b>3.1.1</b> Method</a></li>
+<li class="chapter" data-level="3.1.2" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#data-loading"><i class="fa fa-check"></i><b>3.1.2</b> Data loading</a></li>
+<li class="chapter" data-level="3.1.3" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#filtering-steps"><i class="fa fa-check"></i><b>3.1.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.1.4" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#building-metacells"><i class="fa fa-check"></i><b>3.1.4</b> Building metacells</a></li>
+<li class="chapter" data-level="3.1.5" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#annotate-metacells-using-available-annotations"><i class="fa fa-check"></i><b>3.1.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="3.1.6" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#save-output"><i class="fa fa-check"></i><b>3.1.6</b> Save output</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="MC2-construction.html"><a href="MC2-construction.html"><i class="fa fa-check"></i><b>3.2</b> MC2 (Python)</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="MC2-construction.html"><a href="MC2-construction.html#method-1"><i class="fa fa-check"></i><b>3.2.1</b> Method</a></li>
+<li class="chapter" data-level="3.2.2" data-path="MC2-construction.html"><a href="MC2-construction.html#data-loading-1"><i class="fa fa-check"></i><b>3.2.2</b> Data loading</a></li>
+<li class="chapter" data-level="3.2.3" data-path="MC2-construction.html"><a href="MC2-construction.html#filtering-steps-1"><i class="fa fa-check"></i><b>3.2.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.2.4" data-path="MC2-construction.html"><a href="MC2-construction.html#building-metacells-1"><i class="fa fa-check"></i><b>3.2.4</b> Building metacells</a></li>
+<li class="chapter" data-level="3.2.5" data-path="MC2-construction.html"><a href="MC2-construction.html#annotate-metacells-using-available-annotations-1"><i class="fa fa-check"></i><b>3.2.5</b> Annotate metacells (using available annotations)</a></li>
+<li class="chapter" data-level="3.2.6" data-path="MC2-construction.html"><a href="MC2-construction.html#save-output-1"><i class="fa fa-check"></i><b>3.2.6</b> Save output</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html"><i class="fa fa-check"></i><b>3.3</b> SEACells (Python)</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="SEACells-construction.html"><a href="SEACells-construction.html#method-2"><i class="fa fa-check"></i><b>3.3.1</b> Method</a></li>
+<li class="chapter" data-level="3.3.2" data-path="SEACells-construction.html"><a href="SEACells-construction.html#data-loading-2"><i class="fa fa-check"></i><b>3.3.2</b> Data loading</a></li>
+<li class="chapter" data-level="3.3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html#filtering-steps-2"><i class="fa fa-check"></i><b>3.3.3</b> Filtering steps</a></li>
+<li class="chapter" data-level="3.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Building metacells</a></li>
+<li class="chapter" data-level="3.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>3.3.5</b> Visualize metacells</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>3.4</b> Metacell Analysis Toolkit (MCAT)</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>4</b> Metacells QCs</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html"><i class="fa fa-check"></i><b>4.1</b> Quantitative metrics</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#purity"><i class="fa fa-check"></i><b>4.1.1</b> Purity</a></li>
+<li class="chapter" data-level="4.1.2" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#compactness"><i class="fa fa-check"></i><b>4.1.2</b> Compactness</a></li>
+<li class="chapter" data-level="4.1.3" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#separation"><i class="fa fa-check"></i><b>4.1.3</b> Separation</a></li>
+<li class="chapter" data-level="4.1.4" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#inv"><i class="fa fa-check"></i><b>4.1.4</b> INV</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>4.2</b> Size distribution</a></li>
+<li class="chapter" data-level="4.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>4.3</b> Representativeness of metacells</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>5</b> Downstream analysis of metacells</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>5.1</b> Standard analysis (R)</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>5.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="5.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>5.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="5.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>5.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="5.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>5.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="5.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>5.1.5</b> Visualize gene-gene correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>5.2</b> Sample-weighted analysis</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>5.2.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="5.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>5.2.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="5.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>5.2.3</b> Clustering</a></li>
+<li class="chapter" data-level="5.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>5.2.4</b> Differential expression analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>6</b> Integration of metacells</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>6.1</b> Unsupervised integration</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>6.1.1</b> Data loading</a></li>
+<li class="chapter" data-level="6.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment"><i class="fa fa-check"></i><b>6.1.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="6.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>6.1.3</b> Building metacell</a></li>
+<li class="chapter" data-level="6.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>6.1.4</b> Loading metacell objects</a></li>
+<li class="chapter" data-level="6.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>6.1.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="6.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>6.1.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="6.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>6.1.7</b> Seurat integration</a></li>
+<li class="chapter" data-level="6.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>6.1.8</b> Downstream analysis</a></li>
+<li class="chapter" data-level="6.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>6.1.9</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>6.2</b> Supervised integration</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>6.2.1</b> Data loading</a></li>
+<li class="chapter" data-level="6.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>6.2.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="6.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>6.2.3</b> Constructing supervised metacell</a></li>
+<li class="chapter" data-level="6.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>6.2.4</b> Load metacell objects</a></li>
+<li class="chapter" data-level="6.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>6.2.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="6.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>6.2.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="6.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>6.2.7</b> STACAS integration</a></li>
+<li class="chapter" data-level="6.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>6.2.8</b> Comparison with unsupervised analysis</a></li>
+<li class="chapter" data-level="6.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>6.2.9</b> Downstream analysis</a></li>
+<li class="chapter" data-level="6.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>6.2.10</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell Tutorial</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="integration_unsupervised" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Unsupervised integration<a href="integration_unsupervised.html#integration_unsupervised" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section, we will work with the Human Cell Lung Atlas core <a href="https://www.nature.com/articles/s41591-023-02327-2">HLCA</a>
+gathering around 580,000 cells from 107 individuals distributed in 166 samples.</p>
+<p>The aim of this tutorial is to show how you can use metacells to analyze a very large dataset using a reasonable amount of time and memory.
+For this we will use here <strong>SuperCell</strong> via the <strong>MCAT</strong> command line tool.</p>
+<div id="data-loading-3" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Data loading<a href="integration_unsupervised.html#data-loading-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Please follow the section <a href="HLCA-data.html#HLCA-data">1.4</a> to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: “data/HLCA/”.</p>
+</div>
+<div id="setting-up-the-environment" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Setting up the environment<a href="integration_unsupervised.html#setting-up-the-environment" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MCAT tool).
+To build the conda environment please follow the instructions on our MetacellAnalysisToolkit <a href="https://github.com/GfellerLab/MetacellToolkit">github repository</a>.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="integration_unsupervised.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb94-2"><a href="integration_unsupervised.html#cb94-2" aria-hidden="true" tabindex="-1"></a>conda_env <span class="ot">&lt;-</span>  <span class="fu">conda_list</span>()[reticulate<span class="sc">::</span><span class="fu">conda_list</span>()<span class="sc">$</span>name <span class="sc">==</span> <span class="st">&quot;MetacellAnalysisToolkit&quot;</span>,<span class="st">&quot;python&quot;</span>]</span>
+<span id="cb94-3"><a href="integration_unsupervised.html#cb94-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-4"><a href="integration_unsupervised.html#cb94-4" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(conda_env)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="integration_unsupervised.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
+<span id="cb95-2"><a href="integration_unsupervised.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
+<span id="cb95-3"><a href="integration_unsupervised.html#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; will retire shortly. Please refer to R-spatial evolution reports on</span></span>
+<span id="cb95-4"><a href="integration_unsupervised.html#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html for details.</span></span>
+<span id="cb95-5"><a href="integration_unsupervised.html#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This package is now running under evolution status 0</span></span>
+<span id="cb95-6"><a href="integration_unsupervised.html#cb95-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching SeuratObject</span></span>
+<span id="cb95-7"><a href="integration_unsupervised.html#cb95-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(anndata)</span>
+<span id="cb95-8"><a href="integration_unsupervised.html#cb95-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SuperCell)</span>
+<span id="cb95-9"><a href="integration_unsupervised.html#cb95-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb95-10"><a href="integration_unsupervised.html#cb95-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-11"><a href="integration_unsupervised.html#cb95-11" aria-hidden="true" tabindex="-1"></a>color.celltypes  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;#E5D2DD&#39;</span>, <span class="st">&#39;#53A85F&#39;</span>, <span class="st">&#39;#F1BB72&#39;</span>, <span class="st">&#39;#F3B1A0&#39;</span>, <span class="st">&#39;#D6E7A3&#39;</span>, <span class="st">&#39;#57C3F3&#39;</span>, <span class="st">&#39;#476D87&#39;</span>,</span>
+<span id="cb95-12"><a href="integration_unsupervised.html#cb95-12" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&#39;#E95C59&#39;</span>, <span class="st">&#39;#E59CC4&#39;</span>, <span class="st">&#39;#AB3282&#39;</span>, <span class="st">&#39;#23452F&#39;</span>, <span class="st">&#39;#BD956A&#39;</span>, <span class="st">&#39;#8C549C&#39;</span>, <span class="st">&#39;#585658&#39;</span>,</span>
+<span id="cb95-13"><a href="integration_unsupervised.html#cb95-13" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&#39;#9FA3A8&#39;</span>, <span class="st">&#39;#E0D4CA&#39;</span>, <span class="st">&#39;#5F3D69&#39;</span>, <span class="st">&#39;#58A4C3&#39;</span>, <span class="st">&quot;#b20000&quot;</span>,<span class="st">&#39;#E4C755&#39;</span>, <span class="st">&#39;#F7F398&#39;</span>,</span>
+<span id="cb95-14"><a href="integration_unsupervised.html#cb95-14" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&#39;#AA9A59&#39;</span>, <span class="st">&#39;#E63863&#39;</span>, <span class="st">&#39;#E39A35&#39;</span>, <span class="st">&#39;#C1E6F3&#39;</span>, <span class="st">&#39;#6778AE&#39;</span>, <span class="st">&#39;#91D0BE&#39;</span>, <span class="st">&#39;#B53E2B&#39;</span>,</span>
+<span id="cb95-15"><a href="integration_unsupervised.html#cb95-15" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&#39;#712820&#39;</span>, <span class="st">&#39;#DCC1DD&#39;</span>, <span class="st">&#39;#CCE0F5&#39;</span>, <span class="st">&#39;#CCC9E6&#39;</span>, <span class="st">&#39;#625D9E&#39;</span>, <span class="st">&#39;#68A180&#39;</span>, <span class="st">&#39;#3A6963&#39;</span>,</span>
+<span id="cb95-16"><a href="integration_unsupervised.html#cb95-16" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&#39;#968175&#39;</span>)</span></code></pre></div>
+</div>
+<div id="building-metacell" class="section level3 hasAnchor" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Building metacell<a href="integration_unsupervised.html#building-metacell" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We build metacells with the MCAT command line using SuperCell (<code>-t SuperCell</code>).
+To facilitate downstream analysis of the donors we build metacells for each sample in each dataset (<code>-a sample</code>).
+Here we will use 2000 highly variable genes (<code>-f 2000</code>) to compute the PCA from which we used 50 principal components (<code>-m 50</code>) to build a k = 30 (<code>-k 30</code>) nearest neighbor graph on which the metacells are identified using a graining level of 50 (<code>-g 50</code>).
+We use an adata .h5ad output format (<code>-s adata</code>) as it is faster to write and lighter to store than a Seurat .rds object.</p>
+<p>This step takes around 20 min with multiple cores (<code>-l 6</code>). Be aware that parallel processing requires more memory (32 GB of memory required for 6 cores).</p>
+<p>If you are limited in memory you should still be able to process the samples by reducing the number of cores (e.g. <code>-l 3</code>) or
+by sequentially processing the samples (just remove the <code>-l</code>) in a slightly longer time.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb96-1"><a href="integration_unsupervised.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="va">start</span><span class="op">=</span><span class="kw">`</span><span class="fu">date</span> +%s<span class="kw">`</span></span>
+<span id="cb96-2"><a href="integration_unsupervised.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> data/HLCA/datasets/<span class="pp">*</span><span class="kw">;</span></span>
+<span id="cb96-3"><a href="integration_unsupervised.html#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="ex">cli/MCAT</span> <span class="at">-t</span> SuperCell <span class="at">-i</span> <span class="va">$d</span>/sc_adata.h5ad <span class="at">-o</span> <span class="va">$d</span> <span class="at">-a</span> sample <span class="at">-l</span> 3 <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
+<span id="cb96-4"><a href="integration_unsupervised.html#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb96-5"><a href="integration_unsupervised.html#cb96-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;Duration: </span><span class="va">$((</span>(<span class="va">$(</span><span class="fu">date</span> +%s<span class="va">)</span><span class="op">-</span><span class="va">$start</span>)<span class="op">/</span><span class="dv">60</span><span class="va">))</span><span class="st"> minutes&quot;</span></span></code></pre></div>
+</div>
+<div id="loading-metacell-objects" class="section level3 hasAnchor" number="6.1.4">
+<h3><span class="header-section-number">6.1.4</span> Loading metacell objects<a href="integration_unsupervised.html#loading-metacell-objects" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We load the .h5ad objects and directly convert them in Seurat objects to benefit from all the functions of this framework.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="integration_unsupervised.html#cb97-1" aria-hidden="true" tabindex="-1"></a>datasets <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="st">&quot;data/HLCA/datasets/&quot;</span>, <span class="at">full.names =</span> F, <span class="at">recursive =</span> F)</span>
+<span id="cb97-2"><a href="integration_unsupervised.html#cb97-2" aria-hidden="true" tabindex="-1"></a>metacell.files <span class="ot">&lt;-</span> <span class="fu">sapply</span>(datasets[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>] , <span class="at">FUN =</span> <span class="cf">function</span>(x){<span class="fu">paste0</span>(<span class="st">&quot;data/HLCA/datasets/&quot;</span>,x,<span class="st">&quot;/mc_adata.h5ad&quot;</span>)})</span>
+<span id="cb97-3"><a href="integration_unsupervised.html#cb97-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-4"><a href="integration_unsupervised.html#cb97-4" aria-hidden="true" tabindex="-1"></a>metacell.objs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="at">X =</span> metacell.files, <span class="cf">function</span>(X){</span>
+<span id="cb97-5"><a href="integration_unsupervised.html#cb97-5" aria-hidden="true" tabindex="-1"></a>  adata <span class="ot">&lt;-</span> <span class="fu">read_h5ad</span>(X)</span>
+<span id="cb97-6"><a href="integration_unsupervised.html#cb97-6" aria-hidden="true" tabindex="-1"></a>  countMatrix <span class="ot">&lt;-</span> Matrix<span class="sc">::</span><span class="fu">t</span>(adata<span class="sc">$</span>X)</span>
+<span id="cb97-7"><a href="integration_unsupervised.html#cb97-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(countMatrix) <span class="ot">&lt;-</span> adata<span class="sc">$</span>obs_names</span>
+<span id="cb97-8"><a href="integration_unsupervised.html#cb97-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(countMatrix) <span class="ot">&lt;-</span> adata<span class="sc">$</span>var_names</span>
+<span id="cb97-9"><a href="integration_unsupervised.html#cb97-9" aria-hidden="true" tabindex="-1"></a>  sobj <span class="ot">&lt;-</span> Seurat<span class="sc">::</span><span class="fu">CreateSeuratObject</span>(<span class="at">counts =</span> countMatrix,<span class="at">meta.data =</span> adata<span class="sc">$</span>obs)</span>
+<span id="cb97-10"><a href="integration_unsupervised.html#cb97-10" aria-hidden="true" tabindex="-1"></a>  sobj <span class="ot">&lt;-</span> <span class="fu">RenameCells</span>(sobj, <span class="at">add.cell.id =</span> <span class="fu">unique</span>(sobj<span class="sc">$</span>sample)) <span class="co"># we give unique name to metacells</span></span>
+<span id="cb97-11"><a href="integration_unsupervised.html#cb97-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(sobj)</span>
+<span id="cb97-12"><a href="integration_unsupervised.html#cb97-12" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
+</div>
+<div id="merging-objects-and-basic-quality-control" class="section level3 hasAnchor" number="6.1.5">
+<h3><span class="header-section-number">6.1.5</span> Merging objects and basic quality control<a href="integration_unsupervised.html#merging-objects-and-basic-quality-control" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Given the single-cell metadata, the MCAT tool automatically assigns annotations to metacells and computes purities for all the categorical variables present
+in the metadata of the input single-cell object.</p>
+<p>Thus, we can check the purity of our metacells at different levels of annotations, as well as their size (number of single cells they contain).</p>
+<p>To do so we merge the object together and use the Seurat <code>VlnPlot</code> function.</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="integration_unsupervised.html#cb98-1" aria-hidden="true" tabindex="-1"></a>unintegrated.mc <span class="ot">&lt;-</span> <span class="fu">merge</span>(metacell.objs[[<span class="dv">1</span>]], metacell.objs[<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb98-2"><a href="integration_unsupervised.html#cb98-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-3"><a href="integration_unsupervised.html#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(unintegrated.mc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;size&quot;</span>, <span class="st">&quot;ann_level_1_purity&quot;</span>), <span class="at">group.by =</span> <span class="st">&#39;dataset&#39;</span>, <span class="at">pt.size =</span> <span class="fl">0.001</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="integration_unsupervised.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(unintegrated.mc, <span class="at">features =</span> <span class="fu">c</span>(<span class="st">&quot;ann_level_2_purity&quot;</span>, <span class="st">&quot;ann_level_3_purity&quot;</span>), <span class="at">group.by =</span> <span class="st">&#39;dataset&#39;</span>, <span class="at">pt.size =</span> <span class="fl">0.001</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p>We can also use box plots.</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="integration_unsupervised.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(unintegrated.mc<span class="sc">@</span>meta.data,<span class="fu">aes</span>(<span class="at">x =</span> dataset, <span class="at">y =</span> ann_level_2_purity, <span class="at">fill =</span> dataset)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb100-2"><a href="integration_unsupervised.html#cb100-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">angle =</span> <span class="dv">45</span>))</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="integration_unsupervised.html#cb101-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-2"><a href="integration_unsupervised.html#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(unintegrated.mc<span class="sc">@</span>meta.data,<span class="fu">aes</span>(<span class="at">x =</span> dataset, <span class="at">y =</span> ann_level_3_purity, <span class="at">fill =</span> dataset)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb101-3"><a href="integration_unsupervised.html#cb101-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">angle =</span> <span class="dv">45</span>))</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-2.png" width="672" /></p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="integration_unsupervised.html#cb102-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-2"><a href="integration_unsupervised.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(unintegrated.mc<span class="sc">@</span>meta.data,<span class="fu">aes</span>(<span class="at">x =</span> dataset, <span class="at">y =</span> ann_level_4_purity, <span class="at">fill =</span> dataset)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb102-3"><a href="integration_unsupervised.html#cb102-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">angle =</span> <span class="dv">45</span>))</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-3.png" width="672" /></p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="integration_unsupervised.html#cb103-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-2"><a href="integration_unsupervised.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(unintegrated.mc<span class="sc">@</span>meta.data,<span class="fu">aes</span>(<span class="at">x =</span> dataset, <span class="at">y =</span> ann_finest_level_purity, <span class="at">fill =</span> dataset)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb103-3"><a href="integration_unsupervised.html#cb103-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">angle =</span> <span class="dv">45</span>))</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+<p>Overall metacells from the different datasets present a good purity until the third level of annotation.</p>
+</div>
+<div id="unintegrated-analysis" class="section level3 hasAnchor" number="6.1.6">
+<h3><span class="header-section-number">6.1.6</span> Unintegrated analysis<a href="integration_unsupervised.html#unintegrated-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s first do a standard dimensionality reduction without batch correction.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="integration_unsupervised.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(unintegrated.mc) <span class="ot">&lt;-</span> <span class="st">&quot;RNA&quot;</span></span>
+<span id="cb104-2"><a href="integration_unsupervised.html#cb104-2" aria-hidden="true" tabindex="-1"></a>unintegrated.mc <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(unintegrated.mc)</span>
+<span id="cb104-3"><a href="integration_unsupervised.html#cb104-3" aria-hidden="true" tabindex="-1"></a>unintegrated.mc <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(unintegrated.mc)</span>
+<span id="cb104-4"><a href="integration_unsupervised.html#cb104-4" aria-hidden="true" tabindex="-1"></a>unintegrated.mc <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(unintegrated.mc)</span>
+<span id="cb104-5"><a href="integration_unsupervised.html#cb104-5" aria-hidden="true" tabindex="-1"></a>unintegrated.mc <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(unintegrated.mc)</span>
+<span id="cb104-6"><a href="integration_unsupervised.html#cb104-6" aria-hidden="true" tabindex="-1"></a>unintegrated.mc <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(unintegrated.mc, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>)</span>
+<span id="cb104-7"><a href="integration_unsupervised.html#cb104-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-8"><a href="integration_unsupervised.html#cb104-8" aria-hidden="true" tabindex="-1"></a>umap.unintegrated.datasets <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(unintegrated.mc,<span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>,<span class="at">group.by =</span> <span class="st">&quot;dataset&quot;</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;unintegrated datasets&quot;</span>)</span>
+<span id="cb104-9"><a href="integration_unsupervised.html#cb104-9" aria-hidden="true" tabindex="-1"></a>umap.unintegrated.types <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(unintegrated.mc, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">group.by =</span> <span class="st">&quot;ann_level_2&quot;</span>, <span class="at">label =</span> T, <span class="at">repel =</span> T, <span class="at">cols =</span> color.celltypes)<span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;unintegrated cell types&quot;</span>)</span>
+<span id="cb104-10"><a href="integration_unsupervised.html#cb104-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb104-11"><a href="integration_unsupervised.html#cb104-11" aria-hidden="true" tabindex="-1"></a>umap.unintegrated.datasets <span class="sc">+</span> umap.unintegrated.types</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="integration_unsupervised.html#cb105-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-2"><a href="integration_unsupervised.html#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="fu">remove</span>(unintegrated.mc) <span class="co"># we won&#39;t use the unintegrated object anymore</span></span>
+<span id="cb105-3"><a href="integration_unsupervised.html#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span></code></pre></div>
+<p>You can see on the plots that a batch effect is clearly present at the metacell level with metacells clustering by datasets inside the major cell types.
+Let’s correct it.</p>
+</div>
+<div id="seurat-integration" class="section level3 hasAnchor" number="6.1.7">
+<h3><span class="header-section-number">6.1.7</span> Seurat integration<a href="integration_unsupervised.html#seurat-integration" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here we will use the standard Seurat_v4 batch correction <a href="https://satijalab.org/seurat/archive/v4.3/integration_rpca">workflow</a>. As in the original study, we use the dataset rather than the donor as the batch parameter.
+See method section “Data integration benchmarking” of the <a href="https://www.nature.com/articles/s41591-023-02327-2">original study</a> for more details.</p>
+<p>This should take less than 5 minutes.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="integration_unsupervised.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normalize each dataset</span></span>
+<span id="cb106-2"><a href="integration_unsupervised.html#cb106-2" aria-hidden="true" tabindex="-1"></a>metacell.objs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="at">X =</span> metacell.objs, <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb106-3"><a href="integration_unsupervised.html#cb106-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">DefaultAssay</span>(x) <span class="ot">&lt;-</span> <span class="st">&quot;RNA&quot;</span>;</span>
+<span id="cb106-4"><a href="integration_unsupervised.html#cb106-4" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">RenameCells</span>(x, <span class="at">add.cell.id =</span> <span class="fu">unique</span>(x<span class="sc">$</span>sample)) <span class="co"># we give unique name to metacells</span></span>
+<span id="cb106-5"><a href="integration_unsupervised.html#cb106-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(x)</span>
+<span id="cb106-6"><a href="integration_unsupervised.html#cb106-6" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(x, <span class="at">selection.method =</span> <span class="st">&quot;vst&quot;</span>, <span class="at">nfeatures =</span> <span class="dv">2000</span>)</span>
+<span id="cb106-7"><a href="integration_unsupervised.html#cb106-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)})</span>
+<span id="cb106-8"><a href="integration_unsupervised.html#cb106-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-9"><a href="integration_unsupervised.html#cb106-9" aria-hidden="true" tabindex="-1"></a>features <span class="ot">&lt;-</span> <span class="fu">SelectIntegrationFeatures</span>(<span class="at">object.list =</span> metacell.objs)</span>
+<span id="cb106-10"><a href="integration_unsupervised.html#cb106-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-11"><a href="integration_unsupervised.html#cb106-11" aria-hidden="true" tabindex="-1"></a>metacell.objs <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="at">X =</span> metacell.objs, <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb106-12"><a href="integration_unsupervised.html#cb106-12" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(x, <span class="at">features =</span> features, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb106-13"><a href="integration_unsupervised.html#cb106-13" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(x, <span class="at">features =</span> features, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb106-14"><a href="integration_unsupervised.html#cb106-14" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb106-15"><a href="integration_unsupervised.html#cb106-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-16"><a href="integration_unsupervised.html#cb106-16" aria-hidden="true" tabindex="-1"></a>anchors <span class="ot">&lt;-</span> <span class="fu">FindIntegrationAnchors</span>(<span class="at">object.list =</span> metacell.objs,</span>
+<span id="cb106-17"><a href="integration_unsupervised.html#cb106-17" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">anchor.features =</span> features,</span>
+<span id="cb106-18"><a href="integration_unsupervised.html#cb106-18" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">reduction =</span> <span class="st">&quot;rpca&quot;</span>,</span>
+<span id="cb106-19"><a href="integration_unsupervised.html#cb106-19" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">reference =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>), <span class="co">#,9,11 the 5 biggest datasets (in term of metacell number) are used as reference</span></span>
+<span id="cb106-20"><a href="integration_unsupervised.html#cb106-20" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>)</span>
+<span id="cb106-21"><a href="integration_unsupervised.html#cb106-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-22"><a href="integration_unsupervised.html#cb106-22" aria-hidden="true" tabindex="-1"></a><span class="fu">remove</span>(metacell.objs) <span class="co"># We don&#39;t need the object list anymore</span></span>
+<span id="cb106-23"><a href="integration_unsupervised.html#cb106-23" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span>
+<span id="cb106-24"><a href="integration_unsupervised.html#cb106-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-25"><a href="integration_unsupervised.html#cb106-25" aria-hidden="true" tabindex="-1"></a>combined.mc <span class="ot">&lt;-</span> <span class="fu">IntegrateData</span>(<span class="at">anchorset =</span> anchors,<span class="at">k.weight =</span> <span class="dv">50</span>) <span class="co"># we have to update the k.weight parameters because the smallest dataset contain less than 100 metacells</span></span></code></pre></div>
+<p>Check the obtained object.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="integration_unsupervised.html#cb107-1" aria-hidden="true" tabindex="-1"></a>combined.mc</span>
+<span id="cb107-2"><a href="integration_unsupervised.html#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; An object of class Seurat </span></span>
+<span id="cb107-3"><a href="integration_unsupervised.html#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 30024 features across 6061 samples within 2 assays </span></span>
+<span id="cb107-4"><a href="integration_unsupervised.html#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Active assay: integrated (2000 features, 2000 variable features)</span></span>
+<span id="cb107-5"><a href="integration_unsupervised.html#cb107-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 other assay present: RNA</span></span></code></pre></div>
+<p>We can verify that the sum of metacell sizes corresponds to the original number of single-cells</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="integration_unsupervised.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(combined.mc<span class="sc">$</span>size)</span>
+<span id="cb108-2"><a href="integration_unsupervised.html#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 302920</span></span></code></pre></div>
+<p>Seurat returns the slot <code>"integrated"</code> that we can use for the downstream analysis.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="integration_unsupervised.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(combined.mc) <span class="ot">=</span> <span class="st">&quot;integrated&quot;</span></span>
+<span id="cb109-2"><a href="integration_unsupervised.html#cb109-2" aria-hidden="true" tabindex="-1"></a>combined.mc <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(combined.mc, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb109-3"><a href="integration_unsupervised.html#cb109-3" aria-hidden="true" tabindex="-1"></a>combined.mc <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(combined.mc, <span class="at">npcs =</span> <span class="dv">30</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb109-4"><a href="integration_unsupervised.html#cb109-4" aria-hidden="true" tabindex="-1"></a>combined.mc <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(combined.mc, <span class="at">reduction =</span> <span class="st">&quot;pca&quot;</span>, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb109-5"><a href="integration_unsupervised.html#cb109-5" aria-hidden="true" tabindex="-1"></a>combined.mc <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(combined.mc, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>,<span class="at">reduction =</span>  <span class="st">&quot;pca&quot;</span>,<span class="at">reduction.name =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Now we can make the plots and visually compare the results with the unintegrated analysis.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="integration_unsupervised.html#cb110-1" aria-hidden="true" tabindex="-1"></a>umap.integrated.datasets <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(combined.mc,<span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>,<span class="at">group.by =</span> <span class="st">&quot;dataset&quot;</span>) <span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;integrated datasets&quot;</span>)</span>
+<span id="cb110-2"><a href="integration_unsupervised.html#cb110-2" aria-hidden="true" tabindex="-1"></a>umap.integrated.celltypes <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(combined.mc,<span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>,<span class="at">group.by =</span> <span class="st">&quot;ann_level_2&quot;</span>,<span class="at">label =</span> T,<span class="at">repel =</span> T,<span class="at">cols =</span> color.celltypes) <span class="sc">+</span> <span class="fu">NoLegend</span>() <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;integrated cell types&quot;</span>)</span>
+<span id="cb110-3"><a href="integration_unsupervised.html#cb110-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb110-4"><a href="integration_unsupervised.html#cb110-4" aria-hidden="true" tabindex="-1"></a>umap.integrated.datasets <span class="sc">+</span> umap.integrated.celltypes <span class="sc">+</span> umap.unintegrated.datasets <span class="sc">+</span> umap.unintegrated.types</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-15-1.png" width="1344" /></p>
+<p>Seurat efficiently corrected the batch effect in the data while keeping the cell type separated, but other batch correction methods such as harmony would have also done the job.</p>
+<p>Note that In the original study, datasets were integrated using SCANVI semi-supervised integration using partial annotation obtained for each dataset prior integration.
+If you are interested in such supervised approach at the metacell level in R you can have a look to our second example in section @ref(integration_supervised) using the <a href="https://github.com/carmonalab/STACAS">STACAS</a> package.</p>
+<p>We can navigate in the different annotation levels.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="integration_unsupervised.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb111-2"><a href="integration_unsupervised.html#cb111-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-3"><a href="integration_unsupervised.html#cb111-3" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(combined.mc,<span class="at">group.by =</span> <span class="st">&quot;ann_level_1&quot;</span>,<span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>,<span class="at">label =</span> T,<span class="at">repel =</span> T,<span class="at">cols=</span> color.celltypes) <span class="sc">+</span> <span class="fu">NoLegend</span>()</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="integration_unsupervised.html#cb112-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-2"><a href="integration_unsupervised.html#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(combined.mc,<span class="at">group.by =</span> <span class="st">&quot;ann_level_2&quot;</span>,<span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>,<span class="at">label =</span> T,<span class="at">repel =</span> T,<span class="at">cols=</span> color.celltypes) <span class="sc">+</span> <span class="fu">NoLegend</span>()</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="integration_unsupervised.html#cb113-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-2"><a href="integration_unsupervised.html#cb113-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(combined.mc,<span class="at">group.by =</span> <span class="st">&quot;ann_level_3&quot;</span>,<span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>,<span class="at">label =</span> T, <span class="at">repel =</span> T,<span class="at">cols=</span> color.celltypes) <span class="sc">+</span> <span class="fu">NoLegend</span>()</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-16-3.png" width="672" /></p>
+</div>
+<div id="downstream-analysis" class="section level3 hasAnchor" number="6.1.8">
+<h3><span class="header-section-number">6.1.8</span> Downstream analysis<a href="integration_unsupervised.html#downstream-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="clustering-2" class="section level4 hasAnchor" number="6.1.8.1">
+<h4><span class="header-section-number">6.1.8.1</span> Clustering<a href="integration_unsupervised.html#clustering-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We cluster the metacells based on the corrected PCA space by Seurat.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="integration_unsupervised.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(combined.mc) <span class="ot">&lt;-</span> <span class="st">&quot;integrated&quot;</span></span>
+<span id="cb114-2"><a href="integration_unsupervised.html#cb114-2" aria-hidden="true" tabindex="-1"></a>combined.mc <span class="ot">&lt;-</span> <span class="fu">FindNeighbors</span>(combined.mc, <span class="at">reduction =</span> <span class="st">&quot;pca&quot;</span>, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>)</span>
+<span id="cb114-3"><a href="integration_unsupervised.html#cb114-3" aria-hidden="true" tabindex="-1"></a>combined.mc <span class="ot">&lt;-</span> <span class="fu">FindClusters</span>(combined.mc, <span class="at">resolution =</span> <span class="fl">0.5</span>)</span>
+<span id="cb114-4"><a href="integration_unsupervised.html#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="fu">UMAPPlot</span>(combined.mc, <span class="at">label =</span> T) <span class="sc">+</span> <span class="fu">NoLegend</span>()</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="deferentially-expressed-gene-deg-analysis." class="section level4 hasAnchor" number="6.1.8.2">
+<h4><span class="header-section-number">6.1.8.2</span> Deferentially expressed gene (DEG) analysis.<a href="integration_unsupervised.html#deferentially-expressed-gene-deg-analysis." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Now let’s found the markers of the cluster 19 we’ve just identified.</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="integration_unsupervised.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(combined.mc) <span class="ot">&lt;-</span> <span class="st">&quot;RNA&quot;</span></span>
+<span id="cb115-2"><a href="integration_unsupervised.html#cb115-2" aria-hidden="true" tabindex="-1"></a>markers18 <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(combined.mc, <span class="at">ident.1 =</span> <span class="dv">18</span>, <span class="at">only.pos =</span> T)</span>
+<span id="cb115-3"><a href="integration_unsupervised.html#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; For a more efficient implementation of the Wilcoxon Rank Sum Test,</span></span>
+<span id="cb115-4"><a href="integration_unsupervised.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (default method for FindMarkers) please install the limma package</span></span>
+<span id="cb115-5"><a href="integration_unsupervised.html#cb115-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
+<span id="cb115-6"><a href="integration_unsupervised.html#cb115-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; install.packages(&#39;BiocManager&#39;)</span></span>
+<span id="cb115-7"><a href="integration_unsupervised.html#cb115-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BiocManager::install(&#39;limma&#39;)</span></span>
+<span id="cb115-8"><a href="integration_unsupervised.html#cb115-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
+<span id="cb115-9"><a href="integration_unsupervised.html#cb115-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; After installation of limma, Seurat will automatically use the more </span></span>
+<span id="cb115-10"><a href="integration_unsupervised.html#cb115-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; efficient implementation (no further action necessary).</span></span>
+<span id="cb115-11"><a href="integration_unsupervised.html#cb115-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This message will be shown once per session</span></span>
+<span id="cb115-12"><a href="integration_unsupervised.html#cb115-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(markers18)</span>
+<span id="cb115-13"><a href="integration_unsupervised.html#cb115-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        p_val avg_log2FC pct.1 pct.2 p_val_adj</span></span>
+<span id="cb115-14"><a href="integration_unsupervised.html#cb115-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HOXD9      0  0.8120847 0.968 0.020         0</span></span>
+<span id="cb115-15"><a href="integration_unsupervised.html#cb115-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; DTX1       0  0.3972931 0.871 0.021         0</span></span>
+<span id="cb115-16"><a href="integration_unsupervised.html#cb115-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; STAB2      0  0.4492518 0.758 0.006         0</span></span>
+<span id="cb115-17"><a href="integration_unsupervised.html#cb115-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SCN3A      0  0.3283766 0.806 0.012         0</span></span>
+<span id="cb115-18"><a href="integration_unsupervised.html#cb115-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; GPR182     0  0.6745167 0.952 0.013         0</span></span>
+<span id="cb115-19"><a href="integration_unsupervised.html#cb115-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; HOXD8      0  1.1639281 1.000 0.025         0</span></span></code></pre></div>
+<p>This cluster clearly presents a B cell signature with marker genes such as CD19 and PAX5</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="integration_unsupervised.html#cb116-1" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;CD19&quot;</span>,<span class="st">&quot;PAX5&quot;</span>) <span class="co"># knwon B cells markers</span></span>
+<span id="cb116-2"><a href="integration_unsupervised.html#cb116-2" aria-hidden="true" tabindex="-1"></a>markers18[genes,]</span>
+<span id="cb116-3"><a href="integration_unsupervised.html#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      p_val avg_log2FC pct.1 pct.2 p_val_adj</span></span>
+<span id="cb116-4"><a href="integration_unsupervised.html#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NA      NA         NA    NA    NA        NA</span></span>
+<span id="cb116-5"><a href="integration_unsupervised.html#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; NA.1    NA         NA    NA    NA        NA</span></span>
+<span id="cb116-6"><a href="integration_unsupervised.html#cb116-6" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(combined.mc, genes, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>By looking at the metacell annotation (assigned from the original single-cell metadata by MCAT),
+we can verify that we correctly retrieved the B cell lineage cluster.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="integration_unsupervised.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(combined.mc[, combined.mc<span class="sc">$</span>integrated_snn_res.<span class="fl">0.5</span> <span class="sc">==</span> <span class="dv">18</span>],</span>
+<span id="cb117-2"><a href="integration_unsupervised.html#cb117-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">group.by =</span> <span class="fu">c</span>(<span class="st">&quot;ann_level_3&quot;</span>, <span class="st">&quot;integrated_snn_res.0.5&quot;</span>),</span>
+<span id="cb117-3"><a href="integration_unsupervised.html#cb117-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">ncol =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-20-1.png" width="768" /></p>
+</div>
+<div id="cell-type-abundances-analyses." class="section level4 hasAnchor" number="6.1.8.3">
+<h4><span class="header-section-number">6.1.8.3</span> Cell type abundances analyses.<a href="integration_unsupervised.html#cell-type-abundances-analyses." class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We can easily make analysis of cell type abundances for different clinical variables as we construct metacell by sample.
+We have to take metacell size into account for these analyses.
+For instance we can analyse the proportion of different epithelial cell types depending on the smoking status.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="integration_unsupervised.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
+<span id="cb118-2"><a href="integration_unsupervised.html#cb118-2" aria-hidden="true" tabindex="-1"></a>combined.mc.epith <span class="ot">&lt;-</span> combined.mc[,combined.mc<span class="sc">$</span>ann_level_1 <span class="sc">==</span> <span class="st">&quot;Epithelial&quot;</span>]</span>
+<span id="cb118-3"><a href="integration_unsupervised.html#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co">#combined.metacells$major_type &lt;- droplevels(combined.metacells$major_type)</span></span>
+<span id="cb118-4"><a href="integration_unsupervised.html#cb118-4" aria-hidden="true" tabindex="-1"></a>smpCounts <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(combined.mc.epith<span class="sc">$</span>size, <span class="at">by=</span><span class="fu">list</span>(<span class="at">sample =</span> combined.mc.epith<span class="sc">$</span>sample,</span>
+<span id="cb118-5"><a href="integration_unsupervised.html#cb118-5" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">major_type =</span> combined.mc.epith<span class="sc">$</span>ann_level_3,</span>
+<span id="cb118-6"><a href="integration_unsupervised.html#cb118-6" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">smoking_status =</span> combined.mc.epith<span class="sc">$</span>smoking_status),</span>
+<span id="cb118-7"><a href="integration_unsupervised.html#cb118-7" aria-hidden="true" tabindex="-1"></a>                                                        <span class="at">FUN=</span>sum)</span>
+<span id="cb118-8"><a href="integration_unsupervised.html#cb118-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-9"><a href="integration_unsupervised.html#cb118-9" aria-hidden="true" tabindex="-1"></a><span class="fu">remove</span>(combined.mc.epith)</span>
+<span id="cb118-10"><a href="integration_unsupervised.html#cb118-10" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>()</span>
+<span id="cb118-11"><a href="integration_unsupervised.html#cb118-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-12"><a href="integration_unsupervised.html#cb118-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(smpCounts,<span class="fu">aes</span>(<span class="at">x =</span> smoking_status,<span class="at">fill=</span>major_type)) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="at">position =</span> <span class="st">&quot;fill&quot;</span>) <span class="sc">+</span> <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> color.celltypes) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;% epithelial cells&quot;</span>)</span></code></pre></div>
+<p><img src="40-integration_analysis_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Samples from smokers seem to present more AT2 cells but this quick analysis is for illustrative purposes only.
+In practice it’s far more complex to draw conclusion as we should have considered the variations between samples/donors as well as many other technical
+(tissue dissociation protocol, tissue sampling method, single-cell platform, … ) and biological (BMI, sex, Age, …) variables.</p>
+</div>
+</div>
+<div id="conclusion" class="section level3 hasAnchor" number="6.1.9">
+<h3><span class="header-section-number">6.1.9</span> Conclusion<a href="integration_unsupervised.html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Overall we made a precise simplification of the original atlas using metacells built from each sample separately.
+By reducing the size of the original atlas by a factor of 50 we could load the data, make an integration to correct batch effect
+and recapitulate the main different cell types using a reasonable amount of time and memory.
+In contrast, simply loading the original single-cell data in R using Seurat is extremely time-consuming and challenging even for the most powerful computers.</p>
+<p>In this first example we used a fully unsupervised workflow and did not use any prior biological knowledge.
+Authors of the original study made a remarkable work annotating the hundreds of thousands cells of the atlas.
+In the second example in section @ref(integration_supervised) we propose a supervised workflow using this annotation to guide both the metacell
+identification and the batch correction.</p>
+<p>We can save the results for comparison with the second example.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="integration_unsupervised.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(combined.mc,<span class="st">&quot;data/HLCA/combined.mc.unsup.rds&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="integration.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="integration_supervised.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/40-integration_analysis.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/40-integration_analysis.Rmd",
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,16 +1,16 @@
-# Constructing metacells (for 'discrete' data) {#Metacell-construction-chapter}
+# Constructing metacells {#Metacell-construction-chapter}
 
 In this chapter, we will demonstrate metacell construction using three different methods: SuperCell in R, MetaCell-2 (MC2) and SEACells in Pyhton. 
 
 For this, we will first use a dataset of PBMCs from study. This dataset contains around 3K cells which is an example of a dataset with well defined cell types. 
 For an example of more continuous data, see chapter \@ref(MC-continuous).
 
-```{r include=TRUE, echo = FALSE}
+```{r include=FALSE}
 TO_CACHE <- FALSE
 ```
 
 
-```{python true-import, echo = FALSE, result = FALSE, message = FALSE, warning = FALSE}
+```{python true-import, message=FALSE, warning=FALSE, include=FALSE, result=FALSE}
 # This is true import section that is executed, but not displayed as it simultaneously load MC2 and SEACells.
 # As MC2 and SEACells workflow displayed in separate files, while indeed they run in the same file/session (due to fact that in bookdown one and only one chapter per Rmd file)
 # The following import chunks, specific to SEACells and MC2 are not executed, although displayed for users. 
@@ -48,9 +48,9 @@ warnings.filterwarnings('ignore')
 ```
 
 
-## Command line tool {#command-line}
+## Metacell Analysis Toolkit (MCAT) {#command-line}
 We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
-The command line tool take multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
+The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
 which is for example required in a benchmark setting.
 
 

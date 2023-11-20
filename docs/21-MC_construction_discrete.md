@@ -1,4 +1,4 @@
-# Constructing metacells (for 'discrete' data) {#Metacell-construction-chapter}
+# Constructing metacells {#Metacell-construction-chapter}
 
 In this chapter, we will demonstrate metacell construction using three different methods: SuperCell in R, MetaCell-2 (MC2) and SEACells in Pyhton. 
 
@@ -9,10 +9,6 @@ For an example of more continuous data, see chapter \@ref(MC-continuous).
 
 
 
-```
-#> findfont: Font family ['Raleway'] not found. Falling back to DejaVu Sans.
-#> findfont: Font family ['Lato'] not found. Falling back to DejaVu Sans.
-```
 
 ## SuperCell (R) {#SuperCell-construction}
 
@@ -32,7 +28,7 @@ Using the euclidean distances, a single-cell kNN graph is built and metacells ar
 The number of metacells obtained can be chosen by the user by defining the graining level parameter.
 
 The code provided in this section is adapted from the [author's github documentation](https://github.com/GfellerLab/SuperCell/blob/master/README.Rmd).
-For more information on the method, please refer to our review @Review and the original paper @SuperCell.
+For more information on the method, please refer to our review @Review and the original paper [@SuperCell].
 
 #### Importing R packages {-}
 
@@ -56,6 +52,16 @@ Please follow the section \@ref(PBMC-data) to retrieve these data from the scanp
 ```r
 print(proj_name)
 #> [1] "3k_pbmc"
+celltype_colors <- c(
+  "CD14+ Monocytes"    = "#E69F00",  # orange
+  "B cells"            = "#56B4E9",  # sky blue
+  "CD4 T cells"        = "#009E73",  # bluish green
+  "NK cells"           = "#F0E442",  # yellow
+  "CD8 T cells"        = "#0072B2",  # blue
+  "FCGR3A+ Monocytes"  = "#D55E00",  # vermillion
+  "Dendritic cells"    = "#CC79A7",  # reddish purple
+  "Megakaryocytes"     = "#000000"   # black
+)
 sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
 ```
 
@@ -65,7 +71,7 @@ In this tutorial, the data have been pre-filtered and SuperCell does not require
 
 ### Building metacells
 
-Metacells construction using SuperCell requires one main inputs, *i.e.* a matrix of log-normalized gene expression data which will be used to compute PCA to subsequently build a knn graph for metacells identification.
+Metacells construction using SuperCell requires one main input, *i.e.* a matrix of log-normalized gene expression data which will be used to compute PCA to subsequently build a knn graph for metacells identification.
 Important optional inputs are: 
 (i) the graining level (`gamma` parameter), 
 (ii) the number of neighbors to consider for the knn graph (`k.knn` parameter), 
@@ -76,23 +82,26 @@ and (iv) the number of most variable genes to consider for PCA (`n.var.genes` pa
 
 SuperCell builds its knn graph based on Euclidean distances defined in the PCA space. 
 PCA computation is performed on the log-normalized gene expression data in the `SCimplify` SuperCell function. 
-<!-- In this example the single-cell data have been already log-normalized using scanpy (see \@ref(PBMC-data)). -->
 In the following code chunk, we use Seurat to normalize and visualize the data:
 
 
 ```r
 library(Seurat)
+#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
+#> will retire shortly. Please refer to R-spatial evolution reports on
+#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
+#> This package is now running under evolution status 0
 #> Attaching SeuratObject
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
 sc_data <- FindVariableFeatures(sc_data, nfeatures = 2000)
 sc_data <- ScaleData(sc_data)
 #> Centering and scaling data matrix
-sc_data <- RunPCA(sc_data, npcs = 30, verbose = F)
+sc_data <- RunPCA(sc_data, npcs = 50, verbose = F)
 sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 15, verbose = F)
 #> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
 #> This message will be shown once per session
-UMAPPlot(sc_data, group.by = annotation_label)
+UMAPPlot(sc_data, group.by = annotation_label, cols = celltype_colors)
 ```
 
 <img src="21-MC_construction_discrete_files/figure-html/supercell-data-processing-1.png" width="672" />
@@ -105,10 +114,10 @@ We chose a graining level of 25 and a number of neighbors of 15 for the knn step
 
 
 ```r
-gamma = 25 # the requested graining level.
+gamma = 10 # the requested graining level.
 k_knn = 15 # the number of neighbors considered to build the knn network.
 nb_var_genes = 2000 # number of the top variable genes to use for dimensionality reduction 
-nb_pc = 30 # the number of principal components to use.   
+nb_pc = 50 # the number of principal components to use.   
 ```
 
 #### Metacells identification {-}
@@ -119,8 +128,9 @@ The metacells are identified using the `SCimplify` function from the SuperCell p
 MC <- SuperCell::SCimplify(Seurat::GetAssayData(sc_data, slot = "data"),  # single-cell log-normalized gene expression data
                            k.knn = k_knn,
                            gamma = gamma,
-                           n.var.genes = nb_var_genes,  
-                           n.pc = nb_pc
+                           # n.var.genes = nb_var_genes,  
+                           n.pc = nb_pc,
+                           genes.use = Seurat::VariableFeatures(sc_data)
                            )
 ```
 
@@ -145,7 +155,7 @@ MC.GE <- supercell_GE(Seurat::GetAssayData(sc_data, slot = "counts"),
                       mode =  "sum"
                       )
 dim(MC.GE) 
-#> [1] 32738   106
+#> [1] 32738   264
 ```
 
 ### Annotate metacells (using available annotations)
@@ -162,14 +172,14 @@ print(annotation_label)
 #> "louvain"
 MC$annotation <- supercell_assign(clusters = sc_data@meta.data[, annotation_label], # single-cell annotation
                                   supercell_membership = MC$membership, # single-cell assignment to metacells
-                                  method = "jaccard"
+                                  method = "absolute"
                                   )
 
 head(MC$annotation)
 #>                 1                 2                 3                 4 
-#> "CD14+ Monocytes" "CD14+ Monocytes" "CD14+ Monocytes"     "CD4 T cells" 
+#>         "B cells" "CD14+ Monocytes"     "CD4 T cells"        "NK cells" 
 #>                 5                 6 
-#>     "CD4 T cells" "Dendritic cells"
+#>     "CD4 T cells"     "CD4 T cells"
 ```
 
 
@@ -241,11 +251,20 @@ saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.r
 
 For future downstream analyses in python (section \@ref(standard-analysis-Py)), metacell counts can be saved in an Anndata object: 
 
+```r
+MC.seurat.ad <- anndata::AnnData(
+  X = Matrix::t(Seurat::GetAssayData(MC.seurat, slot = "counts")),
+  obs = MC.seurat@meta.data
+)
+
+anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_name, '/metacell_', MC_tool,'.h5ad'))
+```
+
 
 ```
-#>            used  (Mb) gc trigger   (Mb)  max used   (Mb)
-#> Ncells  3064161 163.7    5181401  276.8   5181401  276.8
-#> Vcells 18101117 138.2  225369907 1719.5 281711725 2149.3
+#>            used  (Mb) gc trigger  (Mb) max used  (Mb)
+#> Ncells  3435525 183.5    5974597 319.1  4945498 264.2
+#> Vcells 20463953 156.2   65102028 496.7 65101750 496.7
 ```
 
 
@@ -270,7 +289,7 @@ Note that prior to metacell identification, the MC2 framework recommends gene fi
 by the method is of high importance to assure good quality of the metacells.
 
 The code provided in this section is adapted from the [author's tutorial](https://tanaylab.github.io/metacells-vignettes/one-pass.html). 
-For more information on the method, please refer to our review @Review and the @MC2. 
+For more information on the method, please refer to our review @Review and the original paper [@MC2]. 
 
 #### Importing python packages {-}
 
@@ -288,11 +307,7 @@ import seaborn as sns
 import metacells as mc
 ```
 
-<!-- ```{python mc2-QC-imports, eval = FALSE} -->
-<!-- import sys -->
-<!-- sys.path.append('./mc_QC/') -->
-<!-- import mc_QC -->
-<!-- ``` -->
+
 If you don't have these packages installed, please refer to the section \@ref(installations).
 
 
@@ -300,6 +315,7 @@ If you don't have these packages installed, please refer to the section \@ref(in
 ### Data loading 
 We will run Metacell-2 (MC2) on a single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
 Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+
 
 
 
@@ -577,13 +593,6 @@ mc_ad.layers['total_umis']
 #>        [1., 0., 0., ..., 0., 1., 0.]], dtype=float32)
 ```
 
-<!-- **Comparing the obtained and requested graining level** -->
-
-<!-- In the following code chunk, we estimate whether a deviation of the obtained gamma from the requested gamma is acceptable. If not, we suggest to increase or decrease the `target_metacell_size` parameter to approach the desired graining level. -->
-
-<!-- ```{r mc2-gamma-deviation, child='./functional_chunks/mc2_gamma_deviation.Rmd'} -->
-<!-- ``` -->
-
 ### Annotate metacells (using available annotations)
 
 If single-cell annotations are available in the original single-cell anndata object. We can transfer these annotations to the metacell anndata object
@@ -687,7 +696,7 @@ Single cells are assigned to a given metacell based on the maximum membership va
 
 
 The code provided in this section is adapted from the [author's jupyter notebook](https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb). 
-For more information on the method, please refer to our review @Review and the original paper @SEACells. 
+For more information on the method, please refer to our review @Review and the original paper [@SEACells]. 
 
 #### Importing python packages {-}
 
@@ -711,6 +720,7 @@ If you don't have these packages installed, please refer to the section \@ref(in
 ### Data loading 
 Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
 Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+
 
 
 
@@ -834,7 +844,6 @@ random.seed(123)
 model.initialize_archetypes()
 #> Building kernel on X_pca
 #> Computing diffusion components from X_pca for waypoint initialization ... 
-#> Determing nearest neighbor graph...
 #> Done.
 #> Sampling waypoints ...
 #> Done.
@@ -843,12 +852,12 @@ model.initialize_archetypes()
 #> Initializing f and g...
 #> Selecting 17 cells from greedy initialization.
 #> 
-#>   0%|          | 0/27 [00:00<?, ?it/s]100%|##########| 27/27 [00:00<00:00, 275.01it/s]
+#>   0%|          | 0/27 [00:00<?, ?it/s]100%|##########| 27/27 [00:00<00:00, 320.79it/s]
 # Visualize the initialization 
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') 
 ```
 
-<img src="21-MC_construction_discrete_files/figure-html/seacells-model-init-1.png" width="384" />
+<img src="21-MC_construction_discrete_files/figure-html/seacells-model-init-1.png" width="672" />
 
 #### Fitting the SEACells model to identify metacells {-}
 
@@ -872,37 +881,9 @@ model.fit(min_iter = 10, max_iter = 50)
 #> Completed iteration 40.
 #> Converged after 46 iterations.
 model.plot_convergence()
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
-#> findfont: Font family 'Bitstream Vera Sans' not found.
 ```
 
-<img src="21-MC_construction_discrete_files/figure-html/seacells-model-fit-3.png" width="384" />
+<img src="21-MC_construction_discrete_files/figure-html/seacells-model-fit-3.png" width="672" />
 
 Once the final archetypes have been identified, we can assign each single-cell to one metacell (hard assignments). 
 These assignments (`membership`) can be retrieved using the `get_hard_assignments` function or extracted from the anndata object using `ad.obs["SEACell"]`. 
@@ -915,32 +896,32 @@ membership = model.get_hard_assignments()
 membership.head
 #> <bound method NDFrame.head of                       SEACell
 #> index                        
-#> AAACATACAACCAC-1   SEACell-58
+#> AAACATACAACCAC-1   SEACell-35
 #> AAACATTGAGCTAC-1   SEACell-69
 #> AAACATTGATCAGC-1    SEACell-0
-#> AAACCGTGCTTCCG-1   SEACell-47
+#> AAACCGTGCTTCCG-1   SEACell-24
 #> AAACCGTGTATGCG-1   SEACell-57
 #> ...                       ...
 #> TTTCGAACTCTCAT-1    SEACell-1
 #> TTTCTACTGAGGCA-1  SEACell-101
 #> TTTCTACTTCCTCG-1   SEACell-30
-#> TTTGCATGAGAGGC-1   SEACell-69
-#> TTTGCATGCCTCAC-1   SEACell-23
+#> TTTGCATGAGAGGC-1   SEACell-40
+#> TTTGCATGCCTCAC-1   SEACell-42
 #> 
 #> [2638 rows x 1 columns]>
 ad.obs["SEACell"].head
 #> <bound method NDFrame.head of index
-#> AAACATACAACCAC-1     SEACell-58
+#> AAACATACAACCAC-1     SEACell-35
 #> AAACATTGAGCTAC-1     SEACell-69
 #> AAACATTGATCAGC-1      SEACell-0
-#> AAACCGTGCTTCCG-1     SEACell-47
+#> AAACCGTGCTTCCG-1     SEACell-24
 #> AAACCGTGTATGCG-1     SEACell-57
 #>                        ...     
 #> TTTCGAACTCTCAT-1      SEACell-1
 #> TTTCTACTGAGGCA-1    SEACell-101
 #> TTTCTACTTCCTCG-1     SEACell-30
-#> TTTGCATGAGAGGC-1     SEACell-69
-#> TTTGCATGCCTCAC-1     SEACell-23
+#> TTTGCATGAGAGGC-1     SEACell-40
+#> TTTGCATGCCTCAC-1     SEACell-42
 #> Name: SEACell, Length: 2638, dtype: object>
 ```
 
@@ -950,7 +931,7 @@ The `core.summarize_by_SEACell` function can be used to generate a metacell coun
 
 ```python
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
-#>   0%|          | 0/105 [00:00<?, ?it/s] 51%|#####1    | 54/105 [00:00<00:00, 532.25it/s]100%|##########| 105/105 [00:00<00:00, 545.47it/s]
+#>   0%|          | 0/105 [00:00<?, ?it/s] 56%|#####6    | 59/105 [00:00<00:00, 587.31it/s]100%|##########| 105/105 [00:00<00:00, 606.52it/s]
 ```
 #### Annotate metacells {-}
 Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 
@@ -1033,9 +1014,9 @@ saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_SEACells.rd
 
 
 
-## Command line tool {#command-line}
+## Metacell Analysis Toolkit (MCAT) {#command-line}
 We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
-The command line tool take multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
+The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
 which is for example required in a benchmark setting.
 
 
