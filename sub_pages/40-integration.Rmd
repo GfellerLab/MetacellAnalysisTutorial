@@ -17,7 +17,12 @@ To build the conda environment please follow the instructions on our MetacellAna
 library(reticulate)
 conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
 
-use_condaenv(conda_env)
+Sys.setenv(RETICULATE_PYTHON = conda_env)
+```
+
+```{r, echo=F}
+rm(list=ls())
+gc()
 ```
 
 ```{r}
@@ -58,9 +63,19 @@ echo "Duration: $((($(date +%s)-$start)/60)) minutes"
 ###  Loading metacell objects
 
 We load the .h5ad objects and directly convert them in Seurat objects to benefit from all the functions of this framework.
+To consider the datasets in the same order as the one used in this tutorial we run the following chunk before loading the metacell objects.
 
-```{r results = FALSE, message=FALSE, warning=FALSE}
-datasets <- list.dirs("data/HLCA/datasets/", full.names = F, recursive = F)
+```{r, eval = TRUE, results = FALSE, message=FALSE, warning=FALSE}
+library(anndata)
+adata <- read_h5ad("data/HLCA/local.h5ad",backed = "r")
+adata$var_names <- adata$var$feature_name # We will use gene short name for downstream analyses
+datasets <- unique(adata$obs$dat)
+rm(adata)
+gc()
+```
+
+```{r read_metacells_obj, results = FALSE, message=FALSE, warning=FALSE}
+
 metacell.files <- sapply(datasets, FUN = function(x){paste0("data/HLCA/datasets/",x,"/mc_adata.h5ad")})
 
 metacell.objs <- lapply(X = metacell.files, function(X){
@@ -85,7 +100,7 @@ Thus, we can check the purity of our metacells at different levels of annotation
 To do so we merge the object together and use the Seurat `VlnPlot` function.
 
 
-```{r results = FALSE, message=FALSE, warning=FALSE}
+```{r unintegrated_vlnPlot_obj, results = FALSE, message=FALSE, warning=FALSE}
 unintegrated.mc <- merge(metacell.objs[[1]], metacell.objs[-1])
 
 VlnPlot(unintegrated.mc, features = c("size", "ann_level_1_purity"), group.by = 'dataset', pt.size = 0.001, ncol = 2)
@@ -94,7 +109,7 @@ VlnPlot(unintegrated.mc, features = c("ann_level_2_purity", "ann_level_3_purity"
 
 We can also use box plots.
 
-```{r results = FALSE, message=FALSE, warning=FALSE}
+```{r unintegrated_boxplot_obj, results = FALSE, message=FALSE, warning=FALSE}
 ggplot(unintegrated.mc@meta.data,aes(x = dataset, y = ann_level_2_purity, fill = dataset)) + geom_boxplot() +
   scale_x_discrete(guide = guide_axis(angle = 45))
 
@@ -114,7 +129,7 @@ Overall metacells from the different datasets present a good purity until the th
 
 Let's first do a standard dimensionality reduction without batch correction.
 
-```{r results = FALSE, message=FALSE, warning=FALSE}
+```{r unintegrated_preprocess, results = FALSE, message=FALSE, warning=FALSE}
 DefaultAssay(unintegrated.mc) <- "RNA"
 unintegrated.mc <- NormalizeData(unintegrated.mc)
 unintegrated.mc <- FindVariableFeatures(unintegrated.mc)
@@ -141,7 +156,13 @@ See method section "Data integration benchmarking" of the [original study](https
 
 This should take less than 5 minutes.
 
-```{r results = FALSE, message=FALSE, warning=FALSE}
+```{r integrate, results = FALSE, message=FALSE, warning=FALSE}
+
+n.metacells <- sapply(metacell.objs, FUN = function(x){ncol(x)})
+names(n.metacells) <- datasets
+ref.names <- sort(n.metacells,decreasing = T)[1:5]
+ref.index <- which(datasets %in% names(ref.names))
+
 # normalize each dataset
 metacell.objs <- lapply(X = metacell.objs, FUN = function(x) {
   DefaultAssay(x) <- "RNA";
@@ -160,7 +181,7 @@ metacell.objs <- lapply(X = metacell.objs, FUN = function(x) {
 anchors <- FindIntegrationAnchors(object.list = metacell.objs,
                                        anchor.features = features,
                                        reduction = "rpca",
-                                       reference = c(1,2,5,9,11), # the 5 biggest datasets (in term of metacell number) are used as reference
+                                       reference = ref.index, # the 5 biggest datasets (in term of metacell number) are used as reference
                                        dims = 1:30)
 
 remove(metacell.objs) # We don't need the object list anymore
@@ -171,19 +192,19 @@ combined.mc <- IntegrateData(anchorset = anchors,k.weight = 50) # we have to upd
 
 Check the obtained object.
 
-```{r}
+```{r show_combined}
 combined.mc
 ```
 
 We can verify that the sum of metacell sizes corresponds to the original number of single-cells
 
-```{r}
+```{r check_size}
 sum(combined.mc$size)
 ```
 
 Seurat returns the slot `"integrated"` that we can use for the downstream analysis.
 
-```{r}
+```{r combined_processing}
 DefaultAssay(combined.mc) = "integrated"
 combined.mc <- ScaleData(combined.mc, verbose = FALSE)
 combined.mc <- RunPCA(combined.mc, npcs = 30, verbose = FALSE)
@@ -193,7 +214,7 @@ combined.mc <- RunUMAP(combined.mc, dims = 1:30,reduction =  "pca",reduction.nam
 
 Now we can make the plots and visually compare the results with the unintegrated analysis.
 
-```{r fig.height=10, fig.width=14}
+```{r integrated_umap, fig.height=10, fig.width=14}
 umap.integrated.datasets <- DimPlot(combined.mc,reduction = "umap",group.by = "dataset") + NoLegend() + ggtitle("integrated datasets")
 umap.integrated.celltypes <- DimPlot(combined.mc,reduction = "umap",group.by = "ann_level_2",label = T,repel = T,cols = color.celltypes) + NoLegend() + ggtitle("integrated cell types")
 
@@ -209,7 +230,7 @@ If you are interested in such supervised approach at the metacell level in R you
 We can navigate in the different annotation levels.
 
 
-```{r results = FALSE, message=FALSE, warning=FALSE}
+```{r integrated_dimplots, results = FALSE, message=FALSE, warning=FALSE}
 library(ggplot2)
 
 DimPlot(combined.mc,group.by = "ann_level_1",reduction = "umap",label = T,repel = T,cols= color.celltypes) + NoLegend()
@@ -225,7 +246,7 @@ DimPlot(combined.mc,group.by = "ann_level_3",reduction = "umap",label = T, repel
 
 We cluster the metacells based on the corrected PCA space by Seurat.
 
-```{r results = FALSE, message=FALSE, warning=FALSE}
+```{r integrated_clustering, results = FALSE, message=FALSE, warning=FALSE}
 DefaultAssay(combined.mc) <- "integrated"
 combined.mc <- FindNeighbors(combined.mc, reduction = "pca", dims = 1:30)
 combined.mc <- FindClusters(combined.mc, resolution = 0.5)
@@ -234,19 +255,19 @@ UMAPPlot(combined.mc, label = T) + NoLegend()
 
 #### Deferentially expressed gene (DEG) analysis.
 
-Now let's found the markers of the cluster 19 we've just identified.
+Now let's found the markers of the cluster 22 we've just identified.
 
-```{r}
+```{r integrated_findmarkers}
 DefaultAssay(combined.mc) <- "RNA"
-markers18 <- FindMarkers(combined.mc, ident.1 = 18, only.pos = T)
-head(markers18)
+markers22 <- FindMarkers(combined.mc, ident.1 = 22, only.pos = T)
+head(markers22)
 ```
 
 This cluster clearly presents a B cell signature with marker genes such as CD19 and PAX5
 
-```{r}
+```{r integrated_markers_visu}
 genes <-c("CD19","PAX5") # knwon B cells markers
-markers18[genes,]
+markers22[genes,]
 VlnPlot(combined.mc, genes, ncol = 1)
 ```
 
@@ -254,7 +275,7 @@ By looking at the metacell annotation (assigned from the original single-cell me
 we can verify that we correctly retrieved the B cell lineage cluster.
 
 ```{r fig.height=5,fig.width=8}
-DimPlot(combined.mc[, combined.mc$integrated_snn_res.0.5 == 18],
+DimPlot(combined.mc[, combined.mc$integrated_snn_res.0.5 == 22],
         group.by = c("ann_level_3", "integrated_snn_res.0.5"),
         ncol = 2)
 ```
@@ -265,7 +286,7 @@ We can easily make analysis of cell type abundances for different clinical varia
 We have to take metacell size into account for these analyses.
 For instance we can analyse the proportion of different epithelial cell types depending on the smoking status.
 
-```{r results = FALSE, message=FALSE, warning=FALSE}
+```{r integrated_celltype_abondance, results = FALSE, message=FALSE, warning=FALSE}
 library(reshape2)
 combined.mc.epith <- combined.mc[,combined.mc$ann_level_1 == "Epithelial"]
 #combined.metacells$major_type <- droplevels(combined.metacells$major_type)
@@ -299,6 +320,6 @@ identification and the batch correction.
 
 We can save the results for comparison with the second example.
 
-```{r}
+```{r combined_data_save}
 saveRDS(combined.mc,"data/HLCA/combined.mc.unsup.rds")
 ```
