@@ -1,8 +1,3 @@
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-	.packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-
 
 ## cache is only valid with a specific version of R and session info
 ## cache will be kept for at most a month (re-compute the next month)
