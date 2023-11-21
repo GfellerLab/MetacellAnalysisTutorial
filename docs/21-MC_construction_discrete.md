@@ -263,8 +263,8 @@ anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_na
 
 ```
 #>            used  (Mb) gc trigger  (Mb) max used  (Mb)
-#> Ncells  3435525 183.5    5974597 319.1  4945498 264.2
-#> Vcells 20463953 156.2   65102028 496.7 65101750 496.7
+#> Ncells  3438021 183.7    5981017 319.5  4950848 264.5
+#> Vcells 20466835 156.2   65107198 496.8 65104632 496.8
 ```
 
 
@@ -801,8 +801,8 @@ In this example, we choose a graining level of 25.
 
 ```python
 build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
-n_waypoint_eigs = 10      # Number of eigenvalues to consider when initializing metacells
-n_neighbors = 15 # Number of neighbors used for graph construction 
+n_waypoint_eigs = 30      # Number of eigenvalues to consider when initializing metacells
+n_neighbors = 30 # Number of neighbors used for graph construction 
 gamma = 25   # the requested graining level
 n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  
 ```
@@ -847,12 +847,12 @@ model.initialize_archetypes()
 #> Done.
 #> Sampling waypoints ...
 #> Done.
-#> Selecting 88 cells from waypoint initialization.
+#> Selecting 78 cells from waypoint initialization.
 #> Initializing residual matrix using greedy column selection
 #> Initializing f and g...
-#> Selecting 17 cells from greedy initialization.
+#> Selecting 27 cells from greedy initialization.
 #> 
-#>   0%|          | 0/27 [00:00<?, ?it/s]100%|##########| 27/27 [00:00<00:00, 320.79it/s]
+#>   0%|          | 0/37 [00:00<?, ?it/s] 59%|#####9    | 22/37 [00:00<00:00, 212.81it/s]100%|##########| 37/37 [00:00<00:00, 217.66it/s]
 # Visualize the initialization 
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') 
 ```
@@ -866,9 +866,9 @@ We then check the model convergence using the `plot_convergence` function.
 
 
 ```python
-model.fit(min_iter = 10, max_iter = 50)
+model.fit(min_iter = 10, max_iter = 100)
 #> Randomly initialized A matrix.
-#> Setting convergence threshold at 0.00088
+#> Setting convergence threshold at 0.00109
 #> Starting iteration 1.
 #> Completed iteration 1.
 #> Starting iteration 10.
@@ -879,7 +879,7 @@ model.fit(min_iter = 10, max_iter = 50)
 #> Completed iteration 30.
 #> Starting iteration 40.
 #> Completed iteration 40.
-#> Converged after 46 iterations.
+#> Converged after 43 iterations.
 model.plot_convergence()
 ```
 
@@ -894,34 +894,34 @@ For more details on the soft assignments, please refer to the [SEACell paper](ht
 ```python
 membership = model.get_hard_assignments()
 membership.head
-#> <bound method NDFrame.head of                       SEACell
-#> index                        
-#> AAACATACAACCAC-1   SEACell-35
-#> AAACATTGAGCTAC-1   SEACell-69
-#> AAACATTGATCAGC-1    SEACell-0
-#> AAACCGTGCTTCCG-1   SEACell-24
-#> AAACCGTGTATGCG-1   SEACell-57
-#> ...                       ...
-#> TTTCGAACTCTCAT-1    SEACell-1
-#> TTTCTACTGAGGCA-1  SEACell-101
-#> TTTCTACTTCCTCG-1   SEACell-30
-#> TTTGCATGAGAGGC-1   SEACell-40
-#> TTTGCATGCCTCAC-1   SEACell-42
+#> <bound method NDFrame.head of                      SEACell
+#> index                       
+#> AAACATACAACCAC-1  SEACell-26
+#> AAACATTGAGCTAC-1  SEACell-89
+#> AAACATTGATCAGC-1  SEACell-33
+#> AAACCGTGCTTCCG-1  SEACell-84
+#> AAACCGTGTATGCG-1  SEACell-34
+#> ...                      ...
+#> TTTCGAACTCTCAT-1  SEACell-92
+#> TTTCTACTGAGGCA-1  SEACell-21
+#> TTTCTACTTCCTCG-1  SEACell-19
+#> TTTGCATGAGAGGC-1  SEACell-73
+#> TTTGCATGCCTCAC-1  SEACell-72
 #> 
 #> [2638 rows x 1 columns]>
 ad.obs["SEACell"].head
 #> <bound method NDFrame.head of index
-#> AAACATACAACCAC-1     SEACell-35
-#> AAACATTGAGCTAC-1     SEACell-69
-#> AAACATTGATCAGC-1      SEACell-0
-#> AAACCGTGCTTCCG-1     SEACell-24
-#> AAACCGTGTATGCG-1     SEACell-57
-#>                        ...     
-#> TTTCGAACTCTCAT-1      SEACell-1
-#> TTTCTACTGAGGCA-1    SEACell-101
-#> TTTCTACTTCCTCG-1     SEACell-30
-#> TTTGCATGAGAGGC-1     SEACell-40
-#> TTTGCATGCCTCAC-1     SEACell-42
+#> AAACATACAACCAC-1    SEACell-26
+#> AAACATTGAGCTAC-1    SEACell-89
+#> AAACATTGATCAGC-1    SEACell-33
+#> AAACCGTGCTTCCG-1    SEACell-84
+#> AAACCGTGTATGCG-1    SEACell-34
+#>                        ...    
+#> TTTCGAACTCTCAT-1    SEACell-92
+#> TTTCTACTGAGGCA-1    SEACell-21
+#> TTTCTACTTCCTCG-1    SEACell-19
+#> TTTGCATGAGAGGC-1    SEACell-73
+#> TTTGCATGCCTCAC-1    SEACell-72
 #> Name: SEACell, Length: 2638, dtype: object>
 ```
 
@@ -931,7 +931,7 @@ The `core.summarize_by_SEACell` function can be used to generate a metacell coun
 
 ```python
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
-#>   0%|          | 0/105 [00:00<?, ?it/s] 56%|#####6    | 59/105 [00:00<00:00, 587.31it/s]100%|##########| 105/105 [00:00<00:00, 606.52it/s]
+#>   0%|          | 0/105 [00:00<?, ?it/s] 58%|#####8    | 61/105 [00:00<00:00, 604.49it/s]100%|##########| 105/105 [00:00<00:00, 621.70it/s]
 ```
 #### Annotate metacells {-}
 Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 
@@ -1014,36 +1014,32 @@ saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_SEACells.rd
 
 
 
-## Metacell Analysis Toolkit (MCAT) {#command-line}
-We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
-The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
-which is for example required in a benchmark setting.
+<!-- We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset. -->
+<!-- The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level. -->
+<!-- which is for example required in a benchmark setting. -->
 
 
+<!-- ```{bash, commandlines_setup, eval = FALSE} -->
+<!-- setwd("MetacellToolkit/") -->
+<!-- ``` -->
 
-```bash
-setwd("MetacellToolkit/")
-```
+<!-- ```{bash, SuperCell-command, eval = FALSE} -->
+<!-- proj_name="3k_pbmc" -->
+<!-- MC_tool="SuperCell" -->
+<!-- # input raw adata output adata -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata -->
 
-
-```bash
-proj_name="3k_pbmc"
-MC_tool="SuperCell"
-# input raw adata output adata
-Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata
-
-# input raw adata output seurat
-Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat
-```
+<!-- # input raw adata output seurat -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat -->
+<!-- ``` -->
 
 
+<!-- ```{bash, SEACells-command, eval = FALSE} -->
+<!-- proj_name="3k_pbmc" -->
+<!-- MC_tool="SEACells" -->
+<!-- # input raw adata output adata -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata -->
 
-```bash
-proj_name="3k_pbmc"
-MC_tool="SEACells"
-# input raw adata output adata
-Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata
-
-# input raw adata output seurat
-Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat
-```
+<!-- # input raw adata output seurat -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat -->
+<!-- ``` -->

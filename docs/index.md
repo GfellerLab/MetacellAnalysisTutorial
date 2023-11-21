@@ -1,7 +1,7 @@
 --- 
 title: "Metacell Tutorial"
 author: "Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller"
-date: "2023-11-20"
+date: "2023-11-21"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [citations.bib, packages.bib]
@@ -206,6 +206,9 @@ saveRDS(cd34, file = file.path("data/CD34/singlecell_seurat_filtered.rds"))
 ```
 
 ## Retrieve the lung atlas dataset {#HLCA-data}
+
+This dataset will be used for the integration of a large number of single-cell datasets at the level of metacells (see section \@ref(integration)).
+Considering, the large size of the data to download, if you don't consider running the integration analysis, you can skip this part of the tutorial.
 
 ### Downloading the atlas
 

@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3.3 SEACells (Python) | Metacell Tutorial</title>
+  <title>3.3 SEACells (Python) | Metacell analysis on a continuous dataset</title>
   <meta name="description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3.3 SEACells (Python) | Metacell Tutorial" />
+  <meta property="og:title" content="3.3 SEACells (Python) | Metacell analysis on a continuous dataset" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3.3 SEACells (Python) | Metacell Tutorial" />
+  <meta name="twitter:title" content="3.3 SEACells (Python) | Metacell analysis on a continuous dataset" />
   
   <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
   
 
-<meta name="author" content="Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller" />
+<meta name="author" content="Leonard Herault, Aurelie Gabriel, Mariia Bilous, David Gfeller" />
 
 
-<meta name="date" content="2023-11-20" />
+<meta name="date" content="2023-11-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="MC2-construction.html"/>
-<link rel="next" href="command-line.html"/>
+<link rel="next" href="QCs.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -207,7 +207,6 @@ div.csl-indent {
 <li class="chapter" data-level="3.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Building metacells</a></li>
 <li class="chapter" data-level="3.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>3.3.5</b> Visualize metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>3.4</b> Metacell Analysis Toolkit (MCAT)</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>4</b> Metacells QCs</a>
 <ul>
@@ -221,50 +220,61 @@ div.csl-indent {
 <li class="chapter" data-level="4.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>4.2</b> Size distribution</a></li>
 <li class="chapter" data-level="4.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>4.3</b> Representativeness of metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>5</b> Downstream analysis of metacells</a>
+<li class="chapter" data-level="5" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>5</b> Metacell Analysis Toolkit (MCAT)</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>5.1</b> Standard analysis (R)</a>
-<ul>
-<li class="chapter" data-level="5.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>5.1.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="5.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>5.1.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="5.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>5.1.3</b> Clustering</a></li>
-<li class="chapter" data-level="5.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>5.1.4</b> Differential expression analysis</a></li>
-<li class="chapter" data-level="5.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>5.1.5</b> Visualize gene-gene correlation</a></li>
+<li class="chapter" data-level="5.1" data-path="setting-up-the-environment.html"><a href="setting-up-the-environment.html"><i class="fa fa-check"></i><b>5.1</b> Setting up the environment</a></li>
+<li class="chapter" data-level="5.2" data-path="metacell-building.html"><a href="metacell-building.html"><i class="fa fa-check"></i><b>5.2</b> Metacell building</a></li>
+<li class="chapter" data-level="5.3" data-path="building-metacell-with-metacell2-mc2.html"><a href="building-metacell-with-metacell2-mc2.html"><i class="fa fa-check"></i><b>5.3</b> Building metacell with MetaCell2 (MC2)</a></li>
+<li class="chapter" data-level="5.4" data-path="building-metacell-with-supercell.html"><a href="building-metacell-with-supercell.html"><i class="fa fa-check"></i><b>5.4</b> Building metacell with SuperCell</a></li>
+<li class="chapter" data-level="5.5" data-path="short-downstream-analysis-of-the-metacells.html"><a href="short-downstream-analysis-of-the-metacells.html"><i class="fa fa-check"></i><b>5.5</b> Short downstream analysis of the metacells</a></li>
+<li class="chapter" data-level="5.6" data-path="metacell2-metacells.html"><a href="metacell2-metacells.html"><i class="fa fa-check"></i><b>5.6</b> MetaCell2 metacells</a></li>
+<li class="chapter" data-level="5.7" data-path="quality-control-with-the-metacellanalysistoolkit-package.html"><a href="quality-control-with-the-metacellanalysistoolkit-package.html"><i class="fa fa-check"></i><b>5.7</b> Quality control with the MetacellAnalysisToolkit package</a></li>
+<li class="chapter" data-level="5.8" data-path="loading-single-cell-data.html"><a href="loading-single-cell-data.html"><i class="fa fa-check"></i><b>5.8</b> Loading single-cell data</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>5.2</b> Sample-weighted analysis</a>
+<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>5.2.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="5.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>5.2.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="5.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>5.2.3</b> Clustering</a></li>
-<li class="chapter" data-level="5.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>5.2.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>6.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>6.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>6.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>6.1.5</b> Visualize gene-gene correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>6.2</b> Sample-weighted analysis</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>6.2.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>6.2.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>6.2.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>6.2.4</b> Differential expression analysis</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>6</b> Integration of metacells</a>
+<li class="chapter" data-level="7" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>7</b> Integration of metacells</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>6.1</b> Unsupervised integration</a>
+<li class="chapter" data-level="7.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>7.1</b> Unsupervised integration</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>6.1.1</b> Data loading</a></li>
-<li class="chapter" data-level="6.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment"><i class="fa fa-check"></i><b>6.1.2</b> Setting up the environment</a></li>
-<li class="chapter" data-level="6.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>6.1.3</b> Building metacell</a></li>
-<li class="chapter" data-level="6.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>6.1.4</b> Loading metacell objects</a></li>
-<li class="chapter" data-level="6.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>6.1.5</b> Merging objects and basic quality control</a></li>
-<li class="chapter" data-level="6.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>6.1.6</b> Unintegrated analysis</a></li>
-<li class="chapter" data-level="6.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>6.1.7</b> Seurat integration</a></li>
-<li class="chapter" data-level="6.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>6.1.8</b> Downstream analysis</a></li>
-<li class="chapter" data-level="6.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>6.1.9</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>7.1.1</b> Data loading</a></li>
+<li class="chapter" data-level="7.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>7.1.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="7.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>7.1.3</b> Building metacell</a></li>
+<li class="chapter" data-level="7.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>7.1.4</b> Loading metacell objects</a></li>
+<li class="chapter" data-level="7.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>7.1.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="7.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>7.1.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="7.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>7.1.7</b> Seurat integration</a></li>
+<li class="chapter" data-level="7.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>7.1.8</b> Downstream analysis</a></li>
+<li class="chapter" data-level="7.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>7.1.9</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>6.2</b> Supervised integration</a>
+<li class="chapter" data-level="7.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>7.2</b> Supervised integration</a>
 <ul>
-<li class="chapter" data-level="6.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>6.2.1</b> Data loading</a></li>
-<li class="chapter" data-level="6.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>6.2.2</b> Setting up the environment</a></li>
-<li class="chapter" data-level="6.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>6.2.3</b> Constructing supervised metacell</a></li>
-<li class="chapter" data-level="6.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>6.2.4</b> Load metacell objects</a></li>
-<li class="chapter" data-level="6.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>6.2.5</b> Merging objects and basic quality control</a></li>
-<li class="chapter" data-level="6.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>6.2.6</b> Unintegrated analysis</a></li>
-<li class="chapter" data-level="6.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>6.2.7</b> STACAS integration</a></li>
-<li class="chapter" data-level="6.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>6.2.8</b> Comparison with unsupervised analysis</a></li>
-<li class="chapter" data-level="6.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>6.2.9</b> Downstream analysis</a></li>
-<li class="chapter" data-level="6.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>6.2.10</b> Conclusion</a></li>
+<li class="chapter" data-level="7.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>7.2.1</b> Data loading</a></li>
+<li class="chapter" data-level="7.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-2"><i class="fa fa-check"></i><b>7.2.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="7.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>7.2.3</b> Constructing supervised metacell</a></li>
+<li class="chapter" data-level="7.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>7.2.4</b> Load metacell objects</a></li>
+<li class="chapter" data-level="7.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>7.2.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="7.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>7.2.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="7.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>7.2.7</b> STACAS integration</a></li>
+<li class="chapter" data-level="7.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>7.2.8</b> Comparison with unsupervised analysis</a></li>
+<li class="chapter" data-level="7.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>7.2.9</b> Downstream analysis</a></li>
+<li class="chapter" data-level="7.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>7.2.10</b> Conclusion</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -280,7 +290,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell Tutorial</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell analysis on a continuous dataset</a>
           </h1>
         </div>
 
@@ -361,8 +371,8 @@ The number of neighbors to considered for the knn graph can be fixed using the <
 As mentioned previously, users should provide as input the number of metacells required (<code>n_SEACells</code> parameter). This number can be defined as the ratio between the number of single cells and the desired graining level (<code>gamma</code> parameter in the following code chunk).
 In this example, we choose a graining level of 25.</p>
 <div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="SEACells-construction.html#cb47-1" aria-hidden="true" tabindex="-1"></a>build_kernel_on <span class="op">=</span> <span class="st">&#39;X_pca&#39;</span> <span class="co"># key in ad.obsm to use for computing metacells</span></span>
-<span id="cb47-2"><a href="SEACells-construction.html#cb47-2" aria-hidden="true" tabindex="-1"></a>n_waypoint_eigs <span class="op">=</span> <span class="dv">10</span>      <span class="co"># Number of eigenvalues to consider when initializing metacells</span></span>
-<span id="cb47-3"><a href="SEACells-construction.html#cb47-3" aria-hidden="true" tabindex="-1"></a>n_neighbors <span class="op">=</span> <span class="dv">15</span> <span class="co"># Number of neighbors used for graph construction </span></span>
+<span id="cb47-2"><a href="SEACells-construction.html#cb47-2" aria-hidden="true" tabindex="-1"></a>n_waypoint_eigs <span class="op">=</span> <span class="dv">30</span>      <span class="co"># Number of eigenvalues to consider when initializing metacells</span></span>
+<span id="cb47-3"><a href="SEACells-construction.html#cb47-3" aria-hidden="true" tabindex="-1"></a>n_neighbors <span class="op">=</span> <span class="dv">30</span> <span class="co"># Number of neighbors used for graph construction </span></span>
 <span id="cb47-4"><a href="SEACells-construction.html#cb47-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">25</span>   <span class="co"># the requested graining level</span></span>
 <span id="cb47-5"><a href="SEACells-construction.html#cb47-5" aria-hidden="true" tabindex="-1"></a>n_SEACells <span class="op">=</span> <span class="bu">int</span>(ad.shape[<span class="dv">0</span>]<span class="op">/</span>gamma) <span class="co"># the requested number of metacells  </span></span></code></pre></div>
 </div>
@@ -393,25 +403,26 @@ To check that the archetypes are evenly spread, users can visualize them using t
 <span id="cb50-8"><a href="SEACells-construction.html#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Done.</span></span>
 <span id="cb50-9"><a href="SEACells-construction.html#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Sampling waypoints ...</span></span>
 <span id="cb50-10"><a href="SEACells-construction.html#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Done.</span></span>
-<span id="cb50-11"><a href="SEACells-construction.html#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Selecting 88 cells from waypoint initialization.</span></span>
+<span id="cb50-11"><a href="SEACells-construction.html#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Selecting 78 cells from waypoint initialization.</span></span>
 <span id="cb50-12"><a href="SEACells-construction.html#cb50-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Initializing residual matrix using greedy column selection</span></span>
 <span id="cb50-13"><a href="SEACells-construction.html#cb50-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Initializing f and g...</span></span>
-<span id="cb50-14"><a href="SEACells-construction.html#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Selecting 17 cells from greedy initialization.</span></span>
+<span id="cb50-14"><a href="SEACells-construction.html#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Selecting 27 cells from greedy initialization.</span></span>
 <span id="cb50-15"><a href="SEACells-construction.html#cb50-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb50-16"><a href="SEACells-construction.html#cb50-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb50-17"><a href="SEACells-construction.html#cb50-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">27</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
-<span id="cb50-18"><a href="SEACells-construction.html#cb50-18" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 27/27 [00:00&lt;00:00, 320.79it/s]</span></span>
-<span id="cb50-19"><a href="SEACells-construction.html#cb50-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the initialization </span></span>
-<span id="cb50-20"><a href="SEACells-construction.html#cb50-20" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_initialization(ad, model, plot_basis<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>) </span></code></pre></div>
+<span id="cb50-17"><a href="SEACells-construction.html#cb50-17" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">37</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
+<span id="cb50-18"><a href="SEACells-construction.html#cb50-18" aria-hidden="true" tabindex="-1"></a> <span class="dv">59</span><span class="op">%|</span><span class="co">#####9    | 22/37 [00:00&lt;00:00, 212.81it/s]</span></span>
+<span id="cb50-19"><a href="SEACells-construction.html#cb50-19" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 37/37 [00:00&lt;00:00, 217.66it/s]</span></span>
+<span id="cb50-20"><a href="SEACells-construction.html#cb50-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the initialization </span></span>
+<span id="cb50-21"><a href="SEACells-construction.html#cb50-21" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_initialization(ad, model, plot_basis<span class="op">=</span><span class="st">&#39;X_umap&#39;</span>) </span></code></pre></div>
 <p><img src="21-MC_construction_discrete_files/figure-html/seacells-model-init-1.png" width="672" /></p>
 </div>
 <div id="fitting-the-seacells-model-to-identify-metacells" class="section level4 unnumbered hasAnchor">
 <h4>Fitting the SEACells model to identify metacells<a href="SEACells-construction.html#fitting-the-seacells-model-to-identify-metacells" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The identification of the archetypes is an iterative process. In this example, we fixed the minimum and maximum number of iteration to 10 and 50 respectively.
 We then check the model convergence using the <code>plot_convergence</code> function.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="SEACells-construction.html#cb51-1" aria-hidden="true" tabindex="-1"></a>model.fit(min_iter <span class="op">=</span> <span class="dv">10</span>, max_iter <span class="op">=</span> <span class="dv">50</span>)</span>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="SEACells-construction.html#cb51-1" aria-hidden="true" tabindex="-1"></a>model.fit(min_iter <span class="op">=</span> <span class="dv">10</span>, max_iter <span class="op">=</span> <span class="dv">100</span>)</span>
 <span id="cb51-2"><a href="SEACells-construction.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Randomly initialized A matrix.</span></span>
-<span id="cb51-3"><a href="SEACells-construction.html#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Setting convergence threshold at 0.00088</span></span>
+<span id="cb51-3"><a href="SEACells-construction.html#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Setting convergence threshold at 0.00109</span></span>
 <span id="cb51-4"><a href="SEACells-construction.html#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 1.</span></span>
 <span id="cb51-5"><a href="SEACells-construction.html#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 1.</span></span>
 <span id="cb51-6"><a href="SEACells-construction.html#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 10.</span></span>
@@ -422,7 +433,7 @@ We then check the model convergence using the <code>plot_convergence</code> func
 <span id="cb51-11"><a href="SEACells-construction.html#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 30.</span></span>
 <span id="cb51-12"><a href="SEACells-construction.html#cb51-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Starting iteration 40.</span></span>
 <span id="cb51-13"><a href="SEACells-construction.html#cb51-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Completed iteration 40.</span></span>
-<span id="cb51-14"><a href="SEACells-construction.html#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Converged after 46 iterations.</span></span>
+<span id="cb51-14"><a href="SEACells-construction.html#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Converged after 43 iterations.</span></span>
 <span id="cb51-15"><a href="SEACells-construction.html#cb51-15" aria-hidden="true" tabindex="-1"></a>model.plot_convergence()</span></code></pre></div>
 <p><img src="21-MC_construction_discrete_files/figure-html/seacells-model-fit-3.png" width="672" /></p>
 <p>Once the final archetypes have been identified, we can assign each single-cell to one metacell (hard assignments).
@@ -431,34 +442,34 @@ In this tutorial, we will only consider hard assignments. However, the SEACells 
 For more details on the soft assignments, please refer to the <a href="https://www.nature.com/articles/s41587-023-01716-9#Sec11">SEACell paper</a> and the original <a href="https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb">author’s jupyter notebook</a>.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="SEACells-construction.html#cb52-1" aria-hidden="true" tabindex="-1"></a>membership <span class="op">=</span> model.get_hard_assignments()</span>
 <span id="cb52-2"><a href="SEACells-construction.html#cb52-2" aria-hidden="true" tabindex="-1"></a>membership.head</span>
-<span id="cb52-3"><a href="SEACells-construction.html#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of                       SEACell</span></span>
-<span id="cb52-4"><a href="SEACells-construction.html#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; index                        </span></span>
-<span id="cb52-5"><a href="SEACells-construction.html#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATACAACCAC-1   SEACell-35</span></span>
-<span id="cb52-6"><a href="SEACells-construction.html#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGAGCTAC-1   SEACell-69</span></span>
-<span id="cb52-7"><a href="SEACells-construction.html#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGATCAGC-1    SEACell-0</span></span>
-<span id="cb52-8"><a href="SEACells-construction.html#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGCTTCCG-1   SEACell-24</span></span>
-<span id="cb52-9"><a href="SEACells-construction.html#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGTATGCG-1   SEACell-57</span></span>
-<span id="cb52-10"><a href="SEACells-construction.html#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...                       ...</span></span>
-<span id="cb52-11"><a href="SEACells-construction.html#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCGAACTCTCAT-1    SEACell-1</span></span>
-<span id="cb52-12"><a href="SEACells-construction.html#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTGAGGCA-1  SEACell-101</span></span>
-<span id="cb52-13"><a href="SEACells-construction.html#cb52-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTTCCTCG-1   SEACell-30</span></span>
-<span id="cb52-14"><a href="SEACells-construction.html#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGAGAGGC-1   SEACell-40</span></span>
-<span id="cb52-15"><a href="SEACells-construction.html#cb52-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGCCTCAC-1   SEACell-42</span></span>
+<span id="cb52-3"><a href="SEACells-construction.html#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of                      SEACell</span></span>
+<span id="cb52-4"><a href="SEACells-construction.html#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; index                       </span></span>
+<span id="cb52-5"><a href="SEACells-construction.html#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATACAACCAC-1  SEACell-26</span></span>
+<span id="cb52-6"><a href="SEACells-construction.html#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGAGCTAC-1  SEACell-89</span></span>
+<span id="cb52-7"><a href="SEACells-construction.html#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGATCAGC-1  SEACell-33</span></span>
+<span id="cb52-8"><a href="SEACells-construction.html#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGCTTCCG-1  SEACell-84</span></span>
+<span id="cb52-9"><a href="SEACells-construction.html#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGTATGCG-1  SEACell-34</span></span>
+<span id="cb52-10"><a href="SEACells-construction.html#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...                      ...</span></span>
+<span id="cb52-11"><a href="SEACells-construction.html#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCGAACTCTCAT-1  SEACell-92</span></span>
+<span id="cb52-12"><a href="SEACells-construction.html#cb52-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTGAGGCA-1  SEACell-21</span></span>
+<span id="cb52-13"><a href="SEACells-construction.html#cb52-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTTCCTCG-1  SEACell-19</span></span>
+<span id="cb52-14"><a href="SEACells-construction.html#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGAGAGGC-1  SEACell-73</span></span>
+<span id="cb52-15"><a href="SEACells-construction.html#cb52-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGCCTCAC-1  SEACell-72</span></span>
 <span id="cb52-16"><a href="SEACells-construction.html#cb52-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb52-17"><a href="SEACells-construction.html#cb52-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2638 rows x 1 columns]&gt;</span></span>
 <span id="cb52-18"><a href="SEACells-construction.html#cb52-18" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">&quot;SEACell&quot;</span>].head</span>
 <span id="cb52-19"><a href="SEACells-construction.html#cb52-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of index</span></span>
-<span id="cb52-20"><a href="SEACells-construction.html#cb52-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATACAACCAC-1     SEACell-35</span></span>
-<span id="cb52-21"><a href="SEACells-construction.html#cb52-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGAGCTAC-1     SEACell-69</span></span>
-<span id="cb52-22"><a href="SEACells-construction.html#cb52-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGATCAGC-1      SEACell-0</span></span>
-<span id="cb52-23"><a href="SEACells-construction.html#cb52-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGCTTCCG-1     SEACell-24</span></span>
-<span id="cb52-24"><a href="SEACells-construction.html#cb52-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGTATGCG-1     SEACell-57</span></span>
-<span id="cb52-25"><a href="SEACells-construction.html#cb52-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        ...     </span></span>
-<span id="cb52-26"><a href="SEACells-construction.html#cb52-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCGAACTCTCAT-1      SEACell-1</span></span>
-<span id="cb52-27"><a href="SEACells-construction.html#cb52-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTGAGGCA-1    SEACell-101</span></span>
-<span id="cb52-28"><a href="SEACells-construction.html#cb52-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTTCCTCG-1     SEACell-30</span></span>
-<span id="cb52-29"><a href="SEACells-construction.html#cb52-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGAGAGGC-1     SEACell-40</span></span>
-<span id="cb52-30"><a href="SEACells-construction.html#cb52-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGCCTCAC-1     SEACell-42</span></span>
+<span id="cb52-20"><a href="SEACells-construction.html#cb52-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATACAACCAC-1    SEACell-26</span></span>
+<span id="cb52-21"><a href="SEACells-construction.html#cb52-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGAGCTAC-1    SEACell-89</span></span>
+<span id="cb52-22"><a href="SEACells-construction.html#cb52-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACATTGATCAGC-1    SEACell-33</span></span>
+<span id="cb52-23"><a href="SEACells-construction.html#cb52-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGCTTCCG-1    SEACell-84</span></span>
+<span id="cb52-24"><a href="SEACells-construction.html#cb52-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AAACCGTGTATGCG-1    SEACell-34</span></span>
+<span id="cb52-25"><a href="SEACells-construction.html#cb52-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        ...    </span></span>
+<span id="cb52-26"><a href="SEACells-construction.html#cb52-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCGAACTCTCAT-1    SEACell-92</span></span>
+<span id="cb52-27"><a href="SEACells-construction.html#cb52-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTGAGGCA-1    SEACell-21</span></span>
+<span id="cb52-28"><a href="SEACells-construction.html#cb52-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTCTACTTCCTCG-1    SEACell-19</span></span>
+<span id="cb52-29"><a href="SEACells-construction.html#cb52-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGAGAGGC-1    SEACell-73</span></span>
+<span id="cb52-30"><a href="SEACells-construction.html#cb52-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; TTTGCATGCCTCAC-1    SEACell-72</span></span>
 <span id="cb52-31"><a href="SEACells-construction.html#cb52-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Name: SEACell, Length: 2638, dtype: object&gt;</span></span></code></pre></div>
 </div>
 <div id="retrieve-aggregated-metacell-data-2" class="section level4 unnumbered hasAnchor">
@@ -467,8 +478,8 @@ For more details on the soft assignments, please refer to the <a href="https://w
 <div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="SEACells-construction.html#cb53-1" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> SEACells.core.summarize_by_SEACell(ad, SEACells_label<span class="op">=</span><span class="st">&#39;SEACell&#39;</span>, summarize_layer<span class="op">=</span><span class="st">&#39;raw&#39;</span>, celltype_label<span class="op">=</span>annotation_label)</span>
 <span id="cb53-2"><a href="SEACells-construction.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb53-3"><a href="SEACells-construction.html#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">105</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
-<span id="cb53-4"><a href="SEACells-construction.html#cb53-4" aria-hidden="true" tabindex="-1"></a> <span class="dv">56</span><span class="op">%|</span><span class="co">#####6    | 59/105 [00:00&lt;00:00, 587.31it/s]</span></span>
-<span id="cb53-5"><a href="SEACells-construction.html#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 105/105 [00:00&lt;00:00, 606.52it/s]</span></span></code></pre></div>
+<span id="cb53-4"><a href="SEACells-construction.html#cb53-4" aria-hidden="true" tabindex="-1"></a> <span class="dv">58</span><span class="op">%|</span><span class="co">#####8    | 61/105 [00:00&lt;00:00, 604.49it/s]</span></span>
+<span id="cb53-5"><a href="SEACells-construction.html#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 105/105 [00:00&lt;00:00, 621.70it/s]</span></span></code></pre></div>
 </div>
 <div id="annotate-metacells" class="section level4 unnumbered hasAnchor">
 <h4>Annotate metacells<a href="SEACells-construction.html#annotate-metacells" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -504,7 +515,7 @@ allowed us to annotate the metacells to the most common cell type in each metace
 <span id="cb55-10"><a href="SEACells-construction.html#cb55-10" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;sc.pca&#39;</span>]<span class="op">=</span>ad.obsm[<span class="st">&#39;X_pca&#39;</span>] </span>
 <span id="cb55-11"><a href="SEACells-construction.html#cb55-11" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">&#39;sc.umap&#39;</span>]<span class="op">=</span>ad.obsm[<span class="st">&#39;X_umap&#39;</span>] </span>
 <span id="cb55-12"><a href="SEACells-construction.html#cb55-12" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">&#39;./data&#39;</span>, proj_name, <span class="ss">f&#39;metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad&#39;</span>))</span></code></pre></div>
-<p>For future downstream analyses in R (section <a href="standard-analysis-R.html#standard-analysis-R">5.1</a>), we save the metacell counts in a Seurat object:</p>
+<p>For future downstream analyses in R (section <a href="standard-analysis-R.html#standard-analysis-R">6.1</a>), we save the metacell counts in a Seurat object:</p>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="SEACells-construction.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
 <span id="cb56-2"><a href="SEACells-construction.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(anndata)</span>
 <span id="cb56-3"><a href="SEACells-construction.html#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
@@ -531,9 +542,33 @@ allowed us to annotate the metacells to the most common cell type in each metace
 <span id="cb56-24"><a href="SEACells-construction.html#cb56-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Save membership in misc</span></span>
 <span id="cb56-25"><a href="SEACells-construction.html#cb56-25" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">@</span>misc<span class="sc">$</span>cell_membership <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">row.names =</span> <span class="fu">rownames</span>(py<span class="sc">$</span>membership), <span class="at">membership =</span> py<span class="sc">$</span>membership<span class="sc">$</span>SEACell)</span>
 <span id="cb56-26"><a href="SEACells-construction.html#cb56-26" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(MC.seurat, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">&#39;./data/&#39;</span>, py<span class="sc">$</span>proj_name, <span class="st">&#39;/metacell_SEACells.rds&#39;</span>))</span></code></pre></div>
+<!-- We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset. -->
+<!-- The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level. -->
+<!-- which is for example required in a benchmark setting. -->
+<!-- ```{bash, commandlines_setup, eval = FALSE} -->
+<!-- setwd("MetacellToolkit/") -->
+<!-- ``` -->
+<!-- ```{bash, SuperCell-command, eval = FALSE} -->
+<!-- proj_name="3k_pbmc" -->
+<!-- MC_tool="SuperCell" -->
+<!-- # input raw adata output adata -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata -->
+<!-- # input raw adata output seurat -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat -->
+<!-- ``` -->
+<!-- ```{bash, SEACells-command, eval = FALSE} -->
+<!-- proj_name="3k_pbmc" -->
+<!-- MC_tool="SEACells" -->
+<!-- # input raw adata output adata -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata -->
+<!-- # input raw adata output seurat -->
+<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat -->
+<!-- ``` -->
+
 </div>
 </div>
 </div>
+<!-- </div> -->
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-SEACells" class="csl-entry">
@@ -553,7 +588,7 @@ Persad, Sitara, Zi-Ning Choo, Christine Dien, Noor Sohail, Ignas Masilionis, Ron
         </div>
       </div>
 <a href="MC2-construction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="command-line.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="QCs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

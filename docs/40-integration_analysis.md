@@ -1,15 +1,18 @@
 # Integration of metacells {#integration}
 
-## Unsupervised integration {#integration_unsupervised}
-
-
-
-
 In this section, we will work with the Human Cell Lung Atlas core [HLCA](https://www.nature.com/articles/s41591-023-02327-2)
 gathering around 580,000 cells from 107 individuals distributed in 166 samples.
 
 The aim of this tutorial is to show how you can use metacells to analyze a very large dataset using a reasonable amount of time and memory.
 For this we will use here **SuperCell** via the **MCAT** command line tool.
+
+## Unsupervised integration {#integration_unsupervised}
+
+
+
+
+In this section, we will first perform the integration in an unsupervised mode, i.e., without considering the single-cell annotation. 
+For a supervised version, please refer to section \@ref(integration_supervised).
 
 ###  Data loading
 Please follow the section \@ref(HLCA-data) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
@@ -23,7 +26,14 @@ To build the conda environment please follow the instructions on our MetacellAna
 library(reticulate)
 conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
 
-use_condaenv(conda_env)
+Sys.setenv(RETICULATE_PYTHON = conda_env)
+```
+
+
+```
+#>           used (Mb) gc trigger (Mb) max used (Mb)
+#> Ncells  611524 32.7    1414542 75.6   664137 35.5
+#> Vcells 1133017  8.7    8388608 64.0  1870234 14.3
 ```
 
 
@@ -71,11 +81,22 @@ echo "Duration: $((($(date +%s)-$start)/60)) minutes"
 ###  Loading metacell objects
 
 We load the .h5ad objects and directly convert them in Seurat objects to benefit from all the functions of this framework.
+To consider the datasets in the same order as the one used in this tutorial we run the following chunk before loading the metacell objects.
 
 
 ```r
-datasets <- list.dirs("data/HLCA/datasets/", full.names = F, recursive = F)
-metacell.files <- sapply(datasets[1:5] , FUN = function(x){paste0("data/HLCA/datasets/",x,"/mc_adata.h5ad")})
+library(anndata)
+adata <- read_h5ad("data/HLCA/local.h5ad",backed = "r")
+adata$var_names <- adata$var$feature_name # We will use gene short name for downstream analyses
+datasets <- unique(adata$obs$dat)
+rm(adata)
+gc()
+```
+
+
+```r
+
+metacell.files <- sapply(datasets, FUN = function(x){paste0("data/HLCA/datasets/",x,"/mc_adata.h5ad")})
 
 metacell.objs <- lapply(X = metacell.files, function(X){
   adata <- read_h5ad(X)
@@ -105,13 +126,13 @@ unintegrated.mc <- merge(metacell.objs[[1]], metacell.objs[-1])
 VlnPlot(unintegrated.mc, features = c("size", "ann_level_1_purity"), group.by = 'dataset', pt.size = 0.001, ncol = 2)
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unintegrated_vlnPlot_obj-1.png" width="672" />
 
 ```r
 VlnPlot(unintegrated.mc, features = c("ann_level_2_purity", "ann_level_3_purity"), group.by = 'dataset', pt.size = 0.001, ncol = 2)
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-8-2.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unintegrated_vlnPlot_obj-2.png" width="672" />
 
 We can also use box plots.
 
@@ -121,7 +142,7 @@ ggplot(unintegrated.mc@meta.data,aes(x = dataset, y = ann_level_2_purity, fill =
   scale_x_discrete(guide = guide_axis(angle = 45))
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unintegrated_boxplot_obj-1.png" width="672" />
 
 ```r
 
@@ -129,7 +150,7 @@ ggplot(unintegrated.mc@meta.data,aes(x = dataset, y = ann_level_3_purity, fill =
   scale_x_discrete(guide = guide_axis(angle = 45))
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-2.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unintegrated_boxplot_obj-2.png" width="672" />
 
 ```r
 
@@ -137,7 +158,7 @@ ggplot(unintegrated.mc@meta.data,aes(x = dataset, y = ann_level_4_purity, fill =
   scale_x_discrete(guide = guide_axis(angle = 45))
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-3.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unintegrated_boxplot_obj-3.png" width="672" />
 
 ```r
 
@@ -145,7 +166,7 @@ ggplot(unintegrated.mc@meta.data,aes(x = dataset, y = ann_finest_level_purity, f
   scale_x_discrete(guide = guide_axis(angle = 45))
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-4.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unintegrated_boxplot_obj-4.png" width="672" />
 
 Overall metacells from the different datasets present a good purity until the third level of annotation.
 
@@ -168,7 +189,7 @@ umap.unintegrated.types <- DimPlot(unintegrated.mc, reduction = "umap", group.by
 umap.unintegrated.datasets + umap.unintegrated.types
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unintegrated_preprocess-1.png" width="672" />
 
 ```r
 
@@ -188,6 +209,12 @@ This should take less than 5 minutes.
 
 
 ```r
+
+n.metacells <- sapply(metacell.objs, FUN = function(x){ncol(x)})
+names(n.metacells) <- datasets
+ref.names <- sort(n.metacells,decreasing = T)[1:5]
+ref.index <- which(datasets %in% names(ref.names))
+
 # normalize each dataset
 metacell.objs <- lapply(X = metacell.objs, FUN = function(x) {
   DefaultAssay(x) <- "RNA";
@@ -206,13 +233,13 @@ metacell.objs <- lapply(X = metacell.objs, FUN = function(x) {
 anchors <- FindIntegrationAnchors(object.list = metacell.objs,
                                        anchor.features = features,
                                        reduction = "rpca",
-                                       reference = c(1,2,5), #,9,11 the 5 biggest datasets (in term of metacell number) are used as reference
+                                       reference = ref.index, # the 5 biggest datasets (in term of metacell number) are used as reference
                                        dims = 1:30)
 
 remove(metacell.objs) # We don't need the object list anymore
 gc()
 
-combined.mc <- IntegrateData(anchorset = anchors,k.weight = 50) # we have to update the k.weight parameters because the smallest dataset contain less than 100 metacells
+combined.mc <- IntegrateData(anchorset = anchors,k.weight = 40) # we have to update the k.weight parameters because the smallest dataset contain less than 100 metacells
 ```
 
 Check the obtained object.
@@ -221,7 +248,7 @@ Check the obtained object.
 ```r
 combined.mc
 #> An object of class Seurat 
-#> 30024 features across 6061 samples within 2 assays 
+#> 30024 features across 11706 samples within 2 assays 
 #> Active assay: integrated (2000 features, 2000 variable features)
 #>  1 other assay present: RNA
 ```
@@ -231,7 +258,7 @@ We can verify that the sum of metacell sizes corresponds to the original number 
 
 ```r
 sum(combined.mc$size)
-#> [1] 302920
+#> [1] 584944
 ```
 
 Seurat returns the slot `"integrated"` that we can use for the downstream analysis.
@@ -255,7 +282,7 @@ umap.integrated.celltypes <- DimPlot(combined.mc,reduction = "umap",group.by = "
 umap.integrated.datasets + umap.integrated.celltypes + umap.unintegrated.datasets + umap.unintegrated.types
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-15-1.png" width="1344" />
+<img src="40-integration_analysis_files/figure-html/integrated_umap-1.png" width="1344" />
 
 
 Seurat efficiently corrected the batch effect in the data while keeping the cell type separated, but other batch correction methods such as harmony would have also done the job.
@@ -273,21 +300,21 @@ library(ggplot2)
 DimPlot(combined.mc,group.by = "ann_level_1",reduction = "umap",label = T,repel = T,cols= color.celltypes) + NoLegend()
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/integrated_dimplots-1.png" width="672" />
 
 ```r
 
 DimPlot(combined.mc,group.by = "ann_level_2",reduction = "umap",label = T,repel = T,cols= color.celltypes) + NoLegend()
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-16-2.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/integrated_dimplots-2.png" width="672" />
 
 ```r
 
 DimPlot(combined.mc,group.by = "ann_level_3",reduction = "umap",label = T, repel = T,cols= color.celltypes) + NoLegend()
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-16-3.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/integrated_dimplots-3.png" width="672" />
 
 ### Downstream analysis
 
@@ -303,16 +330,16 @@ combined.mc <- FindClusters(combined.mc, resolution = 0.5)
 UMAPPlot(combined.mc, label = T) + NoLegend()
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/integrated_clustering-1.png" width="672" />
 
 #### Deferentially expressed gene (DEG) analysis.
 
-Now let's found the markers of the cluster 19 we've just identified.
+Now let's found the markers of the cluster 23 we've just identified.
 
 
 ```r
 DefaultAssay(combined.mc) <- "RNA"
-markers18 <- FindMarkers(combined.mc, ident.1 = 18, only.pos = T)
+markers23 <- FindMarkers(combined.mc, ident.1 = 23, only.pos = T)
 #> For a more efficient implementation of the Wilcoxon Rank Sum Test,
 #> (default method for FindMarkers) please install the limma package
 #> --------------------------------------------
@@ -322,14 +349,14 @@ markers18 <- FindMarkers(combined.mc, ident.1 = 18, only.pos = T)
 #> After installation of limma, Seurat will automatically use the more 
 #> efficient implementation (no further action necessary).
 #> This message will be shown once per session
-head(markers18)
-#>        p_val avg_log2FC pct.1 pct.2 p_val_adj
-#> HOXD9      0  0.8120847 0.968 0.020         0
-#> DTX1       0  0.3972931 0.871 0.021         0
-#> STAB2      0  0.4492518 0.758 0.006         0
-#> SCN3A      0  0.3283766 0.806 0.012         0
-#> GPR182     0  0.6745167 0.952 0.013         0
-#> HOXD8      0  1.1639281 1.000 0.025         0
+head(markers23)
+#>       p_val avg_log2FC pct.1 pct.2 p_val_adj
+#> TCL1A     0  1.3939674 0.695 0.020         0
+#> FCRLA     0  1.0703400 0.962 0.022         0
+#> BLK       0  1.2192942 0.990 0.058         0
+#> FCRL5     0  0.7934100 0.895 0.026         0
+#> PNOC      0  0.5477793 0.924 0.050         0
+#> PAX5      0  0.6089985 0.886 0.024         0
 ```
 
 This cluster clearly presents a B cell signature with marker genes such as CD19 and PAX5
@@ -337,26 +364,26 @@ This cluster clearly presents a B cell signature with marker genes such as CD19 
 
 ```r
 genes <-c("CD19","PAX5") # knwon B cells markers
-markers18[genes,]
-#>      p_val avg_log2FC pct.1 pct.2 p_val_adj
-#> NA      NA         NA    NA    NA        NA
-#> NA.1    NA         NA    NA    NA        NA
+markers23[genes,]
+#>              p_val avg_log2FC pct.1 pct.2     p_val_adj
+#> CD19 1.599543e-207  1.1037564 0.990 0.114 4.482558e-203
+#> PAX5  0.000000e+00  0.6089985 0.886 0.024  0.000000e+00
 VlnPlot(combined.mc, genes, ncol = 1)
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/integrated_markers_visu-1.png" width="672" />
 
 By looking at the metacell annotation (assigned from the original single-cell metadata by MCAT),
 we can verify that we correctly retrieved the B cell lineage cluster.
 
 
 ```r
-DimPlot(combined.mc[, combined.mc$integrated_snn_res.0.5 == 18],
+DimPlot(combined.mc[, combined.mc$integrated_snn_res.0.5 == 23],
         group.by = c("ann_level_3", "integrated_snn_res.0.5"),
         ncol = 2)
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-20-1.png" width="768" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-9-1.png" width="768" />
 
 #### Cell type abundances analyses.
 
@@ -380,7 +407,7 @@ gc()
 ggplot(smpCounts,aes(x = smoking_status,fill=major_type)) + geom_bar(position = "fill") + scale_fill_manual(values = color.celltypes) + xlab("% epithelial cells")
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/integrated_celltype_abondance-1.png" width="672" />
 
 Samples from smokers seem to present more AT2 cells but this quick analysis is for illustrative purposes only.
 In practice it's far more complex to draw conclusion as we should have considered the variations between samples/donors as well as many other technical
@@ -429,7 +456,14 @@ To build the conda environment please follow the instructions on our MetacellAna
 library(reticulate)
 conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
 
-use_condaenv(conda_env)
+Sys.setenv(RETICULATE_PYTHON = conda_env)
+```
+
+
+```
+#>           used  (Mb) gc trigger    (Mb)   max used    (Mb)
+#> Ncells 3519418 188.0    6488508   346.6    6488508   346.6
+#> Vcells 6655103  50.8 1892615686 14439.6 2365317117 18046.0
 ```
 
 
@@ -471,12 +505,22 @@ done
 ### Load metacell objects
 
 We load the .h5ad objects and directly convert them in Seurat objects to benefit from all the functions of this framework.
+To consider the datasets in the same order as the one used in this tutorial we run the following chunk before loading the metacell objects.
 
 
 ```r
-datasets <- list.dirs("data/HLCA/datasets/", full.names = F, recursive = F)
+library(anndata)
+adata <- read_h5ad("data/HLCA/local.h5ad",backed = "r")
+adata$var_names <- adata$var$feature_name # We will use gene short name for downstream analyses
+datasets <- unique(adata$obs$dat)
+rm(adata)
+gc()
+```
 
-metacell.files <- sapply(datasets[1:5], FUN = function(x){paste0("data/HLCA/datasets/",x,"/sup_mc/mc_adata.h5ad")})
+
+```r
+
+metacell.files <- sapply(datasets, FUN = function(x){paste0("data/HLCA/datasets/",x,"/sup_mc/mc_adata.h5ad")})
 
 metacell.objs <- lapply(X = metacell.files, function(X){
   adata <- read_h5ad(X)
@@ -507,7 +551,7 @@ VlnPlot(unintegrated.mc[, unintegrated.mc$ann_level_3 != "None"], features = c("
 #> idents, : All cells have the same value of ann_level_2_purity.
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```r
 VlnPlot(unintegrated.mc[, unintegrated.mc$ann_level_3 != "None"], features = c("ann_level_3_purity", "ann_level_4_purity"), group.by = 'dataset', pt.size = 0.001,  ncol=2)
@@ -515,7 +559,7 @@ VlnPlot(unintegrated.mc[, unintegrated.mc$ann_level_3 != "None"], features = c("
 #> idents, : All cells have the same value of ann_level_3_purity.
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-28-2.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-17-2.png" width="672" />
 
 We can also use box plots.
 
@@ -530,7 +574,7 @@ p_finest <- ggplot(unintegrated.mc@meta.data, aes(x = dataset, y = ann_finest_le
 p_4 + p_finest
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
 Overall using supervised metacells construction we obtain pure metacells until the 3rd level of annotation and
 improve metacell purities for finer levels compared to the unsupervised approach (see previous section \@ref(integration_unsupervised)).
@@ -548,13 +592,13 @@ p_finest_unsup <- ggplot(meta.data.unsup, aes(x = dataset, y = ann_finest_level_
 p_4_unsup | p_4
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-30-1.png" width="1344" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-19-1.png" width="1344" />
 
 ```r
 p_finest_unsup + p_finest
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-30-2.png" width="1344" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-19-2.png" width="1344" />
 
 ### Unintegrated analysis
 
@@ -575,7 +619,7 @@ umap.unintegrated.types <- DimPlot(unintegrated.mc,reduction = "umap",group.by =
 umap.unintegrated.datasets + umap.unintegrated.types
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-20-1.png" width="1344" />
 
 You can see on the plots that a batch effect is clearly present at the metacell level. Let's correct it using a supervised approach.
 
@@ -594,6 +638,11 @@ library(STACAS)
 
 t0_integration <- Sys.time()
 
+n.metacells <- sapply(metacell.objs, FUN = function(x){ncol(x)})
+names(n.metacells) <- datasets
+ref.names <- sort(n.metacells,decreasing = T)[1:5]
+ref.index <- which(datasets %in% names(ref.names))
+
 # normalize and identify variable features for each dataset independently
 metacell.objs <- lapply(X = metacell.objs, FUN = function(x) {
   DefaultAssay(x) <- "RNA";
@@ -609,7 +658,7 @@ combined.mc <- Run.STACAS(object.list = metacell.objs,
                           min.sample.size = 80,
                           k.weight = 80, #smallest dataset contains 86 metacells
                           cell.labels = "ann", # Note that by not you can use STACAS in its unsupervised mode
-                          reference = c(1,2,5), # ,5,9,11 the 5 biggest datasets are used as reference
+                          reference = ref.index, # the 5 biggest datasets are used as reference
                           dims = 1:30)
 
 tf_integration <- Sys.time()
@@ -626,7 +675,7 @@ Check the obtained object:
 ```r
 combined.mc
 #> An object of class Seurat 
-#> 30024 features across 6719 samples within 2 assays 
+#> 30024 features across 12914 samples within 2 assays 
 #> Active assay: integrated (2000 features, 2000 variable features)
 #>  1 other assay present: RNA
 #>  1 dimensional reduction calculated: pca
@@ -637,7 +686,7 @@ We can verify that the sum of metacell sizes correspond to the original number o
 
 ```r
 sum(combined.mc$size)
-#> [1] 302920
+#> [1] 584944
 ```
 
 STACAS directly returns a pca for the slot `"integrated"` that we can use to make a UMAP of the corrected data.
@@ -659,7 +708,7 @@ umap.stacas.celltypes <- DimPlot(combined.mc,reduction = "umap",group.by = "ann_
 umap.stacas.datasets + umap.stacas.celltypes + umap.unintegrated.datasets + umap.unintegrated.types
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-36-1.png" width="1152" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-25-1.png" width="1152" />
 
 STACAS efficiently corrected the batch effect in the data while keeping the cell type separated.
 
@@ -672,21 +721,21 @@ library(ggplot2)
 DimPlot(combined.mc,group.by = "ann_level_1",reduction = "umap",cols= color.celltypes)
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-37-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-26-1.png" width="672" />
 
 ```r
 
 DimPlot(combined.mc,group.by = "ann_level_2",reduction = "umap",label = T,repel = T,cols= color.celltypes)
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-37-2.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-26-2.png" width="672" />
 
 ```r
 
 DimPlot(combined.mc,group.by = "ann_level_3",reduction = "umap",label = T, repel = T,cols= color.celltypes) + NoLegend()
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-37-3.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-26-3.png" width="672" />
 
 ### Comparison with unsupervised analysis
 
@@ -706,7 +755,7 @@ level3_unsup <- DimPlot(combined.mc.unsup,group.by = "ann_level_3",reduction = "
 level3_sup + level3_unsup
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-38-1.png" width="1344" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-27-1.png" width="1344" />
 
 Look at epithelial cells in particular
 
@@ -718,7 +767,7 @@ level3_unsup <- DimPlot(combined.mc.unsup[,combined.mc.unsup$ann_level_1 == "Epi
 level3_sup + level3_unsup
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-39-1.png" width="1344" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-28-1.png" width="1344" />
 
 ### Downstream analysis
 
@@ -735,7 +784,7 @@ names(color.celltypes.ann) <- levels(combined.mc$ann)
 DimPlot(combined.mc[,combined.mc$ann_level_2 == "Smooth muscle"],group.by = "ann",cols = color.celltypes.ann)
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-40-1.png" width="672" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-29-1.png" width="672" />
 
 Using a DEG analysis we can check if we retrieve their markers. MYH11 and CNN1 genes are canonical smooth muscle markers while FAM83D was found uniquely and consistently expressed by this rare cell type in the original study
 
@@ -746,25 +795,25 @@ Idents(combined.mc) <- "ann"
 markersSmoothMuscle <- FindMarkers(combined.mc,ident.1 = "Smooth muscle FAM83D+",only.pos = T)
 
 head(markersSmoothMuscle)
-#>                 p_val avg_log2FC pct.1 pct.2     p_val_adj
-#> NMRK2   8.716260e-183  0.6673490 0.421 0.003 2.442645e-178
-#> SLITRK3 2.001021e-154  0.3900334 0.421 0.004 5.607660e-150
-#> ASB5    3.578963e-108  0.4001160 0.368 0.004 1.002969e-103
-#> HSPB3   1.156804e-107  0.5994731 0.579 0.011 3.241826e-103
-#> BRINP3  1.402803e-107  0.8195490 0.526 0.009 3.931215e-103
-#> MYOCD   3.863561e-101  1.3110302 0.684 0.017  1.082724e-96
+#>               p_val avg_log2FC pct.1 pct.2     p_val_adj
+#> MYOCD 1.889342e-175  1.3869594 0.758 0.022 5.294693e-171
+#> ASB5  1.754802e-130  0.2913375 0.303 0.004 4.917658e-126
+#> NMRK2 1.103717e-129  0.4245135 0.273 0.003 3.093057e-125
+#> PLN   1.568445e-124  3.1280687 0.879 0.044 4.395411e-120
+#> HSPB3 7.379856e-121  1.0364463 0.545 0.016 2.068131e-116
+#> CASQ2 4.376973e-117  1.1063566 0.636 0.023 1.226603e-112
 
 markersSmoothMuscle[c("MYH11","CNN1","FAM83D"),]
 #>               p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> MYH11  2.875397e-24   4.254605 1.000 0.227 8.058012e-20
-#> CNN1   9.983682e-56   4.901585 1.000 0.080 2.797827e-51
-#> FAM83D 3.289285e-13   2.580875 0.789 0.249 9.217893e-09
+#> MYH11  2.596787e-32   4.248525 0.970 0.287 7.277236e-28
+#> CNN1   7.220235e-71   4.623065 0.970 0.106 2.023399e-66
+#> FAM83D 3.561820e-11   2.186449 0.636 0.285 9.981643e-07
 
 # Many classical smooth muscles cells are not annotated at the 3rd level of annotation (labelled None)
 VlnPlot(combined.mc,features = c("MYH11","CNN1","FAM83D"),group.by = "ann",ncol = 2,cols = color.celltypes.ann)
 ```
 
-<img src="40-integration_analysis_files/figure-html/unnamed-chunk-41-1.png" width="1152" />
+<img src="40-integration_analysis_files/figure-html/unnamed-chunk-30-1.png" width="1152" />
 
 ### Conclusion
 

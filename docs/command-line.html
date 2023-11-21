@@ -4,34 +4,34 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3.4 Metacell Analysis Toolkit (MCAT) | Metacell Tutorial</title>
+  <title>Chapter 5 Metacell Analysis Toolkit (MCAT) | Metacell analysis on a continuous dataset</title>
   <meta name="description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3.4 Metacell Analysis Toolkit (MCAT) | Metacell Tutorial" />
+  <meta property="og:title" content="Chapter 5 Metacell Analysis Toolkit (MCAT) | Metacell analysis on a continuous dataset" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3.4 Metacell Analysis Toolkit (MCAT) | Metacell Tutorial" />
+  <meta name="twitter:title" content="Chapter 5 Metacell Analysis Toolkit (MCAT) | Metacell analysis on a continuous dataset" />
   
   <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
   
 
-<meta name="author" content="Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller" />
+<meta name="author" content="Leonard Herault, Aurelie Gabriel, Mariia Bilous, David Gfeller" />
 
 
-<meta name="date" content="2023-11-20" />
+<meta name="date" content="2023-11-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="SEACells-construction.html"/>
-<link rel="next" href="QCs.html"/>
+<link rel="prev" href="representativeness-of-metacells.html"/>
+<link rel="next" href="setting-up-the-environment.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -207,7 +207,6 @@ div.csl-indent {
 <li class="chapter" data-level="3.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Building metacells</a></li>
 <li class="chapter" data-level="3.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>3.3.5</b> Visualize metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>3.4</b> Metacell Analysis Toolkit (MCAT)</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>4</b> Metacells QCs</a>
 <ul>
@@ -221,50 +220,61 @@ div.csl-indent {
 <li class="chapter" data-level="4.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>4.2</b> Size distribution</a></li>
 <li class="chapter" data-level="4.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>4.3</b> Representativeness of metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>5</b> Downstream analysis of metacells</a>
+<li class="chapter" data-level="5" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>5</b> Metacell Analysis Toolkit (MCAT)</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>5.1</b> Standard analysis (R)</a>
-<ul>
-<li class="chapter" data-level="5.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>5.1.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="5.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>5.1.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="5.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>5.1.3</b> Clustering</a></li>
-<li class="chapter" data-level="5.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>5.1.4</b> Differential expression analysis</a></li>
-<li class="chapter" data-level="5.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>5.1.5</b> Visualize gene-gene correlation</a></li>
+<li class="chapter" data-level="5.1" data-path="setting-up-the-environment.html"><a href="setting-up-the-environment.html"><i class="fa fa-check"></i><b>5.1</b> Setting up the environment</a></li>
+<li class="chapter" data-level="5.2" data-path="metacell-building.html"><a href="metacell-building.html"><i class="fa fa-check"></i><b>5.2</b> Metacell building</a></li>
+<li class="chapter" data-level="5.3" data-path="building-metacell-with-metacell2-mc2.html"><a href="building-metacell-with-metacell2-mc2.html"><i class="fa fa-check"></i><b>5.3</b> Building metacell with MetaCell2 (MC2)</a></li>
+<li class="chapter" data-level="5.4" data-path="building-metacell-with-supercell.html"><a href="building-metacell-with-supercell.html"><i class="fa fa-check"></i><b>5.4</b> Building metacell with SuperCell</a></li>
+<li class="chapter" data-level="5.5" data-path="short-downstream-analysis-of-the-metacells.html"><a href="short-downstream-analysis-of-the-metacells.html"><i class="fa fa-check"></i><b>5.5</b> Short downstream analysis of the metacells</a></li>
+<li class="chapter" data-level="5.6" data-path="metacell2-metacells.html"><a href="metacell2-metacells.html"><i class="fa fa-check"></i><b>5.6</b> MetaCell2 metacells</a></li>
+<li class="chapter" data-level="5.7" data-path="quality-control-with-the-metacellanalysistoolkit-package.html"><a href="quality-control-with-the-metacellanalysistoolkit-package.html"><i class="fa fa-check"></i><b>5.7</b> Quality control with the MetacellAnalysisToolkit package</a></li>
+<li class="chapter" data-level="5.8" data-path="loading-single-cell-data.html"><a href="loading-single-cell-data.html"><i class="fa fa-check"></i><b>5.8</b> Loading single-cell data</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>5.2</b> Sample-weighted analysis</a>
+<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>5.2.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="5.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>5.2.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="5.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>5.2.3</b> Clustering</a></li>
-<li class="chapter" data-level="5.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>5.2.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>6.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>6.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>6.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>6.1.5</b> Visualize gene-gene correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>6.2</b> Sample-weighted analysis</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>6.2.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>6.2.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>6.2.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>6.2.4</b> Differential expression analysis</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>6</b> Integration of metacells</a>
+<li class="chapter" data-level="7" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>7</b> Integration of metacells</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>6.1</b> Unsupervised integration</a>
+<li class="chapter" data-level="7.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>7.1</b> Unsupervised integration</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>6.1.1</b> Data loading</a></li>
-<li class="chapter" data-level="6.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment"><i class="fa fa-check"></i><b>6.1.2</b> Setting up the environment</a></li>
-<li class="chapter" data-level="6.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>6.1.3</b> Building metacell</a></li>
-<li class="chapter" data-level="6.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>6.1.4</b> Loading metacell objects</a></li>
-<li class="chapter" data-level="6.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>6.1.5</b> Merging objects and basic quality control</a></li>
-<li class="chapter" data-level="6.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>6.1.6</b> Unintegrated analysis</a></li>
-<li class="chapter" data-level="6.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>6.1.7</b> Seurat integration</a></li>
-<li class="chapter" data-level="6.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>6.1.8</b> Downstream analysis</a></li>
-<li class="chapter" data-level="6.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>6.1.9</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>7.1.1</b> Data loading</a></li>
+<li class="chapter" data-level="7.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>7.1.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="7.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>7.1.3</b> Building metacell</a></li>
+<li class="chapter" data-level="7.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>7.1.4</b> Loading metacell objects</a></li>
+<li class="chapter" data-level="7.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>7.1.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="7.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>7.1.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="7.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>7.1.7</b> Seurat integration</a></li>
+<li class="chapter" data-level="7.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>7.1.8</b> Downstream analysis</a></li>
+<li class="chapter" data-level="7.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>7.1.9</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>6.2</b> Supervised integration</a>
+<li class="chapter" data-level="7.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>7.2</b> Supervised integration</a>
 <ul>
-<li class="chapter" data-level="6.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>6.2.1</b> Data loading</a></li>
-<li class="chapter" data-level="6.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>6.2.2</b> Setting up the environment</a></li>
-<li class="chapter" data-level="6.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>6.2.3</b> Constructing supervised metacell</a></li>
-<li class="chapter" data-level="6.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>6.2.4</b> Load metacell objects</a></li>
-<li class="chapter" data-level="6.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>6.2.5</b> Merging objects and basic quality control</a></li>
-<li class="chapter" data-level="6.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>6.2.6</b> Unintegrated analysis</a></li>
-<li class="chapter" data-level="6.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>6.2.7</b> STACAS integration</a></li>
-<li class="chapter" data-level="6.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>6.2.8</b> Comparison with unsupervised analysis</a></li>
-<li class="chapter" data-level="6.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>6.2.9</b> Downstream analysis</a></li>
-<li class="chapter" data-level="6.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>6.2.10</b> Conclusion</a></li>
+<li class="chapter" data-level="7.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>7.2.1</b> Data loading</a></li>
+<li class="chapter" data-level="7.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-2"><i class="fa fa-check"></i><b>7.2.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="7.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>7.2.3</b> Constructing supervised metacell</a></li>
+<li class="chapter" data-level="7.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>7.2.4</b> Load metacell objects</a></li>
+<li class="chapter" data-level="7.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>7.2.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="7.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>7.2.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="7.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>7.2.7</b> STACAS integration</a></li>
+<li class="chapter" data-level="7.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>7.2.8</b> Comparison with unsupervised analysis</a></li>
+<li class="chapter" data-level="7.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>7.2.9</b> Downstream analysis</a></li>
+<li class="chapter" data-level="7.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>7.2.10</b> Conclusion</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -280,7 +290,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell Tutorial</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell analysis on a continuous dataset</a>
           </h1>
         </div>
 
@@ -288,36 +298,22 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="command-line" class="section level2 hasAnchor" number="3.4">
-<h2><span class="header-section-number">3.4</span> Metacell Analysis Toolkit (MCAT)<a href="command-line.html#command-line" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="command-line" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Metacell Analysis Toolkit (MCAT)<a href="command-line.html#command-line" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
 The command line tool takes multiple parameters as input, <em>e.g.,</em> number of neighbors considered in the knn, number of components used, graining level.
 which is for example required in a benchmark setting.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb57-1"><a href="command-line.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="ex">setwd</span><span class="er">(</span><span class="st">&quot;MetacellToolkit/&quot;</span><span class="kw">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb58"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb58-1"><a href="command-line.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="va">proj_name</span><span class="op">=</span><span class="st">&quot;3k_pbmc&quot;</span></span>
-<span id="cb58-2"><a href="command-line.html#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="va">MC_tool</span><span class="op">=</span><span class="st">&quot;SuperCell&quot;</span></span>
-<span id="cb58-3"><a href="command-line.html#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="co"># input raw adata output adata</span></span>
-<span id="cb58-4"><a href="command-line.html#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> cli/<span class="va">${MC_tool}</span>CL.R <span class="at">-i</span> data/<span class="va">${proj_name}</span>/singlecell_anndata_filtered.h5ad <span class="at">-o</span> data/<span class="va">${proj_name}</span>/<span class="va">${MC_tool}</span>/ <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
-<span id="cb58-5"><a href="command-line.html#cb58-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb58-6"><a href="command-line.html#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="co"># input raw adata output seurat</span></span>
-<span id="cb58-7"><a href="command-line.html#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> cli/<span class="va">${MC_tool}</span>CL.R <span class="at">-i</span> data/<span class="va">${proj_name}</span>/singlecell_anndata_filtered.h5ad <span class="at">-o</span> data/<span class="va">${proj_name}</span>/<span class="va">${MC_tool}</span>/ <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> seurat</span></code></pre></div>
-<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="command-line.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="va">proj_name</span><span class="op">=</span><span class="st">&quot;3k_pbmc&quot;</span></span>
-<span id="cb59-2"><a href="command-line.html#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="va">MC_tool</span><span class="op">=</span><span class="st">&quot;SEACells&quot;</span></span>
-<span id="cb59-3"><a href="command-line.html#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="co"># input raw adata output adata</span></span>
-<span id="cb59-4"><a href="command-line.html#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> cli/<span class="va">${MC_tool}</span>CL.R <span class="at">-i</span> data/<span class="va">${proj_name}</span>/singlecell_anndata_filtered.h5ad <span class="at">-o</span> data/<span class="va">${proj_name}</span>/<span class="va">${MC_tool}</span>/ <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
-<span id="cb59-5"><a href="command-line.html#cb59-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-6"><a href="command-line.html#cb59-6" aria-hidden="true" tabindex="-1"></a><span class="co"># input raw adata output seurat</span></span>
-<span id="cb59-7"><a href="command-line.html#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> cli/<span class="va">${MC_tool}</span>CL.R <span class="at">-i</span> data/<span class="va">${proj_name}</span>/singlecell_anndata_filtered.h5ad <span class="at">-o</span> data/<span class="va">${proj_name}</span>/<span class="va">${MC_tool}</span>/ <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> seurat</span></code></pre></div>
-
+<p>We will use this toolkit to analyse differentiating hematopoietic stem cells (Human CD34+).
+Note that we retrieved the RNA data from a 10X multiome experiment but we won’t analyse the ATAC modality.
+To retrieve this data, please refer to section <a href="CD34-data.html#CD34-data">1.3</a>.</p>
 </div>
-<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="SEACells-construction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="QCs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="representativeness-of-metacells.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="setting-up-the-environment.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -348,7 +344,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/21-MC_construction_discrete.Rmd",
+"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/23-downstream_continuous.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -356,7 +352,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/21-MC_construction_discrete.Rmd",
+"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/23-downstream_continuous.Rmd",
 "text": null
 },
 "download": ["_main.pdf", "_main.epub"],

@@ -102,7 +102,7 @@ We perform diffrential analysis to identify the markers of our cluster 3 as an e
 # Set idents to metacell annotation 
 Idents(MC.seurat) <- "SCclustering"
 
-cells_markers <- FindMarkers(MC.seurat, ident.1 = "3", only.pos = TRUE)
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "4", only.pos = TRUE)
 #> For a more efficient implementation of the Wilcoxon Rank Sum Test,
 #> (default method for FindMarkers) please install the limma package
 #> --------------------------------------------
@@ -113,13 +113,13 @@ cells_markers <- FindMarkers(MC.seurat, ident.1 = "3", only.pos = TRUE)
 #> efficient implementation (no further action necessary).
 #> This message will be shown once per session
 head(cells_markers)
-#>                     p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> MAL          8.809188e-37  1.3500224 0.901 0.135 2.883952e-32
-#> LINC00176    2.108003e-32  0.6485374 0.761 0.052 6.901180e-28
-#> LDHB         2.660113e-31  1.5689705 1.000 0.917 8.708679e-27
-#> AQP3         4.074471e-31  1.1640126 0.958 0.223 1.333900e-26
-#> LEF1         4.324853e-31  1.1439136 0.972 0.290 1.415870e-26
-#> RP11-664D1.1 1.511704e-30  0.6122634 0.789 0.067 4.949016e-26
+#>                p_val avg_log2FC pct.1 pct.2    p_val_adj
+#> LIM2    1.188910e-27  0.4687254 0.467 0.000 3.892253e-23
+#> FASLG   1.281776e-26  0.9488759 0.800 0.036 4.196277e-22
+#> SH2D1B  2.757388e-25  1.4437575 0.933 0.072 9.027137e-21
+#> KIR3DL2 1.480605e-23  1.1403146 0.867 0.068 4.847204e-19
+#> KIR3DL1 3.907898e-23  0.5023381 0.533 0.012 1.279368e-18
+#> PRSS23  6.410015e-22  1.7388849 0.933 0.092 2.098511e-17
 ```
 
 We see that the top marker genes for this cluster contain Killer cell immunoglobulin-like receptors (KIRs) genes coding for

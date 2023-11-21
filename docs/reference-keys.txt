@@ -29,7 +29,6 @@ data-loading-2
 filtering-steps-2
 building-metacells-2
 visualize-metacells
-command-line
 QCs
 quantitative-metrics
 purity
@@ -38,6 +37,15 @@ separation
 inv
 size-distribution
 representativeness-of-metacells
+command-line
+setting-up-the-environment
+metacell-building
+building-metacell-with-metacell2-mc2
+building-metacell-with-supercell
+short-downstream-analysis-of-the-metacells
+metacell2-metacells
+quality-control-with-the-metacellanalysistoolkit-package
+loading-single-cell-data
 downstream-analysis-of-metacells
 standard-analysis-R
 load-metacell-seurat-object
@@ -53,7 +61,7 @@ differential-expression-analysis-1
 integration
 integration_unsupervised
 data-loading-3
-setting-up-the-environment
+setting-up-the-environment-1
 building-metacell
 loading-metacell-objects
 merging-objects-and-basic-quality-control
@@ -66,7 +74,7 @@ cell-type-abundances-analyses.
 conclusion
 integration_supervised
 data-loading-4
-setting-up-the-environment-1
+setting-up-the-environment-2
 constructing-supervised-metacell
 load-metacell-objects
 merging-objects-and-basic-quality-control-1
