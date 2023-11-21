@@ -1,0 +1,136 @@
+
+[//]: # (Standard downstream analysis of metacells using R (Seurat))
+
+```{r, include=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+In this tutorial, standard analyses include dimensionality reduction, clustering and differential expression using the [Seurat](https://satijalab.org/seurat/) framework.
+
+```{r r-libraries, eval=TRUE}
+library(Seurat) 
+library(dplyr)
+library(ggplot2)
+```
+
+### Load metacell Seurat object
+
+We will use Seurat objects containing the metacells counts data and their annotation (*e.g.* cell-type annotation) and
+proceed with standard Seurat downstream analyses.
+Seurat objects containing metacells counts data and their annotation were generated at the end of sections \@ref(SuperCell-construction)
+These objects can also be generated using the command line described in chapter \@ref(command-line)
+
+```{r r-mc-loading, eval=TRUE}
+MC_tool = "SuperCell"
+proj_name = "3k_pbmc"
+annotation_column = "louvain"
+celltype_colors <- c(
+  "CD14+ Monocytes"    = "#E69F00",  # orange
+  "B cells"            = "#56B4E9",  # sky blue
+  "CD4 T cells"        = "#009E73",  # bluish green
+  "NK cells"           = "#F0E442",  # yellow
+  "CD8 T cells"        = "#0072B2",  # blue
+  "FCGR3A+ Monocytes"  = "#D55E00",  # vermillion
+  "Dendritic cells"    = "#CC79A7",  # reddish purple
+  "Megakaryocytes"     = "#000000"   # black
+)
+
+MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
+```
+
+
+### Dimensionality reduction
+
+As for single-cells, we normalize the raw counts (here aggregated raw counts) and we identify the most variable features in the metacells gene expression data.
+Based on these features, we run PCA and use the first principal components to obtain a two dimensionnal representation of the data using UMAP.
+
+```{r r-mc-dim-reduc, eval=TRUE}
+Idents(MC.seurat) <- annotation_column
+MC.seurat <- NormalizeData(MC.seurat)
+MC.seurat <- FindVariableFeatures(MC.seurat, selection.method = "vst", nfeatures = 2000)
+MC.seurat <- ScaleData(MC.seurat)
+MC.seurat <- RunPCA(MC.seurat, verbose = F)
+MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F)
+DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors)
+```
+
+### Clustering
+
+We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:
+```{r r-mc-clustering, eval=TRUE}
+MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reductions$pca@cell.embeddings[, 1:30]  ), k = 8)$clustering
+DimPlot(MC.seurat, reduction = "umap", group.by = "SCclustering")
+```
+
+### Differential expression analysis
+
+We perform diffrential analysis to identify the markers of our cluster 3 as an example using the `FindMarkers` function. 
+```{r r-mc-DEG, eval=TRUE}
+# Set idents to metacell annotation 
+Idents(MC.seurat) <- "SCclustering"
+
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "4", only.pos = TRUE)
+head(cells_markers)
+```
+
+We see that the top marker genes for this cluster contain Killer cell immunoglobulin-like receptors (KIRs) genes coding for
+transmembrane glycoproteins expressed by natural killer cells. 
+
+```{r r-mc-plot-genes, eval=TRUE, cache = FALSE}
+genes = c("KIR3DL2", "KIR3DL1")
+VlnPlot(MC.seurat, genes, ncol = 2, pt.size = 0.0)
+```
+
+We can verify the identification of the NK cell cluster by comparing the metacell annotation and the metacell clustering.
+
+```{r fig.height=4,fig.width=8}
+p_cluster <- DimPlot(MC.seurat, group.by = "SCclustering")
+p_annot <- DimPlot(MC.seurat, group.by = annotation_column, cols = celltype_colors)
+p_cluster + p_annot
+```
+
+### Visualize gene-gene correlation 
+
+We can use the `supercell_GeneGenePlot` function from the SuperCell package to visualize the correlation between marker genes of a cell-type: 
+(i) at the single-cell level and
+(ii) at the metacell level.
+
+For that, we load the single-cell data from which the metacells were derived from.
+```{r r-load-single-cell, eval=TRUE}
+print(proj_name)
+sc_data <- readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
+sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
+```
+
+We visualize gene-gene correlation at the single-cell level:
+```{r r-sc-plot-genes, eval=TRUE}
+cells_markers <- cells_markers [order(cells_markers$avg_log2FC, decreasing = T),]
+gene_x <- rownames(cells_markers)[1:5]  
+gene_y <- rownames(cells_markers)[6:10]
+
+alpha <- 0.7
+
+p.sc <- SuperCell::supercell_GeneGenePlot(
+  GetAssayData(sc_data, slot = "data"),
+  gene_x = gene_x,
+  gene_y = gene_y,
+  clusters = sc_data@meta.data[, annotation_column],
+  sort.by.corr = F, 
+  alpha = alpha, 
+  color.use = celltype_colors
+)
+p.sc$p
+```
+
+We visualize gene-gene correlation at the metacell level:
+```{r r-MC-plot-genes, eval=TRUE}
+
+p.MC <- SuperCell::supercell_GeneGenePlot(GetAssayData(MC.seurat, slot = "data"),
+                                          gene_x = gene_x,
+                                          gene_y = gene_y,
+                                          clusters = MC.seurat@meta.data[, annotation_column],
+                                          sort.by.corr = F, supercell_size = MC.seurat$size,
+                                          alpha = alpha,
+                                          color.use = celltype_colors)
+p.MC$p
+```

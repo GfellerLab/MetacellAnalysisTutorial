@@ -2,13 +2,27 @@
 [//]: # (Chunk to run MC-2 metacell construction for a discrete -pbmcs- dataset)
 
 ```{r, include=FALSE}
-# include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
-Here we construct metacells using [Metacell-2 (MC2)](https://github.com/tanaylab/metacells). The code is adapted from the [author's tutorial](https://metacells.readthedocs.io/en/latest/Metacells_Vignette.html).
+In this section, we construct metacells using [Metacell-2 (MC2)](https://github.com/tanaylab/metacells) implemented in Python. 
 
-#### Imports {-}
+### Method 
+Metacell-2 (MC2) is a python tool to construct metacells and is the updated version of the MetaCell algorithm, which introduced the concept of metacell.
+MC2 applies a two-phase divide-and-conquer approach. Cells are randomly divided into piles of ~10k cells and 
+initial metacells are built applying a MetaCell-like approach per pile, i.e. based on a single-cell kNN graph built 
+from log-normalized counts using a set of highly variable genes. 
+Then, transcriptionally similar metacells are grouped into metagroup piles for the identification of final metacells and outliers identification.
+Note that prior to metacell identification, the MC2 framework recommends gene filtering steps. The choice of the genes used
+by the method is of high importance to assure good quality of the metacells.
+
+The code provided in this section is adapted from the [author's tutorial](https://tanaylab.github.io/metacells-vignettes/one-pass.html). 
+For more information on the method, please refer to our review @Review and the original paper [@MC2]. 
+
+#### Importing python packages {-}
+
+To run MC2, the following python packages need to be imported: 
+
 ```{python import-mc2, eval = FALSE}
 import os
 import numpy as np
@@ -18,171 +32,290 @@ import scanpy as sc
 import matplotlib.pyplot as plt
 import seaborn as sns
 import metacells as mc
-
-import sys
-sys.path.append('./mc_QC/') 
-import mc_QC
 ```
 
 
-#### Parameters {-}
-```{python mc2-parameters}
+If you don't have these packages installed, please refer to the section \@ref(installations).
 
+```{python mc2-parameters, eval = TRUE, echo = FALSE}
 MC_tool = "MC2"
-gamma   = 50 # graining level
 
 # Here we can modify dataset 
-proj_name = ["cell_lines", "3k_pbmc"][1]
+proj_name = ["cell_lines", "3k_pbmc", "cd34_multiome"][1]
 
 annotation_label = {'cell_lines':'cell_line',
-                   '3k_pbmc':'louvain'}[proj_name] # name of annotation field (obs)
-
+                   '3k_pbmc':'louvain',
+                   'cd34_multiome':'celltype'}[proj_name] # name of annotation field (obs)
 ```
 
-#### Load data {-}
+### Data loading 
+We will run Metacell-2 (MC2) on a single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
+Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
 ```{r load-data, child='./functional_chunks/load_anndata.Rmd'}
 ```
 
+```{python load-data-noEval, eval = FALSE, echo = TRUE}
+MC_tool = "MC2"
+proj_name = "3k_pbmc"
+ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
+ad.X = ad.raw.X.copy()
+```
 
-**Setup MC object**
+We initialize the name of the anndata (in the unstructured annotations) object using the `mc.ut.set_name()` function from the MC2 package.
+
 ```{python}
 mc.ut.set_name(ad, proj_name)
 ```
 
+### Filtering steps 
+MC2 requires that standard filtering steps such as doublet filtering are performed outside of the MC2 framework. 
+In addition to standard data filtering steps, the MC2 package proposes functions to filter the single-cell data at the gene and at the cell level (See [author's vignette](https://tanaylab.github.io/metacells-vignettes/one-pass.html)). 
+At the gene level, the filtering steps consist in excluding genes based on biological knowledge (*e.g.* mitochrondrial genes) as well as based on their expression levels. 
+The latter genes include genes with zero expression or low expression levels and "bursty lonely genes" (*i.e.*, genes with high expression levels but no correlation with any other gene). 
+At the cell level, filtering is performed based on cells UMI counts.
 
-#### Gene filtering according to MC2 {-}
+#### Gene filtering {-}
+
+In the following code chunk, we exclude genes using the `mc.pl.exclude_genes()`function from the MC2 package. 
+Based on the authors vignette, we consider a minimal list of genes to exclude, *i.e.*, sex-specific and non-coding genes as well as the mitochondrial genes. 
+To complete this list of genes, an iterative approach can be used following the guidelines of the MC2 authors in a [second vignette](https://tanaylab.github.io/metacells-vignettes/iterative.html).
+The `mc.pl.exclude_genes()` function will filter out: 
+i) the known-to-be-excluded genes defined by the user as gene names or gene names patterns (`EXCLUDED_GENE_NAMES` and `EXCLUDED_GENE_PATTERNS` parameters respectively), 
+and ii) the "bursty lonely genes". 
 
 ```{python mc2-gene-filtering, collapse = TRUE, result = 'hold'}
-excluded_gene_names = [] # for example, ['IGHMBP2', 'IGLL1', 'IGLL5', 'IGLON5', 'NEAT1', 'TMSB10', 'TMSB4X']
-excluded_gene_patterns = ['MT-.*']
-mc.pl.analyze_clean_genes(ad,
-                          excluded_gene_names=excluded_gene_names,
-                          excluded_gene_patterns=excluded_gene_patterns,
-                          random_seed=123456)
+EXCLUDED_GENE_NAMES = ["XIST", "MALAT1", "NEAT1"] 
+EXCLUDED_GENE_PATTERNS = ['MT-.*']
 
-mc.pl.pick_clean_genes(ad)
-```
-
-#### Cell fintering {-}
-Since our data is pre-processed and low-quality cells have been already filtered out, this step is not applicable to our data, but we keep this chunk so that you can apply cell filtering to a newly generated dataset.
-
-The first round of cell cleaning usually implies filltering out cell with very low and very hight UMI content. The second round includes cell filtering based on mitochondrial and/or ribosomal content. We will skip both steps as our data have been pre-filtered and will use very lenient cutoffs (`properly_sampled_min_cell_total`, `properly_sampled_max_cell_total` and `properly_sampled_max_excluded_genes_fraction`) such that all the cells are kept for the metacell construction.
-
-```{python mc2-cell-filtering-first, warning = FALSE, collapse = TRUE, result = 'hold'}
-### The first round (high/low UMIs)
-properly_sampled_min_cell_total = 200 # setup for the dataset that will be used 
-properly_sampled_max_cell_total = 10000 # setup for the dataset that will be used 
-```
-
-```{r, child='./functional_chunks/mc2_cell_filtering_first.Rmd', result = 'asis'}
-```
-
-
-```{python mc2-cell-filtering-second, collapse = TRUE, result = 'hold'}
-## The second round (content of non-clean genes, e.g., mito-genes)
-properly_sampled_max_excluded_genes_fraction = 0.25
-```
-
-```{r mc-cell-filtering-run-second-knitr, child='./functional_chunks/mc2_cell_filtering_second.Rmd'}
+mc.pl.exclude_genes(
+    ad,
+    excluded_gene_names=EXCLUDED_GENE_NAMES,
+    excluded_gene_patterns=EXCLUDED_GENE_PATTERNS,
+    random_seed=123456
+)
 
 ```
 
+#### Cell filtering based on UMIs counts {-}
 
-```{r mc-extract-clean-cell-knitr, child='./functional_chunks/mc2_extract_clean_data.Rmd'}
+In the MC2 framework, cells with very low and very high UMI content will be filtered out (`PROPERLY_SAMPLED_MIN_CELL_TOTAL`, `PROPERLY_SAMPLED_MAX_CELL_TOTAL` variables defining thresholds in the next code chunk).  
+Also, cell filtering based on UMI counts in excluded genes is also performed(`PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION` variable). 
+Since our dataset has been pre-filtered, very lenient cutoffs will be used in this tutorial. 
+The following code chunk defines these parameters. 
+To adapt them to your datasets, we advise you to explore the distributions of total UMI counts and UMI counts in excluded genes, as recommended and described in the MC2 [original vignette](https://tanaylab.github.io/metacells-vignettes/one-pass.html).
 
+```{python mc2-cell-filtering-parameters, warning = FALSE, collapse = TRUE, result = 'hold'}
+PROPERLY_SAMPLED_MIN_CELL_TOTAL = 200 
+PROPERLY_SAMPLED_MAX_CELL_TOTAL = 10000 
+PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION = 0.25
+```
+
+The number of UMIs in excluded genes is computed using the `mc.tl.compute_excluded_gene_umis()` function and cells are filtered out using the `mc.pl.exclude_cells()` function.
+Additional cells can be filtered out by adding a cell description columns in the `obs` data frame in the anndata oject. This annotation should be a boolean indicating whether the cell should filtered out or not. 
+The name of this column should be provided to the `mc.pl.exclude_cells()` function via the `additional_cells_masks` parameter. 
+
+```{python mc2-cells-filtering, result='hold', collapse = TRUE}
+mc.tl.compute_excluded_gene_umis(ad)
+
+mc.pl.exclude_cells(
+    ad,
+    properly_sampled_min_cell_total=PROPERLY_SAMPLED_MIN_CELL_TOTAL,
+    properly_sampled_max_cell_total=PROPERLY_SAMPLED_MAX_CELL_TOTAL,
+    properly_sampled_max_excluded_genes_fraction=PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION # ,
+    # additional_cells_masks=["|doublet_cell"]
+)
+```
+
+After performing the two-step filtering (genes and cells), the "cleaned" data can be extracted using the `mc.pl.extract_clean_data()` function.
+
+```{python mc-extract-clean-cells, result='hold', collapse = TRUE}
+# Extract clean dataset (with filtered cells and genes)
+ad = mc.pl.extract_clean_data(ad)
 ```
 
 
-### Running MC2 {-}
+### Building metacells
 
-Metacell-2 uses its own feature selection approach (i.e., selection of genes used to build metacells). Additionally, we can explicitly specify which features to use by providing two arguments:  feature_gene_names - genes that have to be used  forbidden_gene_names - genes to exclude.
-In contrast to the SuperCell and SEACells, Metacell-2 does not allow to explicitly obtain metacell data at a user-defined graining level. Instead, to vary graining level, we have to vary a `target_metacell_size` parameter, that is `160000` by default. Here we provide a chunk to calibrate this value to get a desired graining level. Please, increase or decrease scale if the obtained graining level `gamma_obtained` is lower or larger than the requested one (gamma).
+#### Defining lateral genes {-}
 
-**Estimate target_metacell_size (gamma)**
+To build metacells, we need to define lateral genes, which are genes with strong biological signal which is independent of cell-state, *e.g.* cell-cycle genes. 
+These genes will be ignored for computing cells similarity and building metacells 
+but will be considered to define outlier cells (*i.e.*, expression levels of lateral genes should be consistent within metacells).
+In the following chunk, we consider a minimal list of lateral genes (provided by the MC2 authors) including cell-cycle and ribosomal genes and 
+mark them in the MC2 object using the `mc.pl.mark_lateral_genes()` function.
+
+```{python mc-lateral-genes, result='hold', collapse = TRUE}
+
+LATERAL_GENE_NAMES = [
+    "ACSM3", "ANP32B", "APOE", "AURKA", "B2M", "BIRC5", "BTG2", "CALM1", "CD63", "CD69", "CDK4",
+    "CENPF", "CENPU", "CENPW", "CH17-373J23.1", "CKS1B", "CKS2", "COX4I1", "CXCR4", "DNAJB1",
+    "DONSON", "DUSP1", "DUT", "EEF1A1", "EEF1B2", "EIF3E", "EMP3", "FKBP4", "FOS", "FOSB", "FTH1",
+    "G0S2", "GGH", "GLTSCR2", "GMNN", "GNB2L1", "GPR183", "H2AFZ", "H3F3B", "HBM", "HIST1H1C",
+    "HIST1H2AC", "HIST1H2BG", "HIST1H4C", "HLA-A", "HLA-B", "HLA-C", "HLA-DMA", "HLA-DMB",
+    "HLA-DPA1", "HLA-DPB1", "HLA-DQA1", "HLA-DQB1", "HLA-DRA", "HLA-DRB1", "HLA-E", "HLA-F", "HMGA1",
+    "HMGB1", "HMGB2", "HMGB3", "HMGN2", "HNRNPAB", "HSP90AA1", "HSP90AB1", "HSPA1A", "HSPA1B",
+    "HSPA6", "HSPD1", "HSPE1", "HSPH1", "ID2", "IER2", "IGHA1", "IGHA2", "IGHD", "IGHG1", "IGHG2",
+    "IGHG3", "IGHG4", "IGHM", "IGKC", "IGKV1-12", "IGKV1-39", "IGKV1-5", "IGKV3-15", "IGKV4-1",
+    "IGLC2", "IGLC3", "IGLC6", "IGLC7", "IGLL1", "IGLL5", "IGLV2-34", "JUN", "JUNB", "KIAA0101",
+    "LEPROTL1", "LGALS1", "LINC01206", "LTB", "MCM3", "MCM4", "MCM7", "MKI67", "MT2A", "MYL12A",
+    "MYL6", "NASP", "NFKBIA", "NUSAP1", "PA2G4", "PCNA", "PDLIM1", "PLK3", "PPP1R15A", "PTMA",
+    "PTTG1", "RAN", "RANBP1", "RGCC", "RGS1", "RGS2", "RGS3", "RP11-1143G9.4", "RP11-160E2.6",
+    "RP11-53B5.1", "RP11-620J15.3", "RP5-1025A1.3", "RP5-1171I10.5", "RPS10", "RPS10-NUDT3", "RPS11",
+    "RPS12", "RPS13", "RPS14", "RPS15", "RPS15A", "RPS16", "RPS17", "RPS18", "RPS19", "RPS19BP1",
+    "RPS2", "RPS20", "RPS21", "RPS23", "RPS24", "RPS25", "RPS26", "RPS27", "RPS27A", "RPS27L",
+    "RPS28", "RPS29", "RPS3", "RPS3A", "RPS4X", "RPS4Y1", "RPS4Y2", "RPS5", "RPS6", "RPS6KA1",
+    "RPS6KA2", "RPS6KA2-AS1", "RPS6KA3", "RPS6KA4", "RPS6KA5", "RPS6KA6", "RPS6KB1", "RPS6KB2",
+    "RPS6KC1", "RPS6KL1", "RPS7", "RPS8", "RPS9", "RPSA", "RRM2", "SMC4", "SRGN", "SRSF7", "STMN1",
+    "TK1", "TMSB4X", "TOP2A", "TPX2", "TSC22D3", "TUBA1A", "TUBA1B", "TUBB", "TUBB4B", "TXN", "TYMS",
+    "UBA52", "UBC", "UBE2C", "UHRF1", "YBX1", "YPEL5", "ZFP36", "ZWINT"
+]
+LATERAL_GENE_PATTERNS = ["RP[LS].*"]  # Ribosomal
+
+# This will mark as "lateral_gene" any genes that match the above, if they exist in the clean dataset.
+mc.pl.mark_lateral_genes(
+    ad,
+    lateral_gene_names=LATERAL_GENE_NAMES,
+    lateral_gene_patterns=LATERAL_GENE_PATTERNS,
+)
+
+```
+
+Some genes have higher variances than expected which could lead to false positive outlier identification.
+Users can mark those genes as *noisy genes* using the `mc.pl.mark_noisy_genes()` function. 
+```{python mc-noisy-genes, result='hold', collapse = TRUE}
+
+NOISY_GENE_NAMES = [
+    "CCL3", "CCL4", "CCL5", "CXCL8", "DUSP1", "FOS", "G0S2", "HBB", "HIST1H4C", "IER2", "IGKC",
+    "IGLC2", "JUN", "JUNB", "KLRB1", "MT2A", "RPS26", "RPS4Y1", "TRBC1", "TUBA1B", "TUBB"
+]
+# This will mark as "noisy_gene" any genes that match the above, if they exist in the clean dataset.
+mc.pl.mark_noisy_genes(ad, noisy_gene_names=NOISY_GENE_NAMES)
+
+```
+
+To extend this list of lateral genes, users can use the `relate_to_lateral_genes` function to identify genes that are highly correlated with the predefined lateral genes.
+The use of this function is described in [the vignette from the MC2 authors](https://tanaylab.github.io/metacells-vignettes/iterative.html).
+
+#### Define target_metacell_size (graining level) {-}
+
+By default, MC2 will build metacells with a size of 96 cells per metacells. 
+Users can vary the `target_metacell_size` parameter to reach a desired graining level. 
+
 ```{python estimate-target-mc-size}
-print(f'The requested graining level is {gamma}, lets estimate the target_metacell_size that should result in such graining level.')
-
-scale = 2 # increase or decrease if the obtained graining level (`gamma_obtained`) is significantly > or < then the requested one `gamma`
-
-N_c = ad.shape[0]
-
-# estimated mean UMI content in downsampled data
-est_downsample_UMI = np.quantile(np.array(total_umis_of_cells), 0.05)
-
-target_metacell_size = int(est_downsample_UMI * gamma * scale)
-target_metacell_size
+gamma = 25 
+target_metacell_size = gamma
 ```
 
-#### Aggregate metacells {.unnumbered #aggregate-mc2}
+#### Metacells identification using the divide and conquer approach {-}
+
+The construction of metacells by MC2 is performed using the `mc.pl.divide_and_conquer_pipeline()` function.
+Note that by default all cores of the system will be used for the metacells construction. 
+To change this behavior and adapt the number of cores the MC2 authors propose to use the `mc.pl.guess_max_parallel_piles()` and `mc.pl.set_max_parallel_piles()` functions 
+to adapt the number of processed in parallel depending on the available memory.
+
+The `mc.pl.divide_and_conquer_pipeline()` function associates each cell to a metacell or defines the cell as outlier. 
+These assignments are found in the `obs` layer of the anndata object.
+
 ```{python mc2-divide-n-conquer, message=FALSE, warning=FALSE, result=FALSE}
+max_parallel_piles = mc.pl.guess_max_parallel_piles(ad)
+mc.pl.set_max_parallel_piles(max_parallel_piles)
 mc.pl.divide_and_conquer_pipeline(
     ad,
-    #feature_gene_names   = feature_gene_names, # comment this line to allow Metacell2 selecting features
-    #forbidden_gene_names = forbidden_gene_names, # comment this line to allow Metacell2 selecting features
     target_metacell_size = target_metacell_size,
     random_seed = 123456)
 
-## make anndata of metacells
-mc_ad = mc.pl.collect_metacells(ad, name='metacells')
+ad.obs.metacell.head
 ```
 
-Here we estimate whether a deviation of the obtained gamma is acceptable, and if not, suggest to increase or decrease `scale` parameter to get better graining level.
-```{r mc2-gamma-deviation, child='./functional_chunks/mc2_gamma_deviation.Rmd'}
-  
-```
 
-If the obtained graining level is not acceptable and you updated `scale` parameter according to suggestion, do not forget to re-run chunk \@ref(chunk:mc2-divide-n-conquer) \@ref(aggregate-mc2)
-
-
-#### Visualize metacells {-}
-```{python mc2-comp-umap, result = FALSE}
-mc.pl.compute_umap_by_features(mc_ad, max_top_feature_genes=1000,
-                               min_dist=2.0, random_seed=123456)
-                               
-umap_x = mc.ut.get_o_numpy(mc_ad, 'umap_x')
-umap_y = mc.ut.get_o_numpy(mc_ad, 'umap_y')
-```
-
-```{python mc2-plot-umap}
-plt.figure()
-sns.scatterplot(x=umap_x, y=umap_y)
-plt.show()
-```
+The following code chunk adds a columns (named `membership`) containing the single_cell assignments to the obs attribute in the single-cell anndata object. 
+The membership information is required to compute metacells quality metrics as shown in chapter \@ref(QCs). 
 
 ```{python mc2-membership, result = FALSE}
-# make a membership -- index of metacell single cell belongs to 
+# make a membership -- index of metacells to which single cells belong to 
 ad.obs['membership'] = [int(i)+1 if i >= 0 else np.nan for i in ad.obs.metacell] 
+```
 
+#### Retrieve aggregated metacell data {-}
+
+The function `mc.pl.collect_metacells()` should be used to subsequently retrieve an anndata object containing the data at the metacells level instead of the single-cell level. 
+This function will store in the `X` data matrix of the anndata object a matrix of gene fraction (*i.e.*, the sum of all gene levels in a metacell sums to 1)
+and it will store the total UMIs per gene per metacell in the layer `total_umis`. 
+
+```{python mc2-aggregation, echo=TRUE}
+
+mc_ad = mc.pl.collect_metacells(ad, name='metacells', random_seed = 123456)
+mc_ad.shape
+mc_ad.X.sum(axis=1)[:5] 
+mc_ad.layers['total_umis']
+
+```
+
+### Annotate metacells (using available annotations)
+
+If single-cell annotations are available in the original single-cell anndata object. We can transfer these annotations to the metacell anndata object
+using the `mc.tl.convey_obs_to_group()` function which will associate each metacell to the most frequent annotation (categorical) or 
+averaged annotation (continuous) across the single-cells composing the metacell 
+(use of the `mc.ut.most_frequent` and `np.mean` respectively in the `mode` paratemer). 
+ 
+```{python mc2-annotation, result = FALSE}
+# Assign a single value for each metacell based on the cells.
+mc.tl.convey_obs_to_group(
+    adata=ad, gdata=mc_ad,
+    property_name=annotation_label, to_property_name=annotation_label,
+    method=mc.ut.most_frequent  # This is the default, for categorical data
+)
+
+# Compute the fraction of cells with each possible value in each metacell:
+mc.tl.convey_obs_fractions_to_group(  
+    adata=ad, gdata=mc_ad,
+    property_name=annotation_label, to_property_name=annotation_label
+)
+
+```
+ 
+### Save output 
+
+For future downstream analyses in python (section \@ref(standard-analysis-Py)), we save the metacell counts in an Anndata object: 
+
+```{python mc2-save-py}
 ## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object
 mc_ad.uns = ad.uns.copy()
 mc_ad.uns['sc.obs'] = ad.obs.copy()
 
 # save the requested gamma
 mc_ad.uns['gamma'] = gamma
+
+# save metacell size
+mc_ad.obs.rename(columns={'grouped':'size'}, inplace = True)
+
+print("Saving metacell object for the "+ proj_name+ " dataset using "+ MC_tool)
+mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
 ```
 
-### Compute latent space for metacell QC {-}
+For future QCs and downstream analyses in R (section \@ref(standard-analysis-R)), we save the metacell counts in a Seurat object: 
+```{r mc2-save-seurat}
+library(Seurat)
+library(anndata)
+library(reticulate)
+adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_MC2.h5ad"))
 
-```{r mc2-letent-space, child = './functional_chunks/mc2_latent_space.Rmd'}
+# Save counts and metadata in a Seurat object
+countMatrix <-  Matrix::t(adata_mc$X)
+colnames(countMatrix) <- adata_mc$obs_names
+rownames(countMatrix) <- adata_mc$var_names
+MC.seurat <- CreateSeuratObject(counts = as(countMatrix, 'CsparseMatrix'), meta.data = as.data.frame(adata_mc$obs))
+MC.seurat@misc[["var_features"]] <- rownames(adata_mc$var)[which(adata_mc$var$selected_gene == T)] 
+
+# Save membership in misc
+MC.seurat@misc$cell_membership <- py$ad$obs['membership']
+saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_MC2.rds'))
 ```
-
-
-### Metacell QC {-}
-```{r mc-qc, chuld = './functional_chunks/MC_QC.Rmd'}
-```
-
-### Save output {-}
 
 ```{python mc2-remove-variables, include = FALSE}
-
 globals().pop('ad', None);
 globals().pop('raw', None);
 globals().pop('mc_ad', None);
-globals().pop('mc_INV', None);
-globals().pop('mc_INV_val', None);
-globals().pop('compactness', None);
-globals().pop('separation', None);
-globals().pop('mc_purity', None);
 globals().pop('membership', None);
 globals().pop('mc_size', None);
 globals().pop('mc_purity', None);

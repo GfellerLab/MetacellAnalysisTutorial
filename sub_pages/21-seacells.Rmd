@@ -1,4 +1,251 @@
 
 [//]: # (Code to run mc construction with SEACells for a discrete dataset)
 
-Under construction...
+```{r, include=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+In this section, we construct metacells using [SEACells](https://github.com/dpeerlab/SEACells). 
+
+### Method 
+The SEAcells method builds a single-cell kNN graph from the Euclidean distance in the principal component space (SVD for scATAC-seq) space. 
+Distances in the graph are transformed to affinity by applying an adaptive Gaussian kernel. 
+The affinity matrix is then decomposed into archetypes (linear combination of cells) and membership matrices (cells as a linear combination of archetypes).
+Single cells are assigned to a given metacell based on the maximum membership value of the corresponding archetype.
+
+
+The code provided in this section is adapted from the [author's jupyter notebook](https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb). 
+For more information on the method, please refer to our review @Review and the original paper [@SEACells]. 
+
+#### Importing python packages {-}
+
+To run the SEACells, the following python packages need to be imported: 
+
+```{python, eval = FALSE}
+import os
+import pandas as pd
+import scanpy as sc
+import SEACells
+import random
+```
+
+
+If you don't have these packages installed, please refer to the section \@ref(installations).
+
+
+```{python parameters, echo = FALSE}
+## Parameters
+MC_tool = "SEACells"
+
+## Here we can modify dataset
+proj_name = ["cell_lines", "3k_pbmc", "cd34_multiome"][1]
+
+annotation_label = {'cell_lines':'cell_line',
+                   '3k_pbmc':'louvain',
+                   'cd34_multiome':'celltype'}[proj_name] # name of annotation field (obs)
+```
+
+### Data loading 
+Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
+Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+
+```{r seacells-load-data, child='./functional_chunks/load_anndata.Rmd'}
+```
+
+```{python seacell-load-data-noEval, eval = FALSE, echo = TRUE}
+MC_tool = "SEACells"
+proj_name = "3k_pbmc"
+ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
+```
+
+### Filtering steps 
+In this tutorial, the data have been pre-filterd and SEACells does not perform additionnal filtering.
+
+### Building metacells
+
+Metacells construction using SEACells requires 2 main inputs: i) an anndata object (`build_kernel_on` parameter), and
+ii) a key indicating which matrix in the `obsm` attribute of the anndata object should be considered to compute the kernel needed for archetypal analysis (`build_kernel_on` parameter).
+Important optional inputs are: the number of metacells to identify (`n_SEACells` parameter), which is used as input of the archetypal analysis, 
+ii) the number of neighbors to consider for the knn graph (`n_neighbors` parameter).
+
+#### Data pre-processing {-}
+
+The following code chunk saves the raw counts of the filtered data in the raw attribute of the anndata object.
+The raw counts will be used later for metacells aggregation.
+
+```{python seacells-data-processing, cache = TO_CACHE}
+raw_ad = sc.AnnData(ad.X)
+raw_ad.obs_names, raw_ad.var_names = ad.obs_names, ad.var_names
+ad.raw = raw_ad
+```
+
+To build the kernel for archetypal analysis, SEACells requires a lower-dimensionnal embedding of the data (for example using PCA for scRNA-Seq data or SVD for scATAC-Seq data). 
+In the next code chunk, we follow standard pre-processing steps prior to PCA computation, *i.e.*, data normalization, log transformation, identification of highly variable genes.
+PCA components are saved in the `obsm` attribute of the anndata object.
+
+```{r seacells-standard-preproc, child='./functional_chunks/scanpy_standard_preproc.Rmd'}
+```
+
+#### Setting up SEACells parameters {-}
+
+In this tutorial, we will use in the SEACells model the 30 first principal components resulting from the PCA to build the knn graph which will be used to compute the kernel. 
+The number of neighbors to considered for the knn graph can be fixed using the `n_neighbors` parameter (here 15).  
+As mentioned previously, users should provide as input the number of metacells required (`n_SEACells` parameter). This number can be defined as the ratio between the number of single cells and the desired graining level (`gamma` parameter in the following code chunk). 
+In this example, we choose a graining level of 25.  
+
+```{python seacells-parameters}
+build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
+n_waypoint_eigs = 30      # Number of eigenvalues to consider when initializing metacells
+n_neighbors = 30 # Number of neighbors used for graph construction 
+gamma = 25   # the requested graining level
+n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  
+```
+
+#### Initializing the SEACells model {-}
+
+The SEACells model is initialized with the previously defined parameters using the `SEACells.core.SEACells` function.
+
+```{python seacells-model-initialization, cache = TO_CACHE}
+model = SEACells.core.SEACells(ad,
+                  build_kernel_on = build_kernel_on,
+                  n_SEACells = n_SEACells,
+                  n_waypoint_eigs = n_waypoint_eigs,
+                  n_neighbors = n_neighbors,
+                  convergence_epsilon = 1e-5,
+                  verbose = True)
+```
+
+Kernel computation is performed using the `mconstruct_kernel_matrix` function.
+
+```{python seacells-model-kernel, cache = TO_CACHE, warning = FALSE, message = FALSE, results = FALSE}
+model.construct_kernel_matrix()
+M = model.kernel_matrix
+```
+
+Metacells are initialized using the `initialize_archetypes` function.  
+The SEACells archetypes initialization is based on cells sampling and thus is stochastic. User can fix a seed for reproducible results.
+To check that the archetypes are evenly spread, users can visualize them using the `plot.plot_initialization` function.   
+
+```{python seacells-model-init, cache = TO_CACHE}
+# set seed for reproducibility
+random.seed(123)
+
+# Initialize archetypes
+model.initialize_archetypes()
+# Visualize the initialization 
+SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') 
+```
+
+#### Fitting the SEACells model to identify metacells {-}
+
+The identification of the archetypes is an iterative process. In this example, we fixed the minimum and maximum number of iteration to 10 and 50 respectively. 
+We then check the model convergence using the `plot_convergence` function.  
+
+```{python seacells-model-fit, cache = TO_CACHE}
+model.fit(min_iter = 10, max_iter = 100)
+model.plot_convergence()
+```
+
+Once the final archetypes have been identified, we can assign each single-cell to one metacell (hard assignments). 
+These assignments (`membership`) can be retrieved using the `get_hard_assignments` function or extracted from the anndata object using `ad.obs["SEACell"]`. 
+In this tutorial, we will only consider hard assignments. However, the SEACells package also provides the option to retrieve soft assignments (multiple weighted assignments for each cell) using the `get_soft_assignments` function. 
+For more details on the soft assignments, please refer to the [SEACell paper](https://www.nature.com/articles/s41587-023-01716-9#Sec11) and the original [author's jupyter notebook](https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb).
+
+```{python seacells-get-membeship, cache = TO_CACHE}
+membership = model.get_hard_assignments()
+membership.head
+ad.obs["SEACell"].head
+```
+
+#### Retrieve aggregated metacell data {-}
+
+The `core.summarize_by_SEACell` function can be used to generate a metacell count matrix (aggregation of counts across all cells belonging to each metacell).  
+```{python seacells-aggregate, cache = TO_CACHE}
+mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
+
+```
+#### Annotate metacells {-}
+Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 
+allowed us to annotate the metacells to the most common cell type in each metacell.
+
+### Visualize metacells
+
+To visualize the metacells, we can project the metacells on the single-cell UMAP representation using the `plot.plot_2D` included in the SEACells package.
+
+```{python seacells-umap, cache = TO_CACHE, warning = FALSE, message = FALSE, results = FALSE}
+SEACells.plot.plot_2D(ad, key='X_umap', colour_metacells=True)
+```
+
+<!-- The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data. -->
+<!-- This annotation will be used to compute metacells quality metrics. -->
+
+<!-- ```{python seacells-membership, cache = TO_CACHE, warning = FALSE, message = FALSE} -->
+<!-- # make `membership` numeric -->
+<!-- d = {x: int(i)+1 for i, x in enumerate(mc_ad.obs_names)} -->
+<!-- ad.obs.merge(membership) -->
+<!-- ad.obs['membership'] = [d[x] for x in membership.SEACell] -->
+<!-- ``` -->
+
+##### Save output {-}
+For future downstream analyses in python (section \@ref(standard-analysis-Py)), we save the metacell counts in an Anndata object: 
+
+```{python seacells-save-py}
+print("Saving metacell object for the "+ proj_name+ " dataset using "+ MC_tool)
+
+# Save metacell sizes 
+label_df = ad.obs[['SEACell']].reset_index()
+mc_ad.obs = mc_ad.obs.join(pd.DataFrame(label_df.groupby('SEACell').count().iloc[:, 0]).rename(columns={'index':'size'}))
+
+# save pca used to compute metacells
+mc_ad.uns['var_features']=ad.var_names[ad.var.highly_variable].tolist()
+mc_ad.uns['sc.pca']=ad.obsm['X_pca'] 
+mc_ad.uns['sc.umap']=ad.obsm['X_umap'] 
+mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
+```
+
+For future downstream analyses in R (section \@ref(standard-analysis-R)), we save the metacell counts in a Seurat object: 
+```{r seacells-save-seurat}
+library(Seurat)
+library(anndata)
+library(reticulate)
+adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_SEACells.h5ad"))
+
+# Save counts and metadata in a Seurat object
+countMatrix <-  Matrix::t(adata_mc$X)
+colnames(countMatrix) <- adata_mc$obs_names
+rownames(countMatrix) <- adata_mc$var_names
+MC.seurat <- CreateSeuratObject(counts = as(countMatrix, 'CsparseMatrix'), meta.data = as.data.frame(adata_mc$obs))
+# MC.seurat@misc[["sc.pca"]] <- adata_mc$uns$sc.pca
+# MC.seurat@misc[["sc.umap"]] <- adata_mc$uns$sc.umap
+MC.seurat@misc[["var_features"]] <- adata_mc$uns$var_features 
+pca.res <- adata_mc$uns$sc.pca
+rownames(pca.res) <- rownames(py$ad$obs)
+MC.seurat@misc$sc.pca <- CreateDimReducObject(
+  embeddings = pca.res,
+  key = "PC_",
+  assay = "RNA"
+)
+# Save membership in misc
+MC.seurat@misc$cell_membership <- data.frame(row.names = rownames(py$membership), membership = py$membership$SEACell)
+saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_SEACells.rds'))
+```
+
+
+```{python seacells-remove-variables, include = FALSE}
+# Remove Seacell variables
+#del mc_ad
+#del ad
+globals().pop('ad', None);
+globals().pop('mc_ad', None);
+globals().pop('mc_INV', None);
+globals().pop('mc_INV_val', None);
+globals().pop('compactness', None);
+globals().pop('separation', None);
+globals().pop('mc_purity', None);
+globals().pop('membership', None);
+globals().pop('model', None);
+globals().pop('mc_size', None);
+globals().pop('mc_purity', None);
+```
+
+

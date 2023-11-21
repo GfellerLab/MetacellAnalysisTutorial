@@ -1,0 +1,22 @@
+# Downstream analysis of metacells 
+
+In this chapter, we run standard and advanced downstream analyses on metacells instead of single-cell data. 
+In this analysis, we treat each metacell as a single cell, neglecting information about the size of the metacell (i.e., number of containing single cells). 
+If you are interested in sample-weighted analysis, where metacell size is taken into account, see section \@ref(weighted-analysis).
+
+## Standard analysis (R) {#standard-analysis-R}
+
+```{r, child='./sub_pages/30-downstream-R.Rmd'}
+```
+
+
+<!-- ## Standard analysis (Python) {#standard-analysis-Py} -->
+<!-- ```{r, child='./sub_pages/30-downstream-Py.Rmd'} -->
+<!-- ``` -->
+
+
+## Sample-weighted analysis {#weighted-analysis}
+```{r, child='./sub_pages/30-downstream-weighted.Rmd'}
+```
+
+

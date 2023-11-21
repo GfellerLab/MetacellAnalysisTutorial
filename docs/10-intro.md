@@ -1,9 +1,13 @@
 # The metacell concept
 
-See chapters \@ref(MC2), \@ref(SuperCell), \@ref(SEACells)
+Metacells correspond to partitions of single-cell data into disjoint homogeneous groups of highly similar cells followed by aggregation of their profiles[@baran_metacell_2019]. 
+This concept relies on the assumption that most of the variability within metacells corresponds to technical noise and not to biologically relevant heterogeneity. 
 
-## Metacell (MC2) {#MC2}
+Using metacells enables users to: (i) remove the noise while preserving and enhancing biological signal in sparse single-cell genomics data and,
+(ii) address computational challenges due to the large size of these data. 
 
-## SuperCell {#SuperCell}
+![The metacell concept.](images/figure1.png)
 
-## SEACells {#SEACells}
+Several studies have been built upon the metacell concept. In this tutorial, we consider three tools providing standalone metacell construction frameworks and
+describe the different steps that should be followed to build metacells using these tools: 
+(i) SuperCell[@SuperCell] (tutorial in \@ref(SuperCell-construction)), (ii) Metacells version 2 (MC2[@MC2]) (tutorial in \@ref(MC2-construction)), and (iii) SEACells[@SEACells] (tutorial in \@ref(SEACells-construction)).

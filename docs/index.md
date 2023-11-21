@@ -1,88 +1,98 @@
 --- 
 title: "Metacell Tutorial"
-author: "Mariia Bilous, Léonard Hérault, Aurélie Gabriel, David Gfeller"
-date: "2023-07-12"
+author: "Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller"
+date: "2023-11-21"
 site: bookdown::bookdown_site
 documentclass: book
-bibliography:
-- book.bib
-- packages.bib
+bibliography: [citations.bib, packages.bib]
 description: |
   This is a tutorial about metacell construction and analysis.
 link-citations: yes
 github-repo: GfellerLab/Metacell_tutorial
+biblio-style: apalike
+csl: chicago-fullnote-bibliography.csl
 ---
 
-# About
+# This tutorial{.unnumbered}
 
-The structure of this tutorial.
+In this tutorial, we describe the different steps that should be followed to build metacells[@baran_metacell_2019] from single-cell data using three frameworks:
+SuperCell[@SuperCell] (tutorial in \@ref(SuperCell-construction)), (ii) Metacells version 2 (MC2[@MC2]) (tutorial in \@ref(MC2-construction)), and (iii) SEACells[@SEACells] (tutorial in \@ref(SEACells-construction)).
 
+We also show how to obtain metacells by running these methods using a command line tool that we provide as part of the MetacellAnalysisToolkit (MCAT) [github repository](https://github.com/GfellerLab/MetacellToolkit).
+This repository also contains the MetacellAnalysisToolkit R package which provides R functions to compute QC
+metrics and visualization functions to evaluate the quality of metacells.
+In chapter \@ref(XXX), we use MCAT to build metacells on a continuous dataset of CD34+ cells and use the R package to visualize the constructed metacells.
+In chapter \@ref(QCs), we describe how to use the R package to evaluate the quality of the metacells.
 
-
-
-
-## Book structure
-
-Book consists of several Chapters (i.e., first-level headings). Each chapter is in separate .Rmd file in the root folder, with a name in XY_text.Rmd format, with `XY` being numbers.
-
-Each Chapter consists of sections and sup-sections (i.e., second-level and lower heading), files for which are located in `./sub_pages`.  Sub-pages and chapters may also call *functional_chunks*, which are located in `./functional_chunks` and represent parts of code that can be repetitively run (e.g., `load_anndata`, `save_mc_anndata` etc). When the book is rendered, the included *sub_pages* and *functional_chunks* are basically inserted in the Chapter as inline code. The only challenge is the relative path of the files and resulting outputs, such as plots. To resolve this issue, currently, I manually set up the project folder as a knitting root directory in each sub-file (i.e., sub_pages and functional_chunks) as `knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())` . Also, in my RStudio settings, I have the following setting `Tools -> Global Options... -> R Markdown -> Evaluate chunk in directory -> Project`.
-
-**Note:** each chapters runs in a new R session and they do not share the environment, thus, we need to provide global knit options for each chapter, otherwise they are lost. I do it with a `source('./R/config.R')` in the beginning of each chapter. 
+Finally, we provide examples of downstream analyses performed at the metacell level. These analyses include clustering, differential analysis, data integration and gene regulatory network analysis.
 
 
-## Installation and requirements
 
-R requirements
+
+# Requirements 
+
+This chapter describes how to obtain the packages and data needed to reproduce the analyses performed in this tutorial.
+
+## Installations {#installations}
+
+### Using conda (recommended)
+To build a conda environment containing the three metacell building tools used in this tutorial (SuperCell, MC2 and SEACells), 
+please follow the instructions provided in the README of our MetacellAnalysisToolkit [github repository](https://github.com/GfellerLab/MetacellToolkit).
+
+
 
 ```r
-install.packages('rprojroot') # to reset work directory to the Project root
-install.packages('bookdown') # to render book
+library(reticulate)
+conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
+
+use_condaenv(conda_env)
 ```
 
-To run **MC2** and **SEACells** in RStudio, we need 
+### Without conda
+If you don't have conda, you can use the following instructions:
 
-```r
-install.packages('reticulate') # to run Python
-```
-
-Then, we need to setup virtual environment
+Set up a python virtual environment with MC2 and SEACells installed:
 
 
 ```bash
 pip install virtualenv
-cd <Path_to_Metacell_tutorial>
 virtualenv my_env
 source my_env/bin/activate
 
-# Installing SEACells, pip install installs old version, that does not work for me, thus install from git
+# Installing SEACells
 git clone https://github.com/dpeerlab/SEACells.git
 cd SEACells
 python setup.py install
-
 cd ..
-
-pip install -r SEACells_requirements.txt # here some packages have wrong/non-existing vision, so I manually changed their versions 
+pip install -r SEACells_requirements.txt
 pip install ipywidgets
 pip install jupyter
 
-pip install metacells
-
-# in project dir
-echo 'RETICULATE_PYTHON=my_env/bin/python' > '.Renviron' 
-
-# restart RStudio and open 'Metacell_tutorial.Rproj' 
-
+# Install MC2
+pip install git+https://github.com/tanaylab/metacells
 ```
 
-## Render book 
+In R, install the SuperCell package:
 
-The function to render book is `bookdown::render_book()`, this will take some time, as it will execute all the chunks in the book, there is an option to cache some chunks, but we have to make sure that cached chunks do not share variables with non-cached chunks (it will raise an error anyway). 
+```r
+remotes::install_github("GfellerLab/SuperCell", force = TRUE, upgrade = FALSE)
+```
 
-`bookdown::preview_chapter()` renders a chapter.
+To run python function in R, install reticulate:
 
-## Get data
+```r
+install.packages('reticulate')
+```
 
-To get 3k PBMCs, use scanpy datasets af follows 
+To use the python libraries installed in the virtual environment, define the RETICULATE_PYTHON variable as follow:
+
+```bash
+echo 'RETICULATE_PYTHON=my_env/bin/python' > '.Renviron'
+```
+
+## Retrieve a discrete dataset (PBMCs dataset) {#PBMC-data}
+
+To test metacell construction on a discrete dataset, we retrieved the 3k PBMCs from scanpy datasets as follows:
 
 ```python
 import scanpy as sc 
@@ -97,12 +107,13 @@ adata.uns   = adata_proc.uns.copy()
 adata.obsm  = adata_proc.obsm.copy()
 adata.obsp  = adata_proc.obsp.copy()
 
-sc.pl.embedding(adata, 'X_umap', color='louvain')
-#> /Users/mariiabilous/Documents/PhD/UNIL/R/Metacell_tutorial/my_env_mc2/lib/python3.8/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
-#>   cax = scatter(
+adata.X = adata.X.astype("float32")
+raw_ad = sc.AnnData(adata.X.copy())
+raw_ad.obs_names, raw_ad.var_names = adata.obs_names, adata.var_names
+adata.raw = raw_ad
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+The data are saved in the following file for future analyses in python (use of SEACells and MC2): "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
 
 
 ```python
@@ -110,7 +121,144 @@ directory = os.path.join("data", "3k_pbmc")
 
 if not os.path.exists(directory):
     os.makedirs(directory)
-    
+  
 adata.write_h5ad(os.path.join("data", "3k_pbmc", "singlecell_anndata_filtered.h5ad"))
 ```
 
+The data are saved in the following file for future analyses in R (use of SuperCell): "data/3k_pbmc/singlecell_seurat_filtered.rds".
+
+
+```r
+library(reticulate)
+library(Seurat)
+#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
+#> will retire shortly. Please refer to R-spatial evolution reports on
+#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
+#> This package is now running under evolution status 0
+#> Attaching SeuratObject
+library(anndata)
+adata <- anndata::read_h5ad(file.path("data/3k_pbmc/singlecell_anndata_filtered.h5ad"))
+
+raw_counts <- Matrix::t(adata$raw$X)
+colnames(raw_counts) <- rownames(adata$obs)
+rownames(raw_counts) <- rownames(adata$var)
+
+pbmc <- CreateSeuratObject(counts = raw_counts, meta.data = adata$obs)
+#> Warning: Feature names cannot have underscores ('_'), replacing with dashes
+#> ('-')
+saveRDS(pbmc, file = paste0("data/3k_pbmc/singlecell_seurat_filtered.rds"))
+```
+
+
+## Retrieve a continuous dataset (CD34 dataset) {#CD34-data}
+
+To test metacell construction on discrete dataset, we retrieved the CD34 dataset provided by Persad et al. [@SEACells]:
+
+```bash
+mkdir data/CD34
+wget -O data/CD34/cd34_multiome_rna.h5ad 'https://zenodo.org/record/6383269/files/cd34_multiome_rna.h5ad?download=1' 
+```
+
+
+```python
+import scanpy as sc 
+import os
+
+adata = sc.read(os.path.join("data", "CD34", "cd34_multiome_rna.h5ad"))
+adata.X.sort_indices()
+raw_ad = sc.AnnData(adata.X.copy())
+raw_ad.obs_names, raw_ad.var_names = adata.obs_names, adata.var_names
+adata.raw = raw_ad
+
+sc.pl.embedding(adata, 'X_umap', color='celltype')
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
+#>   cax = scatter(
+```
+
+<img src="index_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+
+The data are saved in the following file for future analyses in python (use of SEACells and MC2): "data/CD34/singlecell_anndata_filtered.h5ad".
+
+```python
+directory = os.path.join("data", "cd34_multiome")
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
+    
+adata.write_h5ad(os.path.join("data", "CD34", "singlecell_anndata_filtered.h5ad"))
+```
+
+The data are saved in the following file for future analyses in R (use of SuperCell): "data/CD34/singlecell_seurat_filtered.rds".
+
+
+```r
+library(reticulate)
+library(Seurat)
+library(anndata)
+adata <- anndata::read_h5ad(file.path("data/CD34/singlecell_anndata_filtered.h5ad"))
+
+raw_counts <- Matrix::t(adata$raw$X)
+colnames(raw_counts) <- rownames(adata$obs)
+rownames(raw_counts) <- rownames(adata$var)
+
+cd34 <- CreateSeuratObject(counts = raw_counts, meta.data = adata$obs)
+saveRDS(cd34, file = file.path("data/CD34/singlecell_seurat_filtered.rds"))
+```
+
+## Retrieve the lung atlas dataset {#HLCA-data}
+
+This dataset will be used for the integration of a large number of single-cell datasets at the level of metacells (see section \@ref(integration)).
+Considering, the large size of the data to download, if you don't consider running the integration analysis, you can skip this part of the tutorial.
+
+### Downloading the atlas
+
+To illustrate how metacells can be used in the context of single-cell data integration,
+we used a cell atlas of the human lung (core) available on [cellxgene](https://cellxgene.cziscience.com/collections/6f6d381a-7701-4781-935c-db10d30de293). 
+To download the data, please choose the `.h5ad` option after clicking on the download button for the core atlas (3 tissues, 584'944 cells).
+
+Save these data in the `data/HLCA/` directory. 
+
+Please note that this may take some time (\~45 mins) as the file is quite large (5.6 GB).
+
+###  Splitting atlas by datasets
+
+We will use anndata to read in backed mode (saving a lot of memory) the whole atlas and write one h5ad file for each dataset. 
+This should take less than 10 minutes.
+
+If you are limited in time feel free to process only a subset of the dataset.
+
+
+```r
+t0.split <- Sys.time()
+
+library(anndata)
+adata <- read_h5ad("data/HLCA/local.h5ad",backed = "r")
+adata$var_names <- adata$var$feature_name # We will use gene short name for downstream analyses
+datasets <- unique(adata$obs$dat)
+
+# If you are limited in time you can process on half of the datasets (uncomment th following line)
+# datasets <- datasets[1:7]
+
+print(dim(adata))
+
+lapply(datasets,FUN =  function(x) {
+  dir.create(paste0("data/HLCA/datasets/",x),recursive = T)
+  adata.dataset <- AnnData(X = adata[adata$obs$dataset == x]$raw$X,
+                           var = adata[adata$obs$dataset == x]$var,
+                           obs = adata[adata$obs$dataset == x]$obs)
+  #This will allow us to construct supervised metacell for each cell type in each sample later in the tutorial
+  adata.dataset$obs$ann <- as.character(adata.dataset$obs$ann_level_3)
+  # For cell without an annotation at the 3rd level we will use the second level of annotation
+  adata.dataset$obs$ann[adata.dataset$obs$ann_level_3 == 'None'] = as.character(adata.dataset$obs$ann_level_2[adata.dataset$obs$ann_level_3 == 'None'])
+  adata.dataset$obs$ann_sample <- paste0(adata.dataset$obs$ann,"_",adata.dataset$obs$sample)
+  
+  write_h5ad(adata.dataset,paste0("data/HLCA/datasets/",x,"/sc_adata.h5ad"))
+}
+)
+
+remove(adata)
+gc()
+
+tf.split <- Sys.time()
+tf.split - t0.split
+```
