@@ -1,367 +1,335 @@
 <!DOCTYPE html>
-<html lang="" xml:lang="">
+<html lang="en">
 <head>
-
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Requirements | Metacell analysis on a continuous dataset</title>
-  <meta name="description" content="This is a tutorial about metacell construction and analysis." />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
-
-  <meta property="og:title" content="Chapter 1 Requirements | Metacell analysis on a continuous dataset" />
-  <meta property="og:type" content="book" />
-  
-  <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
-  <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
-
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Requirements | Metacell analysis on a continuous dataset" />
-  
-  <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
-  
-
-<meta name="author" content="Leonard Herault, Aurelie Gabriel, Mariia Bilous, David Gfeller" />
-
-
-<meta name="date" content="2023-11-21" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  
-  
-<link rel="prev" href="index.html"/>
-<link rel="next" href="installations.html"/>
-<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
-<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
-<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
-
-
-
-
-
-
-
-
-<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
-<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
-<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
-
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Chapter 1 Requirements | Metacell Analysis Tutorial</title>
+<meta name="author" content="Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller">
+<meta name="description" content="This chapter describes how to obtain the packages and data needed to reproduce the analyses performed in this tutorial.  1.1 Installations  1.1.1 Using conda (recommended) To build a conda...">
+<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta property="og:title" content="Chapter 1 Requirements | Metacell Analysis Tutorial">
+<meta property="og:type" content="book">
+<meta property="og:url" content="https://GfellerLab.github.io/MetacellAnalysisTutorial/requirements.html">
+<meta property="og:description" content="This chapter describes how to obtain the packages and data needed to reproduce the analyses performed in this tutorial.  1.1 Installations  1.1.1 Using conda (recommended) To build a conda...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chapter 1 Requirements | Metacell Analysis Tutorial">
+<meta name="twitter:description" content="This chapter describes how to obtain the packages and data needed to reproduce the analyses performed in this tutorial.  1.1 Installations  1.1.1 Using conda (recommended) To build a conda...">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.0/transition.js"></script><script src="libs/bs3compat-0.5.0/tabs.js"></script><script src="libs/bs3compat-0.5.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
 <style type="text/css">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-</style>
-
-<style type="text/css">
-  
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-</style>
-<style type="text/css">
-/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
-
-<link rel="stylesheet" href="style.css" type="text/css" />
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+<link rel="stylesheet" href="style.css">
 </head>
+<body data-spy="scroll" data-target="#toc">
 
-<body>
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
 
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Metacell Analysis Tutorial</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
 
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
 
-  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
-
-    <div class="book-summary">
-      <nav role="navigation">
-
-<ul class="summary">
-<li><a href="./">Metacell Tutorial </a></li>
-
-<li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>This tutorial</a></li>
-<li class="chapter" data-level="1" data-path="requirements.html"><a href="requirements.html"><i class="fa fa-check"></i><b>1</b> Requirements</a>
-<ul>
-<li class="chapter" data-level="1.1" data-path="installations.html"><a href="installations.html"><i class="fa fa-check"></i><b>1.1</b> Installations</a>
-<ul>
-<li class="chapter" data-level="1.1.1" data-path="installations.html"><a href="installations.html#using-conda-recommended"><i class="fa fa-check"></i><b>1.1.1</b> Using conda (recommended)</a></li>
-<li class="chapter" data-level="1.1.2" data-path="installations.html"><a href="installations.html#without-conda"><i class="fa fa-check"></i><b>1.1.2</b> Without conda</a></li>
-</ul></li>
-<li class="chapter" data-level="1.2" data-path="PBMC-data.html"><a href="PBMC-data.html"><i class="fa fa-check"></i><b>1.2</b> Retrieve a discrete dataset (PBMCs dataset)</a></li>
-<li class="chapter" data-level="1.3" data-path="CD34-data.html"><a href="CD34-data.html"><i class="fa fa-check"></i><b>1.3</b> Retrieve a continuous dataset (CD34 dataset)</a></li>
-<li class="chapter" data-level="1.4" data-path="HLCA-data.html"><a href="HLCA-data.html"><i class="fa fa-check"></i><b>1.4</b> Retrieve the lung atlas dataset</a>
-<ul>
-<li class="chapter" data-level="1.4.1" data-path="HLCA-data.html"><a href="HLCA-data.html#downloading-the-atlas"><i class="fa fa-check"></i><b>1.4.1</b> Downloading the atlas</a></li>
-<li class="chapter" data-level="1.4.2" data-path="HLCA-data.html"><a href="HLCA-data.html#splitting-atlas-by-datasets"><i class="fa fa-check"></i><b>1.4.2</b> Splitting atlas by datasets</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="the-metacell-concept.html"><a href="the-metacell-concept.html"><i class="fa fa-check"></i><b>2</b> The metacell concept</a></li>
-<li class="chapter" data-level="3" data-path="Metacell-construction-chapter.html"><a href="Metacell-construction-chapter.html"><i class="fa fa-check"></i><b>3</b> Constructing metacells</a>
-<ul>
-<li class="chapter" data-level="3.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html"><i class="fa fa-check"></i><b>3.1</b> SuperCell (R)</a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#method"><i class="fa fa-check"></i><b>3.1.1</b> Method</a></li>
-<li class="chapter" data-level="3.1.2" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#data-loading"><i class="fa fa-check"></i><b>3.1.2</b> Data loading</a></li>
-<li class="chapter" data-level="3.1.3" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#filtering-steps"><i class="fa fa-check"></i><b>3.1.3</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.1.4" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#building-metacells"><i class="fa fa-check"></i><b>3.1.4</b> Building metacells</a></li>
-<li class="chapter" data-level="3.1.5" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#annotate-metacells-using-available-annotations"><i class="fa fa-check"></i><b>3.1.5</b> Annotate metacells (using available annotations)</a></li>
-<li class="chapter" data-level="3.1.6" data-path="SuperCell-construction.html"><a href="SuperCell-construction.html#save-output"><i class="fa fa-check"></i><b>3.1.6</b> Save output</a></li>
-</ul></li>
-<li class="chapter" data-level="3.2" data-path="MC2-construction.html"><a href="MC2-construction.html"><i class="fa fa-check"></i><b>3.2</b> MC2 (Python)</a>
-<ul>
-<li class="chapter" data-level="3.2.1" data-path="MC2-construction.html"><a href="MC2-construction.html#method-1"><i class="fa fa-check"></i><b>3.2.1</b> Method</a></li>
-<li class="chapter" data-level="3.2.2" data-path="MC2-construction.html"><a href="MC2-construction.html#data-loading-1"><i class="fa fa-check"></i><b>3.2.2</b> Data loading</a></li>
-<li class="chapter" data-level="3.2.3" data-path="MC2-construction.html"><a href="MC2-construction.html#filtering-steps-1"><i class="fa fa-check"></i><b>3.2.3</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.2.4" data-path="MC2-construction.html"><a href="MC2-construction.html#building-metacells-1"><i class="fa fa-check"></i><b>3.2.4</b> Building metacells</a></li>
-<li class="chapter" data-level="3.2.5" data-path="MC2-construction.html"><a href="MC2-construction.html#annotate-metacells-using-available-annotations-1"><i class="fa fa-check"></i><b>3.2.5</b> Annotate metacells (using available annotations)</a></li>
-<li class="chapter" data-level="3.2.6" data-path="MC2-construction.html"><a href="MC2-construction.html#save-output-1"><i class="fa fa-check"></i><b>3.2.6</b> Save output</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html"><i class="fa fa-check"></i><b>3.3</b> SEACells (Python)</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="SEACells-construction.html"><a href="SEACells-construction.html#method-2"><i class="fa fa-check"></i><b>3.3.1</b> Method</a></li>
-<li class="chapter" data-level="3.3.2" data-path="SEACells-construction.html"><a href="SEACells-construction.html#data-loading-2"><i class="fa fa-check"></i><b>3.3.2</b> Data loading</a></li>
-<li class="chapter" data-level="3.3.3" data-path="SEACells-construction.html"><a href="SEACells-construction.html#filtering-steps-2"><i class="fa fa-check"></i><b>3.3.3</b> Filtering steps</a></li>
-<li class="chapter" data-level="3.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Building metacells</a></li>
-<li class="chapter" data-level="3.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>3.3.5</b> Visualize metacells</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>4</b> Metacells QCs</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html"><i class="fa fa-check"></i><b>4.1</b> Quantitative metrics</a>
-<ul>
-<li class="chapter" data-level="4.1.1" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#purity"><i class="fa fa-check"></i><b>4.1.1</b> Purity</a></li>
-<li class="chapter" data-level="4.1.2" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#compactness"><i class="fa fa-check"></i><b>4.1.2</b> Compactness</a></li>
-<li class="chapter" data-level="4.1.3" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#separation"><i class="fa fa-check"></i><b>4.1.3</b> Separation</a></li>
-<li class="chapter" data-level="4.1.4" data-path="quantitative-metrics.html"><a href="quantitative-metrics.html#inv"><i class="fa fa-check"></i><b>4.1.4</b> INV</a></li>
-</ul></li>
-<li class="chapter" data-level="4.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>4.2</b> Size distribution</a></li>
-<li class="chapter" data-level="4.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>4.3</b> Representativeness of metacells</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>5</b> Metacell Analysis Toolkit (MCAT)</a>
-<ul>
-<li class="chapter" data-level="5.1" data-path="setting-up-the-environment.html"><a href="setting-up-the-environment.html"><i class="fa fa-check"></i><b>5.1</b> Setting up the environment</a></li>
-<li class="chapter" data-level="5.2" data-path="metacell-building.html"><a href="metacell-building.html"><i class="fa fa-check"></i><b>5.2</b> Metacell building</a></li>
-<li class="chapter" data-level="5.3" data-path="building-metacell-with-metacell2-mc2.html"><a href="building-metacell-with-metacell2-mc2.html"><i class="fa fa-check"></i><b>5.3</b> Building metacell with MetaCell2 (MC2)</a></li>
-<li class="chapter" data-level="5.4" data-path="building-metacell-with-supercell.html"><a href="building-metacell-with-supercell.html"><i class="fa fa-check"></i><b>5.4</b> Building metacell with SuperCell</a></li>
-<li class="chapter" data-level="5.5" data-path="short-downstream-analysis-of-the-metacells.html"><a href="short-downstream-analysis-of-the-metacells.html"><i class="fa fa-check"></i><b>5.5</b> Short downstream analysis of the metacells</a></li>
-<li class="chapter" data-level="5.6" data-path="metacell2-metacells.html"><a href="metacell2-metacells.html"><i class="fa fa-check"></i><b>5.6</b> MetaCell2 metacells</a></li>
-<li class="chapter" data-level="5.7" data-path="quality-control-with-the-metacellanalysistoolkit-package.html"><a href="quality-control-with-the-metacellanalysistoolkit-package.html"><i class="fa fa-check"></i><b>5.7</b> Quality control with the MetacellAnalysisToolkit package</a></li>
-<li class="chapter" data-level="5.8" data-path="loading-single-cell-data.html"><a href="loading-single-cell-data.html"><i class="fa fa-check"></i><b>5.8</b> Loading single-cell data</a></li>
-</ul></li>
-<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells</a>
-<ul>
-<li class="chapter" data-level="6.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
-<ul>
-<li class="chapter" data-level="6.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>6.1.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="6.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>6.1.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="6.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>6.1.3</b> Clustering</a></li>
-<li class="chapter" data-level="6.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Differential expression analysis</a></li>
-<li class="chapter" data-level="6.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>6.1.5</b> Visualize gene-gene correlation</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>6.2</b> Sample-weighted analysis</a>
-<ul>
-<li class="chapter" data-level="6.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>6.2.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="6.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>6.2.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="6.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>6.2.3</b> Clustering</a></li>
-<li class="chapter" data-level="6.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>6.2.4</b> Differential expression analysis</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>7</b> Integration of metacells</a>
-<ul>
-<li class="chapter" data-level="7.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>7.1</b> Unsupervised integration</a>
-<ul>
-<li class="chapter" data-level="7.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>7.1.1</b> Data loading</a></li>
-<li class="chapter" data-level="7.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>7.1.2</b> Setting up the environment</a></li>
-<li class="chapter" data-level="7.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>7.1.3</b> Building metacell</a></li>
-<li class="chapter" data-level="7.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>7.1.4</b> Loading metacell objects</a></li>
-<li class="chapter" data-level="7.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>7.1.5</b> Merging objects and basic quality control</a></li>
-<li class="chapter" data-level="7.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>7.1.6</b> Unintegrated analysis</a></li>
-<li class="chapter" data-level="7.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>7.1.7</b> Seurat integration</a></li>
-<li class="chapter" data-level="7.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>7.1.8</b> Downstream analysis</a></li>
-<li class="chapter" data-level="7.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>7.1.9</b> Conclusion</a></li>
-</ul></li>
-<li class="chapter" data-level="7.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>7.2</b> Supervised integration</a>
-<ul>
-<li class="chapter" data-level="7.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>7.2.1</b> Data loading</a></li>
-<li class="chapter" data-level="7.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-2"><i class="fa fa-check"></i><b>7.2.2</b> Setting up the environment</a></li>
-<li class="chapter" data-level="7.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>7.2.3</b> Constructing supervised metacell</a></li>
-<li class="chapter" data-level="7.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>7.2.4</b> Load metacell objects</a></li>
-<li class="chapter" data-level="7.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>7.2.5</b> Merging objects and basic quality control</a></li>
-<li class="chapter" data-level="7.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>7.2.6</b> Unintegrated analysis</a></li>
-<li class="chapter" data-level="7.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>7.2.7</b> STACAS integration</a></li>
-<li class="chapter" data-level="7.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>7.2.8</b> Comparison with unsupervised analysis</a></li>
-<li class="chapter" data-level="7.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>7.2.9</b> Downstream analysis</a></li>
-<li class="chapter" data-level="7.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>7.2.10</b> Conclusion</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled">
+<li><a class="" href="index.html">This tutorial</a></li>
+<li><a class="active" href="requirements.html"><span class="header-section-number">1</span> Requirements</a></li>
+<li><a class="" href="the-metacell-concept.html"><span class="header-section-number">2</span> The metacell concept</a></li>
+<li><a class="" href="Metacell-construction-chapter.html"><span class="header-section-number">3</span> Constructing metacells</a></li>
+<li><a class="" href="QCs.html"><span class="header-section-number">4</span> Metacells QCs</a></li>
+<li><a class="" href="command-line.html"><span class="header-section-number">5</span> Metacell Analysis Toolkit (MCAT)</a></li>
+<li><a class="" href="downstream-analysis-of-metacells.html"><span class="header-section-number">6</span> Downstream analysis of metacells</a></li>
+<li><a class="" href="integration.html"><span class="header-section-number">7</span> Integration of metacells</a></li>
+<li><a class="" href="references.html">References</a></li>
 </ul>
 
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/GfellerLab/MetacellAnalysisTutorial">View book source <i class="fab fa-github"></i></a></p>
+        </div>
       </nav>
-    </div>
-
-    <div class="book-body">
-      <div class="body-inner">
-        <div class="book-header" role="navigation">
-          <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell analysis on a continuous dataset</a>
-          </h1>
-        </div>
-
-        <div class="page-wrapper" tabindex="-1" role="main">
-          <div class="page-inner">
-
-            <section class="normal" id="section-">
-<div id="requirements" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Requirements<a href="requirements.html#requirements" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This chapter describes how to obtain the packages and data needed to reproduce the analyses performed in this tutorial.</p>
 </div>
-            </section>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="requirements" class="section level1" number="1">
+<h1>
+<span class="header-section-number">1</span> Requirements<a class="anchor" aria-label="anchor" href="#requirements"><i class="fas fa-link"></i></a>
+</h1>
+<p>This chapter describes how to obtain the packages and data needed to reproduce the analyses performed in this tutorial.</p>
+<div id="installations" class="section level2" number="1.1">
+<h2>
+<span class="header-section-number">1.1</span> Installations<a class="anchor" aria-label="anchor" href="#installations"><i class="fas fa-link"></i></a>
+</h2>
+<div id="using-conda-recommended" class="section level3" number="1.1.1">
+<h3>
+<span class="header-section-number">1.1.1</span> Using conda (recommended)<a class="anchor" aria-label="anchor" href="#using-conda-recommended"><i class="fas fa-link"></i></a>
+</h3>
+<p>To build a conda environment containing the three metacell building tools used in this tutorial (SuperCell, MC2 and SEACells),
+please follow the instructions provided in the README of our MetacellAnalysisToolkit <a href="https://github.com/GfellerLab/MetacellToolkit">github repository</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
+<span><span class="va">conda_env</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html">conda_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html">conda_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"MetacellAnalysisToolkit"</span>,<span class="st">"python"</span><span class="op">]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/use_python.html">use_condaenv</a></span><span class="op">(</span><span class="va">conda_env</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="without-conda" class="section level3" number="1.1.2">
+<h3>
+<span class="header-section-number">1.1.2</span> Without conda<a class="anchor" aria-label="anchor" href="#without-conda"><i class="fas fa-link"></i></a>
+</h3>
+<p>If you don’t have conda, you can use the following instructions:</p>
+<p>Set up a python virtual environment with MC2 and SEACells installed:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="requirements.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install virtualenv</span>
+<span id="cb2-2"><a href="requirements.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">virtualenv</span> my_env</span>
+<span id="cb2-3"><a href="requirements.html#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> my_env/bin/activate</span>
+<span id="cb2-4"><a href="requirements.html#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="requirements.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Installing SEACells</span></span>
+<span id="cb2-6"><a href="requirements.html#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/dpeerlab/SEACells.git</span>
+<span id="cb2-7"><a href="requirements.html#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> SEACells</span>
+<span id="cb2-8"><a href="requirements.html#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> setup.py install</span>
+<span id="cb2-9"><a href="requirements.html#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb2-10"><a href="requirements.html#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> SEACells_requirements.txt</span>
+<span id="cb2-11"><a href="requirements.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install ipywidgets</span>
+<span id="cb2-12"><a href="requirements.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install jupyter</span>
+<span id="cb2-13"><a href="requirements.html#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="requirements.html#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Install MC2</span></span>
+<span id="cb2-15"><a href="requirements.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install git+https://github.com/tanaylab/metacells</span></code></pre></div>
+<p>In R, install the SuperCell package:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"GfellerLab/SuperCell"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>To run python function in R, install reticulate:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'reticulate'</span><span class="op">)</span></span></code></pre></div>
+<p>To use the python libraries installed in the virtual environment, define the RETICULATE_PYTHON variable as follow:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="requirements.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'RETICULATE_PYTHON=my_env/bin/python'</span> <span class="op">&gt;</span> <span class="st">'.Renviron'</span></span></code></pre></div>
+</div>
+</div>
+<div id="PBMC-data" class="section level2" number="1.2">
+<h2>
+<span class="header-section-number">1.2</span> Retrieve a discrete dataset (PBMCs dataset)<a class="anchor" aria-label="anchor" href="#PBMC-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>To test metacell construction on a discrete dataset, we retrieved the 3k PBMCs from scanpy datasets as follows:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="requirements.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc </span>
+<span id="cb6-2"><a href="requirements.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb6-3"><a href="requirements.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="requirements.html#cb6-4" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> sc.datasets.pbmc3k()</span>
+<span id="cb6-5"><a href="requirements.html#cb6-5" aria-hidden="true" tabindex="-1"></a>adata_proc <span class="op">=</span> sc.datasets.pbmc3k_processed()</span>
+<span id="cb6-6"><a href="requirements.html#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="requirements.html#cb6-7" aria-hidden="true" tabindex="-1"></a>adata       <span class="op">=</span> adata[adata_proc.obs_names].copy()</span>
+<span id="cb6-8"><a href="requirements.html#cb6-8" aria-hidden="true" tabindex="-1"></a>adata.obs   <span class="op">=</span> adata_proc.obs.copy()</span>
+<span id="cb6-9"><a href="requirements.html#cb6-9" aria-hidden="true" tabindex="-1"></a>adata.uns   <span class="op">=</span> adata_proc.uns.copy()</span>
+<span id="cb6-10"><a href="requirements.html#cb6-10" aria-hidden="true" tabindex="-1"></a>adata.obsm  <span class="op">=</span> adata_proc.obsm.copy()</span>
+<span id="cb6-11"><a href="requirements.html#cb6-11" aria-hidden="true" tabindex="-1"></a>adata.obsp  <span class="op">=</span> adata_proc.obsp.copy()</span>
+<span id="cb6-12"><a href="requirements.html#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="requirements.html#cb6-13" aria-hidden="true" tabindex="-1"></a>adata.X <span class="op">=</span> adata.X.astype(<span class="st">"float32"</span>)</span>
+<span id="cb6-14"><a href="requirements.html#cb6-14" aria-hidden="true" tabindex="-1"></a>raw_ad <span class="op">=</span> sc.AnnData(adata.X.copy())</span>
+<span id="cb6-15"><a href="requirements.html#cb6-15" aria-hidden="true" tabindex="-1"></a>raw_ad.obs_names, raw_ad.var_names <span class="op">=</span> adata.obs_names, adata.var_names</span>
+<span id="cb6-16"><a href="requirements.html#cb6-16" aria-hidden="true" tabindex="-1"></a>adata.raw <span class="op">=</span> raw_ad</span></code></pre></div>
+<p>The data are saved in the following file for future analyses in python (use of SEACells and MC2): “data/3k_pbmc/singlecell_anndata_filtered.h5ad”.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="requirements.html#cb7-1" aria-hidden="true" tabindex="-1"></a>directory <span class="op">=</span> os.path.join(<span class="st">"data"</span>, <span class="st">"3k_pbmc"</span>)</span>
+<span id="cb7-2"><a href="requirements.html#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="requirements.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(directory):</span>
+<span id="cb7-4"><a href="requirements.html#cb7-4" aria-hidden="true" tabindex="-1"></a>    os.makedirs(directory)</span>
+<span id="cb7-5"><a href="requirements.html#cb7-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-6"><a href="requirements.html#cb7-6" aria-hidden="true" tabindex="-1"></a>adata.write_h5ad(os.path.join(<span class="st">"data"</span>, <span class="st">"3k_pbmc"</span>, <span class="st">"singlecell_anndata_filtered.h5ad"</span>))</span></code></pre></div>
+<p>The data are saved in the following file for future analyses in R (use of SuperCell): “data/3k_pbmc/singlecell_seurat_filtered.rds”.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
+<span><span class="co">#&gt; will retire shortly. Please refer to R-spatial evolution reports on</span></span>
+<span><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html for details.</span></span>
+<span><span class="co">#&gt; This package is now running under evolution status 0</span></span>
+<span><span class="co">#&gt; Attaching SeuratObject</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
+<span><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">anndata</span><span class="fu">::</span><span class="fu"><a href="https://anndata.dynverse.org/reference/read_h5ad.html">read_h5ad</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"data/3k_pbmc/singlecell_anndata_filtered.h5ad"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">raw_counts</span> <span class="op">&lt;-</span> <span class="fu">Matrix</span><span class="fu">::</span><span class="fu">t</span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">raw</span><span class="op">$</span><span class="va">X</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">raw_counts</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">raw_counts</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">var</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pbmc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/CreateSeuratObject.html">CreateSeuratObject</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">raw_counts</span>, meta.data <span class="op">=</span> <span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Feature names cannot have underscores ('_'), replacing with dashes</span></span>
+<span><span class="co">#&gt; ('-')</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">pbmc</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/3k_pbmc/singlecell_seurat_filtered.rds"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="CD34-data" class="section level2" number="1.3">
+<h2>
+<span class="header-section-number">1.3</span> Retrieve a continuous dataset (CD34 dataset)<a class="anchor" aria-label="anchor" href="#CD34-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>To test metacell construction on discrete dataset, we retrieved the CD34 dataset provided in <span class="citation">(<a href="references.html#ref-SEACells" role="doc-biblioref">Persad et al. 2023</a>)</span>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="requirements.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> data/CD34</span>
+<span id="cb9-2"><a href="requirements.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-O</span> data/CD34/cd34_multiome_rna.h5ad <span class="st">'https://zenodo.org/record/6383269/files/cd34_multiome_rna.h5ad?download=1'</span> </span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="requirements.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc </span>
+<span id="cb10-2"><a href="requirements.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb10-3"><a href="requirements.html#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="requirements.html#cb10-4" aria-hidden="true" tabindex="-1"></a>adata <span class="op">=</span> sc.read(os.path.join(<span class="st">"data"</span>, <span class="st">"CD34"</span>, <span class="st">"cd34_multiome_rna.h5ad"</span>))</span>
+<span id="cb10-5"><a href="requirements.html#cb10-5" aria-hidden="true" tabindex="-1"></a>adata.X.sort_indices()</span>
+<span id="cb10-6"><a href="requirements.html#cb10-6" aria-hidden="true" tabindex="-1"></a>raw_ad <span class="op">=</span> sc.AnnData(adata.X.copy())</span>
+<span id="cb10-7"><a href="requirements.html#cb10-7" aria-hidden="true" tabindex="-1"></a>raw_ad.obs_names, raw_ad.var_names <span class="op">=</span> adata.obs_names, adata.var_names</span>
+<span id="cb10-8"><a href="requirements.html#cb10-8" aria-hidden="true" tabindex="-1"></a>adata.raw <span class="op">=</span> raw_ad</span>
+<span id="cb10-9"><a href="requirements.html#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="requirements.html#cb10-10" aria-hidden="true" tabindex="-1"></a>sc.pl.embedding(adata, <span class="st">'X_umap'</span>, color<span class="op">=</span><span class="st">'celltype'</span>)</span>
+<span id="cb10-11"><a href="requirements.html#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored</span></span>
+<span id="cb10-12"><a href="requirements.html#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   cax = scatter(</span></span></code></pre></div>
+<div class="inline-figure"><img src="01-Requirements_files/figure-html/unnamed-chunk-11-1.png" width="672"></div>
+<p>The data are saved in the following file for future analyses in python (use of SEACells and MC2): “data/CD34/singlecell_anndata_filtered.h5ad”.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="requirements.html#cb11-1" aria-hidden="true" tabindex="-1"></a>directory <span class="op">=</span> os.path.join(<span class="st">"data"</span>, <span class="st">"cd34_multiome"</span>)</span>
+<span id="cb11-2"><a href="requirements.html#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="requirements.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(directory):</span>
+<span id="cb11-4"><a href="requirements.html#cb11-4" aria-hidden="true" tabindex="-1"></a>    os.makedirs(directory)</span>
+<span id="cb11-5"><a href="requirements.html#cb11-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-6"><a href="requirements.html#cb11-6" aria-hidden="true" tabindex="-1"></a>adata.write_h5ad(os.path.join(<span class="st">"data"</span>, <span class="st">"CD34"</span>, <span class="st">"singlecell_anndata_filtered.h5ad"</span>))</span></code></pre></div>
+<p>The data are saved in the following file for future analyses in R (use of SuperCell): “data/CD34/singlecell_seurat_filtered.rds”.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
+<span><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu">anndata</span><span class="fu">::</span><span class="fu"><a href="https://anndata.dynverse.org/reference/read_h5ad.html">read_h5ad</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"data/CD34/singlecell_anndata_filtered.h5ad"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">raw_counts</span> <span class="op">&lt;-</span> <span class="fu">Matrix</span><span class="fu">::</span><span class="fu">t</span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">raw</span><span class="op">$</span><span class="va">X</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">raw_counts</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">raw_counts</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">var</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cd34</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/CreateSeuratObject.html">CreateSeuratObject</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">raw_counts</span>, meta.data <span class="op">=</span> <span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">cd34</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="st">"data/CD34/singlecell_seurat_filtered.rds"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div id="HLCA-data" class="section level2" number="1.4">
+<h2>
+<span class="header-section-number">1.4</span> Retrieve the lung atlas dataset<a class="anchor" aria-label="anchor" href="#HLCA-data"><i class="fas fa-link"></i></a>
+</h2>
+<p>This dataset will be used for the integration of a large number of single-cell datasets at the level of metacells (see section <a href="integration.html#integration">7</a>).
+Considering, the large size of the data to download, if you don’t consider running the integration analysis, you can skip this part of the tutorial.</p>
+<div id="downloading-the-atlas" class="section level3" number="1.4.1">
+<h3>
+<span class="header-section-number">1.4.1</span> Downloading the atlas<a class="anchor" aria-label="anchor" href="#downloading-the-atlas"><i class="fas fa-link"></i></a>
+</h3>
+<p>To illustrate how metacells can be used in the context of single-cell data integration,
+we used a cell atlas of the human lung (core) available on <a href="https://cellxgene.cziscience.com/collections/6f6d381a-7701-4781-935c-db10d30de293">cellxgene</a>.
+To download the data, please choose the <code>.h5ad</code> option after clicking on the download button for the core atlas (3 tissues, 584’944 cells).</p>
+<p>Save these data in the <code>data/HLCA/</code> directory.</p>
+<p>Please note that this may take some time (~45 mins) as the file is quite large (5.6 GB).</p>
+</div>
+<div id="splitting-atlas-by-datasets" class="section level3" number="1.4.2">
+<h3>
+<span class="header-section-number">1.4.2</span> Splitting atlas by datasets<a class="anchor" aria-label="anchor" href="#splitting-atlas-by-datasets"><i class="fas fa-link"></i></a>
+</h3>
+<p>We will use anndata to read in backed mode (saving a lot of memory) the whole atlas and write one h5ad file for each dataset.
+This should take less than 10 minutes.</p>
+<p>If you are limited in time feel free to process only a subset of the dataset.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">t0.split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
+<span><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://anndata.dynverse.org/reference/read_h5ad.html">read_h5ad</a></span><span class="op">(</span><span class="st">"data/HLCA/local.h5ad"</span>,backed <span class="op">=</span> <span class="st">"r"</span><span class="op">)</span></span>
+<span><span class="va">adata</span><span class="op">$</span><span class="va">var_names</span> <span class="op">&lt;-</span> <span class="va">adata</span><span class="op">$</span><span class="va">var</span><span class="op">$</span><span class="va">feature_name</span> <span class="co"># We will use gene short name for downstream analyses</span></span>
+<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">dat</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># If you are limited in time you can process on half of the datasets (uncomment th following line)</span></span>
+<span><span class="co"># datasets &lt;- datasets[1:7]</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">adata</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">datasets</span>,FUN <span class="op">=</span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/HLCA/datasets/"</span>,<span class="va">x</span><span class="op">)</span>,recursive <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span>  <span class="va">adata.dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://anndata.dynverse.org/reference/AnnData.html">AnnData</a></span><span class="op">(</span>X <span class="op">=</span> <span class="va">adata</span><span class="op">[</span><span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">dataset</span> <span class="op">==</span> <span class="va">x</span><span class="op">]</span><span class="op">$</span><span class="va">raw</span><span class="op">$</span><span class="va">X</span>,</span>
+<span>                           var <span class="op">=</span> <span class="va">adata</span><span class="op">[</span><span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">dataset</span> <span class="op">==</span> <span class="va">x</span><span class="op">]</span><span class="op">$</span><span class="va">var</span>,</span>
+<span>                           obs <span class="op">=</span> <span class="va">adata</span><span class="op">[</span><span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">dataset</span> <span class="op">==</span> <span class="va">x</span><span class="op">]</span><span class="op">$</span><span class="va">obs</span><span class="op">)</span></span>
+<span>  <span class="co">#This will allow us to construct supervised metacell for each cell type in each sample later in the tutorial</span></span>
+<span>  <span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">ann</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">ann_level_3</span><span class="op">)</span></span>
+<span>  <span class="co"># For cell without an annotation at the 3rd level we will use the second level of annotation</span></span>
+<span>  <span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">ann</span><span class="op">[</span><span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">ann_level_3</span> <span class="op">==</span> <span class="st">'None'</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">ann_level_2</span><span class="op">[</span><span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">ann_level_3</span> <span class="op">==</span> <span class="st">'None'</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">ann_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">ann</span>,<span class="st">"_"</span>,<span class="va">adata.dataset</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">sample</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://anndata.dynverse.org/reference/write_h5ad.html">write_h5ad</a></span><span class="op">(</span><span class="va">adata.dataset</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/HLCA/datasets/"</span>,<span class="va">x</span>,<span class="st">"/sc_adata.h5ad"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">remove</a></span><span class="op">(</span><span class="va">adata</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/gc.html">gc</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tf.split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">tf.split</span> <span class="op">-</span> <span class="va">t0.split</span></span></code></pre></div>
 
-          </div>
-        </div>
-      </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="installations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
-    </div>
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="prev"><a href="index.html">This tutorial</a></div>
+<div class="next"><a href="the-metacell-concept.html"><span class="header-section-number">2</span> The metacell concept</a></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#requirements"><span class="header-section-number">1</span> Requirements</a></li>
+<li>
+<a class="nav-link" href="#installations"><span class="header-section-number">1.1</span> Installations</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#using-conda-recommended"><span class="header-section-number">1.1.1</span> Using conda (recommended)</a></li>
+<li><a class="nav-link" href="#without-conda"><span class="header-section-number">1.1.2</span> Without conda</a></li>
+</ul>
+</li>
+<li><a class="nav-link" href="#PBMC-data"><span class="header-section-number">1.2</span> Retrieve a discrete dataset (PBMCs dataset)</a></li>
+<li><a class="nav-link" href="#CD34-data"><span class="header-section-number">1.3</span> Retrieve a continuous dataset (CD34 dataset)</a></li>
+<li>
+<a class="nav-link" href="#HLCA-data"><span class="header-section-number">1.4</span> Retrieve the lung atlas dataset</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#downloading-the-atlas"><span class="header-section-number">1.4.1</span> Downloading the atlas</a></li>
+<li><a class="nav-link" href="#splitting-atlas-by-datasets"><span class="header-section-number">1.4.2</span> Splitting atlas by datasets</a></li>
+</ul>
+</li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/GfellerLab/MetacellAnalysisTutorial/blob/main/01-Requirements.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/GfellerLab/MetacellAnalysisTutorial/edit/main/01-Requirements.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-21.</p>
   </div>
-<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
-<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
-<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
-<script>
-gitbook.require(["gitbook"], function(gitbook) {
-gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/edit/master/index.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": "https://github.com/GfellerLab/Metacell_tutorial/blob/master/index.Rmd",
-"text": null
-},
-"download": ["_main.pdf", "_main.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
-});
-});
-</script>
 
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
 </body>
-
 </html>

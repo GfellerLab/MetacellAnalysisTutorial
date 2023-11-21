@@ -44,7 +44,7 @@ building-metacell-with-metacell2-mc2
 building-metacell-with-supercell
 short-downstream-analysis-of-the-metacells
 metacell2-metacells
-quality-control-with-the-metacellanalysistoolkit-package
+qc-with-the-metacellanalysistoolkit-package
 loading-single-cell-data
 downstream-analysis-of-metacells
 standard-analysis-R
