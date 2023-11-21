@@ -3,8 +3,6 @@
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
-## Supervised integration {#integration_supervised}
-
 As for the unsupervised integration example, we will work with the Human Cell Lung Atlas core [HLCA](%5Bhttps://www.nature.com/articles/s41591-023-02327-2)
 gathering around 580,000 cells from 107 individuals distributed in 166 samples.
 
