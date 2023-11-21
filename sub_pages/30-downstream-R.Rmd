@@ -50,8 +50,18 @@ MC.seurat <- NormalizeData(MC.seurat)
 MC.seurat <- FindVariableFeatures(MC.seurat, selection.method = "vst", nfeatures = 2000)
 MC.seurat <- ScaleData(MC.seurat)
 MC.seurat <- RunPCA(MC.seurat, verbose = F)
-MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F)
-DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors)
+MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F, min.dist = 0.5)
+
+data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
+              data.frame(size = MC.seurat$size,
+                         cell_type = MC.seurat@meta.data[, annotation_column]))
+
+p_annot <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cell_type)) + geom_point(aes(size=size)) +
+  ggplot2::scale_size_continuous(range = c(1,  max(log((data$size))))) +
+   ggplot2::scale_color_manual(values = celltype_colors) +
+  theme_classic()
+p_annot
+#DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors, pt.size = log1p(MC.seurat$size)) 
 ```
 
 ### Clustering
@@ -59,7 +69,14 @@ DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors)
 We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:
 ```{r r-mc-clustering, eval=TRUE}
 MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reductions$pca@cell.embeddings[, 1:30]  ), k = 8)$clustering
-DimPlot(MC.seurat, reduction = "umap", group.by = "SCclustering")
+data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
+              data.frame(size = MC.seurat$size,
+                         cluster = paste0("C_",MC.seurat$SCclustering)))
+
+p_cluster <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cluster)) + geom_point(aes(size=size)) +
+  ggplot2::scale_size_continuous(range = c(1, max(log1p((data$size))))) +
+  theme_classic()
+p_cluster
 ```
 
 ### Differential expression analysis
@@ -84,8 +101,6 @@ VlnPlot(MC.seurat, genes, ncol = 2, pt.size = 0.0)
 We can verify the identification of the NK cell cluster by comparing the metacell annotation and the metacell clustering.
 
 ```{r fig.height=4,fig.width=8}
-p_cluster <- DimPlot(MC.seurat, group.by = "SCclustering")
-p_annot <- DimPlot(MC.seurat, group.by = annotation_column, cols = celltype_colors)
 p_cluster + p_annot
 ```
 
