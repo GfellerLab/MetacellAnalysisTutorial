@@ -1,14 +1,10 @@
-bookdown::gitbook:
+bookdown::bs4_book:
   css: style.css
-  split_by: section
-  config:
-    toc:
-      before: |
-        <li><a href="./">Metacell Tutorial </a></li>
-      after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/GfellerLab/Metacell_tutorial/edit/master/%s
-    download: ["pdf", "epub"]
+  theme:
+    primary: "#096B72"
+  repo: 
+    base: https://github.com/GfellerLab/MetacellAnalysisTutorial
+    branch: main
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex
@@ -16,3 +12,4 @@ bookdown::pdf_book:
   citation_package: natbib
   keep_tex: yes
 bookdown::epub_book: default
+
