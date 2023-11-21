@@ -32,8 +32,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used (Mb) gc trigger (Mb) max used (Mb)
-#> Ncells  611524 32.7    1414542 75.6   664137 35.5
-#> Vcells 1133017  8.7    8388608 64.0  1870234 14.3
+#> Ncells  649423 34.7    1512985 80.9   704350 37.7
+#> Vcells 1196992  9.2    8388608 64.0  1814779 13.9
 ```
 
 
@@ -462,8 +462,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#> Ncells 3519418 188.0    6488508   346.6    6488508   346.6
-#> Vcells 6655103  50.8 1892615686 14439.6 2365317117 18046.0
+#> Ncells 3555047 189.9    6519942   348.3    6519942   348.3
+#> Vcells 6717400  51.3 1799339657 13727.9 2245660962 17133.1
 ```
 
 

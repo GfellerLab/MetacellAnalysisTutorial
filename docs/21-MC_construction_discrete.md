@@ -263,8 +263,8 @@ anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_na
 
 ```
 #>            used  (Mb) gc trigger  (Mb) max used  (Mb)
-#> Ncells  3438021 183.7    5981017 319.5  4950848 264.5
-#> Vcells 20466835 156.2   65107198 496.8 65104632 496.8
+#> Ncells  3474466 185.6    5447132 291.0  5447132 291.0
+#> Vcells 20531196 156.7   65218418 497.6 65217828 497.6
 ```
 
 
@@ -852,7 +852,7 @@ model.initialize_archetypes()
 #> Initializing f and g...
 #> Selecting 27 cells from greedy initialization.
 #> 
-#>   0%|          | 0/37 [00:00<?, ?it/s] 59%|#####9    | 22/37 [00:00<00:00, 212.81it/s]100%|##########| 37/37 [00:00<00:00, 217.66it/s]
+#>   0%|          | 0/37 [00:00<?, ?it/s] 59%|#####9    | 22/37 [00:00<00:00, 213.26it/s]100%|##########| 37/37 [00:00<00:00, 217.95it/s]
 # Visualize the initialization 
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') 
 ```
@@ -931,7 +931,7 @@ The `core.summarize_by_SEACell` function can be used to generate a metacell coun
 
 ```python
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
-#>   0%|          | 0/105 [00:00<?, ?it/s] 58%|#####8    | 61/105 [00:00<00:00, 604.49it/s]100%|##########| 105/105 [00:00<00:00, 621.70it/s]
+#>   0%|          | 0/105 [00:00<?, ?it/s] 59%|#####9    | 62/105 [00:00<00:00, 615.29it/s]100%|##########| 105/105 [00:00<00:00, 634.76it/s]
 ```
 #### Annotate metacells {-}
 Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 
