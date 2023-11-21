@@ -7,24 +7,32 @@ documentclass: book
 bibliography: [citations.bib, packages.bib]
 url: https://GfellerLab.github.io/MetacellAnalysisTutorial
 description: |
-  This is a tutorial about metacell construction and analysis.
+  This is a tutorial about construction of metacells for single-cell RNA-seq data and analysis of metacells.
 link-citations: yes
 github-repo: GfellerLab/MetacellAnalysisTutorial
 biblio-style: apalike
 csl: biochemistry-and-cell-biology.csl
 ---
 
-# This tutorial{.unnumbered}
+# About this tutorial{.unnumbered}
 
 In this tutorial, we describe the different steps that should be followed to build metacells [@baran_metacell_2019] from single-cell data using three frameworks:
-SuperCell [@SuperCell] (tutorial in \@ref(SuperCell-construction)), (ii) Metacells version 2 (MC2 [@MC2]) (tutorial in \@ref(MC2-construction)), and (iii) SEACells [@SEACells] (tutorial in \@ref(SEACells-construction)).
+
+i. SuperCell [@SuperCell] (tutorial in \@ref(SuperCell-construction)), 
+ii. Metacells version 2 (MC2 [@MC2]) (tutorial in \@ref(MC2-construction)),
+iii. SEACells [@SEACells] (tutorial in \@ref(SEACells-construction)).
 
 We also show how to obtain metacells by running these methods using a command line tool that we provide as part of the MetacellAnalysisToolkit (MCAT) [github repository](https://github.com/GfellerLab/MetacellAnalysisToolkit).
 This repository also contains the MetacellAnalysisToolkit R package which provides R functions to compute QC
 metrics and visualization functions to evaluate the quality of metacells.
-In chapter \@ref(XXX), we use MCAT to build metacells on a continuous dataset of CD34+ cells and use the R package to visualize the constructed metacells.
+
+In chapter \@ref(command-line), we use MCAT to build metacells on a continuous dataset of CD34+ cells and use the R package to visualize the constructed metacells.
 In chapter \@ref(QCs), we describe how to use the R package to evaluate the quality of the metacells.
 
-Finally, we provide examples of downstream analyses performed at the metacell level. These analyses include clustering, differential analysis, data integration and gene regulatory network analysis.
+In chapter \@ref(downstream-analysis) we provide examples of downstream analyses performed at the metacell level. These analyses include clustering, differential analysis, data integration and gene regulatory network analysis.
+
+In the last chapter \@ref(integration), we demonstrate to use metacells to analyze a very large dataset using a reasonable amount of time and memory.
+
+
 
 
