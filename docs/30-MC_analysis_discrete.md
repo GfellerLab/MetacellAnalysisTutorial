@@ -1,4 +1,4 @@
-# Downstream analysis of metacells 
+# Downstream analysis of metacells {#downstream-analysis}
 
 In this chapter, we run standard and advanced downstream analyses on metacells instead of single-cell data. 
 In this analysis, we treat each metacell as a single cell, neglecting information about the size of the metacell (i.e., number of containing single cells). 
@@ -74,14 +74,27 @@ MC.seurat <- FindVariableFeatures(MC.seurat, selection.method = "vst", nfeatures
 MC.seurat <- ScaleData(MC.seurat)
 #> Centering and scaling data matrix
 MC.seurat <- RunPCA(MC.seurat, verbose = F)
-MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F)
+MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F, min.dist = 0.5)
 #> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
 #> This message will be shown once per session
-DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors)
+
+data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
+              data.frame(size = MC.seurat$size,
+                         cell_type = MC.seurat@meta.data[, annotation_column]))
+
+p_annot <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cell_type)) + geom_point(aes(size=size)) +
+  ggplot2::scale_size_continuous(range = c(1,  max(log((data$size))))) +
+   ggplot2::scale_color_manual(values = celltype_colors) +
+  theme_classic()
+p_annot
 ```
 
 <img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-1.png" width="672" />
+
+```r
+#DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors, pt.size = log1p(MC.seurat$size)) 
+```
 
 ### Clustering
 
@@ -89,7 +102,14 @@ We cluster the metacells using Seurat clustering steps and visualize these clust
 
 ```r
 MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reductions$pca@cell.embeddings[, 1:30]  ), k = 8)$clustering
-DimPlot(MC.seurat, reduction = "umap", group.by = "SCclustering")
+data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
+              data.frame(size = MC.seurat$size,
+                         cluster = paste0("C_",MC.seurat$SCclustering)))
+
+p_cluster <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cluster)) + geom_point(aes(size=size)) +
+  ggplot2::scale_size_continuous(range = c(1, max(log1p((data$size))))) +
+  theme_classic()
+p_cluster
 ```
 
 <img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-1.png" width="672" />
@@ -137,8 +157,6 @@ We can verify the identification of the NK cell cluster by comparing the metacel
 
 
 ```r
-p_cluster <- DimPlot(MC.seurat, group.by = "SCclustering")
-p_annot <- DimPlot(MC.seurat, group.by = annotation_column, cols = celltype_colors)
 p_cluster + p_annot
 ```
 
