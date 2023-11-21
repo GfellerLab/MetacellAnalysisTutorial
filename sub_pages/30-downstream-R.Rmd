@@ -76,7 +76,7 @@ head(cells_markers)
 We see that the top marker genes for this cluster contain Killer cell immunoglobulin-like receptors (KIRs) genes coding for
 transmembrane glycoproteins expressed by natural killer cells. 
 
-```{r r-mc-plot-genes, eval=TRUE, cache = FALSE}
+```{r r-mc-plot-genes, eval=TRUE, cache = FALSE, fig.asp = 0.7}
 genes = c("KIR3DL2", "KIR3DL1")
 VlnPlot(MC.seurat, genes, ncol = 2, pt.size = 0.0)
 ```
