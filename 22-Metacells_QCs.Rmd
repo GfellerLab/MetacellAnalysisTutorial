@@ -97,7 +97,7 @@ library(ggplot2)
 ggplot(data.frame(compactness = log(mc_data$compactness), separation = log(mc_data$separation)), 
        aes(x=compactness, y=separation)) + 
   geom_point()+
-  geom_smooth(method=lm) + ggpubr::stat_cor(method = "spearman")
+  geom_smooth(method=lm) + ggpubr::stat_cor(method = "pearson")
 ```
 
 ### INV
