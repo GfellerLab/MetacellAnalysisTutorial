@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>5.1 Standard analysis (R) | Metacell Tutorial</title>
+  <title>6.1 Standard analysis (R) | Metacell analysis on a continuous dataset</title>
   <meta name="description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="5.1 Standard analysis (R) | Metacell Tutorial" />
+  <meta property="og:title" content="6.1 Standard analysis (R) | Metacell analysis on a continuous dataset" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is a tutorial about metacell construction and analysis." />
   <meta name="github-repo" content="GfellerLab/Metacell_tutorial" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="5.1 Standard analysis (R) | Metacell Tutorial" />
+  <meta name="twitter:title" content="6.1 Standard analysis (R) | Metacell analysis on a continuous dataset" />
   
   <meta name="twitter:description" content="This is a tutorial about metacell construction and analysis." />
   
 
-<meta name="author" content="Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller" />
+<meta name="author" content="Leonard Herault, Aurelie Gabriel, Mariia Bilous, David Gfeller" />
 
 
-<meta name="date" content="2023-11-20" />
+<meta name="date" content="2023-11-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -207,7 +207,6 @@ div.csl-indent {
 <li class="chapter" data-level="3.3.4" data-path="SEACells-construction.html"><a href="SEACells-construction.html#building-metacells-2"><i class="fa fa-check"></i><b>3.3.4</b> Building metacells</a></li>
 <li class="chapter" data-level="3.3.5" data-path="SEACells-construction.html"><a href="SEACells-construction.html#visualize-metacells"><i class="fa fa-check"></i><b>3.3.5</b> Visualize metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>3.4</b> Metacell Analysis Toolkit (MCAT)</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="QCs.html"><a href="QCs.html"><i class="fa fa-check"></i><b>4</b> Metacells QCs</a>
 <ul>
@@ -221,50 +220,61 @@ div.csl-indent {
 <li class="chapter" data-level="4.2" data-path="size-distribution.html"><a href="size-distribution.html"><i class="fa fa-check"></i><b>4.2</b> Size distribution</a></li>
 <li class="chapter" data-level="4.3" data-path="representativeness-of-metacells.html"><a href="representativeness-of-metacells.html"><i class="fa fa-check"></i><b>4.3</b> Representativeness of metacells</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>5</b> Downstream analysis of metacells</a>
+<li class="chapter" data-level="5" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>5</b> Metacell Analysis Toolkit (MCAT)</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>5.1</b> Standard analysis (R)</a>
-<ul>
-<li class="chapter" data-level="5.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>5.1.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="5.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>5.1.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="5.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>5.1.3</b> Clustering</a></li>
-<li class="chapter" data-level="5.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>5.1.4</b> Differential expression analysis</a></li>
-<li class="chapter" data-level="5.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>5.1.5</b> Visualize gene-gene correlation</a></li>
+<li class="chapter" data-level="5.1" data-path="setting-up-the-environment.html"><a href="setting-up-the-environment.html"><i class="fa fa-check"></i><b>5.1</b> Setting up the environment</a></li>
+<li class="chapter" data-level="5.2" data-path="metacell-building.html"><a href="metacell-building.html"><i class="fa fa-check"></i><b>5.2</b> Metacell building</a></li>
+<li class="chapter" data-level="5.3" data-path="building-metacell-with-metacell2-mc2.html"><a href="building-metacell-with-metacell2-mc2.html"><i class="fa fa-check"></i><b>5.3</b> Building metacell with MetaCell2 (MC2)</a></li>
+<li class="chapter" data-level="5.4" data-path="building-metacell-with-supercell.html"><a href="building-metacell-with-supercell.html"><i class="fa fa-check"></i><b>5.4</b> Building metacell with SuperCell</a></li>
+<li class="chapter" data-level="5.5" data-path="short-downstream-analysis-of-the-metacells.html"><a href="short-downstream-analysis-of-the-metacells.html"><i class="fa fa-check"></i><b>5.5</b> Short downstream analysis of the metacells</a></li>
+<li class="chapter" data-level="5.6" data-path="metacell2-metacells.html"><a href="metacell2-metacells.html"><i class="fa fa-check"></i><b>5.6</b> MetaCell2 metacells</a></li>
+<li class="chapter" data-level="5.7" data-path="quality-control-with-the-metacellanalysistoolkit-package.html"><a href="quality-control-with-the-metacellanalysistoolkit-package.html"><i class="fa fa-check"></i><b>5.7</b> Quality control with the MetacellAnalysisToolkit package</a></li>
+<li class="chapter" data-level="5.8" data-path="loading-single-cell-data.html"><a href="loading-single-cell-data.html"><i class="fa fa-check"></i><b>5.8</b> Loading single-cell data</a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>5.2</b> Sample-weighted analysis</a>
+<li class="chapter" data-level="6" data-path="downstream-analysis-of-metacells.html"><a href="downstream-analysis-of-metacells.html"><i class="fa fa-check"></i><b>6</b> Downstream analysis of metacells</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>5.2.1</b> Load metacell Seurat object</a></li>
-<li class="chapter" data-level="5.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>5.2.2</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="5.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>5.2.3</b> Clustering</a></li>
-<li class="chapter" data-level="5.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>5.2.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html"><i class="fa fa-check"></i><b>6.1</b> Standard analysis (R)</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#load-metacell-seurat-object"><i class="fa fa-check"></i><b>6.1.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.1.2" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#dimensionality-reduction"><i class="fa fa-check"></i><b>6.1.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.1.3" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#clustering"><i class="fa fa-check"></i><b>6.1.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.1.4" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#differential-expression-analysis"><i class="fa fa-check"></i><b>6.1.4</b> Differential expression analysis</a></li>
+<li class="chapter" data-level="6.1.5" data-path="standard-analysis-R.html"><a href="standard-analysis-R.html#visualize-gene-gene-correlation"><i class="fa fa-check"></i><b>6.1.5</b> Visualize gene-gene correlation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html"><i class="fa fa-check"></i><b>6.2</b> Sample-weighted analysis</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="weighted-analysis.html"><a href="weighted-analysis.html#load-metacell-seurat-object-1"><i class="fa fa-check"></i><b>6.2.1</b> Load metacell Seurat object</a></li>
+<li class="chapter" data-level="6.2.2" data-path="weighted-analysis.html"><a href="weighted-analysis.html#dimensionality-reduction-1"><i class="fa fa-check"></i><b>6.2.2</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="6.2.3" data-path="weighted-analysis.html"><a href="weighted-analysis.html#clustering-1"><i class="fa fa-check"></i><b>6.2.3</b> Clustering</a></li>
+<li class="chapter" data-level="6.2.4" data-path="weighted-analysis.html"><a href="weighted-analysis.html#differential-expression-analysis-1"><i class="fa fa-check"></i><b>6.2.4</b> Differential expression analysis</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>6</b> Integration of metacells</a>
+<li class="chapter" data-level="7" data-path="integration.html"><a href="integration.html"><i class="fa fa-check"></i><b>7</b> Integration of metacells</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>6.1</b> Unsupervised integration</a>
+<li class="chapter" data-level="7.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html"><i class="fa fa-check"></i><b>7.1</b> Unsupervised integration</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>6.1.1</b> Data loading</a></li>
-<li class="chapter" data-level="6.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment"><i class="fa fa-check"></i><b>6.1.2</b> Setting up the environment</a></li>
-<li class="chapter" data-level="6.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>6.1.3</b> Building metacell</a></li>
-<li class="chapter" data-level="6.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>6.1.4</b> Loading metacell objects</a></li>
-<li class="chapter" data-level="6.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>6.1.5</b> Merging objects and basic quality control</a></li>
-<li class="chapter" data-level="6.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>6.1.6</b> Unintegrated analysis</a></li>
-<li class="chapter" data-level="6.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>6.1.7</b> Seurat integration</a></li>
-<li class="chapter" data-level="6.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>6.1.8</b> Downstream analysis</a></li>
-<li class="chapter" data-level="6.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>6.1.9</b> Conclusion</a></li>
+<li class="chapter" data-level="7.1.1" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#data-loading-3"><i class="fa fa-check"></i><b>7.1.1</b> Data loading</a></li>
+<li class="chapter" data-level="7.1.2" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>7.1.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="7.1.3" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#building-metacell"><i class="fa fa-check"></i><b>7.1.3</b> Building metacell</a></li>
+<li class="chapter" data-level="7.1.4" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#loading-metacell-objects"><i class="fa fa-check"></i><b>7.1.4</b> Loading metacell objects</a></li>
+<li class="chapter" data-level="7.1.5" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#merging-objects-and-basic-quality-control"><i class="fa fa-check"></i><b>7.1.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="7.1.6" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#unintegrated-analysis"><i class="fa fa-check"></i><b>7.1.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="7.1.7" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#seurat-integration"><i class="fa fa-check"></i><b>7.1.7</b> Seurat integration</a></li>
+<li class="chapter" data-level="7.1.8" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#downstream-analysis"><i class="fa fa-check"></i><b>7.1.8</b> Downstream analysis</a></li>
+<li class="chapter" data-level="7.1.9" data-path="integration_unsupervised.html"><a href="integration_unsupervised.html#conclusion"><i class="fa fa-check"></i><b>7.1.9</b> Conclusion</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>6.2</b> Supervised integration</a>
+<li class="chapter" data-level="7.2" data-path="integration_supervised.html"><a href="integration_supervised.html"><i class="fa fa-check"></i><b>7.2</b> Supervised integration</a>
 <ul>
-<li class="chapter" data-level="6.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>6.2.1</b> Data loading</a></li>
-<li class="chapter" data-level="6.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-1"><i class="fa fa-check"></i><b>6.2.2</b> Setting up the environment</a></li>
-<li class="chapter" data-level="6.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>6.2.3</b> Constructing supervised metacell</a></li>
-<li class="chapter" data-level="6.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>6.2.4</b> Load metacell objects</a></li>
-<li class="chapter" data-level="6.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>6.2.5</b> Merging objects and basic quality control</a></li>
-<li class="chapter" data-level="6.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>6.2.6</b> Unintegrated analysis</a></li>
-<li class="chapter" data-level="6.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>6.2.7</b> STACAS integration</a></li>
-<li class="chapter" data-level="6.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>6.2.8</b> Comparison with unsupervised analysis</a></li>
-<li class="chapter" data-level="6.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>6.2.9</b> Downstream analysis</a></li>
-<li class="chapter" data-level="6.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>6.2.10</b> Conclusion</a></li>
+<li class="chapter" data-level="7.2.1" data-path="integration_supervised.html"><a href="integration_supervised.html#data-loading-4"><i class="fa fa-check"></i><b>7.2.1</b> Data loading</a></li>
+<li class="chapter" data-level="7.2.2" data-path="integration_supervised.html"><a href="integration_supervised.html#setting-up-the-environment-2"><i class="fa fa-check"></i><b>7.2.2</b> Setting up the environment</a></li>
+<li class="chapter" data-level="7.2.3" data-path="integration_supervised.html"><a href="integration_supervised.html#constructing-supervised-metacell"><i class="fa fa-check"></i><b>7.2.3</b> Constructing supervised metacell</a></li>
+<li class="chapter" data-level="7.2.4" data-path="integration_supervised.html"><a href="integration_supervised.html#load-metacell-objects"><i class="fa fa-check"></i><b>7.2.4</b> Load metacell objects</a></li>
+<li class="chapter" data-level="7.2.5" data-path="integration_supervised.html"><a href="integration_supervised.html#merging-objects-and-basic-quality-control-1"><i class="fa fa-check"></i><b>7.2.5</b> Merging objects and basic quality control</a></li>
+<li class="chapter" data-level="7.2.6" data-path="integration_supervised.html"><a href="integration_supervised.html#unintegrated-analysis-1"><i class="fa fa-check"></i><b>7.2.6</b> Unintegrated analysis</a></li>
+<li class="chapter" data-level="7.2.7" data-path="integration_supervised.html"><a href="integration_supervised.html#stacas-integration"><i class="fa fa-check"></i><b>7.2.7</b> STACAS integration</a></li>
+<li class="chapter" data-level="7.2.8" data-path="integration_supervised.html"><a href="integration_supervised.html#comparison-with-unsupervised-analysis"><i class="fa fa-check"></i><b>7.2.8</b> Comparison with unsupervised analysis</a></li>
+<li class="chapter" data-level="7.2.9" data-path="integration_supervised.html"><a href="integration_supervised.html#downstream-analysis-1"><i class="fa fa-check"></i><b>7.2.9</b> Downstream analysis</a></li>
+<li class="chapter" data-level="7.2.10" data-path="integration_supervised.html"><a href="integration_supervised.html#conclusion-1"><i class="fa fa-check"></i><b>7.2.10</b> Conclusion</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -280,7 +290,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell Tutorial</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Metacell analysis on a continuous dataset</a>
           </h1>
         </div>
 
@@ -288,144 +298,144 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="standard-analysis-R" class="section level2 hasAnchor" number="5.1">
-<h2><span class="header-section-number">5.1</span> Standard analysis (R)<a href="standard-analysis-R.html#standard-analysis-R" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="standard-analysis-R" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Standard analysis (R)<a href="standard-analysis-R.html#standard-analysis-R" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In this tutorial, standard analyses include dimensionality reduction, clustering and differential expression using the <a href="https://satijalab.org/seurat/">Seurat</a> framework.</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="standard-analysis-R.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat) </span>
-<span id="cb77-2"><a href="standard-analysis-R.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
-<span id="cb77-3"><a href="standard-analysis-R.html#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; will retire shortly. Please refer to R-spatial evolution reports on</span></span>
-<span id="cb77-4"><a href="standard-analysis-R.html#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html for details.</span></span>
-<span id="cb77-5"><a href="standard-analysis-R.html#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This package is now running under evolution status 0</span></span>
-<span id="cb77-6"><a href="standard-analysis-R.html#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching SeuratObject</span></span>
-<span id="cb77-7"><a href="standard-analysis-R.html#cb77-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb77-8"><a href="standard-analysis-R.html#cb77-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb77-9"><a href="standard-analysis-R.html#cb77-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;dplyr&#39;</span></span>
-<span id="cb77-10"><a href="standard-analysis-R.html#cb77-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:stats&#39;:</span></span>
-<span id="cb77-11"><a href="standard-analysis-R.html#cb77-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb77-12"><a href="standard-analysis-R.html#cb77-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     filter, lag</span></span>
-<span id="cb77-13"><a href="standard-analysis-R.html#cb77-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:base&#39;:</span></span>
-<span id="cb77-14"><a href="standard-analysis-R.html#cb77-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb77-15"><a href="standard-analysis-R.html#cb77-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span id="cb77-16"><a href="standard-analysis-R.html#cb77-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
-<div id="load-metacell-seurat-object" class="section level3 hasAnchor" number="5.1.1">
-<h3><span class="header-section-number">5.1.1</span> Load metacell Seurat object<a href="standard-analysis-R.html#load-metacell-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="standard-analysis-R.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat) </span>
+<span id="cb114-2"><a href="standard-analysis-R.html#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
+<span id="cb114-3"><a href="standard-analysis-R.html#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; will retire shortly. Please refer to R-spatial evolution reports on</span></span>
+<span id="cb114-4"><a href="standard-analysis-R.html#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html for details.</span></span>
+<span id="cb114-5"><a href="standard-analysis-R.html#cb114-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This package is now running under evolution status 0</span></span>
+<span id="cb114-6"><a href="standard-analysis-R.html#cb114-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching SeuratObject</span></span>
+<span id="cb114-7"><a href="standard-analysis-R.html#cb114-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb114-8"><a href="standard-analysis-R.html#cb114-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb114-9"><a href="standard-analysis-R.html#cb114-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;dplyr&#39;</span></span>
+<span id="cb114-10"><a href="standard-analysis-R.html#cb114-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:stats&#39;:</span></span>
+<span id="cb114-11"><a href="standard-analysis-R.html#cb114-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb114-12"><a href="standard-analysis-R.html#cb114-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     filter, lag</span></span>
+<span id="cb114-13"><a href="standard-analysis-R.html#cb114-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:base&#39;:</span></span>
+<span id="cb114-14"><a href="standard-analysis-R.html#cb114-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb114-15"><a href="standard-analysis-R.html#cb114-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span id="cb114-16"><a href="standard-analysis-R.html#cb114-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<div id="load-metacell-seurat-object" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Load metacell Seurat object<a href="standard-analysis-R.html#load-metacell-seurat-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We will use Seurat objects containing the metacells counts data and their annotation (<em>e.g.</em> cell-type annotation) and
 proceed with standard Seurat downstream analyses.
 Seurat objects containing metacells counts data and their annotation were generated at the end of sections <a href="SuperCell-construction.html#SuperCell-construction">3.1</a>
-These objects can also be generated using the command line described in chapter <a href="command-line.html#command-line">3.4</a></p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="standard-analysis-R.html#cb78-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="ot">=</span> <span class="st">&quot;SuperCell&quot;</span></span>
-<span id="cb78-2"><a href="standard-analysis-R.html#cb78-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="ot">=</span> <span class="st">&quot;3k_pbmc&quot;</span></span>
-<span id="cb78-3"><a href="standard-analysis-R.html#cb78-3" aria-hidden="true" tabindex="-1"></a>annotation_column <span class="ot">=</span> <span class="st">&quot;louvain&quot;</span></span>
-<span id="cb78-4"><a href="standard-analysis-R.html#cb78-4" aria-hidden="true" tabindex="-1"></a>celltype_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb78-5"><a href="standard-analysis-R.html#cb78-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CD14+ Monocytes&quot;</span>    <span class="ot">=</span> <span class="st">&quot;#E69F00&quot;</span>,  <span class="co"># orange</span></span>
-<span id="cb78-6"><a href="standard-analysis-R.html#cb78-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;B cells&quot;</span>            <span class="ot">=</span> <span class="st">&quot;#56B4E9&quot;</span>,  <span class="co"># sky blue</span></span>
-<span id="cb78-7"><a href="standard-analysis-R.html#cb78-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CD4 T cells&quot;</span>        <span class="ot">=</span> <span class="st">&quot;#009E73&quot;</span>,  <span class="co"># bluish green</span></span>
-<span id="cb78-8"><a href="standard-analysis-R.html#cb78-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;NK cells&quot;</span>           <span class="ot">=</span> <span class="st">&quot;#F0E442&quot;</span>,  <span class="co"># yellow</span></span>
-<span id="cb78-9"><a href="standard-analysis-R.html#cb78-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CD8 T cells&quot;</span>        <span class="ot">=</span> <span class="st">&quot;#0072B2&quot;</span>,  <span class="co"># blue</span></span>
-<span id="cb78-10"><a href="standard-analysis-R.html#cb78-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;FCGR3A+ Monocytes&quot;</span>  <span class="ot">=</span> <span class="st">&quot;#D55E00&quot;</span>,  <span class="co"># vermillion</span></span>
-<span id="cb78-11"><a href="standard-analysis-R.html#cb78-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Dendritic cells&quot;</span>    <span class="ot">=</span> <span class="st">&quot;#CC79A7&quot;</span>,  <span class="co"># reddish purple</span></span>
-<span id="cb78-12"><a href="standard-analysis-R.html#cb78-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Megakaryocytes&quot;</span>     <span class="ot">=</span> <span class="st">&quot;#000000&quot;</span>   <span class="co"># black</span></span>
-<span id="cb78-13"><a href="standard-analysis-R.html#cb78-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb78-14"><a href="standard-analysis-R.html#cb78-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-15"><a href="standard-analysis-R.html#cb78-15" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">&#39;./data/&#39;</span>, proj_name, <span class="st">&#39;/metacell_&#39;</span>, MC_tool,<span class="st">&#39;.rds&#39;</span>))</span></code></pre></div>
+These objects can also be generated using the command line described in chapter <a href="command-line.html#command-line">5</a></p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="standard-analysis-R.html#cb115-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="ot">=</span> <span class="st">&quot;SuperCell&quot;</span></span>
+<span id="cb115-2"><a href="standard-analysis-R.html#cb115-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="ot">=</span> <span class="st">&quot;3k_pbmc&quot;</span></span>
+<span id="cb115-3"><a href="standard-analysis-R.html#cb115-3" aria-hidden="true" tabindex="-1"></a>annotation_column <span class="ot">=</span> <span class="st">&quot;louvain&quot;</span></span>
+<span id="cb115-4"><a href="standard-analysis-R.html#cb115-4" aria-hidden="true" tabindex="-1"></a>celltype_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb115-5"><a href="standard-analysis-R.html#cb115-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CD14+ Monocytes&quot;</span>    <span class="ot">=</span> <span class="st">&quot;#E69F00&quot;</span>,  <span class="co"># orange</span></span>
+<span id="cb115-6"><a href="standard-analysis-R.html#cb115-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;B cells&quot;</span>            <span class="ot">=</span> <span class="st">&quot;#56B4E9&quot;</span>,  <span class="co"># sky blue</span></span>
+<span id="cb115-7"><a href="standard-analysis-R.html#cb115-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CD4 T cells&quot;</span>        <span class="ot">=</span> <span class="st">&quot;#009E73&quot;</span>,  <span class="co"># bluish green</span></span>
+<span id="cb115-8"><a href="standard-analysis-R.html#cb115-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;NK cells&quot;</span>           <span class="ot">=</span> <span class="st">&quot;#F0E442&quot;</span>,  <span class="co"># yellow</span></span>
+<span id="cb115-9"><a href="standard-analysis-R.html#cb115-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;CD8 T cells&quot;</span>        <span class="ot">=</span> <span class="st">&quot;#0072B2&quot;</span>,  <span class="co"># blue</span></span>
+<span id="cb115-10"><a href="standard-analysis-R.html#cb115-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;FCGR3A+ Monocytes&quot;</span>  <span class="ot">=</span> <span class="st">&quot;#D55E00&quot;</span>,  <span class="co"># vermillion</span></span>
+<span id="cb115-11"><a href="standard-analysis-R.html#cb115-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Dendritic cells&quot;</span>    <span class="ot">=</span> <span class="st">&quot;#CC79A7&quot;</span>,  <span class="co"># reddish purple</span></span>
+<span id="cb115-12"><a href="standard-analysis-R.html#cb115-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Megakaryocytes&quot;</span>     <span class="ot">=</span> <span class="st">&quot;#000000&quot;</span>   <span class="co"># black</span></span>
+<span id="cb115-13"><a href="standard-analysis-R.html#cb115-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb115-14"><a href="standard-analysis-R.html#cb115-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-15"><a href="standard-analysis-R.html#cb115-15" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">&#39;./data/&#39;</span>, proj_name, <span class="st">&#39;/metacell_&#39;</span>, MC_tool,<span class="st">&#39;.rds&#39;</span>))</span></code></pre></div>
 </div>
-<div id="dimensionality-reduction" class="section level3 hasAnchor" number="5.1.2">
-<h3><span class="header-section-number">5.1.2</span> Dimensionality reduction<a href="standard-analysis-R.html#dimensionality-reduction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="dimensionality-reduction" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Dimensionality reduction<a href="standard-analysis-R.html#dimensionality-reduction" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>As for single-cells, we normalize the raw counts (here aggregated raw counts) and we identify the most variable features in the metacells gene expression data.
 Based on these features, we run PCA and use the first principal components to obtain a two dimensionnal representation of the data using UMAP.</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="standard-analysis-R.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Idents</span>(MC.seurat) <span class="ot">&lt;-</span> annotation_column</span>
-<span id="cb79-2"><a href="standard-analysis-R.html#cb79-2" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(MC.seurat)</span>
-<span id="cb79-3"><a href="standard-analysis-R.html#cb79-3" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(MC.seurat, <span class="at">selection.method =</span> <span class="st">&quot;vst&quot;</span>, <span class="at">nfeatures =</span> <span class="dv">2000</span>)</span>
-<span id="cb79-4"><a href="standard-analysis-R.html#cb79-4" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(MC.seurat)</span>
-<span id="cb79-5"><a href="standard-analysis-R.html#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Centering and scaling data matrix</span></span>
-<span id="cb79-6"><a href="standard-analysis-R.html#cb79-6" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(MC.seurat, <span class="at">verbose =</span> F)</span>
-<span id="cb79-7"><a href="standard-analysis-R.html#cb79-7" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(MC.seurat, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">verbose =</span> F)</span>
-<span id="cb79-8"><a href="standard-analysis-R.html#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span></span>
-<span id="cb79-9"><a href="standard-analysis-R.html#cb79-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;</span></span>
-<span id="cb79-10"><a href="standard-analysis-R.html#cb79-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This message will be shown once per session</span></span>
-<span id="cb79-11"><a href="standard-analysis-R.html#cb79-11" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(MC.seurat, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">cols =</span> celltype_colors)</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="standard-analysis-R.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Idents</span>(MC.seurat) <span class="ot">&lt;-</span> annotation_column</span>
+<span id="cb116-2"><a href="standard-analysis-R.html#cb116-2" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(MC.seurat)</span>
+<span id="cb116-3"><a href="standard-analysis-R.html#cb116-3" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">FindVariableFeatures</span>(MC.seurat, <span class="at">selection.method =</span> <span class="st">&quot;vst&quot;</span>, <span class="at">nfeatures =</span> <span class="dv">2000</span>)</span>
+<span id="cb116-4"><a href="standard-analysis-R.html#cb116-4" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">ScaleData</span>(MC.seurat)</span>
+<span id="cb116-5"><a href="standard-analysis-R.html#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Centering and scaling data matrix</span></span>
+<span id="cb116-6"><a href="standard-analysis-R.html#cb116-6" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(MC.seurat, <span class="at">verbose =</span> F)</span>
+<span id="cb116-7"><a href="standard-analysis-R.html#cb116-7" aria-hidden="true" tabindex="-1"></a>MC.seurat <span class="ot">&lt;-</span> <span class="fu">RunUMAP</span>(MC.seurat, <span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>, <span class="at">verbose =</span> F)</span>
+<span id="cb116-8"><a href="standard-analysis-R.html#cb116-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span></span>
+<span id="cb116-9"><a href="standard-analysis-R.html#cb116-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to &#39;umap-learn&#39; and metric to &#39;correlation&#39;</span></span>
+<span id="cb116-10"><a href="standard-analysis-R.html#cb116-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This message will be shown once per session</span></span>
+<span id="cb116-11"><a href="standard-analysis-R.html#cb116-11" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(MC.seurat, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">cols =</span> celltype_colors)</span></code></pre></div>
 <p><img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-1.png" width="672" /></p>
 </div>
-<div id="clustering" class="section level3 hasAnchor" number="5.1.3">
-<h3><span class="header-section-number">5.1.3</span> Clustering<a href="standard-analysis-R.html#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="clustering" class="section level3 hasAnchor" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Clustering<a href="standard-analysis-R.html#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="standard-analysis-R.html#cb80-1" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">$</span>SCclustering  <span class="ot">&lt;-</span> SuperCell<span class="sc">::</span><span class="fu">supercell_cluster</span>(<span class="at">D =</span> <span class="fu">dist</span>(MC.seurat<span class="sc">@</span>reductions<span class="sc">$</span>pca<span class="sc">@</span>cell.embeddings[, <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]  ), <span class="at">k =</span> <span class="dv">8</span>)<span class="sc">$</span>clustering</span>
-<span id="cb80-2"><a href="standard-analysis-R.html#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(MC.seurat, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">group.by =</span> <span class="st">&quot;SCclustering&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="standard-analysis-R.html#cb117-1" aria-hidden="true" tabindex="-1"></a>MC.seurat<span class="sc">$</span>SCclustering  <span class="ot">&lt;-</span> SuperCell<span class="sc">::</span><span class="fu">supercell_cluster</span>(<span class="at">D =</span> <span class="fu">dist</span>(MC.seurat<span class="sc">@</span>reductions<span class="sc">$</span>pca<span class="sc">@</span>cell.embeddings[, <span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>]  ), <span class="at">k =</span> <span class="dv">8</span>)<span class="sc">$</span>clustering</span>
+<span id="cb117-2"><a href="standard-analysis-R.html#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DimPlot</span>(MC.seurat, <span class="at">reduction =</span> <span class="st">&quot;umap&quot;</span>, <span class="at">group.by =</span> <span class="st">&quot;SCclustering&quot;</span>)</span></code></pre></div>
 <p><img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-1.png" width="672" /></p>
 </div>
-<div id="differential-expression-analysis" class="section level3 hasAnchor" number="5.1.4">
-<h3><span class="header-section-number">5.1.4</span> Differential expression analysis<a href="standard-analysis-R.html#differential-expression-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="differential-expression-analysis" class="section level3 hasAnchor" number="6.1.4">
+<h3><span class="header-section-number">6.1.4</span> Differential expression analysis<a href="standard-analysis-R.html#differential-expression-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We perform diffrential analysis to identify the markers of our cluster 3 as an example using the <code>FindMarkers</code> function.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="standard-analysis-R.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set idents to metacell annotation </span></span>
-<span id="cb81-2"><a href="standard-analysis-R.html#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Idents</span>(MC.seurat) <span class="ot">&lt;-</span> <span class="st">&quot;SCclustering&quot;</span></span>
-<span id="cb81-3"><a href="standard-analysis-R.html#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb81-4"><a href="standard-analysis-R.html#cb81-4" aria-hidden="true" tabindex="-1"></a>cells_markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(MC.seurat, <span class="at">ident.1 =</span> <span class="st">&quot;3&quot;</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb81-5"><a href="standard-analysis-R.html#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; For a more efficient implementation of the Wilcoxon Rank Sum Test,</span></span>
-<span id="cb81-6"><a href="standard-analysis-R.html#cb81-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (default method for FindMarkers) please install the limma package</span></span>
-<span id="cb81-7"><a href="standard-analysis-R.html#cb81-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
-<span id="cb81-8"><a href="standard-analysis-R.html#cb81-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; install.packages(&#39;BiocManager&#39;)</span></span>
-<span id="cb81-9"><a href="standard-analysis-R.html#cb81-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BiocManager::install(&#39;limma&#39;)</span></span>
-<span id="cb81-10"><a href="standard-analysis-R.html#cb81-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
-<span id="cb81-11"><a href="standard-analysis-R.html#cb81-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; After installation of limma, Seurat will automatically use the more </span></span>
-<span id="cb81-12"><a href="standard-analysis-R.html#cb81-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; efficient implementation (no further action necessary).</span></span>
-<span id="cb81-13"><a href="standard-analysis-R.html#cb81-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This message will be shown once per session</span></span>
-<span id="cb81-14"><a href="standard-analysis-R.html#cb81-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cells_markers)</span>
-<span id="cb81-15"><a href="standard-analysis-R.html#cb81-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                     p_val avg_log2FC pct.1 pct.2    p_val_adj</span></span>
-<span id="cb81-16"><a href="standard-analysis-R.html#cb81-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; MAL          8.809188e-37  1.3500224 0.901 0.135 2.883952e-32</span></span>
-<span id="cb81-17"><a href="standard-analysis-R.html#cb81-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; LINC00176    2.108003e-32  0.6485374 0.761 0.052 6.901180e-28</span></span>
-<span id="cb81-18"><a href="standard-analysis-R.html#cb81-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; LDHB         2.660113e-31  1.5689705 1.000 0.917 8.708679e-27</span></span>
-<span id="cb81-19"><a href="standard-analysis-R.html#cb81-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AQP3         4.074471e-31  1.1640126 0.958 0.223 1.333900e-26</span></span>
-<span id="cb81-20"><a href="standard-analysis-R.html#cb81-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; LEF1         4.324853e-31  1.1439136 0.972 0.290 1.415870e-26</span></span>
-<span id="cb81-21"><a href="standard-analysis-R.html#cb81-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; RP11-664D1.1 1.511704e-30  0.6122634 0.789 0.067 4.949016e-26</span></span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="standard-analysis-R.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set idents to metacell annotation </span></span>
+<span id="cb118-2"><a href="standard-analysis-R.html#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Idents</span>(MC.seurat) <span class="ot">&lt;-</span> <span class="st">&quot;SCclustering&quot;</span></span>
+<span id="cb118-3"><a href="standard-analysis-R.html#cb118-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-4"><a href="standard-analysis-R.html#cb118-4" aria-hidden="true" tabindex="-1"></a>cells_markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(MC.seurat, <span class="at">ident.1 =</span> <span class="st">&quot;4&quot;</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb118-5"><a href="standard-analysis-R.html#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; For a more efficient implementation of the Wilcoxon Rank Sum Test,</span></span>
+<span id="cb118-6"><a href="standard-analysis-R.html#cb118-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (default method for FindMarkers) please install the limma package</span></span>
+<span id="cb118-7"><a href="standard-analysis-R.html#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
+<span id="cb118-8"><a href="standard-analysis-R.html#cb118-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; install.packages(&#39;BiocManager&#39;)</span></span>
+<span id="cb118-9"><a href="standard-analysis-R.html#cb118-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; BiocManager::install(&#39;limma&#39;)</span></span>
+<span id="cb118-10"><a href="standard-analysis-R.html#cb118-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; --------------------------------------------</span></span>
+<span id="cb118-11"><a href="standard-analysis-R.html#cb118-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; After installation of limma, Seurat will automatically use the more </span></span>
+<span id="cb118-12"><a href="standard-analysis-R.html#cb118-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; efficient implementation (no further action necessary).</span></span>
+<span id="cb118-13"><a href="standard-analysis-R.html#cb118-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This message will be shown once per session</span></span>
+<span id="cb118-14"><a href="standard-analysis-R.html#cb118-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cells_markers)</span>
+<span id="cb118-15"><a href="standard-analysis-R.html#cb118-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                p_val avg_log2FC pct.1 pct.2    p_val_adj</span></span>
+<span id="cb118-16"><a href="standard-analysis-R.html#cb118-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; LIM2    1.188910e-27  0.4687254 0.467 0.000 3.892253e-23</span></span>
+<span id="cb118-17"><a href="standard-analysis-R.html#cb118-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; FASLG   1.281776e-26  0.9488759 0.800 0.036 4.196277e-22</span></span>
+<span id="cb118-18"><a href="standard-analysis-R.html#cb118-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; SH2D1B  2.757388e-25  1.4437575 0.933 0.072 9.027137e-21</span></span>
+<span id="cb118-19"><a href="standard-analysis-R.html#cb118-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; KIR3DL2 1.480605e-23  1.1403146 0.867 0.068 4.847204e-19</span></span>
+<span id="cb118-20"><a href="standard-analysis-R.html#cb118-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; KIR3DL1 3.907898e-23  0.5023381 0.533 0.012 1.279368e-18</span></span>
+<span id="cb118-21"><a href="standard-analysis-R.html#cb118-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; PRSS23  6.410015e-22  1.7388849 0.933 0.092 2.098511e-17</span></span></code></pre></div>
 <p>We see that the top marker genes for this cluster contain Killer cell immunoglobulin-like receptors (KIRs) genes coding for
 transmembrane glycoproteins expressed by natural killer cells.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="standard-analysis-R.html#cb82-1" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;KIR3DL2&quot;</span>, <span class="st">&quot;KIR3DL1&quot;</span>)</span>
-<span id="cb82-2"><a href="standard-analysis-R.html#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(MC.seurat, genes, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">pt.size =</span> <span class="fl">0.0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="standard-analysis-R.html#cb119-1" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;KIR3DL2&quot;</span>, <span class="st">&quot;KIR3DL1&quot;</span>)</span>
+<span id="cb119-2"><a href="standard-analysis-R.html#cb119-2" aria-hidden="true" tabindex="-1"></a><span class="fu">VlnPlot</span>(MC.seurat, genes, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">pt.size =</span> <span class="fl">0.0</span>)</span></code></pre></div>
 <p><img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-1.png" width="672" /></p>
 <p>We can verify the identification of the NK cell cluster by comparing the metacell annotation and the metacell clustering.</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="standard-analysis-R.html#cb83-1" aria-hidden="true" tabindex="-1"></a>p_cluster <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(MC.seurat, <span class="at">group.by =</span> <span class="st">&quot;SCclustering&quot;</span>)</span>
-<span id="cb83-2"><a href="standard-analysis-R.html#cb83-2" aria-hidden="true" tabindex="-1"></a>p_annot <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(MC.seurat, <span class="at">group.by =</span> annotation_column, <span class="at">cols =</span> celltype_colors)</span>
-<span id="cb83-3"><a href="standard-analysis-R.html#cb83-3" aria-hidden="true" tabindex="-1"></a>p_cluster <span class="sc">+</span> p_annot</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="standard-analysis-R.html#cb120-1" aria-hidden="true" tabindex="-1"></a>p_cluster <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(MC.seurat, <span class="at">group.by =</span> <span class="st">&quot;SCclustering&quot;</span>)</span>
+<span id="cb120-2"><a href="standard-analysis-R.html#cb120-2" aria-hidden="true" tabindex="-1"></a>p_annot <span class="ot">&lt;-</span> <span class="fu">DimPlot</span>(MC.seurat, <span class="at">group.by =</span> annotation_column, <span class="at">cols =</span> celltype_colors)</span>
+<span id="cb120-3"><a href="standard-analysis-R.html#cb120-3" aria-hidden="true" tabindex="-1"></a>p_cluster <span class="sc">+</span> p_annot</span></code></pre></div>
 <p><img src="30-MC_analysis_discrete_files/figure-html/unnamed-chunk-4-1.png" width="768" /></p>
 </div>
-<div id="visualize-gene-gene-correlation" class="section level3 hasAnchor" number="5.1.5">
-<h3><span class="header-section-number">5.1.5</span> Visualize gene-gene correlation<a href="standard-analysis-R.html#visualize-gene-gene-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="visualize-gene-gene-correlation" class="section level3 hasAnchor" number="6.1.5">
+<h3><span class="header-section-number">6.1.5</span> Visualize gene-gene correlation<a href="standard-analysis-R.html#visualize-gene-gene-correlation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We can use the <code>supercell_GeneGenePlot</code> function from the SuperCell package to visualize the correlation between marker genes of a cell-type:
 (i) at the single-cell level and
 (ii) at the metacell level.</p>
 <p>For that, we load the single-cell data from which the metacells were derived from.</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="standard-analysis-R.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(proj_name)</span>
-<span id="cb84-2"><a href="standard-analysis-R.html#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;3k_pbmc&quot;</span></span>
-<span id="cb84-3"><a href="standard-analysis-R.html#cb84-3" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, proj_name, <span class="st">&quot;/singlecell_seurat_filtered.rds&quot;</span>))</span>
-<span id="cb84-4"><a href="standard-analysis-R.html#cb84-4" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(sc_data, <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="standard-analysis-R.html#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(proj_name)</span>
+<span id="cb121-2"><a href="standard-analysis-R.html#cb121-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;3k_pbmc&quot;</span></span>
+<span id="cb121-3"><a href="standard-analysis-R.html#cb121-3" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/&quot;</span>, proj_name, <span class="st">&quot;/singlecell_seurat_filtered.rds&quot;</span>))</span>
+<span id="cb121-4"><a href="standard-analysis-R.html#cb121-4" aria-hidden="true" tabindex="-1"></a>sc_data <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(sc_data, <span class="at">normalization.method =</span> <span class="st">&quot;LogNormalize&quot;</span>)</span></code></pre></div>
 <p>We visualize gene-gene correlation at the single-cell level:</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="standard-analysis-R.html#cb85-1" aria-hidden="true" tabindex="-1"></a>cells_markers <span class="ot">&lt;-</span> cells_markers [<span class="fu">order</span>(cells_markers<span class="sc">$</span>avg_log2FC, <span class="at">decreasing =</span> T),]</span>
-<span id="cb85-2"><a href="standard-analysis-R.html#cb85-2" aria-hidden="true" tabindex="-1"></a>gene_x <span class="ot">&lt;-</span> <span class="fu">rownames</span>(cells_markers)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]  </span>
-<span id="cb85-3"><a href="standard-analysis-R.html#cb85-3" aria-hidden="true" tabindex="-1"></a>gene_y <span class="ot">&lt;-</span> <span class="fu">rownames</span>(cells_markers)[<span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>]</span>
-<span id="cb85-4"><a href="standard-analysis-R.html#cb85-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-5"><a href="standard-analysis-R.html#cb85-5" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.7</span></span>
-<span id="cb85-6"><a href="standard-analysis-R.html#cb85-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-7"><a href="standard-analysis-R.html#cb85-7" aria-hidden="true" tabindex="-1"></a>p.sc <span class="ot">&lt;-</span> SuperCell<span class="sc">::</span><span class="fu">supercell_GeneGenePlot</span>(</span>
-<span id="cb85-8"><a href="standard-analysis-R.html#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">GetAssayData</span>(sc_data, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>),</span>
-<span id="cb85-9"><a href="standard-analysis-R.html#cb85-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_x =</span> gene_x,</span>
-<span id="cb85-10"><a href="standard-analysis-R.html#cb85-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_y =</span> gene_y,</span>
-<span id="cb85-11"><a href="standard-analysis-R.html#cb85-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">clusters =</span> sc_data<span class="sc">@</span>meta.data[, annotation_column],</span>
-<span id="cb85-12"><a href="standard-analysis-R.html#cb85-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">sort.by.corr =</span> F, </span>
-<span id="cb85-13"><a href="standard-analysis-R.html#cb85-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> alpha, </span>
-<span id="cb85-14"><a href="standard-analysis-R.html#cb85-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">color.use =</span> celltype_colors</span>
-<span id="cb85-15"><a href="standard-analysis-R.html#cb85-15" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb85-16"><a href="standard-analysis-R.html#cb85-16" aria-hidden="true" tabindex="-1"></a>p.sc<span class="sc">$</span>p</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="standard-analysis-R.html#cb122-1" aria-hidden="true" tabindex="-1"></a>cells_markers <span class="ot">&lt;-</span> cells_markers [<span class="fu">order</span>(cells_markers<span class="sc">$</span>avg_log2FC, <span class="at">decreasing =</span> T),]</span>
+<span id="cb122-2"><a href="standard-analysis-R.html#cb122-2" aria-hidden="true" tabindex="-1"></a>gene_x <span class="ot">&lt;-</span> <span class="fu">rownames</span>(cells_markers)[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]  </span>
+<span id="cb122-3"><a href="standard-analysis-R.html#cb122-3" aria-hidden="true" tabindex="-1"></a>gene_y <span class="ot">&lt;-</span> <span class="fu">rownames</span>(cells_markers)[<span class="dv">6</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb122-4"><a href="standard-analysis-R.html#cb122-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-5"><a href="standard-analysis-R.html#cb122-5" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.7</span></span>
+<span id="cb122-6"><a href="standard-analysis-R.html#cb122-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb122-7"><a href="standard-analysis-R.html#cb122-7" aria-hidden="true" tabindex="-1"></a>p.sc <span class="ot">&lt;-</span> SuperCell<span class="sc">::</span><span class="fu">supercell_GeneGenePlot</span>(</span>
+<span id="cb122-8"><a href="standard-analysis-R.html#cb122-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">GetAssayData</span>(sc_data, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>),</span>
+<span id="cb122-9"><a href="standard-analysis-R.html#cb122-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_x =</span> gene_x,</span>
+<span id="cb122-10"><a href="standard-analysis-R.html#cb122-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene_y =</span> gene_y,</span>
+<span id="cb122-11"><a href="standard-analysis-R.html#cb122-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">clusters =</span> sc_data<span class="sc">@</span>meta.data[, annotation_column],</span>
+<span id="cb122-12"><a href="standard-analysis-R.html#cb122-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">sort.by.corr =</span> F, </span>
+<span id="cb122-13"><a href="standard-analysis-R.html#cb122-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">alpha =</span> alpha, </span>
+<span id="cb122-14"><a href="standard-analysis-R.html#cb122-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">color.use =</span> celltype_colors</span>
+<span id="cb122-15"><a href="standard-analysis-R.html#cb122-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb122-16"><a href="standard-analysis-R.html#cb122-16" aria-hidden="true" tabindex="-1"></a>p.sc<span class="sc">$</span>p</span></code></pre></div>
 <p><img src="30-MC_analysis_discrete_files/figure-html/r-sc-plot-genes-1.png" width="672" /></p>
 <p>We visualize gene-gene correlation at the metacell level:</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="standard-analysis-R.html#cb86-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-2"><a href="standard-analysis-R.html#cb86-2" aria-hidden="true" tabindex="-1"></a>p.MC <span class="ot">&lt;-</span> SuperCell<span class="sc">::</span><span class="fu">supercell_GeneGenePlot</span>(<span class="fu">GetAssayData</span>(MC.seurat, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>),</span>
-<span id="cb86-3"><a href="standard-analysis-R.html#cb86-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">gene_x =</span> gene_x,</span>
-<span id="cb86-4"><a href="standard-analysis-R.html#cb86-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">gene_y =</span> gene_y,</span>
-<span id="cb86-5"><a href="standard-analysis-R.html#cb86-5" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">clusters =</span> MC.seurat<span class="sc">@</span>meta.data[, annotation_column],</span>
-<span id="cb86-6"><a href="standard-analysis-R.html#cb86-6" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">sort.by.corr =</span> F, <span class="at">supercell_size =</span> MC.seurat<span class="sc">$</span>size,</span>
-<span id="cb86-7"><a href="standard-analysis-R.html#cb86-7" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">alpha =</span> alpha,</span>
-<span id="cb86-8"><a href="standard-analysis-R.html#cb86-8" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">color.use =</span> celltype_colors)</span>
-<span id="cb86-9"><a href="standard-analysis-R.html#cb86-9" aria-hidden="true" tabindex="-1"></a>p.MC<span class="sc">$</span>p</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="standard-analysis-R.html#cb123-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-2"><a href="standard-analysis-R.html#cb123-2" aria-hidden="true" tabindex="-1"></a>p.MC <span class="ot">&lt;-</span> SuperCell<span class="sc">::</span><span class="fu">supercell_GeneGenePlot</span>(<span class="fu">GetAssayData</span>(MC.seurat, <span class="at">slot =</span> <span class="st">&quot;data&quot;</span>),</span>
+<span id="cb123-3"><a href="standard-analysis-R.html#cb123-3" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">gene_x =</span> gene_x,</span>
+<span id="cb123-4"><a href="standard-analysis-R.html#cb123-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">gene_y =</span> gene_y,</span>
+<span id="cb123-5"><a href="standard-analysis-R.html#cb123-5" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">clusters =</span> MC.seurat<span class="sc">@</span>meta.data[, annotation_column],</span>
+<span id="cb123-6"><a href="standard-analysis-R.html#cb123-6" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">sort.by.corr =</span> F, <span class="at">supercell_size =</span> MC.seurat<span class="sc">$</span>size,</span>
+<span id="cb123-7"><a href="standard-analysis-R.html#cb123-7" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">alpha =</span> alpha,</span>
+<span id="cb123-8"><a href="standard-analysis-R.html#cb123-8" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">color.use =</span> celltype_colors)</span>
+<span id="cb123-9"><a href="standard-analysis-R.html#cb123-9" aria-hidden="true" tabindex="-1"></a>p.MC<span class="sc">$</span>p</span></code></pre></div>
 <p><img src="30-MC_analysis_discrete_files/figure-html/r-MC-plot-genes-1.png" width="672" /></p>
 <!-- ## Standard analysis (Python) {#standard-analysis-Py} -->
 <!-- ```{r, child='./sub_pages/30-downstream-Py.Rmd'} -->
