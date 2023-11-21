@@ -10,7 +10,7 @@ For this we will use here **SuperCell** via the **MCAT** command line tool.
 ```{r, child='./sub_pages/40-integration.Rmd'}
 ```
 
-## Supervised integration {#integration_supervised}
+
 
 ```{r, child='./sub_pages/40-integration_supervised.Rmd'}
 ```
