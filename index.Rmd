@@ -11,13 +11,13 @@ description: |
 link-citations: yes
 github-repo: GfellerLab/MetacellAnalysisTutorial
 biblio-style: apalike
-csl: chicago-fullnote-bibliography.csl
+csl: biochemistry-and-cell-biology.csl
 ---
 
 # This tutorial{.unnumbered}
 
-In this tutorial, we describe the different steps that should be followed to build metacells[@baran_metacell_2019] from single-cell data using three frameworks:
-SuperCell[@SuperCell] (tutorial in \@ref(SuperCell-construction)), (ii) Metacells version 2 (MC2[@MC2]) (tutorial in \@ref(MC2-construction)), and (iii) SEACells[@SEACells] (tutorial in \@ref(SEACells-construction)).
+In this tutorial, we describe the different steps that should be followed to build metacells [@baran_metacell_2019] from single-cell data using three frameworks:
+SuperCell [@SuperCell] (tutorial in \@ref(SuperCell-construction)), (ii) Metacells version 2 (MC2 [@MC2]) (tutorial in \@ref(MC2-construction)), and (iii) SEACells [@SEACells] (tutorial in \@ref(SEACells-construction)).
 
 We also show how to obtain metacells by running these methods using a command line tool that we provide as part of the MetacellAnalysisToolkit (MCAT) [github repository](https://github.com/GfellerLab/MetacellAnalysisToolkit).
 This repository also contains the MetacellAnalysisToolkit R package which provides R functions to compute QC

@@ -111,7 +111,7 @@ saveRDS(pbmc, file = paste0("data/3k_pbmc/singlecell_seurat_filtered.rds"))
 
 ## Retrieve a continuous dataset (CD34 dataset) {#CD34-data}
 
-To test metacell construction on discrete dataset, we retrieved the CD34 dataset provided by Persad et al.[@SEACells]:
+To test metacell construction on discrete dataset, we retrieved the CD34 dataset provided in [@SEACells]:
 ```{bash, eval = FALSE, cache = TO_CACHE}
 mkdir data/CD34
 wget -O data/CD34/cd34_multiome_rna.h5ad 'https://zenodo.org/record/6383269/files/cd34_multiome_rna.h5ad?download=1' 
