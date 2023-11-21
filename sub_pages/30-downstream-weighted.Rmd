@@ -113,7 +113,7 @@ MC.top.markers <- cluster4_markers[order(cluster4_markers$logFC, decreasing = T)
 ```
 
 We visualize the top 5 markers for the cluster 4 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
-```{r r-mc-plot-genes-weighted, eval=TRUE}
+```{r r-mc-plot-genes-weighted, eval=TRUE, fig.width = 10, fig.height = 5}
 Idents(MC.seurat) <- "SCclustering"
 # genes.to.plot <- MC.seurat.top.markers$gene[MC.seurat.top.markers$cluster == unique(MC.seurat@meta.data[,annotation_column])[1]]
 # genes.to.plot <- MC.top.markers$gene[c(seq(1, 20, 5))]
