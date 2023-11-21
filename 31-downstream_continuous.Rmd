@@ -114,6 +114,7 @@ lapply(marker.metacell.umaps,FUN = function(x){
 } )
 
 ```
+
 ### SuperCell metacells
 
 We can do the same with the metacells obtained with SuperCell
