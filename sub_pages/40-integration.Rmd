@@ -255,19 +255,19 @@ UMAPPlot(combined.mc, label = T) + NoLegend()
 
 #### Deferentially expressed gene (DEG) analysis.
 
-Now let's found the markers of the cluster 22 we've just identified.
+Now let's found the markers of the cluster 23 we've just identified.
 
 ```{r integrated_findmarkers}
 DefaultAssay(combined.mc) <- "RNA"
-markers22 <- FindMarkers(combined.mc, ident.1 = 22, only.pos = T)
-head(markers22)
+markers23 <- FindMarkers(combined.mc, ident.1 = 23, only.pos = T)
+head(markers23)
 ```
 
 This cluster clearly presents a B cell signature with marker genes such as CD19 and PAX5
 
 ```{r integrated_markers_visu}
 genes <-c("CD19","PAX5") # knwon B cells markers
-markers22[genes,]
+markers23[genes,]
 VlnPlot(combined.mc, genes, ncol = 1)
 ```
 
@@ -275,7 +275,7 @@ By looking at the metacell annotation (assigned from the original single-cell me
 we can verify that we correctly retrieved the B cell lineage cluster.
 
 ```{r fig.height=5,fig.width=8}
-DimPlot(combined.mc[, combined.mc$integrated_snn_res.0.5 == 22],
+DimPlot(combined.mc[, combined.mc$integrated_snn_res.0.5 == 23],
         group.by = c("ann_level_3", "integrated_snn_res.0.5"),
         ncol = 2)
 ```
