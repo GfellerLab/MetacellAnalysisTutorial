@@ -56,9 +56,14 @@ by sequentially processing the samples (just remove the `-l`) in a slightly long
 
 This should take around 30 minutes.
 
+To call the MCAT command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
+
+
 ```{bash eval=FALSE, message=FALSE, warning=FALSE, results=FALSE}
+#git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
+MCAT_path=MetacellAnalysisToolkit/
 for d in data/HLCA/datasets/*;
-do cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
+do ${MCAT_path}cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 ```
 

@@ -52,10 +52,14 @@ This step takes around 20 min with multiple cores (`-l 6`). Be aware that parall
 If you are limited in memory you should still be able to process the samples by reducing the number of cores (e.g. `-l 3`) or
 by sequentially processing the samples (just remove the `-l`) in a slightly longer time.
 
+To call the MCAT command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
+
 ```{bash, eval = FALSE, results = FALSE, message=FALSE, warning=FALSE}
+#git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
+MCAT_path=MetacellAnalysisToolkit/
 start=`date +%s`
 for d in data/HLCA/datasets/*;
-do cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
+do ${MCAT_path}cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 echo "Duration: $((($(date +%s)-$start)/60)) minutes"
 ```
