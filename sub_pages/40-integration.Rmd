@@ -1,9 +1,9 @@
-## Unsupervised integration {#integration_unsupervised}
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
+## Unsupervised integration {#integration_unsupervised}
 
 In this section, we will first perform the integration in an unsupervised mode, i.e., without considering the single-cell annotation. 
 For a supervised version, please refer to section \@ref(integration_supervised).
