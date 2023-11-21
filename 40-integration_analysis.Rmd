@@ -6,11 +6,11 @@ gathering around 580,000 cells from 107 individuals distributed in 166 samples.
 The aim of this tutorial is to show how you can use metacells to analyze a very large dataset using a reasonable amount of time and memory.
 For this we will use here **SuperCell** via the **MCAT** command line tool.
 
-
+## Unsupervised integration {#integration_unsupervised}
 ```{r, child='./sub_pages/40-integration.Rmd'}
 ```
 
 
-
+## Supervised integration {#integration_supervised}
 ```{r, child='./sub_pages/40-integration_supervised.Rmd'}
 ```
