@@ -1,3 +1,4 @@
+## Unsupervised integration {#integration_unsupervised}
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
