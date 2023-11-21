@@ -4,7 +4,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 In this section, we will first perform the integration in an unsupervised mode, i.e., without considering the single-cell annotation. 
-For a supervised version, please refer to section \@ref(integration_supervised).
+For a supervised version, please refer to section \@ref(integration-supervised).
 
 ###  Data loading
 Please follow the section \@ref(HLCA-data) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
