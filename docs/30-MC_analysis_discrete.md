@@ -44,19 +44,19 @@ These objects can also be generated using the command line described in chapter 
 
 ```r
 MC_tool = "SuperCell"
-proj_name = "3k_pbmc"
-annotation_column = "louvain"
-celltype_colors <- c(
-  "CD14+ Monocytes"    = "#E69F00",  # orange
-  "B cells"            = "#56B4E9",  # sky blue
-  "CD4 T cells"        = "#009E73",  # bluish green
-  "NK cells"           = "#F0E442",  # yellow
-  "CD8 T cells"        = "#0072B2",  # blue
-  "FCGR3A+ Monocytes"  = "#D55E00",  # vermillion
-  "Dendritic cells"    = "#CC79A7",  # reddish purple
-  "Megakaryocytes"     = "#000000"   # black
-)
+proj_name = "bmcite"
+annotation_column = "celltype_simplified"
 
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
@@ -74,7 +74,7 @@ MC.seurat <- FindVariableFeatures(MC.seurat, selection.method = "vst", nfeatures
 MC.seurat <- ScaleData(MC.seurat)
 #> Centering and scaling data matrix
 MC.seurat <- RunPCA(MC.seurat, verbose = F)
-MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F, min.dist = 0.5)
+MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F, min.dist = 1)
 #> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
 #> This message will be shown once per session
@@ -84,9 +84,9 @@ data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
                          cell_type = MC.seurat@meta.data[, annotation_column]))
 
 p_annot <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cell_type)) + geom_point(aes(size=size)) +
-  ggplot2::scale_size_continuous(range = c(1,  max(log((data$size))))) +
+  ggplot2::scale_size_continuous(range = c(0.5,  0.5*max(log((data$size))))) +
    ggplot2::scale_color_manual(values = celltype_colors) +
-  theme_classic()
+  theme_classic() + guides(color=guide_legend(ncol=2))
 p_annot
 ```
 
@@ -101,14 +101,14 @@ p_annot
 We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:
 
 ```r
-MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reductions$pca@cell.embeddings[, 1:30]  ), k = 8)$clustering
+MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reductions$pca@cell.embeddings[, 1:30]  ), k = 15)$clustering
 data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cluster = paste0("C_",MC.seurat$SCclustering)))
 
 p_cluster <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cluster)) + geom_point(aes(size=size)) +
-  ggplot2::scale_size_continuous(range = c(1, max(log1p((data$size))))) +
-  theme_classic()
+  ggplot2::scale_size_continuous(range = c(0.5, 0.5*max(log1p((data$size))))) +
+  theme_classic() + guides(color=guide_legend(ncol=2))
 p_cluster
 ```
 
@@ -122,7 +122,7 @@ We perform diffrential analysis to identify the markers of our cluster 3 as an e
 # Set idents to metacell annotation 
 Idents(MC.seurat) <- "SCclustering"
 
-cells_markers <- FindMarkers(MC.seurat, ident.1 = "4", only.pos = TRUE)
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE)
 #> For a more efficient implementation of the Wilcoxon Rank Sum Test,
 #> (default method for FindMarkers) please install the limma package
 #> --------------------------------------------
@@ -132,22 +132,26 @@ cells_markers <- FindMarkers(MC.seurat, ident.1 = "4", only.pos = TRUE)
 #> After installation of limma, Seurat will automatically use the more 
 #> efficient implementation (no further action necessary).
 #> This message will be shown once per session
-head(cells_markers)
-#>                p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> LIM2    1.188910e-27  0.4687254 0.467 0.000 3.892253e-23
-#> FASLG   1.281776e-26  0.9488759 0.800 0.036 4.196277e-22
-#> SH2D1B  2.757388e-25  1.4437575 0.933 0.072 9.027137e-21
-#> KIR3DL2 1.480605e-23  1.1403146 0.867 0.068 4.847204e-19
-#> KIR3DL1 3.907898e-23  0.5023381 0.533 0.012 1.279368e-18
-#> PRSS23  6.410015e-22  1.7388849 0.933 0.092 2.098511e-17
+cells_markers[order(cells_markers$avg_log2FC, decreasing = T)[1:10], ]
+#>              p_val avg_log2FC pct.1 pct.2    p_val_adj
+#> GNLY  4.624070e-27   4.620624 1.000 0.898 7.865080e-23
+#> NKG7  3.623582e-26   3.796975 1.000 0.878 6.163350e-22
+#> KLRF1 2.903180e-32   3.154920 1.000 0.406 4.938018e-28
+#> KLRD1 7.406286e-32   3.011319 1.000 0.407 1.259735e-27
+#> GZMB  1.220131e-24   3.010468 0.976 0.504 2.075321e-20
+#> KLRB1 1.374561e-25   2.989229 1.000 0.698 2.337991e-21
+#> CMC1  5.065132e-24   2.918483 1.000 0.846 8.615283e-20
+#> PRF1  1.881760e-31   2.869718 1.000 0.398 3.200685e-27
+#> CD7   2.407873e-27   2.806730 1.000 0.735 4.095552e-23
+#> SPON2 4.903245e-24   2.763682 0.929 0.469 8.339929e-20
 ```
 
-We see that the top marker genes for this cluster contain Killer cell immunoglobulin-like receptors (KIRs) genes coding for
-transmembrane glycoproteins expressed by natural killer cells. 
+We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family, 
+which is a group of transmembrane proteins preferentially expressed in NK cells. 
 
 
 ```r
-genes = c("KIR3DL2", "KIR3DL1")
+genes = c("KLRF1", "KLRD1")
 VlnPlot(MC.seurat, genes, ncol = 2, pt.size = 0.0)
 ```
 
@@ -160,7 +164,7 @@ We can verify the identification of the NK cell cluster by comparing the metacel
 p_cluster + p_annot
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/unnamed-chunk-4-1.png" width="768" />
+<img src="30-MC_analysis_discrete_files/figure-html/unnamed-chunk-4-1.png" width="960" />
 
 ### Visualize gene-gene correlation 
 
@@ -172,7 +176,7 @@ For that, we load the single-cell data from which the metacells were derived fro
 
 ```r
 print(proj_name)
-#> [1] "3k_pbmc"
+#> [1] "bmcite"
 sc_data <- readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
 ```
@@ -180,7 +184,7 @@ sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
 We visualize gene-gene correlation at the single-cell level:
 
 ```r
-cells_markers <- cells_markers [order(cells_markers$avg_log2FC, decreasing = T),]
+cells_markers <- cells_markers[order(cells_markers$avg_log2FC, decreasing = T),]
 gene_x <- rownames(cells_markers)[1:5]  
 gene_y <- rownames(cells_markers)[6:10]
 
@@ -198,7 +202,7 @@ p.sc <- SuperCell::supercell_GeneGenePlot(
 p.sc$p
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/r-sc-plot-genes-1.png" width="672" />
+<img src="30-MC_analysis_discrete_files/figure-html/r-sc-gene_gene_cor-1.png" width="768" />
 
 We visualize gene-gene correlation at the metacell level:
 
@@ -214,7 +218,7 @@ p.MC <- SuperCell::supercell_GeneGenePlot(GetAssayData(MC.seurat, slot = "data")
 p.MC$p
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/r-MC-plot-genes-1.png" width="672" />
+<img src="30-MC_analysis_discrete_files/figure-html/r-mc-gene_gene_cors-1.png" width="672" />
 
 
 <!-- ## Standard analysis (Python) {#standard-analysis-Py} -->
@@ -247,18 +251,19 @@ These objects can also be generated using the command line described in chapter 
 
 ```r
 MC_tool = "SuperCell"
-proj_name = "3k_pbmc"
-annotation_column = "louvain"
-celltype_colors <- c(
-  "CD14+ Monocytes"    = "#E69F00",  # orange
-  "B cells"            = "#56B4E9",  # sky blue
-  "CD4 T cells"        = "#009E73",  # bluish green
-  "NK cells"           = "#F0E442",  # yellow
-  "CD8 T cells"        = "#0072B2",  # blue
-  "FCGR3A+ Monocytes"  = "#D55E00",  # vermillion
-  "Dendritic cells"    = "#CC79A7",  # reddish purple
-  "Megakaryocytes"     = "#000000"   # black
-)
+proj_name = "bmcite"
+annotation_column = "celltype_simplified"
+
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
@@ -286,17 +291,17 @@ MC_list$PCA <- SuperCell::supercell_prcomp(
 MC_list$UMAP <- supercell_UMAP(
   SC = MC_list,
   PCA_name = "PCA",
-  n.comp = 30, n_neighbors = 15
+  n.comp = 30, n_neighbors = 15, min_dist=0.5
 )
 
 supercell_DimPlot(SC = MC_list, 
   groups = MC.seurat@meta.data[, annotation_column],
   dim.name = "UMAP", 
   title = paste0("UMAP of metacells colored by cell type assignment"), color.use = celltype_colors
-)
+) + guides(color=guide_legend(ncol=2))
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-weighted-1.png" width="672" />
+<img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-weighted-1.png" width="672" /><img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-weighted-2.png" width="672" />
 
 ### Clustering
 
@@ -307,7 +312,7 @@ We cluster the metacells using the function `supercell_cluster` from SuperCell R
 D  <- dist(MC_list$PCA$x)
 
 # cluster metacells
-MC_list$SCclustering  <- supercell_cluster(D = D, k = 8, supercell_size = MC_list$supercell_size)
+MC_list$SCclustering  <- supercell_cluster(D = D, k = 15, supercell_size = MC_list$supercell_size)
 MC.seurat$SCclustering <- MC_list$SCclustering$clustering
 
 # Plot clustering result
@@ -316,10 +321,10 @@ supercell_DimPlot(
   groups = factor(MC_list$SCclustering$clustering),
   dim.name = "UMAP", 
   title = paste0("UMAP of metacells colored by metacell clustering")
-)
+)  + guides(color=guide_legend(ncol=2))
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-weighted-1.png" width="672" />
+<img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-weighted-1.png" width="672" /><img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-weighted-2.png" width="672" />
 
 ### Differential expression analysis
 
@@ -337,14 +342,22 @@ MC.all.markers <- supercell_FindAllMarkers(
 )
 ```
 
-We select the markers for cluster 4: 
+We select the markers for cluster 9: 
 
 ```r
-cluster4_markers <- MC.all.markers[[4]]
-MC.top.markers <- cluster4_markers[order(cluster4_markers$logFC, decreasing = T),]
+cluster_markers <- MC.all.markers[[9]]
+MC.top.markers <- cluster_markers[order(cluster_markers$logFC, decreasing = T),]
+head(MC.top.markers)
+#>       p.value adj.p.value     pct.1     pct.2    logFC w.mean.1   w.mean.2
+#> GNLY        0           0 1.0000000 0.9692845 3.444786 4.629992 0.54215411
+#> NKG7        0           0 1.0000000 0.9536207 2.853815 4.023960 0.51434288
+#> GZMB        0           0 0.9916981 0.6401282 2.529441 2.771860 0.15034752
+#> KLRF1       0           0 1.0000000 0.5681106 2.225002 2.353682 0.09508412
+#> KLRD1       0           0 1.0000000 0.5480537 2.184094 2.508815 0.17047908
+#> CST7        0           0 1.0000000 0.7280256 2.081451 2.706358 0.30405936
 ```
 
-We visualize the top 5 markers for the cluster 4 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
+We visualize the top 5 markers for the cluster 7 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
 
 ```r
 Idents(MC.seurat) <- "SCclustering"

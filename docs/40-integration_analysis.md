@@ -32,8 +32,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used (Mb) gc trigger (Mb) max used (Mb)
-#> Ncells  649423 34.7    1512985 80.9   704350 37.7
-#> Vcells 1196992  9.2    8388608 64.0  1814779 13.9
+#> Ncells  649426 34.7    1512985 80.9   704592 37.7
+#> Vcells 1197064  9.2    8388608 64.0  1814779 13.9
 ```
 
 
@@ -69,11 +69,15 @@ This step takes around 20 min with multiple cores (`-l 6`). Be aware that parall
 If you are limited in memory you should still be able to process the samples by reducing the number of cores (e.g. `-l 3`) or
 by sequentially processing the samples (just remove the `-l`) in a slightly longer time.
 
+To call the MCAT command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
+
 
 ```bash
+#git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
+MCAT_path=MetacellAnalysisToolkit/
 start=`date +%s`
 for d in data/HLCA/datasets/*;
-do cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
+do ${MCAT_path}cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 echo "Duration: $((($(date +%s)-$start)/60)) minutes"
 ```
@@ -462,8 +466,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#> Ncells 3555042 189.9    6519942   348.3    6519942   348.3
-#> Vcells 6717400  51.3 1799339657 13727.9 2245660904 17133.1
+#> Ncells 3555050 189.9    6519947   348.3    6519947   348.3
+#> Vcells 6717513  51.3 1799339828 13727.9 2245660988 17133.1
 ```
 
 
@@ -495,10 +499,15 @@ by sequentially processing the samples (just remove the `-l`) in a slightly long
 
 This should take around 30 minutes.
 
+To call the MCAT command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
+
+
 
 ```bash
+#git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
+MCAT_path=MetacellAnalysisToolkit/
 for d in data/HLCA/datasets/*;
-do cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
+do ${MCAT_path}cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 ```
 

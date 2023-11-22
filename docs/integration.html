@@ -108,15 +108,15 @@ For a supervised version, please refer to section @ref(integration_supervised).<
 </h3>
 <p>First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MCAT tool).
 To build the conda environment please follow the instructions on our MetacellAnalysisToolkit <a href="https://github.com/GfellerLab/MetacellToolkit">github repository</a>.</p>
-<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
 <span><span class="va">conda_env</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html">conda_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html">conda_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"MetacellAnalysisToolkit"</span>,<span class="st">"python"</span><span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>RETICULATE_PYTHON <span class="op">=</span> <span class="va">conda_env</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt;           used (Mb) gc trigger (Mb) max used (Mb)
-#&gt; Ncells  649423 34.7    1512985 80.9   704350 37.7
-#&gt; Vcells 1196992  9.2    8388608 64.0  1814779 13.9</code></pre>
-<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
+#&gt; Ncells  649426 34.7    1512985 80.9   704592 37.7
+#&gt; Vcells 1197064  9.2    8388608 64.0  1814779 13.9</code></pre>
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
 <span><span class="co">#&gt; will retire shortly. Please refer to R-spatial evolution reports on</span></span>
@@ -145,11 +145,14 @@ We use an adata .h5ad output format (<code>-s adata</code>) as it is faster to w
 <p>This step takes around 20 min with multiple cores (<code>-l 6</code>). Be aware that parallel processing requires more memory (32 GB of memory required for 6 cores).</p>
 <p>If you are limited in memory you should still be able to process the samples by reducing the number of cores (e.g. <code>-l 3</code>) or
 by sequentially processing the samples (just remove the <code>-l</code>) in a slightly longer time.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb146-1"><a href="integration.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="va">start</span><span class="op">=</span><span class="kw">`</span><span class="fu">date</span> +%s<span class="kw">`</span></span>
-<span id="cb146-2"><a href="integration.html#cb146-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> data/HLCA/datasets/<span class="pp">*</span><span class="kw">;</span></span>
-<span id="cb146-3"><a href="integration.html#cb146-3" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="ex">cli/MCAT</span> <span class="at">-t</span> SuperCell <span class="at">-i</span> <span class="va">$d</span>/sc_adata.h5ad <span class="at">-o</span> <span class="va">$d</span> <span class="at">-a</span> sample <span class="at">-l</span> 3 <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
-<span id="cb146-4"><a href="integration.html#cb146-4" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
-<span id="cb146-5"><a href="integration.html#cb146-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Duration: </span><span class="va">$((</span>(<span class="va">$(</span><span class="fu">date</span> +%s<span class="va">)</span><span class="op">-</span><span class="va">$start</span>)<span class="op">/</span><span class="dv">60</span><span class="va">))</span><span class="st"> minutes"</span></span></code></pre></div>
+<p>To call the MCAT command line, please define your path to the gihub cloned repository optained from this <a href="https://github.com/GfellerLab/MetacellToolkit">github repository</a>.</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb137-1"><a href="integration.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="co">#git clone https://github.com/GfellerLab/MetacellAnalysisToolkit</span></span>
+<span id="cb137-2"><a href="integration.html#cb137-2" aria-hidden="true" tabindex="-1"></a><span class="va">MCAT_path</span><span class="op">=</span>MetacellAnalysisToolkit/</span>
+<span id="cb137-3"><a href="integration.html#cb137-3" aria-hidden="true" tabindex="-1"></a><span class="va">start</span><span class="op">=</span><span class="kw">`</span><span class="fu">date</span> +%s<span class="kw">`</span></span>
+<span id="cb137-4"><a href="integration.html#cb137-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> data/HLCA/datasets/<span class="pp">*</span><span class="kw">;</span></span>
+<span id="cb137-5"><a href="integration.html#cb137-5" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="va">${MCAT_path}</span><span class="ex">cli/MCAT</span> <span class="at">-t</span> SuperCell <span class="at">-i</span> <span class="va">$d</span>/sc_adata.h5ad <span class="at">-o</span> <span class="va">$d</span> <span class="at">-a</span> sample <span class="at">-l</span> 3 <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
+<span id="cb137-6"><a href="integration.html#cb137-6" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span>
+<span id="cb137-7"><a href="integration.html#cb137-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Duration: </span><span class="va">$((</span>(<span class="va">$(</span><span class="fu">date</span> +%s<span class="va">)</span><span class="op">-</span><span class="va">$start</span>)<span class="op">/</span><span class="dv">60</span><span class="va">))</span><span class="st"> minutes"</span></span></code></pre></div>
 </div>
 <div id="loading-metacell-objects" class="section level3" number="7.1.4">
 <h3>
@@ -157,14 +160,14 @@ by sequentially processing the samples (just remove the <code>-l</code>) in a sl
 </h3>
 <p>We load the .h5ad objects and directly convert them in Seurat objects to benefit from all the functions of this framework.
 To consider the datasets in the same order as the one used in this tutorial we run the following chunk before loading the metacell objects.</p>
-<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
 <span><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://anndata.dynverse.org/reference/read_h5ad.html">read_h5ad</a></span><span class="op">(</span><span class="st">"data/HLCA/local.h5ad"</span>,backed <span class="op">=</span> <span class="st">"r"</span><span class="op">)</span></span>
 <span><span class="va">adata</span><span class="op">$</span><span class="va">var_names</span> <span class="op">&lt;-</span> <span class="va">adata</span><span class="op">$</span><span class="va">var</span><span class="op">$</span><span class="va">feature_name</span> <span class="co"># We will use gene short name for downstream analyses</span></span>
 <span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">adata</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/gc.html">gc</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">metacell.files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">datasets</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/HLCA/datasets/"</span>,<span class="va">x</span>,<span class="st">"/mc_adata.h5ad"</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
@@ -186,30 +189,30 @@ To consider the datasets in the same order as the one used in this tutorial we r
 in the metadata of the input single-cell object.</p>
 <p>Thus, we can check the purity of our metacells at different levels of annotations, as well as their size (number of single cells they contain).</p>
 <p>To do so we merge the object together and use the Seurat <code>VlnPlot</code> function.</p>
-<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">unintegrated.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">metacell.objs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">metacell.objs</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"size"</span>, <span class="st">"ann_level_1_purity"</span><span class="op">)</span>, group.by <span class="op">=</span> <span class="st">'dataset'</span>, pt.size <span class="op">=</span> <span class="fl">0.001</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unintegrated_vlnPlot_obj-1.png" width="672"></div>
-<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ann_level_2_purity"</span>, <span class="st">"ann_level_3_purity"</span><span class="op">)</span>, group.by <span class="op">=</span> <span class="st">'dataset'</span>, pt.size <span class="op">=</span> <span class="fl">0.001</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unintegrated_vlnPlot_obj-2.png" width="672"></div>
 <p>We can also use box plots.</p>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">@</span><span class="va">meta.data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>, y <span class="op">=</span> <span class="va">ann_level_2_purity</span>, fill <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_axis.html">guide_axis</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unintegrated_boxplot_obj-1.png" width="672"></div>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">@</span><span class="va">meta.data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>, y <span class="op">=</span> <span class="va">ann_level_3_purity</span>, fill <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_axis.html">guide_axis</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unintegrated_boxplot_obj-2.png" width="672"></div>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">@</span><span class="va">meta.data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>, y <span class="op">=</span> <span class="va">ann_level_4_purity</span>, fill <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_axis.html">guide_axis</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unintegrated_boxplot_obj-3.png" width="672"></div>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">@</span><span class="va">meta.data</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>, y <span class="op">=</span> <span class="va">ann_finest_level_purity</span>, fill <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_axis.html">guide_axis</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -221,7 +224,7 @@ in the metadata of the input single-cell object.</p>
 <span class="header-section-number">7.1.6</span> Unintegrated analysis<a class="anchor" aria-label="anchor" href="#unintegrated-analysis"><i class="fas fa-link"></i></a>
 </h3>
 <p>Let’s first do a standard dimensionality reduction without batch correction.</p>
-<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/DefaultAssay.html">DefaultAssay</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"RNA"</span></span>
 <span><span class="va">unintegrated.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">)</span></span>
 <span><span class="va">unintegrated.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindVariableFeatures.html">FindVariableFeatures</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">)</span></span>
@@ -234,7 +237,7 @@ in the metadata of the input single-cell object.</p>
 <span></span>
 <span><span class="va">umap.unintegrated.datasets</span> <span class="op">+</span> <span class="va">umap.unintegrated.types</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unintegrated_preprocess-1.png" width="672"></div>
-<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">remove</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">)</span> <span class="co"># we won't use the unintegrated object anymore</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/gc.html">gc</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -248,7 +251,7 @@ Let’s correct it.</p>
 <p>Here we will use the standard Seurat_v4 batch correction <a href="https://satijalab.org/seurat/archive/v4.3/integration_rpca">workflow</a>. As in the original study, we use the dataset rather than the donor as the batch parameter.
 See method section “Data integration benchmarking” of the <a href="https://www.nature.com/articles/s41591-023-02327-2">original study</a> for more details.</p>
 <p>This should take less than 5 minutes.</p>
-<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">n.metacells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">metacell.objs</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">n.metacells</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">datasets</span></span>
@@ -281,25 +284,25 @@ See method section “Data integration benchmarking” of the <a href="https://w
 <span></span>
 <span><span class="va">combined.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/IntegrateData.html">IntegrateData</a></span><span class="op">(</span>anchorset <span class="op">=</span> <span class="va">anchors</span>,k.weight <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="co"># we have to update the k.weight parameters because the smallest dataset contain less than 100 metacells</span></span></code></pre></div>
 <p>Check the obtained object.</p>
-<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">combined.mc</span></span>
 <span><span class="co">#&gt; An object of class Seurat </span></span>
 <span><span class="co">#&gt; 30024 features across 11706 samples within 2 assays </span></span>
 <span><span class="co">#&gt; Active assay: integrated (2000 features, 2000 variable features)</span></span>
 <span><span class="co">#&gt;  1 other assay present: RNA</span></span></code></pre></div>
 <p>We can verify that the sum of metacell sizes corresponds to the original number of single-cells</p>
-<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">$</span><span class="va">size</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 584944</span></span></code></pre></div>
 <p>Seurat returns the slot <code>"integrated"</code> that we can use for the downstream analysis.</p>
-<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/DefaultAssay.html">DefaultAssay</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">)</span> <span class="op">=</span> <span class="st">"integrated"</span></span>
 <span><span class="va">combined.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/ScaleData.html">ScaleData</a></span><span class="op">(</span><span class="va">combined.mc</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">combined.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunPCA.html">RunPCA</a></span><span class="op">(</span><span class="va">combined.mc</span>, npcs <span class="op">=</span> <span class="fl">30</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">combined.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">combined.mc</span>, reduction <span class="op">=</span> <span class="st">"pca"</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">combined.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">combined.mc</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">30</span>,reduction <span class="op">=</span>  <span class="st">"pca"</span>,reduction.name <span class="op">=</span> <span class="st">"umap"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Now we can make the plots and visually compare the results with the unintegrated analysis.</p>
-<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">umap.integrated.datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,group.by <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"integrated datasets"</span><span class="op">)</span></span>
 <span><span class="va">umap.integrated.celltypes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,group.by <span class="op">=</span> <span class="st">"ann_level_2"</span>,label <span class="op">=</span> <span class="cn">T</span>,repel <span class="op">=</span> <span class="cn">T</span>,cols <span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"integrated cell types"</span><span class="op">)</span></span>
 <span></span>
@@ -309,16 +312,16 @@ See method section “Data integration benchmarking” of the <a href="https://w
 <p>Note that In the original study, datasets were integrated using SCANVI semi-supervised integration using partial annotation obtained for each dataset prior integration.
 If you are interested in such supervised approach at the metacell level in R you can have a look to our second example in section @ref(integration_supervised) using the <a href="https://github.com/carmonalab/STACAS">STACAS</a> package.</p>
 <p>We can navigate in the different annotation levels.</p>
-<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,group.by <span class="op">=</span> <span class="st">"ann_level_1"</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,label <span class="op">=</span> <span class="cn">T</span>,repel <span class="op">=</span> <span class="cn">T</span>,cols<span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/integrated_dimplots-1.png" width="672"></div>
-<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,group.by <span class="op">=</span> <span class="st">"ann_level_2"</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,label <span class="op">=</span> <span class="cn">T</span>,repel <span class="op">=</span> <span class="cn">T</span>,cols<span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/integrated_dimplots-2.png" width="672"></div>
-<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,group.by <span class="op">=</span> <span class="st">"ann_level_3"</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,label <span class="op">=</span> <span class="cn">T</span>, repel <span class="op">=</span> <span class="cn">T</span>,cols<span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/integrated_dimplots-3.png" width="672"></div>
@@ -327,12 +330,12 @@ If you are interested in such supervised approach at the metacell level in R you
 <h3>
 <span class="header-section-number">7.1.8</span> Downstream analysis<a class="anchor" aria-label="anchor" href="#downstream-analysis-1"><i class="fas fa-link"></i></a>
 </h3>
-<div id="clustering-3" class="section level4" number="7.1.8.1">
+<div id="clustering-2" class="section level4" number="7.1.8.1">
 <h4>
-<span class="header-section-number">7.1.8.1</span> Clustering<a class="anchor" aria-label="anchor" href="#clustering-3"><i class="fas fa-link"></i></a>
+<span class="header-section-number">7.1.8.1</span> Clustering<a class="anchor" aria-label="anchor" href="#clustering-2"><i class="fas fa-link"></i></a>
 </h4>
 <p>We cluster the metacells based on the corrected PCA space by Seurat.</p>
-<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/DefaultAssay.html">DefaultAssay</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"integrated"</span></span>
 <span><span class="va">combined.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindNeighbors.html">FindNeighbors</a></span><span class="op">(</span><span class="va">combined.mc</span>, reduction <span class="op">=</span> <span class="st">"pca"</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">30</span><span class="op">)</span></span>
 <span><span class="va">combined.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindClusters.html">FindClusters</a></span><span class="op">(</span><span class="va">combined.mc</span>, resolution <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
@@ -344,7 +347,7 @@ If you are interested in such supervised approach at the metacell level in R you
 <span class="header-section-number">7.1.8.2</span> Deferentially expressed gene (DEG) analysis.<a class="anchor" aria-label="anchor" href="#deferentially-expressed-gene-deg-analysis."><i class="fas fa-link"></i></a>
 </h4>
 <p>Now let’s found the markers of the cluster 23 we’ve just identified.</p>
-<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/DefaultAssay.html">DefaultAssay</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"RNA"</span></span>
 <span><span class="va">markers23</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindMarkers.html">FindMarkers</a></span><span class="op">(</span><span class="va">combined.mc</span>, ident.1 <span class="op">=</span> <span class="fl">23</span>, only.pos <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="co">#&gt; For a more efficient implementation of the Wilcoxon Rank Sum Test,</span></span>
@@ -365,7 +368,7 @@ If you are interested in such supervised approach at the metacell level in R you
 <span><span class="co">#&gt; PNOC      0  0.5477793 0.924 0.050         0</span></span>
 <span><span class="co">#&gt; PAX5      0  0.6089985 0.886 0.024         0</span></span></code></pre></div>
 <p>This cluster clearly presents a B cell signature with marker genes such as CD19 and PAX5</p>
-<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">genes</span> <span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD19"</span>,<span class="st">"PAX5"</span><span class="op">)</span> <span class="co"># knwon B cells markers</span></span>
 <span><span class="va">markers23</span><span class="op">[</span><span class="va">genes</span>,<span class="op">]</span></span>
 <span><span class="co">#&gt;              p_val avg_log2FC pct.1 pct.2     p_val_adj</span></span>
@@ -375,7 +378,7 @@ If you are interested in such supervised approach at the metacell level in R you
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/integrated_markers_visu-1.png" width="672"></div>
 <p>By looking at the metacell annotation (assigned from the original single-cell metadata by MCAT),
 we can verify that we correctly retrieved the B cell lineage cluster.</p>
-<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">[</span>, <span class="va">combined.mc</span><span class="op">$</span><span class="va">integrated_snn_res.0.5</span> <span class="op">==</span> <span class="fl">23</span><span class="op">]</span>,</span>
 <span>        group.by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ann_level_3"</span>, <span class="st">"integrated_snn_res.0.5"</span><span class="op">)</span>,</span>
 <span>        ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
@@ -388,7 +391,7 @@ we can verify that we correctly retrieved the B cell lineage cluster.</p>
 <p>We can easily make analysis of cell type abundances for different clinical variables as we construct metacell by sample.
 We have to take metacell size into account for these analyses.
 For instance we can analyse the proportion of different epithelial cell types depending on the smoking status.</p>
-<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/reshape">reshape2</a></span><span class="op">)</span></span>
 <span><span class="va">combined.mc.epith</span> <span class="op">&lt;-</span> <span class="va">combined.mc</span><span class="op">[</span>,<span class="va">combined.mc</span><span class="op">$</span><span class="va">ann_level_1</span> <span class="op">==</span> <span class="st">"Epithelial"</span><span class="op">]</span></span>
 <span><span class="co">#combined.metacells$major_type &lt;- droplevels(combined.metacells$major_type)</span></span>
@@ -420,7 +423,7 @@ Authors of the original study made a remarkable work annotating the hundreds of 
 In the second example in section @ref(integration_supervised) we propose a supervised workflow using this annotation to guide both the metacell
 identification and the batch correction.</p>
 <p>We can save the results for comparison with the second example.</p>
-<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">combined.mc</span>,<span class="st">"data/HLCA/combined.mc.unsup.rds"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -444,15 +447,15 @@ guide the integration with the cell type label using <a href="https://github.com
 </h3>
 <p>First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MCAT tool).
 To build the conda environment please follow the instructions on our MetacellAnalysisToolkit <a href="https://github.com/GfellerLab/MetacellToolkit">github repository</a>.</p>
-<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
 <span><span class="va">conda_env</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html">conda_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html">conda_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"MetacellAnalysisToolkit"</span>,<span class="st">"python"</span><span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>RETICULATE_PYTHON <span class="op">=</span> <span class="va">conda_env</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt;           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#&gt; Ncells 3555042 189.9    6519942   348.3    6519942   348.3
-#&gt; Vcells 6717400  51.3 1799339657 13727.9 2245660904 17133.1</code></pre>
-<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+#&gt; Ncells 3555050 189.9    6519947   348.3    6519947   348.3
+#&gt; Vcells 6717513  51.3 1799339828 13727.9 2245660988 17133.1</code></pre>
+<div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SuperCell</span><span class="op">)</span></span>
@@ -476,9 +479,12 @@ We now can use it to build metacell for each cell type in each sample.</p>
 <p>If you are limited in memory you should still be able to process the samples by reducing the number of cores (e.g. <code>-l 3</code>) or
 by sequentially processing the samples (just remove the <code>-l</code>) in a slightly longer time</p>
 <p>This should take around 30 minutes.</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb174-1"><a href="integration.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> data/HLCA/datasets/<span class="pp">*</span><span class="kw">;</span></span>
-<span id="cb174-2"><a href="integration.html#cb174-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="ex">cli/MCAT</span> <span class="at">-t</span> SuperCell <span class="at">-i</span> <span class="va">$d</span>/sc_adata.h5ad <span class="at">-o</span> <span class="va">$d</span>/sup_mc <span class="at">-a</span> ann_sample <span class="at">-l</span> 3 <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
-<span id="cb174-3"><a href="integration.html#cb174-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<p>To call the MCAT command line, please define your path to the gihub cloned repository optained from this <a href="https://github.com/GfellerLab/MetacellToolkit">github repository</a>.</p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb165-1"><a href="integration.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="co">#git clone https://github.com/GfellerLab/MetacellAnalysisToolkit</span></span>
+<span id="cb165-2"><a href="integration.html#cb165-2" aria-hidden="true" tabindex="-1"></a><span class="va">MCAT_path</span><span class="op">=</span>MetacellAnalysisToolkit/</span>
+<span id="cb165-3"><a href="integration.html#cb165-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> data/HLCA/datasets/<span class="pp">*</span><span class="kw">;</span></span>
+<span id="cb165-4"><a href="integration.html#cb165-4" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="va">${MCAT_path}</span><span class="ex">cli/MCAT</span> <span class="at">-t</span> SuperCell <span class="at">-i</span> <span class="va">$d</span>/sc_adata.h5ad <span class="at">-o</span> <span class="va">$d</span>/sup_mc <span class="at">-a</span> ann_sample <span class="at">-l</span> 3 <span class="at">-n</span> 50 <span class="at">-f</span> 2000 <span class="at">-k</span> 30 <span class="at">-g</span> 50 <span class="at">-s</span> adata</span>
+<span id="cb165-5"><a href="integration.html#cb165-5" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
 </div>
 <div id="load-metacell-objects" class="section level3" number="7.2.4">
 <h3>
@@ -486,14 +492,14 @@ by sequentially processing the samples (just remove the <code>-l</code>) in a sl
 </h3>
 <p>We load the .h5ad objects and directly convert them in Seurat objects to benefit from all the functions of this framework.
 To consider the datasets in the same order as the one used in this tutorial we run the following chunk before loading the metacell objects.</p>
-<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
 <span><span class="va">adata</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://anndata.dynverse.org/reference/read_h5ad.html">read_h5ad</a></span><span class="op">(</span><span class="st">"data/HLCA/local.h5ad"</span>,backed <span class="op">=</span> <span class="st">"r"</span><span class="op">)</span></span>
 <span><span class="va">adata</span><span class="op">$</span><span class="va">var_names</span> <span class="op">&lt;-</span> <span class="va">adata</span><span class="op">$</span><span class="va">var</span><span class="op">$</span><span class="va">feature_name</span> <span class="co"># We will use gene short name for downstream analyses</span></span>
 <span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">adata</span><span class="op">$</span><span class="va">obs</span><span class="op">$</span><span class="va">dat</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span><span class="va">adata</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/gc.html">gc</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">metacell.files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">datasets</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/HLCA/datasets/"</span>,<span class="va">x</span>,<span class="st">"/sup_mc/mc_adata.h5ad"</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
@@ -515,20 +521,20 @@ To consider the datasets in the same order as the one used in this tutorial we r
 computes purities for all the categorical variables present in the metadata of the input single-cell object.</p>
 <p>Thus, let’s check the purity of our metacells at different level of annotations, as well as their size (number of single cells they contain).</p>
 <p>To do so we merge the objects together and use Seurat <code>VlnPlot</code> function.</p>
-<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">unintegrated.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">metacell.objs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">metacell.objs</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">[</span>, <span class="va">unintegrated.mc</span><span class="op">$</span><span class="va">ann_level_3</span> <span class="op">!=</span> <span class="st">"None"</span><span class="op">]</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"size"</span>, <span class="st">"ann_level_2_purity"</span><span class="op">)</span>, group.by <span class="op">=</span> <span class="st">'dataset'</span>, pt.size <span class="op">=</span> <span class="fl">0.001</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in SingleExIPlot(type = type, data = data[, x, drop = FALSE], idents =</span></span>
 <span><span class="co">#&gt; idents, : All cells have the same value of ann_level_2_purity.</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-17-1.png" width="672"></div>
-<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">[</span>, <span class="va">unintegrated.mc</span><span class="op">$</span><span class="va">ann_level_3</span> <span class="op">!=</span> <span class="st">"None"</span><span class="op">]</span>, features <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ann_level_3_purity"</span>, <span class="st">"ann_level_4_purity"</span><span class="op">)</span>, group.by <span class="op">=</span> <span class="st">'dataset'</span>, pt.size <span class="op">=</span> <span class="fl">0.001</span>,  ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in SingleExIPlot(type = type, data = data[, x, drop = FALSE], idents =</span></span>
 <span><span class="co">#&gt; idents, : All cells have the same value of ann_level_3_purity.</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-17-2.png" width="672"></div>
 <p>We can also use box plots.</p>
-<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">@</span><span class="va">meta.data</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>, y <span class="op">=</span> <span class="va">ann_level_4_purity</span>, fill <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_axis.html">guide_axis</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"sup metacells level 4 purity"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html">ylim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -539,7 +545,7 @@ computes purities for all the categorical variables present in the metadata of t
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-18-1.png" width="672"></div>
 <p>Overall using supervised metacells construction we obtain pure metacells until the 3rd level of annotation and
 improve metacell purities for finer levels compared to the unsupervised approach (see previous section @ref(integration_unsupervised)).</p>
-<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">meta.data.unsup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"data/HLCA/combined.mc.unsup.rds"</span><span class="op">)</span><span class="op">@</span><span class="va">meta.data</span></span>
 <span></span>
 <span><span class="va">p_4_unsup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">meta.data.unsup</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dataset</span>, y <span class="op">=</span> <span class="va">ann_level_4_purity</span>, fill <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html">geom_boxplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -550,7 +556,7 @@ improve metacell purities for finer levels compared to the unsupervised approach
 <span></span>
 <span><span class="va">p_4_unsup</span> <span class="op">|</span> <span class="va">p_4</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-19-1.png" width="1344"></div>
-<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_finest_unsup</span> <span class="op">+</span> <span class="va">p_finest</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-19-2.png" width="1344"></div>
 </div>
@@ -559,7 +565,7 @@ improve metacell purities for finer levels compared to the unsupervised approach
 <span class="header-section-number">7.2.6</span> Unintegrated analysis<a class="anchor" aria-label="anchor" href="#unintegrated-analysis-1"><i class="fas fa-link"></i></a>
 </h3>
 <p>Let’s first do a standard dimensionality reduction without batch correction.</p>
-<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/DefaultAssay.html">DefaultAssay</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"RNA"</span></span>
 <span><span class="va">unintegrated.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">)</span></span>
 <span><span class="va">unintegrated.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindVariableFeatures.html">FindVariableFeatures</a></span><span class="op">(</span><span class="va">unintegrated.mc</span><span class="op">)</span></span>
@@ -581,7 +587,7 @@ improve metacell purities for finer levels compared to the unsupervised approach
 <p>In the original study, datasets were integrated using SCANVI semi-supervised integration using partial annotation obtained for each dataset prior integration.
 Here in this second example we propose to use a similar approach in R using <a href="https://github.com/carmonalab/STACAS">STACAS</a>. We will use the “<code>ann</code>” labels we used to construct the metacells (3rd level of annotation if available for the cell, otherwise 2nd level).</p>
 <p>To be noted that, as in the original study, we use the dataset rather than the donor as the batch parameter. See method section <a href="https://www.nature.com/articles/s41591-023-02327-2">Data integration benchmarking</a> of the original study for more details.</p>
-<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install package if needed</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"STACAS"</span><span class="op">)</span><span class="op">)</span> <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"carmonalab/STACAS"</span>, upgrade <span class="op">=</span> <span class="st">"never"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">STACAS</span><span class="op">)</span></span>
@@ -618,7 +624,7 @@ Here in this second example we propose to use a similar approach in R using <a h
 <span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">remove</a></span><span class="op">(</span><span class="va">metacell.objs</span><span class="op">)</span> <span class="co"># We don't need the object list anymore</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/gc.html">gc</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Check the obtained object:</p>
-<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">combined.mc</span></span>
 <span><span class="co">#&gt; An object of class Seurat </span></span>
 <span><span class="co">#&gt; 30024 features across 12914 samples within 2 assays </span></span>
@@ -626,16 +632,16 @@ Here in this second example we propose to use a similar approach in R using <a h
 <span><span class="co">#&gt;  1 other assay present: RNA</span></span>
 <span><span class="co">#&gt;  1 dimensional reduction calculated: pca</span></span></code></pre></div>
 <p>We can verify that the sum of metacell sizes correspond to the original number of single-cells</p>
-<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">$</span><span class="va">size</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 584944</span></span></code></pre></div>
 <p>STACAS directly returns a pca for the slot <code>"integrated"</code> that we can use to make a UMAP of the corrected data.</p>
-<div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/DefaultAssay.html">DefaultAssay</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">)</span> <span class="op">=</span> <span class="st">"integrated"</span></span>
 <span></span>
 <span><span class="va">combined.mc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">combined.mc</span>, dims <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">30</span>, reduction <span class="op">=</span>  <span class="st">"pca"</span>, reduction.name <span class="op">=</span> <span class="st">"umap"</span><span class="op">)</span></span></code></pre></div>
 <p>Now we can make the plots and visually compare the results with the unintegrated analysis.</p>
-<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">umap.stacas.datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,group.by <span class="op">=</span> <span class="st">"dataset"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"integrated datasets"</span><span class="op">)</span></span>
 <span><span class="va">umap.stacas.celltypes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,group.by <span class="op">=</span> <span class="st">"ann_level_2"</span>,label <span class="op">=</span> <span class="cn">T</span>,repel <span class="op">=</span> <span class="cn">T</span>,cols <span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"integrated cell types"</span><span class="op">)</span></span>
 <span></span>
@@ -643,16 +649,16 @@ Here in this second example we propose to use a similar approach in R using <a h
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-25-1.png" width="1152"></div>
 <p>STACAS efficiently corrected the batch effect in the data while keeping the cell type separated.</p>
 <p>We can navigate in the different annotation levels.</p>
-<div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,group.by <span class="op">=</span> <span class="st">"ann_level_1"</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,cols<span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-26-1.png" width="672"></div>
-<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,group.by <span class="op">=</span> <span class="st">"ann_level_2"</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,label <span class="op">=</span> <span class="cn">T</span>,repel <span class="op">=</span> <span class="cn">T</span>,cols<span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-26-2.png" width="672"></div>
-<div class="sourceCode" id="cb190"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span>,group.by <span class="op">=</span> <span class="st">"ann_level_3"</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,label <span class="op">=</span> <span class="cn">T</span>, repel <span class="op">=</span> <span class="cn">T</span>,cols<span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-26-3.png" width="672"></div>
@@ -662,7 +668,7 @@ Here in this second example we propose to use a similar approach in R using <a h
 <span class="header-section-number">7.2.8</span> Comparison with unsupervised analysis<a class="anchor" aria-label="anchor" href="#comparison-with-unsupervised-analysis"><i class="fas fa-link"></i></a>
 </h3>
 <p>we can quickly visually compare these results with the unsupervised integration obtained with Seurat:</p>
-<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">combined.mc.unsup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"data/HLCA/combined.mc.unsup.rds"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">combined.mc</span><span class="op">$</span><span class="va">ann_level_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">$</span><span class="va">ann_level_3</span><span class="op">)</span></span>
@@ -675,7 +681,7 @@ Here in this second example we propose to use a similar approach in R using <a h
 <span><span class="va">level3_sup</span> <span class="op">+</span> <span class="va">level3_unsup</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-27-1.png" width="1344"></div>
 <p>Look at epithelial cells in particular</p>
-<div class="sourceCode" id="cb192"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">level3_sup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">[</span>,<span class="va">combined.mc</span><span class="op">$</span><span class="va">ann_level_1</span> <span class="op">==</span> <span class="st">"Epithelial"</span><span class="op">]</span>,group.by <span class="op">=</span> <span class="st">"ann_level_3"</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,label <span class="op">=</span> <span class="cn">T</span>, repel <span class="op">=</span> <span class="cn">T</span>,cols<span class="op">=</span> <span class="va">matched.color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Sup workflow"</span><span class="op">)</span></span>
 <span><span class="va">level3_unsup</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc.unsup</span><span class="op">[</span>,<span class="va">combined.mc.unsup</span><span class="op">$</span><span class="va">ann_level_1</span> <span class="op">==</span> <span class="st">"Epithelial"</span><span class="op">]</span>,group.by <span class="op">=</span> <span class="st">"ann_level_3"</span>,reduction <span class="op">=</span> <span class="st">"umap"</span>,label <span class="op">=</span> <span class="cn">T</span>, repel <span class="op">=</span> <span class="cn">T</span>,cols<span class="op">=</span> <span class="va">matched.color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/SeuratTheme.html">NoLegend</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Unsup workflow"</span><span class="op">)</span></span>
 <span></span>
@@ -688,7 +694,7 @@ Here in this second example we propose to use a similar approach in R using <a h
 </h3>
 <p>You can try conduce the same downstream analyses as in the previous example @ref(integration_unsupervised) (clustering, cell type abundances, DEG …).</p>
 <p>Here to show you the interest of supervised workflow with pure metacell we can zoom on the smooth muscle sub types. Despite the low metacell number for each cell type these different subtypes are separated on the UMAP, especially the rare FAM83D+ smooth muscles that were discovered in the original study.</p>
-<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">combined.mc</span><span class="op">$</span><span class="va">ann</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">$</span><span class="va">ann</span><span class="op">)</span></span>
 <span><span class="va">color.celltypes.ann</span> <span class="op">&lt;-</span> <span class="va">color.celltypes</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">$</span><span class="va">ann</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">color.celltypes.ann</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">$</span><span class="va">ann</span><span class="op">)</span></span>
@@ -696,7 +702,7 @@ Here in this second example we propose to use a similar approach in R using <a h
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">[</span>,<span class="va">combined.mc</span><span class="op">$</span><span class="va">ann_level_2</span> <span class="op">==</span> <span class="st">"Smooth muscle"</span><span class="op">]</span>,group.by <span class="op">=</span> <span class="st">"ann"</span>,cols <span class="op">=</span> <span class="va">color.celltypes.ann</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/unnamed-chunk-29-1.png" width="672"></div>
 <p>Using a DEG analysis we can check if we retrieve their markers. MYH11 and CNN1 genes are canonical smooth muscle markers while FAM83D was found uniquely and consistently expressed by this rare cell type in the original study</p>
-<div class="sourceCode" id="cb194"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/DefaultAssay.html">DefaultAssay</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"RNA"</span></span>
 <span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/Idents.html">Idents</a></span><span class="op">(</span><span class="va">combined.mc</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"ann"</span></span>
 <span><span class="va">markersSmoothMuscle</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindMarkers.html">FindMarkers</a></span><span class="op">(</span><span class="va">combined.mc</span>,ident.1 <span class="op">=</span> <span class="st">"Smooth muscle FAM83D+"</span>,only.pos <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
@@ -789,7 +795,7 @@ On the other hand, you certainly won’t be able to analyze so many single-cells
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-22.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-23.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
