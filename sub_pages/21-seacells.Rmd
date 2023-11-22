@@ -38,11 +38,11 @@ If you don't have these packages installed, please refer to the section \@ref(in
 MC_tool = "SEACells"
 
 ## Here we can modify dataset
-proj_name = ["cell_lines", "3k_pbmc", "cd34_multiome"][1]
+proj_name = ["cell_lines", "3k_pbmc", "bmcite"][2]
 
 annotation_label = {'cell_lines':'cell_line',
                    '3k_pbmc':'louvain',
-                   'cd34_multiome':'celltype'}[proj_name] # name of annotation field (obs)
+                   'bmcite':'celltype_simplified'}[proj_name] # name of annotation field (obs)
 ```
 
 ### Data loading 
@@ -54,8 +54,9 @@ Please follow the section \@ref(PBMC-data) to retrieve these data from the scanp
 
 ```{python seacell-load-data-noEval, eval = FALSE, echo = TRUE}
 MC_tool = "SEACells"
-proj_name = "3k_pbmc"
+proj_name = "bmcite"
 ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
+ad.var.index = ad.var.genes
 ```
 
 ### Filtering steps 
@@ -97,7 +98,7 @@ In this example, we choose a graining level of 25.
 build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
 n_waypoint_eigs = 30      # Number of eigenvalues to consider when initializing metacells
 n_neighbors = 30 # Number of neighbors used for graph construction 
-gamma = 25   # the requested graining level
+gamma = 150   # the requested graining level
 n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  
 ```
 

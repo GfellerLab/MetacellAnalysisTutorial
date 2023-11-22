@@ -12,5 +12,6 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 # Load pre-filtered data
 data_folder = os.path.join("./data/", proj_name) # here path to folder with adata
 ad = sc.read(os.path.join(data_folder, "singlecell_anndata_filtered.h5ad"))
+ad.var.index = ad.var.genes
 ```
 

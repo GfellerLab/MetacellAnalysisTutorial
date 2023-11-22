@@ -28,12 +28,23 @@ To explore metacells QCs, we need to load:
 MC_tool = "SuperCell"
 
 ## Here we can modify dataset
-proj_name = c("cell_lines", "3k_pbmc", "cd34_multiome","10k_pbmc")[2]
+proj_name = c("cell_lines", "3k_pbmc", "cd34_multiome","bmcite")[4]
 
 annotation_label = unlist(list('cell_lines'='cell_line',
                                '3k_pbmc'='louvain',
                                'cd34_multiome'='celltype',
-                               "10k_pbmc" = "seurat_annotations")[proj_name])
+                               "bmcite" = "celltype_simplified")[proj_name])
+
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+names(celltype_colors) <-cell_types
 ```
 
 ```{r sc-mc-load, eval = TRUE, echo = TRUE}
@@ -68,7 +79,7 @@ and run UMAP for visualization.
 ```{r sc-embessing, cache = TO_CACHE, evaluate = TRUE}
 sc_data@reductions[["pca"]] <- mc_data@misc$sc.pca
 sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 15, verbose = F, min.dist = 0.5)
-UMAPPlot(sc_data, group.by = annotation_label, reduction = "umap")
+UMAPPlot(sc_data, group.by = annotation_label, reduction = "umap", cols=celltype_colors)
 ```
 
 ```{r compute_compactness}
@@ -120,7 +131,7 @@ which could confound analyses. When heterogeneous size distributions are obtaine
 ```{r visualize_size_distribution}
 # Seurat::VlnPlot(mc_data, features = "size", pt.size = 2)
 # Seurat::VlnPlot(mc_data, features = "size", pt.size = 2, group.by = annotation_label)
-hist(mc_data$size, main = "Size distribution", xlab = "Size")
+hist(mc_data$size, main = "Size distribution", xlab = "Size", breaks = 30)
 qc_boxplot(mc.obj = mc_data, qc.metrics = "size")
 qc_boxplot(mc.obj = mc_data, qc.metrics = "size", split.by = annotation_label) 
 ``` 

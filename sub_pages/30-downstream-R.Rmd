@@ -22,19 +22,19 @@ These objects can also be generated using the command line described in chapter 
 
 ```{r r-mc-loading, eval=TRUE}
 MC_tool = "SuperCell"
-proj_name = "3k_pbmc"
-annotation_column = "louvain"
-celltype_colors <- c(
-  "CD14+ Monocytes"    = "#E69F00",  # orange
-  "B cells"            = "#56B4E9",  # sky blue
-  "CD4 T cells"        = "#009E73",  # bluish green
-  "NK cells"           = "#F0E442",  # yellow
-  "CD8 T cells"        = "#0072B2",  # blue
-  "FCGR3A+ Monocytes"  = "#D55E00",  # vermillion
-  "Dendritic cells"    = "#CC79A7",  # reddish purple
-  "Megakaryocytes"     = "#000000"   # black
-)
+proj_name = "bmcite"
+annotation_column = "celltype_simplified"
 
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
@@ -50,16 +50,16 @@ MC.seurat <- NormalizeData(MC.seurat)
 MC.seurat <- FindVariableFeatures(MC.seurat, selection.method = "vst", nfeatures = 2000)
 MC.seurat <- ScaleData(MC.seurat)
 MC.seurat <- RunPCA(MC.seurat, verbose = F)
-MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F, min.dist = 0.5)
+MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F, min.dist = 1)
 
 data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cell_type = MC.seurat@meta.data[, annotation_column]))
 
 p_annot <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cell_type)) + geom_point(aes(size=size)) +
-  ggplot2::scale_size_continuous(range = c(1,  max(log((data$size))))) +
+  ggplot2::scale_size_continuous(range = c(0.5,  0.5*max(log((data$size))))) +
    ggplot2::scale_color_manual(values = celltype_colors) +
-  theme_classic()
+  theme_classic() + guides(color=guide_legend(ncol=2))
 p_annot
 #DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors, pt.size = log1p(MC.seurat$size)) 
 ```
@@ -68,14 +68,14 @@ p_annot
 
 We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:
 ```{r r-mc-clustering, eval=TRUE}
-MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reductions$pca@cell.embeddings[, 1:30]  ), k = 8)$clustering
+MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reductions$pca@cell.embeddings[, 1:30]  ), k = 15)$clustering
 data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cluster = paste0("C_",MC.seurat$SCclustering)))
 
 p_cluster <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cluster)) + geom_point(aes(size=size)) +
-  ggplot2::scale_size_continuous(range = c(1, max(log1p((data$size))))) +
-  theme_classic()
+  ggplot2::scale_size_continuous(range = c(0.5, 0.5*max(log1p((data$size))))) +
+  theme_classic() + guides(color=guide_legend(ncol=2))
 p_cluster
 ```
 
@@ -86,21 +86,21 @@ We perform diffrential analysis to identify the markers of our cluster 3 as an e
 # Set idents to metacell annotation 
 Idents(MC.seurat) <- "SCclustering"
 
-cells_markers <- FindMarkers(MC.seurat, ident.1 = "4", only.pos = TRUE)
-head(cells_markers)
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE)
+cells_markers[order(cells_markers$avg_log2FC, decreasing = T)[1:10], ]
 ```
 
-We see that the top marker genes for this cluster contain Killer cell immunoglobulin-like receptors (KIRs) genes coding for
-transmembrane glycoproteins expressed by natural killer cells. 
+We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family, 
+which is a group of transmembrane proteins preferentially expressed in NK cells. 
 
 ```{r r-mc-plot-genes, eval=TRUE, cache = FALSE}
-genes = c("KIR3DL2", "KIR3DL1")
+genes = c("KLRF1", "KLRD1")
 VlnPlot(MC.seurat, genes, ncol = 2, pt.size = 0.0)
 ```
 
 We can verify the identification of the NK cell cluster by comparing the metacell annotation and the metacell clustering.
 
-```{r fig.height=4,fig.width=8}
+```{r fig.height=4,fig.width=10}
 p_cluster + p_annot
 ```
 
@@ -118,8 +118,8 @@ sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
 ```
 
 We visualize gene-gene correlation at the single-cell level:
-```{r r-sc-plot-genes, eval=TRUE}
-cells_markers <- cells_markers [order(cells_markers$avg_log2FC, decreasing = T),]
+```{r r-sc-gene_gene_cor, eval=TRUE, fig.height=4,fig.width=8}
+cells_markers <- cells_markers[order(cells_markers$avg_log2FC, decreasing = T),]
 gene_x <- rownames(cells_markers)[1:5]  
 gene_y <- rownames(cells_markers)[6:10]
 
@@ -138,7 +138,7 @@ p.sc$p
 ```
 
 We visualize gene-gene correlation at the metacell level:
-```{r r-MC-plot-genes, eval=TRUE}
+```{r r-mc-gene_gene_cors, eval=TRUE}
 
 p.MC <- SuperCell::supercell_GeneGenePlot(GetAssayData(MC.seurat, slot = "data"),
                                           gene_x = gene_x,

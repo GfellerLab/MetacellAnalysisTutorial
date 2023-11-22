@@ -37,7 +37,7 @@ To call the MCAT command line, please define your path to the gihub cloned repos
 
 ### Building metacell with MetaCell2 (MC2)
 We use MetaCell2 (`-t MetaCell`) to identify metacells at a gamma of 50 (`-g 50`). We specify that we want a Seurat .rds object in ouput (`-s seurat`).
-```{bash, eval = T, echo = FALSE}
+```{bash, eval = T, echo = T}
 #git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
 MCAT_path=MetacellAnalysisToolkit/
 ${MCAT_path}/cli/MCAT -t MetaCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD34/MC2/ -g 50 -s seurat
@@ -46,7 +46,7 @@ ${MCAT_path}/cli/MCAT -t MetaCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD
 ### Building metacell with SuperCell
 We use SuperCell (`-t SuperCell`) to identify metacells at a gamma of 50 (`-g 50`). We specify that we want a Seurat .rds object in ouput (`-s seurat`).
 We use 2000 highly variable genes (HVGs, `-f 2000`) to compute a PCA from which we use 50 components (`-n 50`) to make a k = 30 knn (`-k 30`) graph on which we identify the metacells.
-```{bash, eval = T, echo = FALSE}
+```{bash, eval = T, echo = T}
 MCAT_path=MetacellAnalysisToolkit/
 ${MCAT_path}/cli/MCAT -t SuperCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD34/SuperCell/ -f 2000 -g 50 -n 50 -k 30 -s seurat
 ```

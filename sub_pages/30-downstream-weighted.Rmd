@@ -21,18 +21,19 @@ These objects can also be generated using the command line described in chapter 
 
 ```{r r-mc-loading-weighted, eval=TRUE}
 MC_tool = "SuperCell"
-proj_name = "3k_pbmc"
-annotation_column = "louvain"
-celltype_colors <- c(
-  "CD14+ Monocytes"    = "#E69F00",  # orange
-  "B cells"            = "#56B4E9",  # sky blue
-  "CD4 T cells"        = "#009E73",  # bluish green
-  "NK cells"           = "#F0E442",  # yellow
-  "CD8 T cells"        = "#0072B2",  # blue
-  "FCGR3A+ Monocytes"  = "#D55E00",  # vermillion
-  "Dendritic cells"    = "#CC79A7",  # reddish purple
-  "Megakaryocytes"     = "#000000"   # black
-)
+proj_name = "bmcite"
+annotation_column = "celltype_simplified"
+
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
@@ -59,14 +60,14 @@ MC_list$PCA <- SuperCell::supercell_prcomp(
 MC_list$UMAP <- supercell_UMAP(
   SC = MC_list,
   PCA_name = "PCA",
-  n.comp = 30, n_neighbors = 15
+  n.comp = 30, n_neighbors = 15, min_dist=0.5
 )
 
 supercell_DimPlot(SC = MC_list, 
   groups = MC.seurat@meta.data[, annotation_column],
   dim.name = "UMAP", 
   title = paste0("UMAP of metacells colored by cell type assignment"), color.use = celltype_colors
-)
+) + guides(color=guide_legend(ncol=2))
 
 ```
 
@@ -78,7 +79,7 @@ We cluster the metacells using the function `supercell_cluster` from SuperCell R
 D  <- dist(MC_list$PCA$x)
 
 # cluster metacells
-MC_list$SCclustering  <- supercell_cluster(D = D, k = 8, supercell_size = MC_list$supercell_size)
+MC_list$SCclustering  <- supercell_cluster(D = D, k = 15, supercell_size = MC_list$supercell_size)
 MC.seurat$SCclustering <- MC_list$SCclustering$clustering
 
 # Plot clustering result
@@ -87,7 +88,7 @@ supercell_DimPlot(
   groups = factor(MC_list$SCclustering$clustering),
   dim.name = "UMAP", 
   title = paste0("UMAP of metacells colored by metacell clustering")
-)
+)  + guides(color=guide_legend(ncol=2))
 ```
 
 ### Differential expression analysis
@@ -106,13 +107,14 @@ MC.all.markers <- supercell_FindAllMarkers(
 
 ```
 
-We select the markers for cluster 4: 
+We select the markers for cluster 9: 
 ```{r r-mc-topMarkers-weighted, eval=TRUE}
-cluster4_markers <- MC.all.markers[[4]]
-MC.top.markers <- cluster4_markers[order(cluster4_markers$logFC, decreasing = T),]
+cluster_markers <- MC.all.markers[[9]]
+MC.top.markers <- cluster_markers[order(cluster_markers$logFC, decreasing = T),]
+head(MC.top.markers)
 ```
 
-We visualize the top 5 markers for the cluster 4 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
+We visualize the top 5 markers for the cluster 7 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
 ```{r r-mc-plot-genes-weighted, eval=TRUE}
 Idents(MC.seurat) <- "SCclustering"
 # genes.to.plot <- MC.seurat.top.markers$gene[MC.seurat.top.markers$cluster == unique(MC.seurat@meta.data[,annotation_column])[1]]

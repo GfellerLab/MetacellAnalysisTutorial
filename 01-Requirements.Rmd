@@ -212,3 +212,49 @@ gc()
 tf.split <- Sys.time()
 tf.split - t0.split
 ```
+
+
+## Retrieve a discrete dataset (PBMCs 30k dataset) {#PBMC30k-data}
+
+To test metacell construction on a discrete dataset, we retrieved the "bmcite" dataset from the SeauratData R package containing around 30'000 cells.
+
+The data are saved in the following file for future analyses in R (use of SuperCell): "data/bmcite/singlecell_seurat_filtered.rds".
+
+```{R, eval = F, collapse = T, cache = TO_CACHE}
+library(SeuratData)
+InstallData("bmcite")
+
+data("bmcite")
+bmcite
+head(bmcite@meta.data)
+bmcite$celltype_simplified <- plyr::revalue(bmcite$celltype.l2, 
+                                            c("CD8 Effector_1" = "Non-Naive CD8 cell",
+                                              "CD8 Effector_2" = "Non-Naive CD8 cell",
+                                              "CD8 Memory_1" = "Non-Naive CD8 cell",
+                                              "CD8 Memory_2" = "Non-Naive CD8 cell",
+                                              "CD8 Naive" = "Naive CD8 cell",
+                                              "CD4 Naive" = "Naive CD4 cell",
+                                              "CD4 Memory" = "Non-Naive CD4 cell",
+                                              "Treg" = "Non-Naive CD4 cell",
+                                              "Naive B" = "B cell",
+                                              "Memory B" = "B cell",
+                                              "CD56 bright NK" = "NK",
+                                              "MAIT" = "Unconventional T",
+                                              "gdT" = "Unconventional T"
+                                              ))
+bmcite <- bmcite[,-grep("Prog",bmcite$celltype_simplified)]
+saveRDS(bmcite, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
+
+```
+
+
+The data are saved in the following file for future analyses in python (use of SEACells and MC2): "data/bmcite/singlecell_anndata_filtered.h5ad".
+```{R, eval = F, collapse = T, cache = TO_CACHE}
+library(anndata)
+adata <- AnnData(X = Matrix::t(bmcite@assays$RNA@counts),
+                 var = data.frame(genes = rownames(bmcite@assays$RNA@counts)),
+                 obs = bmcite@meta.data)
+
+write_h5ad(adata, paste0("data/bmcite/singlecell_anndata_filtered.h5ad"))
+
+```
