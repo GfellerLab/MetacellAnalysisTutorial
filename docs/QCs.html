@@ -71,8 +71,8 @@
 <li><a class="" href="the-metacell-concept.html"><span class="header-section-number">2</span> The metacell concept</a></li>
 <li><a class="" href="Metacell-construction-chapter.html"><span class="header-section-number">3</span> Constructing metacells</a></li>
 <li><a class="active" href="QCs.html"><span class="header-section-number">4</span> Metacells QCs</a></li>
-<li><a class="" href="command-line.html"><span class="header-section-number">5</span> Metacell Analysis Toolkit (MCAT)</a></li>
-<li><a class="" href="downstream-analysis-of-metacells.html"><span class="header-section-number">6</span> Downstream analysis of metacells</a></li>
+<li><a class="" href="downstream-analysis.html"><span class="header-section-number">5</span> Downstream analysis of metacells</a></li>
+<li><a class="" href="command-line.html"><span class="header-section-number">6</span> Metacell Analysis Toolkit (MCAT)</a></li>
 <li><a class="" href="integration.html"><span class="header-section-number">7</span> Integration of metacells</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
@@ -90,7 +90,7 @@
 We propose a R package called <em>MetacellToolkit</em>, to compute and visualize these metrics.
 The package also provides a function to visualize metacells projected in the single-cell space.</p>
 <p>Import packages:</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># if(system.file(package='MetacellToolkit') == ""){</span></span>
 <span><span class="co">#   remotes::install_github("GfellerLab/MetacellAnalysisToolkit@dev_ag", force = TRUE, upgrade = FALSE)</span></span>
 <span><span class="co"># } </span></span>
@@ -99,7 +99,7 @@ The package also provides a function to visualize metacells projected in the sin
 <p>To explore metacells QCs, we need to load:
 (i) the single-cell data used to build the metacells and
 (ii) the metacell data saved in a Seurat object (see chapter <a href="Metacell-construction-chapter.html#Metacell-construction-chapter">3</a>).</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load the single-cell data </span></span>
 <span><span class="va">sc_data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/"</span>, <span class="va">proj_name</span>, <span class="st">"/singlecell_seurat_filtered.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Load the metacell data </span></span>
@@ -115,11 +115,11 @@ The package also provides a function to visualize metacells projected in the sin
 <p>When available, cell annotations can be used to annotate each metacell to the most abundant cell category (<em>e.g.</em> cell type) composing the metacell (see chapter <a href="Metacell-construction-chapter.html#Metacell-construction-chapter">3</a>).
 This also allows us to compute metacell purity. If the annotation considered is the cell type, the <strong>purity</strong> of a metacell is the proportion of the most abundant
 cell type within the metacell <span class="citation">(<a href="references.html#ref-SuperCell" role="doc-biblioref">Bilous et al. 2022</a>)</span>.</p>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mc_data</span><span class="op">$</span><span class="va">purity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_purity.html">mc_purity</a></span><span class="op">(</span>membership <span class="op">=</span> <span class="va">mc_data</span><span class="op">@</span><span class="va">misc</span><span class="op">$</span><span class="va">cell_membership</span><span class="op">$</span><span class="va">membership</span>, annotation <span class="op">=</span> <span class="va">sc_data</span><span class="op">@</span><span class="va">meta.data</span><span class="op">[</span>, <span class="va">annotation_label</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"purity"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_purity-1.png" width="672"></div>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"purity"</span>, split.by <span class="op">=</span> <span class="va">annotation_label</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_purity-2.png" width="672"></div>
 </div>
@@ -134,25 +134,23 @@ Note that it is important to use the embedding used initially to construc the me
 In the next chunk, we retrieve the principal components computed for metacell construction
 (in chapter <a href="Metacell-construction-chapter.html#Metacell-construction-chapter">3</a> these principal components were saved in the Seurat objects containing the metacell data)
 and run UMAP for visualization.</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sc_data</span><span class="op">@</span><span class="va">reductions</span><span class="op">[[</span><span class="st">"pca"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">mc_data</span><span class="op">@</span><span class="va">misc</span><span class="op">$</span><span class="va">sc.pca</span></span>
 <span><span class="va">sc_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">sc_data</span>, reduction <span class="op">=</span> <span class="st">"pca"</span>, dims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">30</span><span class="op">)</span>, n.neighbors <span class="op">=</span> <span class="fl">15</span>, verbose <span class="op">=</span> <span class="cn">F</span>, min.dist <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span></span>
 <span><span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'</span></span>
 <span><span class="co">#&gt; This message will be shown once per session</span></span>
-<span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">UMAPPlot</a></span><span class="op">(</span><span class="va">sc_data</span>, group.by <span class="op">=</span> <span class="va">annotation_label</span>, reduction <span class="op">=</span> <span class="st">"umap"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">UMAPPlot</a></span><span class="op">(</span><span class="va">sc_data</span>, group.by <span class="op">=</span> <span class="va">annotation_label</span>, reduction <span class="op">=</span> <span class="st">"umap"</span>, cols<span class="op">=</span><span class="va">celltype_colors</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/sc-embessing-1.png" width="672"></div>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">membership_df</span> <span class="op">&lt;-</span> <span class="va">mc_data</span><span class="op">@</span><span class="va">misc</span><span class="op">$</span><span class="va">cell_membership</span></span>
 <span><span class="va">mc_data</span><span class="op">$</span><span class="va">compactness</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_compactness.html">mc_compactness</a></span><span class="op">(</span>cell.membership <span class="op">=</span> <span class="va">membership_df</span>, sc.obj <span class="op">=</span> <span class="va">sc_data</span>,</span>
 <span>                                      sc.reduction <span class="op">=</span> <span class="st">"pca"</span>, n.components <span class="op">=</span> <span class="fl">30</span>, diffusion.components <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Computing compactness ...</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"compactness"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"compactness"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_compactness-1.png" width="672"></div>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"compactness"</span>, split.by <span class="op">=</span> <span class="va">annotation_label</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).</span></span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"compactness"</span>, split.by <span class="op">=</span> <span class="va">annotation_label</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_compactness-2.png" width="672"></div>
 </div>
 <div id="separation" class="section level3" number="4.1.3">
@@ -161,27 +159,24 @@ and run UMAP for visualization.</p>
 </h3>
 <p>The <strong>separation</strong> of a metacell is the distance to the closest metacell <span class="citation">(<a href="references.html#ref-SEACells" role="doc-biblioref">Persad et al. 2023</a>)</span>.
 The higher the separation value the better.</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mc_data</span><span class="op">$</span><span class="va">separation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_separation.html">mc_separation</a></span><span class="op">(</span>cell.membership <span class="op">=</span> <span class="va">membership_df</span>, sc.obj <span class="op">=</span> <span class="va">sc_data</span>, sc.reduction <span class="op">=</span> <span class="st">"pca"</span>, diffusion.components <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Computing separation ...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"separation"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_separation-1.png" width="672"></div>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"separation"</span>, split.by <span class="op">=</span> <span class="va">annotation_label</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_separation-2.png" width="672"></div>
 <p>Note that compactness and separation metrics are correlated, better compactness results in worse separation and vice versa.
 Metacells from dense regions will have better compactness but worse separation,
 while metacells from sparse regions will have better separation but worse compactness.</p>
-<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>compactness <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">mc_data</span><span class="op">$</span><span class="va">compactness</span><span class="op">)</span>, separation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">mc_data</span><span class="op">$</span><span class="va">separation</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x<span class="op">=</span><span class="va">compactness</span>, y<span class="op">=</span><span class="va">separation</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="va">lm</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_cor.html">stat_cor</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"spearman"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span>
-<span><span class="co">#&gt; Warning: Removed 15 rows containing non-finite values (`stat_smooth()`).</span></span>
-<span><span class="co">#&gt; Warning: Removed 15 rows containing non-finite values (`stat_cor()`).</span></span>
-<span><span class="co">#&gt; Warning: Removed 15 rows containing missing values (`geom_point()`).</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method<span class="op">=</span><span class="va">lm</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ggpubr</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/ggpubr/reference/stat_cor.html">stat_cor</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"pearson"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `geom_smooth()` using formula = 'y ~ x'</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/comparison_compactness_separation-1.png" width="672"></div>
 </div>
 <div id="inv" class="section level3" number="4.1.4">
@@ -191,17 +186,13 @@ while metacells from sparse regions will have better separation but worse compac
 <p>The <strong>inner normalized variance (INV)</strong> of a metacell is the mean-normalized variance of gene expression within the metacell <span class="citation">(<a href="references.html#ref-MC2" role="doc-biblioref">Ben-Kiki et al. 2022</a>)</span>.<br>
 The lower the INV value the better.
 Note that it is the only metric that is latent-space independent.</p>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mc_data</span><span class="op">$</span><span class="va">INV</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_INV.html">mc_INV</a></span><span class="op">(</span>cell.membership <span class="op">=</span> <span class="va">membership_df</span>, sc.obj <span class="op">=</span> <span class="va">sc_data</span>, group.label <span class="op">=</span> <span class="st">"membership"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Counts and data slots are identical.</span></span>
-<span><span class="co">#&gt; Normalizing data ...</span></span>
-<span><span class="co">#&gt; Computing INV ...</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"INV"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).</span></span></code></pre></div>
-<div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_INV-1.png" width="672"></div>
 <div class="sourceCode" id="cb68"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"INV"</span>, split.by <span class="op">=</span> <span class="va">annotation_label</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mc_data</span><span class="op">$</span><span class="va">INV</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_INV.html">mc_INV</a></span><span class="op">(</span>cell.membership <span class="op">=</span> <span class="va">membership_df</span>, sc.obj <span class="op">=</span> <span class="va">sc_data</span>, group.label <span class="op">=</span> <span class="st">"membership"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Computing INV ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"INV"</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_INV-1.png" width="672"></div>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"INV"</span>, split.by <span class="op">=</span> <span class="va">annotation_label</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_INV-2.png" width="672"></div>
 </div>
 </div>
@@ -211,16 +202,16 @@ Note that it is the only metric that is latent-space independent.</p>
 </h2>
 <p>The size of a metacell corresponds to the number of single cells it contains.
 Having a homogeneous metacell size distribution is ideal for downstream analyses, since larger metacells will express more genes,
-which could confound analyses. When heterogeneous size distributions are obtained we recommend weighted downstream analyses as described in section <a href="downstream-analysis-of-metacells.html#weighted-analysis">6.2</a>.</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+which could confound analyses. When heterogeneous size distributions are obtained we recommend weighted downstream analyses as described in section <a href="downstream-analysis.html#weighted-analysis">5.2</a>.</p>
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Seurat::VlnPlot(mc_data, features = "size", pt.size = 2)</span></span>
 <span><span class="co"># Seurat::VlnPlot(mc_data, features = "size", pt.size = 2, group.by = annotation_label)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">mc_data</span><span class="op">$</span><span class="va">size</span>, main <span class="op">=</span> <span class="st">"Size distribution"</span>, xlab <span class="op">=</span> <span class="st">"Size"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">mc_data</span><span class="op">$</span><span class="va">size</span>, main <span class="op">=</span> <span class="st">"Size distribution"</span>, xlab <span class="op">=</span> <span class="st">"Size"</span>, breaks <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/visualize_size_distribution-1.png" width="672"></div>
-<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"size"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/visualize_size_distribution-2.png" width="672"></div>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"size"</span>, split.by <span class="op">=</span> <span class="va">annotation_label</span><span class="op">)</span> </span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/visualize_size_distribution-3.png" width="672"></div>
 </div>
@@ -231,7 +222,7 @@ which could confound analyses. When heterogeneous size distributions are obtaine
 <p>To visualize the metacells, we can project the metacells on the single-cell UMAP representation using the <code><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_projection.html">mc_projection()</a></code> function (adapted from the <code>plot.plot_2D()</code> from the SEACells package).
 A good metacell partition should reproduce the overall structure of the single-cell data by uniformly representing the latent space.
 To use this function we need the data at the single-cell level (or at least an low-dimensional embedding of the data) and the single-cell membership to each the metacell.</p>
-<div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_projection.html">mc_projection</a></span><span class="op">(</span></span>
 <span>  sc.obj <span class="op">=</span> <span class="va">sc_data</span>, </span>
@@ -244,7 +235,7 @@ To use this function we need the data at the single-cell level (or at least an l
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/visualize_metacells-1.png" width="672"></div>
 <p>By default the size of the metacells dots is proportionnal to the size of the metacells.
 Metacells can also be colored by a continuous variable such as one of the QC metrics computed in the previous chunks:</p>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb74"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_projection.html">mc_projection</a></span><span class="op">(</span></span>
 <span>  sc.obj <span class="op">=</span> <span class="va">sc_data</span>, </span>
 <span>  mc.obj <span class="op">=</span> <span class="va">mc_data</span>, </span>
@@ -260,7 +251,7 @@ Metacells can also be colored by a continuous variable such as one of the QC met
 </div>
   <div class="chapter-nav">
 <div class="prev"><a href="Metacell-construction-chapter.html"><span class="header-section-number">3</span> Constructing metacells</a></div>
-<div class="next"><a href="command-line.html"><span class="header-section-number">5</span> Metacell Analysis Toolkit (MCAT)</a></div>
+<div class="next"><a href="downstream-analysis.html"><span class="header-section-number">5</span> Downstream analysis of metacells</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
@@ -292,7 +283,7 @@ Metacells can also be colored by a continuous variable such as one of the QC met
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-21.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

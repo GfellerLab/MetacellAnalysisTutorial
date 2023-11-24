@@ -34,12 +34,12 @@ library(SuperCell)
 MC_tool = "SuperCell"
 
 ## Here we can modify dataset
-proj_name = c("cell_lines", "3k_pbmc", "CD34","10k_pbmc")[2]
+proj_name = c("cell_lines", "3k_pbmc", "CD34", "bmcite")[4]
 
 annotation_label = unlist(list('cell_lines'='cell_line',
                                '3k_pbmc'='louvain',
                                'CD34'='celltype',
-                               "10k_pbmc" = "seurat_annotations")[proj_name])
+                               "bmcite"="celltype_simplified")[proj_name])
 
 ```
 
@@ -49,16 +49,18 @@ Please follow the section \@ref(PBMC-data) to retrieve these data from the scanp
 
 ```{r SuperCell-load-data-noEval, eval = TRUE, echo = TRUE}
 print(proj_name)
-celltype_colors <- c(
-  "CD14+ Monocytes"    = "#E69F00",  # orange
-  "B cells"            = "#56B4E9",  # sky blue
-  "CD4 T cells"        = "#009E73",  # bluish green
-  "NK cells"           = "#F0E442",  # yellow
-  "CD8 T cells"        = "#0072B2",  # blue
-  "FCGR3A+ Monocytes"  = "#D55E00",  # vermillion
-  "Dendritic cells"    = "#CC79A7",  # reddish purple
-  "Megakaryocytes"     = "#000000"   # black
-)
+
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+names(celltype_colors) <-cell_types
+
 sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
 ```
 
@@ -87,7 +89,7 @@ sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
 sc_data <- FindVariableFeatures(sc_data, nfeatures = 2000)
 sc_data <- ScaleData(sc_data)
 sc_data <- RunPCA(sc_data, npcs = 50, verbose = F)
-sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 15, verbose = F)
+sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 30, verbose = F)
 UMAPPlot(sc_data, group.by = annotation_label, cols = celltype_colors)
 ```
 
@@ -98,8 +100,8 @@ In this tutorial, we will run SuperCell using the 30 first principal components 
 We chose a graining level of 25 and a number of neighbors of 15 for the knn step.
 
 ```{r SuperCell-parameters}
-gamma = 10 # the requested graining level.
-k_knn = 15 # the number of neighbors considered to build the knn network.
+gamma = 50 # the requested graining level.
+k_knn = 30 # the number of neighbors considered to build the knn network.
 nb_var_genes = 2000 # number of the top variable genes to use for dimensionality reduction 
 nb_pc = 50 # the number of principal components to use.   
 ```

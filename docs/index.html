@@ -71,8 +71,8 @@
 <li><a class="" href="the-metacell-concept.html"><span class="header-section-number">2</span> The metacell concept</a></li>
 <li><a class="" href="Metacell-construction-chapter.html"><span class="header-section-number">3</span> Constructing metacells</a></li>
 <li><a class="" href="QCs.html"><span class="header-section-number">4</span> Metacells QCs</a></li>
-<li><a class="" href="command-line.html"><span class="header-section-number">5</span> Metacell Analysis Toolkit (MCAT)</a></li>
-<li><a class="" href="downstream-analysis-of-metacells.html"><span class="header-section-number">6</span> Downstream analysis of metacells</a></li>
+<li><a class="" href="downstream-analysis.html"><span class="header-section-number">5</span> Downstream analysis of metacells</a></li>
+<li><a class="" href="command-line.html"><span class="header-section-number">6</span> Metacell Analysis Toolkit (MCAT)</a></li>
 <li><a class="" href="integration.html"><span class="header-section-number">7</span> Integration of metacells</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
@@ -86,13 +86,14 @@
 <h1>This tutorial<a class="anchor" aria-label="anchor" href="#this-tutorial"><i class="fas fa-link"></i></a>
 </h1>
 <p>In this tutorial, we describe the different steps that should be followed to build metacells <span class="citation">(<a href="references.html#ref-baran_metacell_2019" role="doc-biblioref">Baran et al. 2019</a>)</span> from single-cell data using three frameworks:
-SuperCell <span class="citation">(<a href="references.html#ref-SuperCell" role="doc-biblioref">Bilous et al. 2022</a>)</span> (tutorial in <a href="Metacell-construction-chapter.html#SuperCell-construction">3.1</a>), (ii) Metacells version 2 (MC2 <span class="citation">(<a href="references.html#ref-MC2" role="doc-biblioref">Ben-Kiki et al. 2022</a>)</span>) (tutorial in <a href="Metacell-construction-chapter.html#MC2-construction">3.2</a>), and (iii) SEACells <span class="citation">(<a href="references.html#ref-SEACells" role="doc-biblioref">Persad et al. 2023</a>)</span> (tutorial in <a href="Metacell-construction-chapter.html#SEACells-construction">3.3</a>).</p>
-<p>We also show how to obtain metacells by running these methods using a command line tool that we provide as part of the MetacellAnalysisToolkit (MCAT) <a href="https://github.com/GfellerLab/MetacellAnalysisToolkit">github repository</a>.
-This repository also contains the MetacellAnalysisToolkit R package which provides R functions to compute QC
-metrics and visualization functions to evaluate the quality of metacells.
-In chapter <a href="#XXX"><strong>??</strong></a>, we use MCAT to build metacells on a continuous dataset of CD34+ cells and use the R package to visualize the constructed metacells.
-In chapter <a href="QCs.html#QCs">4</a>, we describe how to use the R package to evaluate the quality of the metacells.</p>
-<p>Finally, we provide examples of downstream analyses performed at the metacell level. These analyses include clustering, differential analysis, data integration and gene regulatory network analysis.</p>
+<strong>SuperCell</strong> <span class="citation">(<a href="references.html#ref-SuperCell" role="doc-biblioref">Bilous et al. 2022</a>)</span> (tutorial in <a href="Metacell-construction-chapter.html#SuperCell-construction">3.1</a>), (ii) <strong>Metacells version 2</strong> (MC2 <span class="citation">(<a href="references.html#ref-MC2" role="doc-biblioref">Ben-Kiki et al. 2022</a>)</span>) (tutorial in <a href="Metacell-construction-chapter.html#MC2-construction">3.2</a>), and (iii) <strong>SEACells</strong> <span class="citation">(<a href="references.html#ref-SEACells" role="doc-biblioref">Persad et al. 2023</a>)</span> (tutorial in <a href="Metacell-construction-chapter.html#SEACells-construction">3.3</a>).</p>
+<p>We provide examples of downstream analyses (section @(downstream-analysis)) performed at the metacell level (e.g clustering, differential analysis, marker identification).</p>
+<p>We also show how to obtain metacells by running these methods using a <strong>command line tool</strong> that we provide as part of the MetacellAnalysisToolkit (<strong>MCAT</strong>) <a href="https://github.com/GfellerLab/MetacellAnalysisToolkit">github repository</a>.
+This repository also contains the <strong>MetacellAnalysisToolkit R package</strong> which provides R functions to compute QC
+metrics and visualization functions to evaluate the quality of metacells.</p>
+<p>In chapter <a href="command-line.html#command-line">6</a>, we use MCAT to build metacells on a continuous dataset of CD34+ cells and use the R package to visualize the constructed metacells.
+The use of the MetacellAnalysisToolkit R package to visualize and evaluate the quality of the metacells is described in chapter <a href="QCs.html#QCs">4</a> and <a href="command-line.html#command-line">6</a>.</p>
+<p>Finally, using the MCAT command line tool, we show in section <a href="integration.html#integration">7</a> how we can use metacells to <strong>integrate and analyze around 580,000 cells</strong> from 107 individuals distributed in 166 samples.</p>
 
 </div>
   <div class="chapter-nav">
@@ -117,7 +118,7 @@ In chapter <a href="QCs.html#QCs">4</a>, we describe how to use the R package to
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-21.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

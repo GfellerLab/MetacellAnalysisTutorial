@@ -69,7 +69,7 @@ sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 15,
 #> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
 #> This message will be shown once per session
-UMAPPlot(sc_data, group.by = annotation_label, reduction = "umap")
+UMAPPlot(sc_data, group.by = annotation_label, reduction = "umap", cols=celltype_colors)
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/sc-embessing-1.png" width="672" />
@@ -81,14 +81,12 @@ mc_data$compactness <- mc_compactness(cell.membership = membership_df, sc.obj = 
                                       sc.reduction = "pca", n.components = 30, diffusion.components = T)
 #> Computing compactness ...
 qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness")
-#> Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_compactness-1.png" width="672" />
 
 ```r
 qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness", split.by = annotation_label)
-#> Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_compactness-2.png" width="672" />
@@ -121,11 +119,8 @@ library(ggplot2)
 ggplot(data.frame(compactness = log(mc_data$compactness), separation = log(mc_data$separation)), 
        aes(x=compactness, y=separation)) + 
   geom_point()+
-  geom_smooth(method=lm) + ggpubr::stat_cor(method = "spearman")
+  geom_smooth(method=lm) + ggpubr::stat_cor(method = "pearson")
 #> `geom_smooth()` using formula = 'y ~ x'
-#> Warning: Removed 15 rows containing non-finite values (`stat_smooth()`).
-#> Warning: Removed 15 rows containing non-finite values (`stat_cor()`).
-#> Warning: Removed 15 rows containing missing values (`geom_point()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/comparison_compactness_separation-1.png" width="672" />
@@ -138,18 +133,14 @@ Note that it is the only metric that is latent-space independent.
 
 ```r
 mc_data$INV <- mc_INV(cell.membership = membership_df, sc.obj = sc_data, group.label = "membership")
-#> Counts and data slots are identical.
-#> Normalizing data ...
 #> Computing INV ...
 qc_boxplot(mc.obj = mc_data, qc.metrics = "INV")
-#> Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_INV-1.png" width="672" />
 
 ```r
 qc_boxplot(mc.obj = mc_data, qc.metrics = "INV", split.by = annotation_label)
-#> Warning: Removed 15 rows containing non-finite values (`stat_boxplot()`).
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_INV-2.png" width="672" />
@@ -164,7 +155,7 @@ which could confound analyses. When heterogeneous size distributions are obtaine
 ```r
 # Seurat::VlnPlot(mc_data, features = "size", pt.size = 2)
 # Seurat::VlnPlot(mc_data, features = "size", pt.size = 2, group.by = annotation_label)
-hist(mc_data$size, main = "Size distribution", xlab = "Size")
+hist(mc_data$size, main = "Size distribution", xlab = "Size", breaks = 30)
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/visualize_size_distribution-1.png" width="672" />

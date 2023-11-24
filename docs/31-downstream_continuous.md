@@ -43,23 +43,124 @@ To call the MCAT command line, please define your path to the gihub cloned repos
 ### Building metacell with MetaCell2 (MC2)
 We use MetaCell2 (`-t MetaCell`) to identify metacells at a gamma of 50 (`-g 50`). We specify that we want a Seurat .rds object in ouput (`-s seurat`).
 
-
-
 ```bash
-MCAT_path=....
+#git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
+MCAT_path=MetacellAnalysisToolkit/
 ${MCAT_path}/cli/MCAT -t MetaCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD34/MC2/ -g 50 -s seurat
+#> MetaCell
+#> data/CD34/cd34_multiome_rna.h5ad
+#> Identifying metacells...
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/umap/distances.py:1063: NumbaDeprecationWarning: [1mThe 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.[0m
+#>   @numba.jit()
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/umap/distances.py:1071: NumbaDeprecationWarning: [1mThe 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.[0m
+#>   @numba.jit()
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/umap/distances.py:1086: NumbaDeprecationWarning: [1mThe 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.[0m
+#>   @numba.jit()
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/umap/umap_.py:660: NumbaDeprecationWarning: [1mThe 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.[0m
+#>   @numba.jit()
+#> set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 12464 bools
+#> set metacells.var[properly_sampled_gene]: 12464 true (100%) out of 12464 bools
+#> set metacells.var[excluded_gene]: 2 true (0.01605%) out of 12464 bools
+#> set metacells.obs[properly_sampled_cell]: 6881 true (100%) out of 6881 bools
+#> set metacells.obs[excluded_cell]: 0 true (0%) out of 6881 bools
+#> set hca_bm.one-pass.clean.obs[full_cell_index]: 6881 int32s
+#> set hca_bm.one-pass.clean.var[full_gene_index]: 12462 int32s
+#> set hca_bm.one-pass.clean.var[lateral_gene]: 215 true (1.725%) out of 12462 bools
+#> set hca_bm.one-pass.clean.var[noisy_gene]: 14 true (0.1123%) out of 12462 bools
+#> set hca_bm.one-pass.clean.var[selected_gene]: * -> False
+#> set hca_bm.one-pass.clean.var[rare_gene]: 0 true (0%) out of 12462 bools
+#> set hca_bm.one-pass.clean.var[rare_gene_module]: 12462 int32 elements with all outliers (100%)
+#> set hca_bm.one-pass.clean.obs[cells_rare_gene_module]: 6881 int32 elements with all outliers (100%)
+#> set hca_bm.one-pass.clean.obs[rare_cell]: 0 true (0%) out of 6881 bools
+#> set hca_bm.one-pass.clean.var[selected_gene]: 1275 true (10.23%) out of 12462 bools
+#> set hca_bm.one-pass.clean.obs[metacell]: 6881 int32s
+#> set hca_bm.one-pass.clean.obs[dissolved]: 0 true (0%) out of 6881 bools
+#> set hca_bm.one-pass.clean.obs[metacell_level]: 6881 int32s
+#> input is " data/CD34/cd34_multiome_rna.h5ad
+#> Output dir is " data/CD34/MC2/
+#> gamma is " 50.0
+#> Pre filter cells is False
+#> Clean: 6881 cells, 12462 genes
+#> Identify137.62metacells using MetaCell2
+#> set metacells.obs[grouped]: 140 int64s
+#> set metacells.obs[total_umis]: 140 float64s
+#> set metacells.layers[total_umis]: ndarray 140 X 12462 float32s
+#> set metacells.obs[__zeros_downsample_umis]: 140 int64s
+#> set metacells.layers[zeros]: ndarray 140 X 12462 int32s
+#> set hca_bm.one-pass.clean.obs[metacell_name]: 6881 <U8s
+#> set metacells.var[highly_variable]: 2499 true (20.05%) out of 12462 bools
+#> set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 12462 bools
+#> set metacells.var[properly_sampled_gene]: 12462 true (100%) out of 12462 bools
+#> set metacells.var[excluded_gene]: 0 true (0%) out of 12462 bools
+#> set metacells.var[full_gene_index]: 12462 int32s
+#> set metacells.var[lateral_gene]: 215 true (1.725%) out of 12462 bools
+#> set metacells.var[noisy_gene]: 14 true (0.1123%) out of 12462 bools
+#> set metacells.var[selected_gene]: 1275 true (10.23%) out of 12462 bools
+#> set metacells.var[rare_gene]: 0 true (0%) out of 12462 bools
+#> set metacells.var[rare_gene_module]: 12462 int32s
+#> set metacells.obs[metacells_rare_gene_module]: 140 int32s
+#> set metacells.obs[rare_metacell]: 0 true (0%) out of 140 bools
+#> set metacells.uns[outliers]: 4
+#> set metacells.uns[metacells_algorithm]: metacells.0.9.0
+#> Assign metadata to metacells and compute purities...
+#> Save results as seurat...
+#> 
+#>     WARNING: The R package "reticulate" only fixed recently
+#>     an issue that caused a segfault when used with rpy2:
+#>     https://github.com/rstudio/reticulate/pull/1188
+#>     Make sure that you use a version of that package that includes
+#>     the fix.
+#>     Done.
 ```
-
 
 ### Building metacell with SuperCell
 We use SuperCell (`-t SuperCell`) to identify metacells at a gamma of 50 (`-g 50`). We specify that we want a Seurat .rds object in ouput (`-s seurat`).
 We use 2000 highly variable genes (HVGs, `-f 2000`) to compute a PCA from which we use 50 components (`-n 50`) to make a k = 30 knn (`-k 30`) graph on which we identify the metacells.
 
-
-
 ```bash
-MCAT_path=....
+MCAT_path=MetacellAnalysisToolkit/
 ${MCAT_path}/cli/MCAT -t SuperCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD34/SuperCell/ -f 2000 -g 50 -n 50 -k 30 -s seurat
+#> SuperCell
+#> data/CD34/cd34_multiome_rna.h5ad
+#> Identifying metacells...
+#> $ARGS
+#> character(0)
+#> 
+#> $input
+#> [1] "data/CD34/cd34_multiome_rna.h5ad"
+#> 
+#> $outdir
+#> [1] "data/CD34/SuperCell/"
+#> 
+#> $nPCs
+#> [1] 50
+#> 
+#> $nFeatures
+#> [1] 2000
+#> 
+#> $gamma
+#> [1] 50
+#> 
+#> $output
+#> [1] "seurat"
+#> 
+#> $k.knn
+#> [1] 30
+#> 
+#> $isNorm
+#> [1] FALSE
+#> 
+#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
+#> will retire shortly. Please refer to R-spatial evolution reports on
+#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
+#> This package is now running under evolution status 0 
+#>            used  (Mb) gc trigger  (Mb) max used  (Mb)
+#> Ncells  3007855 160.7    4923175 263.0  4923175 263.0
+#> Vcells 33556923 256.1   90049828 687.1 83767565 639.1
+#> Normalize data...Identify Metacells...
+#> Identify 138 metacells using SuperCell...
+#> Assign metadata to metacells and compute purities...
+#> Done.
 ```
 
 ## Short downstream analysis of the metacells
@@ -121,20 +222,20 @@ cd34.metacell <- RunUMAP(cd34.metacell,dims = c(1:50),min.dist = 0.5)
 #> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
 #> This message will be shown once per session
-#> 15:31:12 UMAP embedding parameters a = 0.583 b = 1.334
-#> 15:31:12 Read 140 rows and found 50 numeric columns
-#> 15:31:12 Using Annoy for neighbor search, n_neighbors = 30
-#> 15:31:12 Building Annoy index with metric = cosine, n_trees = 50
+#> 15:49:06 UMAP embedding parameters a = 0.583 b = 1.334
+#> 15:49:06 Read 140 rows and found 50 numeric columns
+#> 15:49:06 Using Annoy for neighbor search, n_neighbors = 30
+#> 15:49:06 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 15:31:12 Writing NN index file to temp file /tmp/35398939/RtmpceShhA/file2a870e7114758a
-#> 15:31:12 Searching Annoy index using 1 thread, search_k = 3000
-#> 15:31:12 Annoy recall = 100%
-#> 15:31:13 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 15:31:13 Initializing from normalized Laplacian + noise (using irlba)
-#> 15:31:13 Commencing optimization for 500 epochs, with 4956 positive edges
-#> 15:31:13 Optimization finished
+#> 15:49:06 Writing NN index file to temp file /tmp/35500358/RtmpmmxRrm/file1413fa631f4966
+#> 15:49:06 Searching Annoy index using 1 thread, search_k = 3000
+#> 15:49:06 Annoy recall = 100%
+#> 15:49:06 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 15:49:06 Initializing from normalized Laplacian + noise (using irlba)
+#> 15:49:06 Commencing optimization for 500 epochs, with 4956 positive edges
+#> 15:49:07 Optimization finished
 ```
 
 Plot the results using Seurat.
@@ -144,7 +245,7 @@ umap.metacell <- UMAPPlot(cd34.metacell,group.by = "celltype",label = T)
 umap.metacell
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 We correctly retrieve the two main differentiation path of CD34+ cells.
 In one hand, Megakaryocyte Erythrocyte Progenitor (MEP) fate with GATA2 and then GATA1 transcription factor expression.
@@ -161,28 +262,28 @@ marker.metacell.umaps
 #> [[1]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 ```
 #> 
 #> [[2]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-11-2.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-9-2.png" width="672" />
 
 ```
 #> 
 #> [[3]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-11-3.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-9-3.png" width="672" />
 
 ```
 #> 
 #> [[4]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-11-4.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-9-4.png" width="672" />
 When analyzing metacells it's a good idea to plot their size on these. We can do it with ggplot.
 
 ```r
@@ -191,7 +292,7 @@ colnames(data)[length(colnames(data))] <- "size"
 ggplot(data,aes(x= UMAP_1,y=UMAP_2,color = celltype)) + geom_point(aes(size=size)) + theme_classic()
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 ```r
 lapply(marker.metacell.umaps,FUN = function(x){
@@ -206,28 +307,29 @@ lapply(marker.metacell.umaps,FUN = function(x){
 #> [[1]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 ```
 #> 
 #> [[2]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-13-2.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-11-2.png" width="672" />
 
 ```
 #> 
 #> [[3]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-13-3.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-11-3.png" width="672" />
 
 ```
 #> 
 #> [[4]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-13-4.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-11-4.png" width="672" />
+
 ### SuperCell metacells
 
 We can do the same with the metacells obtained with SuperCell
@@ -285,20 +387,20 @@ cd34.supercell <- RunPCA(cd34.supercell)
 #> 	   KIFC1, PRC1, GTSE1, CIT, KIF18B, NUF2, CDK1, KIF15, KIF11, FOXM1 
 #> 	   BIRC5, CCNA2, CDC25C, MKI67, TUBB4B, CDCA8, TPX2, CENPE, KIF23, CDCA2
 cd34.supercell <- RunUMAP(cd34.supercell,dims = c(1:50),min.dist = 0.5)
-#> 15:31:18 UMAP embedding parameters a = 0.583 b = 1.334
-#> 15:31:18 Read 138 rows and found 50 numeric columns
-#> 15:31:18 Using Annoy for neighbor search, n_neighbors = 30
-#> 15:31:18 Building Annoy index with metric = cosine, n_trees = 50
+#> 15:49:11 UMAP embedding parameters a = 0.583 b = 1.334
+#> 15:49:11 Read 138 rows and found 50 numeric columns
+#> 15:49:11 Using Annoy for neighbor search, n_neighbors = 30
+#> 15:49:11 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 15:31:18 Writing NN index file to temp file /tmp/35398939/RtmpceShhA/file2a870e33935643
-#> 15:31:18 Searching Annoy index using 1 thread, search_k = 3000
-#> 15:31:18 Annoy recall = 100%
-#> 15:31:19 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 15:31:19 Initializing from normalized Laplacian + noise (using irlba)
-#> 15:31:19 Commencing optimization for 500 epochs, with 4504 positive edges
-#> 15:31:19 Optimization finished
+#> 15:49:11 Writing NN index file to temp file /tmp/35500358/RtmpmmxRrm/file1413fa65f12aac
+#> 15:49:11 Searching Annoy index using 1 thread, search_k = 3000
+#> 15:49:11 Annoy recall = 100%
+#> 15:49:11 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 15:49:11 Initializing from normalized Laplacian + noise (using irlba)
+#> 15:49:11 Commencing optimization for 500 epochs, with 4504 positive edges
+#> 15:49:12 Optimization finished
 ```
 
 Plot the results using Seurat.
@@ -308,7 +410,7 @@ umap.supercell <- UMAPPlot(cd34.supercell,group.by = "celltype",label = T)
 umap.supercell
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 We correctly retrieve the two main differentiation path of CD34+ cells.
 In one hand, Megakaryocyte Erythrocyte Progenitor (MEP) fate with GATA2 and then GATA1 transcription factor expression.
 On the other, Lymphoid Myeloid Multipotent Progenitor (LMPP) fate with SPI1 transcription factor expression.
@@ -323,28 +425,28 @@ marker.supercell.umaps
 #> [[1]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 
 ```
 #> 
 #> [[2]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-17-2.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-15-2.png" width="672" />
 
 ```
 #> 
 #> [[3]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-17-3.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-15-3.png" width="672" />
 
 ```
 #> 
 #> [[4]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-17-4.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-15-4.png" width="672" />
 When analyzing supercells it's a good idea to plot their size on these. We can do it with ggplot.
 
 ```r
@@ -353,7 +455,7 @@ colnames(data)[length(colnames(data))] <- "size"
 ggplot(data,aes(x= UMAP_1,y=UMAP_2,color = celltype)) + geom_point(aes(size=size)) + theme_classic()
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
 
 ```r
@@ -369,28 +471,28 @@ lapply(marker.supercell.umaps,FUN = function(x){
 #> [[1]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ```
 #> 
 #> [[2]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-19-2.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-17-2.png" width="672" />
 
 ```
 #> 
 #> [[3]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-19-3.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-17-3.png" width="672" />
 
 ```
 #> 
 #> [[4]]
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-19-4.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-17-4.png" width="672" />
 
 ## QC with the MetacellAnalysisToolkit package
 ### Loading single-cell data
@@ -441,20 +543,20 @@ cd34.singlecells <- RunPCA(cd34.singlecells)
 #> 	   GYPC, PRSS57, RPLP2, SMIM24, RPS8, RPL35, MIR181A1HG, RPS3, RPL27A, RPL14 
 #> 	   RPL7, RPS6, RPL6, RPL8, RPL32, RACK1, ACTG1, RPL29, RPS3A, RPL7A
 cd34.singlecells <- RunUMAP(cd34.singlecells,dims = c(1:50))
-#> 15:31:32 UMAP embedding parameters a = 0.9922 b = 1.112
-#> 15:31:32 Read 6881 rows and found 50 numeric columns
-#> 15:31:32 Using Annoy for neighbor search, n_neighbors = 30
-#> 15:31:32 Building Annoy index with metric = cosine, n_trees = 50
+#> 15:49:23 UMAP embedding parameters a = 0.9922 b = 1.112
+#> 15:49:23 Read 6881 rows and found 50 numeric columns
+#> 15:49:23 Using Annoy for neighbor search, n_neighbors = 30
+#> 15:49:23 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 15:31:32 Writing NN index file to temp file /tmp/35398939/RtmpceShhA/file2a870e5913162a
-#> 15:31:32 Searching Annoy index using 1 thread, search_k = 3000
-#> 15:31:34 Annoy recall = 100%
-#> 15:31:34 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 15:31:35 Initializing from normalized Laplacian + noise (using irlba)
-#> 15:31:35 Commencing optimization for 500 epochs, with 293954 positive edges
-#> 15:31:43 Optimization finished
+#> 15:49:24 Writing NN index file to temp file /tmp/35500358/RtmpmmxRrm/file1413fa72adbc0f
+#> 15:49:24 Searching Annoy index using 1 thread, search_k = 3000
+#> 15:49:25 Annoy recall = 100%
+#> 15:49:25 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 15:49:26 Initializing from normalized Laplacian + noise (using irlba)
+#> 15:49:26 Commencing optimization for 500 epochs, with 293954 positive edges
+#> 15:49:32 Optimization finished
 ```
 Plot single cell data.
 
@@ -462,7 +564,7 @@ Plot single cell data.
 UMAPPlot(cd34.singlecells,group.by = "celltype",label = T)
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 ### Visualization of metacells in single-cell space
 
 Now we can plot metacells from MetaCell2 in the single-cell space.
@@ -478,7 +580,7 @@ mc_projection(
   ) + theme_classic()
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
 And same for metacells obtained with SuperCell.
 
@@ -493,7 +595,7 @@ mc_projection(
   ) + theme_classic()
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 ### Compactness and separation
 
 We can compute the compactness and separation of the metacells from the single cell pca. 
@@ -509,7 +611,7 @@ cd34.metacell$compactness <- mc_compactness(cell.membership = cd34.metacell@misc
 qc_boxplot(mc.obj = cd34.metacell, qc.metrics = "compactness")
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 
 
 ```r
@@ -520,7 +622,7 @@ cd34.metacell$separation <- mc_separation(cell.membership = cd34.metacell@misc$c
 qc_boxplot(mc.obj = cd34.metacell, qc.metrics = "separation")
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 Same for metacell obtained with SuperCell.
 
 ```r
@@ -531,7 +633,7 @@ cd34.supercell$compactness <- mc_compactness(cell.membership = cd34.supercell@mi
 qc_boxplot(mc.obj = cd34.supercell, qc.metrics = "compactness")
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
 
 ```r
@@ -542,7 +644,7 @@ cd34.supercell$separation <- mc_separation(cell.membership = cd34.supercell@misc
 qc_boxplot(mc.obj = cd34.supercell, qc.metrics = "separation")
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 ### Inner normalized variance (INV)
 We can compute the INV for the MetaCell2 and SuperCell metacells as defined in MetaCell paper.
 
@@ -567,7 +669,7 @@ data.metrics <- rbind(cd34.metacell@meta.data[,c("tool","INV","compactness","sep
 ggplot(data.metrics,aes(y=compactness,x=tool,fill = tool)) + geom_boxplot()
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-27-1.png" width="672" />
 Comparison of MetaCell2 and SuperCell for separation (higher the better).
 
 
@@ -575,7 +677,7 @@ Comparison of MetaCell2 and SuperCell for separation (higher the better).
 ggplot(data.metrics,aes(y=separation,x=tool,fill = tool)) + geom_boxplot()
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-30-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-28-1.png" width="672" />
 
 Comparison of MetaCell2 and SuperCell for INV (lower the better).
 
@@ -584,5 +686,5 @@ Comparison of MetaCell2 and SuperCell for INV (lower the better).
 ggplot(data.metrics,aes(y=INV,x=tool,fill = tool)) + geom_boxplot()
 ```
 
-<img src="23-downstream_continuous_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+<img src="31-downstream_continuous_files/figure-html/unnamed-chunk-29-1.png" width="672" />
 
