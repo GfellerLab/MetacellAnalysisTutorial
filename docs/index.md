@@ -1,7 +1,7 @@
 --- 
 title: "Metacell Analysis Tutorial"
 author: "Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller"
-date: "2023-11-23"
+date: "2023-11-24"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [citations.bib, packages.bib]

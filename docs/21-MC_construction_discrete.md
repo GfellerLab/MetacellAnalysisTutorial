@@ -692,6 +692,8 @@ saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_MC2.rds'))
 
 
 
+
+
 In this section, we construct metacells using [SEACells](https://github.com/dpeerlab/SEACells). 
 
 ### Method 
@@ -729,20 +731,16 @@ Please follow the section \@ref(PBMC-data) to retrieve these data from the scanp
 
 
 
-
-
-
-
-
-
-
-
 ```python
 MC_tool = "SEACells"
 proj_name = "bmcite"
 ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
 ad.var.index = ad.var.genes
+ad = sc.pp.subsample(ad, n_obs=10000, copy=True)
 ```
+
+Note that since SEACells can take a substential amount of time to run we downsampled the data to 10'000 cells,
+you can comment the last line of the previous code chunk to run SEACells on all the cells.
 
 ### Filtering steps 
 In this tutorial, the data have been pre-filterd and SEACells does not perform additionnal filtering.
@@ -771,30 +769,18 @@ In the next code chunk, we follow standard pre-processing steps prior to PCA com
 PCA components are saved in the `obsm` attribute of the anndata object.
 
 
-[//]: # (This file runs standard preprocessing steps with scanpy)
-
-
-To pre-process the single-cell data, we are using standard pre-processing for single-cell RNA-seq data using Scanpy. For more information, see [the Scanpy tutorial](https://scanpy-tutorials.readthedocs.io/en/latest/pbmc3k.html).
-
-
 ```python
 # Normalize cells, log transform and compute highly variable genes
 sc.pp.normalize_per_cell(ad, 10000)
 sc.pp.log1p(ad)
 sc.pp.highly_variable_genes(ad, n_top_genes=2000)
-```
 
-
-```python
-# Compute principal components - 
-
-n_comp    = 50
+# Compute principal components  
+n_comp    = 30
 sc.tl.pca(ad, n_comps=n_comp, use_highly_variable=True)
 
-# Compute UMAP for visualization
-# Here we use 30 components to be consistent with our main tutorial, but fill free to explore other number of principal components to use 
-
-sc.pp.neighbors(ad, n_neighbors=30, n_pcs=50)
+# Run UMAP for visualization
+sc.pp.neighbors(ad)
 sc.tl.umap(ad)
 ```
 
@@ -808,9 +794,9 @@ In this example, we choose a graining level of 25.
 
 ```python
 build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
-n_waypoint_eigs = 30      # Number of eigenvalues to consider when initializing metacells
-n_neighbors = 30 # Number of neighbors used for graph construction 
-gamma = 150   # the requested graining level
+n_waypoint_eigs = 10      # Number of eigenvalues to consider when initializing metacells
+n_neighbors = 15 # Number of neighbors used for graph construction 
+gamma = 75   # the requested graining level
 n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  
 ```
 
@@ -825,9 +811,8 @@ model = SEACells.core.SEACells(ad,
                   n_SEACells = n_SEACells,
                   n_waypoint_eigs = n_waypoint_eigs,
                   n_neighbors = n_neighbors,
-                  convergence_epsilon = 1e-5,
+                  convergence_epsilon = 1e-3,
                   verbose = True)
-#> Welcome to SEACells!
 ```
 
 Kernel computation is performed using the `mconstruct_kernel_matrix` function.
@@ -845,26 +830,15 @@ To check that the archetypes are evenly spread, users can visualize them using t
 
 ```python
 # set seed for reproducibility
-random.seed(123)
+# random.seed(123)
 
 # Initialize archetypes
 model.initialize_archetypes()
-#> Building kernel on X_pca
-#> Computing diffusion components from X_pca for waypoint initialization ... 
-#> Done.
-#> Sampling waypoints ...
-#> Done.
-#> Selecting 161 cells from waypoint initialization.
-#> Initializing residual matrix using greedy column selection
-#> Initializing f and g...
-#> Selecting 32 cells from greedy initialization.
-#> 
-#>   0%|          | 0/42 [00:00<?, ?it/s]  5%|4         | 2/42 [00:00<00:03, 11.68it/s] 10%|9         | 4/42 [00:00<00:03, 11.86it/s] 14%|#4        | 6/42 [00:00<00:03, 10.11it/s] 19%|#9        | 8/42 [00:00<00:03,  8.92it/s] 21%|##1       | 9/42 [00:00<00:03,  8.63it/s] 24%|##3       | 10/42 [00:01<00:03,  8.43it/s] 26%|##6       | 11/42 [00:01<00:03,  8.27it/s] 29%|##8       | 12/42 [00:01<00:03,  8.15it/s] 31%|###       | 13/42 [00:01<00:03,  8.10it/s] 33%|###3      | 14/42 [00:01<00:03,  8.03it/s] 36%|###5      | 15/42 [00:01<00:03,  7.93it/s] 38%|###8      | 16/42 [00:01<00:03,  7.97it/s] 40%|####      | 17/42 [00:01<00:03,  8.02it/s] 43%|####2     | 18/42 [00:02<00:02,  8.04it/s] 45%|####5     | 19/42 [00:02<00:02,  8.07it/s] 48%|####7     | 20/42 [00:02<00:02,  8.04it/s] 50%|#####     | 21/42 [00:02<00:02,  8.00it/s] 52%|#####2    | 22/42 [00:02<00:02,  7.95it/s] 55%|#####4    | 23/42 [00:02<00:02,  8.09it/s] 57%|#####7    | 24/42 [00:02<00:02,  8.02it/s] 60%|#####9    | 25/42 [00:02<00:02,  7.97it/s] 62%|######1   | 26/42 [00:03<00:02,  7.94it/s] 64%|######4   | 27/42 [00:03<00:01,  7.90it/s] 67%|######6   | 28/42 [00:03<00:01,  7.86it/s] 69%|######9   | 29/42 [00:03<00:01,  7.85it/s] 71%|#######1  | 30/42 [00:03<00:01,  7.85it/s] 74%|#######3  | 31/42 [00:03<00:01,  7.81it/s] 76%|#######6  | 32/42 [00:03<00:01,  7.91it/s] 79%|#######8  | 33/42 [00:03<00:01,  7.87it/s] 81%|########  | 34/42 [00:04<00:01,  7.84it/s] 83%|########3 | 35/42 [00:04<00:00,  7.84it/s] 86%|########5 | 36/42 [00:04<00:00,  7.83it/s] 88%|########8 | 37/42 [00:04<00:00,  7.89it/s] 90%|######### | 38/42 [00:04<00:00,  7.84it/s] 93%|#########2| 39/42 [00:04<00:00,  7.81it/s] 95%|#########5| 40/42 [00:04<00:00,  7.79it/s] 98%|#########7| 41/42 [00:05<00:00,  7.88it/s]100%|##########| 42/42 [00:05<00:00,  8.08it/s]100%|##########| 42/42 [00:05<00:00,  8.18it/s]
 # Visualize the initialization 
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') 
 ```
 
-<img src="21-MC_construction_discrete_files/figure-html/seacells-model-init-1.png" width="672" />
+<img src="21-MC_construction_discrete_files/figure-html/seacells-plotInit-1.png" width="672" />
 
 #### Fitting the SEACells model to identify metacells {-}
 
@@ -874,21 +848,15 @@ We then check the model convergence using the `plot_convergence` function.
 
 ```python
 model.fit(min_iter = 10, max_iter = 100)
-#> Randomly initialized A matrix.
-#> Setting convergence threshold at 0.00422
-#> Starting iteration 1.
-#> Completed iteration 1.
-#> Starting iteration 10.
-#> Completed iteration 10.
-#> Starting iteration 20.
-#> Completed iteration 20.
-#> Starting iteration 30.
-#> Completed iteration 30.
-#> Converged after 34 iterations.
 model.plot_convergence()
 ```
 
-<img src="21-MC_construction_discrete_files/figure-html/seacells-model-fit-3.png" width="672" />
+<img src="21-MC_construction_discrete_files/figure-html/seacells-plotConvergence-3.png" width="672" />
+
+
+
+
+
 
 Once the final archetypes have been identified, we can assign each single-cell to one metacell (hard assignments). 
 These assignments (`membership`) can be retrieved using the `get_hard_assignments` function or extracted from the anndata object using `ad.obs["SEACell"]`. 
@@ -901,33 +869,33 @@ membership = model.get_hard_assignments()
 membership.head
 #> <bound method NDFrame.head of                           SEACell
 #> index                            
-#> a_AAACCTGAGGTGGGTT-1    SEACell-1
-#> a_AAACCTGAGTACATGA-1   SEACell-23
-#> a_AAACCTGCAAACCTAC-1   SEACell-13
-#> a_AAACCTGCAAGGTGTG-1   SEACell-31
-#> a_AAACCTGCACGGTAGA-1  SEACell-111
+#> a_GTCACAATCATCATTC-1   SEACell-16
+#> b_CTCACACCAGCCTTGG-1   SEACell-17
+#> a_CTTAGGATCTTAGCCC-1   SEACell-62
+#> a_TTAGTTCAGGTACTCT-1  SEACell-108
+#> b_TAGACCAAGGGATGGG-1  SEACell-106
 #> ...                           ...
-#> b_TTTGTCATCCGAGCCA-1  SEACell-116
-#> b_TTTGTCATCCGTAGGC-1   SEACell-86
-#> b_TTTGTCATCCTCGCAT-1  SEACell-161
-#> b_TTTGTCATCGCCGTGA-1  SEACell-187
-#> b_TTTGTCATCGTTTGCC-1   SEACell-26
+#> b_AGTCTTTCATTTGCTT-1   SEACell-51
+#> a_CGATGGCAGTACGCCC-1    SEACell-4
+#> a_CTGAAGTCAATCCGAT-1   SEACell-49
+#> a_CAGTAACAGGGTTCCC-1   SEACell-77
+#> b_GGAATAATCTTGTTTG-1  SEACell-105
 #> 
-#> [29096 rows x 1 columns]>
+#> [10000 rows x 1 columns]>
 ad.obs["SEACell"].head
 #> <bound method NDFrame.head of index
-#> a_AAACCTGAGGTGGGTT-1      SEACell-1
-#> a_AAACCTGAGTACATGA-1     SEACell-23
-#> a_AAACCTGCAAACCTAC-1     SEACell-13
-#> a_AAACCTGCAAGGTGTG-1     SEACell-31
-#> a_AAACCTGCACGGTAGA-1    SEACell-111
+#> a_GTCACAATCATCATTC-1     SEACell-16
+#> b_CTCACACCAGCCTTGG-1     SEACell-17
+#> a_CTTAGGATCTTAGCCC-1     SEACell-62
+#> a_TTAGTTCAGGTACTCT-1    SEACell-108
+#> b_TAGACCAAGGGATGGG-1    SEACell-106
 #>                            ...     
-#> b_TTTGTCATCCGAGCCA-1    SEACell-116
-#> b_TTTGTCATCCGTAGGC-1     SEACell-86
-#> b_TTTGTCATCCTCGCAT-1    SEACell-161
-#> b_TTTGTCATCGCCGTGA-1    SEACell-187
-#> b_TTTGTCATCGTTTGCC-1     SEACell-26
-#> Name: SEACell, Length: 29096, dtype: object>
+#> b_AGTCTTTCATTTGCTT-1     SEACell-51
+#> a_CGATGGCAGTACGCCC-1      SEACell-4
+#> a_CTGAAGTCAATCCGAT-1     SEACell-49
+#> a_CAGTAACAGGGTTCCC-1     SEACell-77
+#> b_GGAATAATCTTGTTTG-1    SEACell-105
+#> Name: SEACell, Length: 10000, dtype: object>
 ```
 
 #### Retrieve aggregated metacell data {-}
@@ -936,7 +904,7 @@ The `core.summarize_by_SEACell` function can be used to generate a metacell coun
 
 ```python
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
-#>   0%|          | 0/193 [00:00<?, ?it/s]  1%|1         | 2/193 [00:00<00:11, 16.50it/s]  2%|2         | 4/193 [00:00<00:10, 18.36it/s]  4%|3         | 7/193 [00:00<00:09, 20.10it/s]  5%|5         | 10/193 [00:00<00:08, 20.86it/s]  7%|6         | 13/193 [00:00<00:08, 20.97it/s]  8%|8         | 16/193 [00:00<00:08, 21.30it/s] 10%|9         | 19/193 [00:00<00:08, 21.56it/s] 11%|#1        | 22/193 [00:01<00:07, 22.00it/s] 13%|#2        | 25/193 [00:01<00:07, 22.31it/s] 15%|#4        | 28/193 [00:01<00:07, 22.37it/s] 16%|#6        | 31/193 [00:01<00:06, 23.60it/s] 18%|#7        | 34/193 [00:01<00:07, 22.71it/s] 19%|#9        | 37/193 [00:01<00:06, 23.18it/s] 21%|##        | 40/193 [00:01<00:06, 22.83it/s] 22%|##2       | 43/193 [00:01<00:06, 21.97it/s] 24%|##3       | 46/193 [00:02<00:06, 22.23it/s] 25%|##5       | 49/193 [00:02<00:06, 22.41it/s] 27%|##6       | 52/193 [00:02<00:06, 22.31it/s] 28%|##8       | 55/193 [00:02<00:06, 22.65it/s] 30%|###       | 58/193 [00:02<00:06, 22.11it/s] 32%|###1      | 61/193 [00:02<00:05, 22.08it/s] 33%|###3      | 64/193 [00:02<00:05, 22.74it/s] 35%|###4      | 67/193 [00:03<00:05, 23.49it/s] 36%|###6      | 70/193 [00:03<00:05, 23.69it/s] 38%|###7      | 73/193 [00:03<00:05, 23.55it/s] 39%|###9      | 76/193 [00:03<00:05, 22.67it/s] 41%|####      | 79/193 [00:03<00:04, 22.98it/s] 42%|####2     | 82/193 [00:03<00:04, 23.52it/s] 44%|####4     | 85/193 [00:03<00:04, 23.11it/s] 46%|####5     | 88/193 [00:03<00:04, 23.42it/s] 47%|####7     | 91/193 [00:04<00:04, 23.82it/s] 49%|####8     | 94/193 [00:04<00:04, 23.62it/s] 50%|#####     | 97/193 [00:04<00:04, 23.84it/s] 52%|#####1    | 100/193 [00:04<00:03, 23.60it/s] 53%|#####3    | 103/193 [00:04<00:03, 23.85it/s] 55%|#####4    | 106/193 [00:04<00:03, 24.28it/s] 56%|#####6    | 109/193 [00:04<00:03, 23.89it/s] 58%|#####8    | 112/193 [00:04<00:03, 23.60it/s] 60%|#####9    | 115/193 [00:05<00:03, 23.19it/s] 61%|######1   | 118/193 [00:05<00:03, 23.00it/s] 63%|######2   | 121/193 [00:05<00:03, 23.62it/s] 64%|######4   | 124/193 [00:05<00:02, 23.94it/s] 66%|######5   | 127/193 [00:05<00:02, 23.82it/s] 67%|######7   | 130/193 [00:05<00:02, 24.14it/s] 69%|######8   | 133/193 [00:05<00:02, 24.04it/s] 70%|#######   | 136/193 [00:05<00:02, 23.90it/s] 72%|#######2  | 139/193 [00:06<00:02, 23.63it/s] 74%|#######3  | 142/193 [00:06<00:02, 24.30it/s] 75%|#######5  | 145/193 [00:06<00:01, 24.77it/s] 77%|#######6  | 148/193 [00:06<00:01, 24.83it/s] 78%|#######8  | 151/193 [00:06<00:01, 24.74it/s] 80%|#######9  | 154/193 [00:06<00:01, 24.38it/s] 81%|########1 | 157/193 [00:06<00:01, 24.34it/s] 83%|########2 | 160/193 [00:06<00:01, 24.30it/s] 84%|########4 | 163/193 [00:07<00:01, 23.51it/s] 86%|########6 | 166/193 [00:07<00:01, 23.48it/s] 88%|########7 | 169/193 [00:07<00:00, 24.32it/s] 89%|########9 | 172/193 [00:07<00:00, 24.49it/s] 91%|######### | 175/193 [00:07<00:00, 23.90it/s] 92%|#########2| 178/193 [00:07<00:00, 24.37it/s] 94%|#########3| 181/193 [00:07<00:00, 24.50it/s] 95%|#########5| 184/193 [00:07<00:00, 24.60it/s] 97%|#########6| 187/193 [00:08<00:00, 25.10it/s] 98%|#########8| 190/193 [00:08<00:00, 25.50it/s]100%|##########| 193/193 [00:08<00:00, 25.90it/s]100%|##########| 193/193 [00:08<00:00, 23.42it/s]
+#>   0%|          | 0/133 [00:00<?, ?it/s]  4%|3         | 5/133 [00:00<00:02, 47.46it/s]  9%|9         | 12/133 [00:00<00:02, 54.87it/s] 14%|#3        | 18/133 [00:00<00:02, 55.08it/s] 18%|#8        | 24/133 [00:00<00:01, 56.66it/s] 23%|##2       | 30/133 [00:00<00:01, 57.17it/s] 27%|##7       | 36/133 [00:00<00:01, 56.36it/s] 32%|###1      | 42/133 [00:00<00:01, 57.38it/s] 36%|###6      | 48/133 [00:00<00:01, 57.06it/s] 41%|####      | 54/133 [00:00<00:01, 57.08it/s] 45%|####5     | 60/133 [00:01<00:01, 55.43it/s] 50%|####9     | 66/133 [00:01<00:01, 54.42it/s] 55%|#####4    | 73/133 [00:01<00:01, 56.56it/s] 59%|#####9    | 79/133 [00:01<00:00, 56.83it/s] 65%|######4   | 86/133 [00:01<00:00, 58.99it/s] 70%|######9   | 93/133 [00:01<00:00, 60.37it/s] 75%|#######5  | 100/133 [00:01<00:00, 60.85it/s] 80%|########  | 107/133 [00:01<00:00, 61.70it/s] 86%|########5 | 114/133 [00:01<00:00, 62.78it/s] 91%|######### | 121/133 [00:02<00:00, 63.76it/s] 97%|#########6| 129/133 [00:02<00:00, 65.57it/s]100%|##########| 133/133 [00:02<00:00, 59.53it/s]
 ```
 #### Annotate metacells {-}
 Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 
@@ -953,15 +921,6 @@ SEACells.plot.plot_2D(ad, key='X_umap', colour_metacells=True)
 
 <img src="21-MC_construction_discrete_files/figure-html/seacells-umap-5.png" width="480" />
 
-<!-- The following code chunk adds a columns named `membership` and containing the single_cell assignments to the obs attribute in the anndata object containing the raw data. -->
-<!-- This annotation will be used to compute metacells quality metrics. -->
-
-<!-- ```{python seacells-membership, cache = TO_CACHE, warning = FALSE, message = FALSE} -->
-<!-- # make `membership` numeric -->
-<!-- d = {x: int(i)+1 for i, x in enumerate(mc_ad.obs_names)} -->
-<!-- ad.obs.merge(membership) -->
-<!-- ad.obs['membership'] = [d[x] for x in membership.SEACell] -->
-<!-- ``` -->
 
 ##### Save output {-}
 For future downstream analyses in python (section \@ref(standard-analysis-Py)), we save the metacell counts in an Anndata object: 
@@ -1005,7 +964,7 @@ MC.seurat@misc$sc.pca <- CreateDimReducObject(
   key = "PC_",
   assay = "RNA"
 )
-#> Warning: No columnames present in cell embeddings, setting to 'PC_1:50'
+#> Warning: No columnames present in cell embeddings, setting to 'PC_1:30'
 # Save membership in misc
 MC.seurat@misc$cell_membership <- data.frame(row.names = rownames(py$membership), membership = py$membership$SEACell)
 saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_SEACells.rds'))

@@ -94,7 +94,7 @@ If you are interested in sample-weighted analysis, where metacell size is taken 
 <span class="header-section-number">5.1</span> Standard analysis (R)<a class="anchor" aria-label="anchor" href="#standard-analysis-R"><i class="fas fa-link"></i></a>
 </h2>
 <p>In this tutorial, standard analyses include dimensionality reduction, clustering and differential expression using the <a href="https://satijalab.org/seurat/">Seurat</a> framework.</p>
-<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span> </span>
 <span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
 <span><span class="co">#&gt; will retire shortly. Please refer to R-spatial evolution reports on</span></span>
@@ -119,7 +119,7 @@ If you are interested in sample-weighted analysis, where metacell size is taken 
 proceed with standard Seurat downstream analyses.
 Seurat objects containing metacells counts data and their annotation were generated at the end of sections <a href="Metacell-construction-chapter.html#SuperCell-construction">3.1</a>
 These objects can also be generated using the command line described in chapter <a href="command-line.html#command-line">6</a></p>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb76"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MC_tool</span> <span class="op">=</span> <span class="st">"SuperCell"</span></span>
 <span><span class="va">proj_name</span> <span class="op">=</span> <span class="st">"bmcite"</span></span>
 <span><span class="va">annotation_column</span> <span class="op">=</span> <span class="st">"celltype_simplified"</span></span>
@@ -142,7 +142,7 @@ These objects can also be generated using the command line described in chapter 
 </h3>
 <p>As for single-cells, we normalize the raw counts (here aggregated raw counts) and we identify the most variable features in the metacells gene expression data.
 Based on these features, we run PCA and use the first principal components to obtain a two dimensionnal representation of the data using UMAP.</p>
-<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/Idents.html">Idents</a></span><span class="op">(</span><span class="va">MC.seurat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">annotation_column</span></span>
 <span><span class="va">MC.seurat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">MC.seurat</span><span class="op">)</span></span>
 <span><span class="va">MC.seurat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindVariableFeatures.html">FindVariableFeatures</a></span><span class="op">(</span><span class="va">MC.seurat</span>, selection.method <span class="op">=</span> <span class="st">"vst"</span>, nfeatures <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span>
@@ -164,7 +164,7 @@ Based on these features, we run PCA and use the first principal components to ob
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>color<span class="op">=</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">p_annot</span></span></code></pre></div>
 <div class="inline-figure"><img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-1.png" width="672"></div>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb78"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors, pt.size = log1p(MC.seurat$size)) </span></span></code></pre></div>
 </div>
 <div id="clustering" class="section level3" number="5.1.3">
@@ -172,7 +172,7 @@ Based on these features, we run PCA and use the first principal components to ob
 <span class="header-section-number">5.1.3</span> Clustering<a class="anchor" aria-label="anchor" href="#clustering"><i class="fas fa-link"></i></a>
 </h3>
 <p>We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:</p>
-<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MC.seurat</span><span class="op">$</span><span class="va">SCclustering</span>  <span class="op">&lt;-</span> <span class="fu">SuperCell</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SuperCell/man/supercell_cluster.html">supercell_cluster</a></span><span class="op">(</span>D <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">MC.seurat</span><span class="op">@</span><span class="va">reductions</span><span class="op">$</span><span class="va">pca</span><span class="op">@</span><span class="va">cell.embeddings</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">30</span><span class="op">]</span>  <span class="op">)</span>, k <span class="op">=</span> <span class="fl">15</span><span class="op">)</span><span class="op">$</span><span class="va">clustering</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/Embeddings.html">Embeddings</a></span><span class="op">(</span><span class="va">MC.seurat</span>, reduction <span class="op">=</span> <span class="st">"umap"</span><span class="op">)</span>,</span>
 <span>              <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">MC.seurat</span><span class="op">$</span><span class="va">size</span>,</span>
@@ -189,7 +189,7 @@ Based on these features, we run PCA and use the first principal components to ob
 <span class="header-section-number">5.1.4</span> Differential expression analysis<a class="anchor" aria-label="anchor" href="#differential-expression-analysis"><i class="fas fa-link"></i></a>
 </h3>
 <p>We perform diffrential analysis to identify the markers of our cluster 3 as an example using the <code>FindMarkers</code> function.</p>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set idents to metacell annotation </span></span>
 <span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/Idents.html">Idents</a></span><span class="op">(</span><span class="va">MC.seurat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"SCclustering"</span></span>
 <span></span>
@@ -217,12 +217,12 @@ Based on these features, we run PCA and use the first principal components to ob
 <span><span class="co">#&gt; SPON2 4.903245e-24   2.763682 0.929 0.469 8.339929e-20</span></span></code></pre></div>
 <p>We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family,
 which is a group of transmembrane proteins preferentially expressed in NK cells.</p>
-<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">genes</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"KLRF1"</span>, <span class="st">"KLRD1"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">MC.seurat</span>, <span class="va">genes</span>, ncol <span class="op">=</span> <span class="fl">2</span>, pt.size <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-1.png" width="672"></div>
 <p>We can verify the identification of the NK cell cluster by comparing the metacell annotation and the metacell clustering.</p>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_cluster</span> <span class="op">+</span> <span class="va">p_annot</span></span></code></pre></div>
 <div class="inline-figure"><img src="30-MC_analysis_discrete_files/figure-html/unnamed-chunk-4-1.png" width="960"></div>
 </div>
@@ -234,13 +234,13 @@ which is a group of transmembrane proteins preferentially expressed in NK cells.
 (i) at the single-cell level and
 (ii) at the metacell level.</p>
 <p>For that, we load the single-cell data from which the metacells were derived from.</p>
-<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">proj_name</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "bmcite"</span></span>
 <span><span class="va">sc_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/"</span>, <span class="va">proj_name</span>, <span class="st">"/singlecell_seurat_filtered.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">sc_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">sc_data</span>, normalization.method <span class="op">=</span> <span class="st">"LogNormalize"</span><span class="op">)</span></span></code></pre></div>
 <p>We visualize gene-gene correlation at the single-cell level:</p>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cells_markers</span> <span class="op">&lt;-</span> <span class="va">cells_markers</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">cells_markers</span><span class="op">$</span><span class="va">avg_log2FC</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="va">gene_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">cells_markers</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>  </span>
 <span><span class="va">gene_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">cells_markers</span><span class="op">)</span><span class="op">[</span><span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
@@ -259,7 +259,7 @@ which is a group of transmembrane proteins preferentially expressed in NK cells.
 <span><span class="va">p.sc</span><span class="op">$</span><span class="va">p</span></span></code></pre></div>
 <div class="inline-figure"><img src="30-MC_analysis_discrete_files/figure-html/r-sc-gene_gene_cor-1.png" width="768"></div>
 <p>We visualize gene-gene correlation at the metacell level:</p>
-<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">p.MC</span> <span class="op">&lt;-</span> <span class="fu">SuperCell</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SuperCell/man/supercell_GeneGenePlot.html">supercell_GeneGenePlot</a></span><span class="op">(</span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/AssayData.html">GetAssayData</a></span><span class="op">(</span><span class="va">MC.seurat</span>, slot <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span>,</span>
 <span>                                          gene_x <span class="op">=</span> <span class="va">gene_x</span>,</span>
@@ -279,7 +279,7 @@ which is a group of transmembrane proteins preferentially expressed in NK cells.
 <h2>
 <span class="header-section-number">5.2</span> Sample-weighted analysis<a class="anchor" aria-label="anchor" href="#weighted-analysis"><i class="fas fa-link"></i></a>
 </h2>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb86"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span> </span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
@@ -292,7 +292,7 @@ which is a group of transmembrane proteins preferentially expressed in NK cells.
 proceed with downstream analyses considering the size of each metacells.
 Seurat objects containing metacells counts data and their annotation were generated at the end of sections <a href="Metacell-construction-chapter.html#SuperCell-construction">3.1</a>
 These objects can also be generated using the command line described in chapter <a href="command-line.html#command-line">6</a></p>
-<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MC_tool</span> <span class="op">=</span> <span class="st">"SuperCell"</span></span>
 <span><span class="va">proj_name</span> <span class="op">=</span> <span class="st">"bmcite"</span></span>
 <span><span class="va">annotation_column</span> <span class="op">=</span> <span class="st">"celltype_simplified"</span></span>
@@ -317,7 +317,7 @@ These objects can also be generated using the command line described in chapter 
 Based on these features, we run a sample weighted PCA using the function <code>supercell_prcomp</code> from the SuperCell R package
 and use the first principal components to obtain a two dimensionnal representation of the data using UMAP.
 Using the <code>supercell_DimPlot</code> function from the the SuperCell R package we can visualize the metacells and their sized in UMAP space.</p>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb88"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MC.seurat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">MC.seurat</span>, normalization.method <span class="op">=</span> <span class="st">"LogNormalize"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">MC_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>N.SC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">MC.seurat</span><span class="op">)</span>,</span>
@@ -347,7 +347,7 @@ Using the <code>supercell_DimPlot</code> function from the the SuperCell R packa
 <span class="header-section-number">5.2.3</span> Clustering<a class="anchor" aria-label="anchor" href="#clustering-1"><i class="fas fa-link"></i></a>
 </h3>
 <p>We cluster the metacells using the function <code>supercell_cluster</code> from SuperCell R package to perform the clustering step and visualize these clusters in the UMAP space:</p>
-<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># compute distance among metacells</span></span>
 <span><span class="va">D</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html">dist</a></span><span class="op">(</span><span class="va">MC_list</span><span class="op">$</span><span class="va">PCA</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
@@ -369,7 +369,7 @@ Using the <code>supercell_DimPlot</code> function from the the SuperCell R packa
 <span class="header-section-number">5.2.4</span> Differential expression analysis<a class="anchor" aria-label="anchor" href="#differential-expression-analysis-1"><i class="fas fa-link"></i></a>
 </h3>
 <p>We perform diffrential analysis to identify the markers of our clusters using the <code>supercell_FindAllMarkers</code> function from the SuperCell package.</p>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb90"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Compute upregulated genes in each cell line (versus other cells)</span></span>
 <span><span class="va">MC.all.markers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SuperCell/man/supercell_FindAllMarkers.html">supercell_FindAllMarkers</a></span><span class="op">(</span></span>
 <span>  ge <span class="op">=</span> <span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/AssayData.html">GetAssayData</a></span><span class="op">(</span><span class="va">MC.seurat</span>, slot <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span>, </span>
@@ -380,7 +380,7 @@ Using the <code>supercell_DimPlot</code> function from the the SuperCell R packa
 <span>  logfc.threshold <span class="op">=</span> <span class="fl">0.2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We select the markers for cluster 9:</p>
-<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cluster_markers</span> <span class="op">&lt;-</span> <span class="va">MC.all.markers</span><span class="op">[[</span><span class="fl">9</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">MC.top.markers</span> <span class="op">&lt;-</span> <span class="va">cluster_markers</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">cluster_markers</span><span class="op">$</span><span class="va">logFC</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,<span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">MC.top.markers</span><span class="op">)</span></span>
@@ -392,7 +392,7 @@ Using the <code>supercell_DimPlot</code> function from the the SuperCell R packa
 <span><span class="co">#&gt; KLRD1       0           0 1.0000000 0.5480537 2.184094 2.508815 0.17047908</span></span>
 <span><span class="co">#&gt; CST7        0           0 1.0000000 0.7280256 2.081451 2.706358 0.30405936</span></span></code></pre></div>
 <p>We visualize the top 5 markers for the cluster 7 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.</p>
-<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/Idents.html">Idents</a></span><span class="op">(</span><span class="va">MC.seurat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"SCclustering"</span></span>
 <span><span class="co"># genes.to.plot &lt;- MC.seurat.top.markers$gene[MC.seurat.top.markers$cluster == unique(MC.seurat@meta.data[,annotation_column])[1]]</span></span>
 <span><span class="co"># genes.to.plot &lt;- MC.top.markers$gene[c(seq(1, 20, 5))]</span></span>
@@ -449,7 +449,7 @@ Using the <code>supercell_DimPlot</code> function from the the SuperCell R packa
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-23.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-24.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
