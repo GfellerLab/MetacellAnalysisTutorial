@@ -4,16 +4,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 6 Metacell Analysis Toolkit (MCAT) | Metacell Analysis Tutorial</title>
+<title>Chapter 4 Metacell Analysis Toolkit (MCAT) | Metacell Analysis Tutorial</title>
 <meta name="author" content="Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller">
 <meta name="description" content="We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset. The command line tool takes multiple parameters as input,...">
 <meta name="generator" content="bookdown 0.36 with bs4_book()">
-<meta property="og:title" content="Chapter 6 Metacell Analysis Toolkit (MCAT) | Metacell Analysis Tutorial">
+<meta property="og:title" content="Chapter 4 Metacell Analysis Toolkit (MCAT) | Metacell Analysis Tutorial">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://GfellerLab.github.io/MetacellAnalysisTutorial/command-line.html">
 <meta property="og:description" content="We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset. The command line tool takes multiple parameters as input,...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 6 Metacell Analysis Toolkit (MCAT) | Metacell Analysis Tutorial">
+<meta name="twitter:title" content="Chapter 4 Metacell Analysis Toolkit (MCAT) | Metacell Analysis Tutorial">
 <meta name="twitter:description" content="We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset. The command line tool takes multiple parameters as input,...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
@@ -66,14 +66,14 @@
 
       <nav aria-label="Table of contents"><h2>Table of contents</h2>
         <ul class="book-toc list-unstyled">
-<li><a class="" href="index.html">This tutorial</a></li>
-<li><a class="" href="requirements.html"><span class="header-section-number">1</span> Requirements</a></li>
-<li><a class="" href="the-metacell-concept.html"><span class="header-section-number">2</span> The metacell concept</a></li>
-<li><a class="" href="Metacell-construction-chapter.html"><span class="header-section-number">3</span> Constructing metacells</a></li>
-<li><a class="" href="QCs.html"><span class="header-section-number">4</span> Metacells QCs</a></li>
-<li><a class="" href="downstream-analysis.html"><span class="header-section-number">5</span> Downstream analysis of metacells</a></li>
-<li><a class="active" href="command-line.html"><span class="header-section-number">6</span> Metacell Analysis Toolkit (MCAT)</a></li>
-<li><a class="" href="integration.html"><span class="header-section-number">7</span> Integration of metacells</a></li>
+<li><a class="" href="index.html">About this tutorial</a></li>
+<li><a class="" href="requirements.html">Requirements</a></li>
+<li><a class="" href="introduction-to-the-metacell-concept.html">Introduction to the metacell concept</a></li>
+<li><a class="" href="Metacell-construction-chapter.html"><span class="header-section-number">1</span> Constructing metacells</a></li>
+<li><a class="" href="QCs.html"><span class="header-section-number">2</span> Metacells QCs</a></li>
+<li><a class="" href="downstream-analysis.html"><span class="header-section-number">3</span> Downstream analysis of metacells</a></li>
+<li><a class="active" href="command-line.html"><span class="header-section-number">4</span> Metacell Analysis Toolkit (MCAT)</a></li>
+<li><a class="" href="integration.html"><span class="header-section-number">5</span> Integration of metacells</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
 
@@ -82,19 +82,19 @@
         </div>
       </nav>
 </div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="command-line" class="section level1" number="6">
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="command-line" class="section level1" number="4">
 <h1>
-<span class="header-section-number">6</span> Metacell Analysis Toolkit (MCAT)<a class="anchor" aria-label="anchor" href="#command-line"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4</span> Metacell Analysis Toolkit (MCAT)<a class="anchor" aria-label="anchor" href="#command-line"><i class="fas fa-link"></i></a>
 </h1>
 <p>We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
 The command line tool takes multiple parameters as input, <em>e.g.,</em> number of neighbors considered in the knn, number of components used, graining level.
 which is for example required in a benchmark setting.</p>
 <p>We will use this toolkit to analyse differentiating hematopoietic stem cells (Human CD34+).
 Note that we retrieved the RNA data from a 10X multiome experiment but we won’t analyse the ATAC modality.
-To retrieve this data, please refer to section <a href="requirements.html#CD34-data">1.3</a>.</p>
-<div id="setting-up-the-environment" class="section level2" number="6.1">
+To retrieve this data, please refer to section <a href="requirements.html#CD34-data">0.3</a>.</p>
+<div id="setting-up-the-environment" class="section level2" number="4.1">
 <h2>
-<span class="header-section-number">6.1</span> Setting up the environment<a class="anchor" aria-label="anchor" href="#setting-up-the-environment"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.1</span> Setting up the environment<a class="anchor" aria-label="anchor" href="#setting-up-the-environment"><i class="fas fa-link"></i></a>
 </h2>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
@@ -113,15 +113,15 @@ To retrieve this data, please refer to section <a href="requirements.html#CD34-d
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">MetacellAnalysisToolkit</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="metacell-building" class="section level2" number="6.2">
+<div id="MC-continuous" class="section level2" number="4.2">
 <h2>
-<span class="header-section-number">6.2</span> Metacell building<a class="anchor" aria-label="anchor" href="#metacell-building"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.2</span> Metacell building<a class="anchor" aria-label="anchor" href="#MC-continuous"><i class="fas fa-link"></i></a>
 </h2>
 <p>Here we will use the MCAT bash command line to build the metacells with MetaCell2 and SuperCell.
 To call the MCAT command line, please define your path to the gihub cloned repository optained from this <a href="https://github.com/GfellerLab/MetacellToolkit">github repository</a>.</p>
-<div id="building-metacell-with-metacell2-mc2" class="section level3" number="6.2.1">
+<div id="building-metacell-with-metacell2-mc2" class="section level3" number="4.2.1">
 <h3>
-<span class="header-section-number">6.2.1</span> Building metacell with MetaCell2 (MC2)<a class="anchor" aria-label="anchor" href="#building-metacell-with-metacell2-mc2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.2.1</span> Building metacell with MetaCell2 (MC2)<a class="anchor" aria-label="anchor" href="#building-metacell-with-metacell2-mc2"><i class="fas fa-link"></i></a>
 </h3>
 <p>We use MetaCell2 (<code>-t MetaCell</code>) to identify metacells at a gamma of 50 (<code>-g 50</code>). We specify that we want a Seurat .rds object in ouput (<code>-s seurat</code>).</p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb95-1"><a href="command-line.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co">#git clone https://github.com/GfellerLab/MetacellAnalysisToolkit</span></span>
@@ -192,9 +192,9 @@ To call the MCAT command line, please define your path to the gihub cloned repos
 <span id="cb95-66"><a href="command-line.html#cb95-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     the fix.</span></span>
 <span id="cb95-67"><a href="command-line.html#cb95-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Done.</span></span></code></pre></div>
 </div>
-<div id="building-metacell-with-supercell" class="section level3" number="6.2.2">
+<div id="building-metacell-with-supercell" class="section level3" number="4.2.2">
 <h3>
-<span class="header-section-number">6.2.2</span> Building metacell with SuperCell<a class="anchor" aria-label="anchor" href="#building-metacell-with-supercell"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.2.2</span> Building metacell with SuperCell<a class="anchor" aria-label="anchor" href="#building-metacell-with-supercell"><i class="fas fa-link"></i></a>
 </h3>
 <p>We use SuperCell (<code>-t SuperCell</code>) to identify metacells at a gamma of 50 (<code>-g 50</code>). We specify that we want a Seurat .rds object in ouput (<code>-s seurat</code>).
 We use 2000 highly variable genes (HVGs, <code>-f 2000</code>) to compute a PCA from which we use 50 components (<code>-n 50</code>) to make a k = 30 knn (<code>-k 30</code>) graph on which we identify the metacells.</p>
@@ -236,20 +236,20 @@ We use 2000 highly variable genes (HVGs, <code>-f 2000</code>) to compute a PCA 
 <span id="cb96-36"><a href="command-line.html#cb96-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; This package is now running under evolution status 0 </span></span>
 <span id="cb96-37"><a href="command-line.html#cb96-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            used  (Mb) gc trigger  (Mb) max used  (Mb)</span></span>
 <span id="cb96-38"><a href="command-line.html#cb96-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Ncells  3007855 160.7    4923175 263.0  4923175 263.0</span></span>
-<span id="cb96-39"><a href="command-line.html#cb96-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Vcells 33556923 256.1   90049828 687.1 83767565 639.1</span></span>
+<span id="cb96-39"><a href="command-line.html#cb96-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Vcells 33556923 256.1   90049828 687.1 83767561 639.1</span></span>
 <span id="cb96-40"><a href="command-line.html#cb96-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Normalize data...Identify Metacells...</span></span>
 <span id="cb96-41"><a href="command-line.html#cb96-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Identify 138 metacells using SuperCell...</span></span>
 <span id="cb96-42"><a href="command-line.html#cb96-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Assign metadata to metacells and compute purities...</span></span>
 <span id="cb96-43"><a href="command-line.html#cb96-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Done.</span></span></code></pre></div>
 </div>
 </div>
-<div id="short-downstream-analysis-of-the-metacells" class="section level2" number="6.3">
+<div id="short-downstream-analysis-of-the-metacells" class="section level2" number="4.3">
 <h2>
-<span class="header-section-number">6.3</span> Short downstream analysis of the metacells<a class="anchor" aria-label="anchor" href="#short-downstream-analysis-of-the-metacells"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.3</span> Short downstream analysis of the metacells<a class="anchor" aria-label="anchor" href="#short-downstream-analysis-of-the-metacells"><i class="fas fa-link"></i></a>
 </h2>
-<div id="metacell2-metacells" class="section level3" number="6.3.1">
+<div id="metacell2-metacells" class="section level3" number="4.3.1">
 <h3>
-<span class="header-section-number">6.3.1</span> MetaCell2 metacells<a class="anchor" aria-label="anchor" href="#metacell2-metacells"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.3.1</span> MetaCell2 metacells<a class="anchor" aria-label="anchor" href="#metacell2-metacells"><i class="fas fa-link"></i></a>
 </h3>
 <p>We load the object obtained with MCAT</p>
 <div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
@@ -304,20 +304,20 @@ We use 2000 highly variable genes (HVGs, <code>-f 2000</code>) to compute a PCA 
 <span><span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span></span>
 <span><span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'</span></span>
 <span><span class="co">#&gt; This message will be shown once per session</span></span>
-<span><span class="co">#&gt; 15:49:06 UMAP embedding parameters a = 0.583 b = 1.334</span></span>
-<span><span class="co">#&gt; 15:49:06 Read 140 rows and found 50 numeric columns</span></span>
-<span><span class="co">#&gt; 15:49:06 Using Annoy for neighbor search, n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 15:49:06 Building Annoy index with metric = cosine, n_trees = 50</span></span>
+<span><span class="co">#&gt; 17:29:37 UMAP embedding parameters a = 0.583 b = 1.334</span></span>
+<span><span class="co">#&gt; 17:29:37 Read 140 rows and found 50 numeric columns</span></span>
+<span><span class="co">#&gt; 17:29:37 Using Annoy for neighbor search, n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 17:29:37 Building Annoy index with metric = cosine, n_trees = 50</span></span>
 <span><span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span></span>
 <span><span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span></span>
 <span><span class="co">#&gt; **************************************************|</span></span>
-<span><span class="co">#&gt; 15:49:06 Writing NN index file to temp file /tmp/35500358/RtmpmmxRrm/file1413fa631f4966</span></span>
-<span><span class="co">#&gt; 15:49:06 Searching Annoy index using 1 thread, search_k = 3000</span></span>
-<span><span class="co">#&gt; 15:49:06 Annoy recall = 100%</span></span>
-<span><span class="co">#&gt; 15:49:06 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 15:49:06 Initializing from normalized Laplacian + noise (using irlba)</span></span>
-<span><span class="co">#&gt; 15:49:06 Commencing optimization for 500 epochs, with 4956 positive edges</span></span>
-<span><span class="co">#&gt; 15:49:07 Optimization finished</span></span></code></pre></div>
+<span><span class="co">#&gt; 17:29:37 Writing NN index file to temp file /tmp/35501474/Rtmp7VMhV2/file2a624c7a75cc58</span></span>
+<span><span class="co">#&gt; 17:29:37 Searching Annoy index using 1 thread, search_k = 3000</span></span>
+<span><span class="co">#&gt; 17:29:37 Annoy recall = 100%</span></span>
+<span><span class="co">#&gt; 17:29:37 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 17:29:38 Initializing from normalized Laplacian + noise (using irlba)</span></span>
+<span><span class="co">#&gt; 17:29:38 Commencing optimization for 500 epochs, with 4956 positive edges</span></span>
+<span><span class="co">#&gt; 17:29:38 Optimization finished</span></span></code></pre></div>
 <p>Plot the results using Seurat.</p>
 <div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">umap.metacell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">UMAPPlot</a></span><span class="op">(</span><span class="va">cd34.metacell</span>,group.by <span class="op">=</span> <span class="st">"celltype"</span>,label <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
@@ -373,9 +373,9 @@ When analyzing metacells it’s a good idea to plot their size on these. We can 
 #&gt; [[4]]</code></pre>
 <div class="inline-figure"><img src="31-downstream_continuous_files/figure-html/unnamed-chunk-11-4.png" width="672"></div>
 </div>
-<div id="supercell-metacells" class="section level3" number="6.3.2">
+<div id="supercell-metacells" class="section level3" number="4.3.2">
 <h3>
-<span class="header-section-number">6.3.2</span> SuperCell metacells<a class="anchor" aria-label="anchor" href="#supercell-metacells"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.3.2</span> SuperCell metacells<a class="anchor" aria-label="anchor" href="#supercell-metacells"><i class="fas fa-link"></i></a>
 </h3>
 <p>We can do the same with the metacells obtained with SuperCell</p>
 <p>We load the object obtained with MCAT</p>
@@ -428,20 +428,20 @@ When analyzing metacells it’s a good idea to plot their size on these. We can 
 <span><span class="co">#&gt;     KIFC1, PRC1, GTSE1, CIT, KIF18B, NUF2, CDK1, KIF15, KIF11, FOXM1 </span></span>
 <span><span class="co">#&gt;     BIRC5, CCNA2, CDC25C, MKI67, TUBB4B, CDCA8, TPX2, CENPE, KIF23, CDCA2</span></span>
 <span><span class="va">cd34.supercell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">cd34.supercell</span>,dims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span>,min.dist <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 15:49:11 UMAP embedding parameters a = 0.583 b = 1.334</span></span>
-<span><span class="co">#&gt; 15:49:11 Read 138 rows and found 50 numeric columns</span></span>
-<span><span class="co">#&gt; 15:49:11 Using Annoy for neighbor search, n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 15:49:11 Building Annoy index with metric = cosine, n_trees = 50</span></span>
+<span><span class="co">#&gt; 17:29:42 UMAP embedding parameters a = 0.583 b = 1.334</span></span>
+<span><span class="co">#&gt; 17:29:42 Read 138 rows and found 50 numeric columns</span></span>
+<span><span class="co">#&gt; 17:29:42 Using Annoy for neighbor search, n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 17:29:42 Building Annoy index with metric = cosine, n_trees = 50</span></span>
 <span><span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span></span>
 <span><span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span></span>
 <span><span class="co">#&gt; **************************************************|</span></span>
-<span><span class="co">#&gt; 15:49:11 Writing NN index file to temp file /tmp/35500358/RtmpmmxRrm/file1413fa65f12aac</span></span>
-<span><span class="co">#&gt; 15:49:11 Searching Annoy index using 1 thread, search_k = 3000</span></span>
-<span><span class="co">#&gt; 15:49:11 Annoy recall = 100%</span></span>
-<span><span class="co">#&gt; 15:49:11 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 15:49:11 Initializing from normalized Laplacian + noise (using irlba)</span></span>
-<span><span class="co">#&gt; 15:49:11 Commencing optimization for 500 epochs, with 4504 positive edges</span></span>
-<span><span class="co">#&gt; 15:49:12 Optimization finished</span></span></code></pre></div>
+<span><span class="co">#&gt; 17:29:42 Writing NN index file to temp file /tmp/35501474/Rtmp7VMhV2/file2a624c5e3601b4</span></span>
+<span><span class="co">#&gt; 17:29:42 Searching Annoy index using 1 thread, search_k = 3000</span></span>
+<span><span class="co">#&gt; 17:29:42 Annoy recall = 100%</span></span>
+<span><span class="co">#&gt; 17:29:42 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 17:29:43 Initializing from normalized Laplacian + noise (using irlba)</span></span>
+<span><span class="co">#&gt; 17:29:43 Commencing optimization for 500 epochs, with 4504 positive edges</span></span>
+<span><span class="co">#&gt; 17:29:43 Optimization finished</span></span></code></pre></div>
 <p>Plot the results using Seurat.</p>
 <div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">umap.supercell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">UMAPPlot</a></span><span class="op">(</span><span class="va">cd34.supercell</span>,group.by <span class="op">=</span> <span class="st">"celltype"</span>,label <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
@@ -499,13 +499,13 @@ When analyzing supercells it’s a good idea to plot their size on these. We can
 <div class="inline-figure"><img src="31-downstream_continuous_files/figure-html/unnamed-chunk-17-4.png" width="672"></div>
 </div>
 </div>
-<div id="qc-with-the-metacellanalysistoolkit-package" class="section level2" number="6.4">
+<div id="qc-with-the-metacellanalysistoolkit-package" class="section level2" number="4.4">
 <h2>
-<span class="header-section-number">6.4</span> QC with the MetacellAnalysisToolkit package<a class="anchor" aria-label="anchor" href="#qc-with-the-metacellanalysistoolkit-package"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.4</span> QC with the MetacellAnalysisToolkit package<a class="anchor" aria-label="anchor" href="#qc-with-the-metacellanalysistoolkit-package"><i class="fas fa-link"></i></a>
 </h2>
-<div id="loading-single-cell-data" class="section level3" number="6.4.1">
+<div id="loading-single-cell-data" class="section level3" number="4.4.1">
 <h3>
-<span class="header-section-number">6.4.1</span> Loading single-cell data<a class="anchor" aria-label="anchor" href="#loading-single-cell-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">4.4.1</span> Loading single-cell data<a class="anchor" aria-label="anchor" href="#loading-single-cell-data"><i class="fas fa-link"></i></a>
 </h3>
 <p>First we need to load the single cell data and make a classical dimentionality reduction analysis.</p>
 <div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
@@ -552,20 +552,20 @@ When analyzing supercells it’s a good idea to plot their size on these. We can
 <span><span class="co">#&gt;     GYPC, PRSS57, RPLP2, SMIM24, RPS8, RPL35, MIR181A1HG, RPS3, RPL27A, RPL14 </span></span>
 <span><span class="co">#&gt;     RPL7, RPS6, RPL6, RPL8, RPL32, RACK1, ACTG1, RPL29, RPS3A, RPL7A</span></span>
 <span><span class="va">cd34.singlecells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">cd34.singlecells</span>,dims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 15:49:23 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
-<span><span class="co">#&gt; 15:49:23 Read 6881 rows and found 50 numeric columns</span></span>
-<span><span class="co">#&gt; 15:49:23 Using Annoy for neighbor search, n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 15:49:23 Building Annoy index with metric = cosine, n_trees = 50</span></span>
+<span><span class="co">#&gt; 17:29:54 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
+<span><span class="co">#&gt; 17:29:55 Read 6881 rows and found 50 numeric columns</span></span>
+<span><span class="co">#&gt; 17:29:55 Using Annoy for neighbor search, n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 17:29:55 Building Annoy index with metric = cosine, n_trees = 50</span></span>
 <span><span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span></span>
 <span><span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span></span>
 <span><span class="co">#&gt; **************************************************|</span></span>
-<span><span class="co">#&gt; 15:49:24 Writing NN index file to temp file /tmp/35500358/RtmpmmxRrm/file1413fa72adbc0f</span></span>
-<span><span class="co">#&gt; 15:49:24 Searching Annoy index using 1 thread, search_k = 3000</span></span>
-<span><span class="co">#&gt; 15:49:25 Annoy recall = 100%</span></span>
-<span><span class="co">#&gt; 15:49:25 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 15:49:26 Initializing from normalized Laplacian + noise (using irlba)</span></span>
-<span><span class="co">#&gt; 15:49:26 Commencing optimization for 500 epochs, with 293954 positive edges</span></span>
-<span><span class="co">#&gt; 15:49:32 Optimization finished</span></span></code></pre></div>
+<span><span class="co">#&gt; 17:29:55 Writing NN index file to temp file /tmp/35501474/Rtmp7VMhV2/file2a624c5c4935b</span></span>
+<span><span class="co">#&gt; 17:29:55 Searching Annoy index using 1 thread, search_k = 3000</span></span>
+<span><span class="co">#&gt; 17:29:56 Annoy recall = 100%</span></span>
+<span><span class="co">#&gt; 17:29:57 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 17:29:57 Initializing from normalized Laplacian + noise (using irlba)</span></span>
+<span><span class="co">#&gt; 17:29:57 Commencing optimization for 500 epochs, with 293954 positive edges</span></span>
+<span><span class="co">#&gt; 17:30:03 Optimization finished</span></span></code></pre></div>
 <p>Plot single cell data.</p>
 <div class="sourceCode" id="cb122"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">UMAPPlot</a></span><span class="op">(</span><span class="va">cd34.singlecells</span>,group.by <span class="op">=</span> <span class="st">"celltype"</span>,label <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
@@ -660,27 +660,27 @@ Comparison of MetaCell2 and SuperCell for separation (higher the better).</div>
 </div>
 </div>
   <div class="chapter-nav">
-<div class="prev"><a href="downstream-analysis.html"><span class="header-section-number">5</span> Downstream analysis of metacells</a></div>
-<div class="next"><a href="integration.html"><span class="header-section-number">7</span> Integration of metacells</a></div>
+<div class="prev"><a href="downstream-analysis.html"><span class="header-section-number">3</span> Downstream analysis of metacells</a></div>
+<div class="next"><a href="integration.html"><span class="header-section-number">5</span> Integration of metacells</a></div>
 </div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#command-line"><span class="header-section-number">6</span> Metacell Analysis Toolkit (MCAT)</a></li>
-<li><a class="nav-link" href="#setting-up-the-environment"><span class="header-section-number">6.1</span> Setting up the environment</a></li>
+<li><a class="nav-link" href="#command-line"><span class="header-section-number">4</span> Metacell Analysis Toolkit (MCAT)</a></li>
+<li><a class="nav-link" href="#setting-up-the-environment"><span class="header-section-number">4.1</span> Setting up the environment</a></li>
 <li>
-<a class="nav-link" href="#metacell-building"><span class="header-section-number">6.2</span> Metacell building</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#building-metacell-with-metacell2-mc2"><span class="header-section-number">6.2.1</span> Building metacell with MetaCell2 (MC2)</a></li>
-<li><a class="nav-link" href="#building-metacell-with-supercell"><span class="header-section-number">6.2.2</span> Building metacell with SuperCell</a></li>
+<a class="nav-link" href="#MC-continuous"><span class="header-section-number">4.2</span> Metacell building</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#building-metacell-with-metacell2-mc2"><span class="header-section-number">4.2.1</span> Building metacell with MetaCell2 (MC2)</a></li>
+<li><a class="nav-link" href="#building-metacell-with-supercell"><span class="header-section-number">4.2.2</span> Building metacell with SuperCell</a></li>
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#short-downstream-analysis-of-the-metacells"><span class="header-section-number">6.3</span> Short downstream analysis of the metacells</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#metacell2-metacells"><span class="header-section-number">6.3.1</span> MetaCell2 metacells</a></li>
-<li><a class="nav-link" href="#supercell-metacells"><span class="header-section-number">6.3.2</span> SuperCell metacells</a></li>
+<a class="nav-link" href="#short-downstream-analysis-of-the-metacells"><span class="header-section-number">4.3</span> Short downstream analysis of the metacells</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#metacell2-metacells"><span class="header-section-number">4.3.1</span> MetaCell2 metacells</a></li>
+<li><a class="nav-link" href="#supercell-metacells"><span class="header-section-number">4.3.2</span> SuperCell metacells</a></li>
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#qc-with-the-metacellanalysistoolkit-package"><span class="header-section-number">6.4</span> QC with the MetacellAnalysisToolkit package</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#loading-single-cell-data"><span class="header-section-number">6.4.1</span> Loading single-cell data</a></li></ul>
+<a class="nav-link" href="#qc-with-the-metacellanalysistoolkit-package"><span class="header-section-number">4.4</span> QC with the MetacellAnalysisToolkit package</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#loading-single-cell-data"><span class="header-section-number">4.4.1</span> Loading single-cell data</a></li></ul>
 </li>
 </ul>
 

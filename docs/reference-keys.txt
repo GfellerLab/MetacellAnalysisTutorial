@@ -1,4 +1,3 @@
-requirements
 installations
 using-conda-recommended
 without-conda
@@ -8,7 +7,6 @@ HLCA-data
 downloading-the-atlas
 splitting-atlas-by-datasets
 PBMC30k-data
-the-metacell-concept
 Metacell-construction-chapter
 SuperCell-construction
 method
@@ -52,7 +50,7 @@ clustering-1
 differential-expression-analysis-1
 command-line
 setting-up-the-environment
-metacell-building
+MC-continuous
 building-metacell-with-metacell2-mc2
 building-metacell-with-supercell
 short-downstream-analysis-of-the-metacells
@@ -61,7 +59,7 @@ supercell-metacells
 qc-with-the-metacellanalysistoolkit-package
 loading-single-cell-data
 integration
-integration_unsupervised
+integration-unsupervised
 data-loading-3
 setting-up-the-environment-1
 building-metacell
@@ -74,7 +72,7 @@ clustering-2
 deferentially-expressed-gene-deg-analysis.
 cell-type-abundances-analyses.
 conclusion
-integration_supervised
+integration-supervised
 data-loading-4
 setting-up-the-environment-2
 constructing-supervised-metacell
