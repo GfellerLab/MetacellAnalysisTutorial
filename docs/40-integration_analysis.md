@@ -6,7 +6,9 @@ gathering around 580,000 cells from 107 individuals distributed in 166 samples.
 The aim of this tutorial is to show how you can use metacells to analyze a very large dataset using a reasonable amount of time and memory.
 For this we will use here **SuperCell** via the **MCAT** command line tool.
 
-## Unsupervised integration {#integration_unsupervised}
+We will first perform the integration in an unsupervised mode (\@ref(integration-unsupervised)), i.e., without considering the single-cell annotation. Then, we demonstrate supervised integration (\@ref(integration-supervised)).
+
+## Unsupervised integration {#integration-unsupervised}
 
 
 
@@ -32,8 +34,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used (Mb) gc trigger (Mb) max used (Mb)
-#> Ncells  649426 34.7    1512985 80.9   704592 37.7
-#> Vcells 1197064  9.2    8388608 64.0  1814779 13.9
+#> Ncells  649427 34.7    1512988 80.9   704593 37.7
+#> Vcells 1197125  9.2    8388608 64.0  1814779 13.9
 ```
 
 
@@ -436,8 +438,8 @@ We can save the results for comparison with the second example.
 saveRDS(combined.mc,"data/HLCA/combined.mc.unsup.rds")
 ```
 
-## Supervised integration {#integration_supervised}
 
+## Supervised integration {#integration-supervised}
 
 
 
@@ -466,8 +468,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#> Ncells 3555050 189.9    6520115   348.3    6520115   348.3
-#> Vcells 6717513  51.3 1799339828 13727.9 2245659153 17133.1
+#> Ncells 3555046 189.9    6520119   348.3    6520119   348.3
+#> Vcells 6717574  51.3 1799339950 13727.9 2245659214 17133.1
 ```
 
 

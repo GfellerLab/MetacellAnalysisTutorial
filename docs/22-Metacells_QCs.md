@@ -4,15 +4,15 @@
 
 
 Different metrics have been proposed in previous metacell studies to evaluate the quality of metacells.
-We propose a R package called *MetacellToolkit*, to compute and visualize these metrics. 
+We propose a R package called *MetacellAnalysisToolkit*, to compute and visualize these metrics. 
 The package also provides a function to visualize metacells projected in the single-cell space.
 
 Import packages:
 
 
 ```r
-# if(system.file(package='MetacellToolkit') == ""){
-#   remotes::install_github("GfellerLab/MetacellAnalysisToolkit@dev_ag", force = TRUE, upgrade = FALSE)
+# if(system.file(package='MetacellAnalysisToolkit') == ""){
+#   remotes::install_github("GfellerLab/MetacellAnalysisToolkit", force = TRUE, upgrade = FALSE)
 # } 
 library(MetacellAnalysisToolkit)
 library(Seurat)
