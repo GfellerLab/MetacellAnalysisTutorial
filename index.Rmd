@@ -1,4 +1,4 @@
---- 
+---
 title: "Metacell Analysis Tutorial"
 author: "Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller"
 date: "`r Sys.Date()`"
@@ -7,17 +7,19 @@ documentclass: book
 bibliography: [citations.bib, packages.bib]
 url: https://GfellerLab.github.io/MetacellAnalysisTutorial
 description: |
-  This is a tutorial about metacell construction and analysis.
+  This is a tutorial about construction of metacells for single-cell RNA-seq data and analysis of metacells.
 link-citations: yes
 github-repo: GfellerLab/MetacellAnalysisTutorial
 biblio-style: apalike
 csl: biochemistry-and-cell-biology.csl
 ---
 
-# This tutorial{.unnumbered}
+# About this tutorial{.unnumbered}
 
 In this tutorial, we describe the different steps that should be followed to build metacells [@baran_metacell_2019] from single-cell data using three frameworks:
-**SuperCell** [@SuperCell] (tutorial in \@ref(SuperCell-construction)), (ii) **Metacells version 2** (MC2 [@MC2]) (tutorial in \@ref(MC2-construction)), and (iii) **SEACells** [@SEACells] (tutorial in \@ref(SEACells-construction)).
+i. SuperCell [@SuperCell] (tutorial in \@ref(SuperCell-construction)),
+ii. Metacells version 2 (MC2 [@MC2]) (tutorial in \@ref(MC2-construction)),
+iii. SEACells [@SEACells] (tutorial in \@ref(SEACells-construction)).
 
 We provide examples of downstream analyses (section \@(downstream-analysis)) performed at the metacell level (e.g clustering, differential analysis, marker identification).
 
@@ -29,5 +31,3 @@ In chapter \@ref(command-line), we use MCAT to build metacells on a continuous d
 The use of the MetacellAnalysisToolkit R package to visualize and evaluate the quality of the metacells is described in chapter \@ref(QCs) and \@ref(command-line).
 
 Finally, using the MCAT command line tool, we show in section \@ref(integration) how we can use metacells to **integrate and analyze around 580,000 cells** from 107 individuals distributed in 166 samples.
-
-

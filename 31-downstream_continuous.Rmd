@@ -31,7 +31,7 @@ library(anndata)
 library(MetacellAnalysisToolkit)
 library(ggplot2)
 ```
-## Metacell building
+## Metacell building{#MC-continuous}
 Here we will use the MCAT bash command line to build the metacells with MetaCell2 and SuperCell. 
 To call the MCAT command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
 

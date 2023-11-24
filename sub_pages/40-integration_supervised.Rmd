@@ -126,7 +126,7 @@ p_4 + p_finest
 ```
 
 Overall using supervised metacells construction we obtain pure metacells until the 3rd level of annotation and
-improve metacell purities for finer levels compared to the unsupervised approach (see previous section \@ref(integration_unsupervised)).
+improve metacell purities for finer levels compared to the unsupervised approach (see previous section \@ref(integration-unsupervised)).
 
 ```{r fig.height=6, fig.width=14}
 meta.data.unsup <- readRDS("data/HLCA/combined.mc.unsup.rds")@meta.data
@@ -279,7 +279,7 @@ level3_sup + level3_unsup
 
 ### Downstream analysis
 
-You can try conduce the same downstream analyses as in the previous example \@ref(integration_unsupervised) (clustering, cell type abundances, DEG ...).
+You can try conduce the same downstream analyses as in the previous example \@ref(integration-unsupervised) (clustering, cell type abundances, DEG ...).
 
 Here to show you the interest of supervised workflow with pure metacell we can zoom on the smooth muscle sub types. Despite the low metacell number for each cell type these different subtypes are separated on the UMAP, especially the rare FAM83D+ smooth muscles that were discovered in the original study.
 

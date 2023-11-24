@@ -4,7 +4,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 In this section, we will first perform the integration in an unsupervised mode, i.e., without considering the single-cell annotation. 
-For a supervised version, please refer to section \@ref(integration_supervised).
+For a supervised version, please refer to section \@ref(integration-supervised).
 
 ###  Data loading
 Please follow the section \@ref(HLCA-data) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
@@ -229,7 +229,7 @@ umap.integrated.datasets + umap.integrated.celltypes + umap.unintegrated.dataset
 Seurat efficiently corrected the batch effect in the data while keeping the cell type separated, but other batch correction methods such as harmony would have also done the job.
 
 Note that In the original study, datasets were integrated using SCANVI semi-supervised integration using partial annotation obtained for each dataset prior integration.
-If you are interested in such supervised approach at the metacell level in R you can have a look to our second example in section \@ref(integration_supervised) using the [STACAS](https://github.com/carmonalab/STACAS) package.
+If you are interested in such supervised approach at the metacell level in R you can have a look to our second example in section \@ref(integration-supervised) using the [STACAS](https://github.com/carmonalab/STACAS) package.
 
 We can navigate in the different annotation levels.
 
@@ -319,7 +319,7 @@ In contrast, simply loading the original single-cell data in R using Seurat is e
 
 In this first example we used a fully unsupervised workflow and did not use any prior biological knowledge.
 Authors of the original study made a remarkable work annotating the hundreds of thousands cells of the atlas.
-In the second example in section \@ref(integration_supervised) we propose a supervised workflow using this annotation to guide both the metacell
+In the second example in section \@ref(integration-supervised) we propose a supervised workflow using this annotation to guide both the metacell
 identification and the batch correction.
 
 We can save the results for comparison with the second example.

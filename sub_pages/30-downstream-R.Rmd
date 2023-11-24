@@ -8,7 +8,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 In this tutorial, standard analyses include dimensionality reduction, clustering and differential expression using the [Seurat](https://satijalab.org/seurat/) framework.
 
 ```{r r-libraries, eval=TRUE}
-library(Seurat) 
+library(Seurat)
 library(dplyr)
 library(ggplot2)
 ```
@@ -25,14 +25,14 @@ MC_tool = "SuperCell"
 proj_name = "bmcite"
 annotation_column = "celltype_simplified"
 
-cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
-                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
-                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell",
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell",
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2",
                 "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
 
-celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
-                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
-                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41",
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5",
                  "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
 names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
@@ -61,7 +61,7 @@ p_annot <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cell_type)) + geom_poin
    ggplot2::scale_color_manual(values = celltype_colors) +
   theme_classic() + guides(color=guide_legend(ncol=2))
 p_annot
-#DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors, pt.size = log1p(MC.seurat$size)) 
+#DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors, pt.size = log1p(MC.seurat$size))
 ```
 
 ### Clustering
@@ -81,19 +81,19 @@ p_cluster
 
 ### Differential expression analysis
 
-We perform diffrential analysis to identify the markers of our cluster 3 as an example using the `FindMarkers` function. 
+We perform diffrential analysis to identify the markers of our cluster 3 as an example using the `FindMarkers` function.
 ```{r r-mc-DEG, eval=TRUE}
-# Set idents to metacell annotation 
+# Set idents to metacell annotation
 Idents(MC.seurat) <- "SCclustering"
 
 cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE)
 cells_markers[order(cells_markers$avg_log2FC, decreasing = T)[1:10], ]
 ```
 
-We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family, 
-which is a group of transmembrane proteins preferentially expressed in NK cells. 
+We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family,
+which is a group of transmembrane proteins preferentially expressed in NK cells.
 
-```{r r-mc-plot-genes, eval=TRUE, cache = FALSE}
+```{r r-mc-plot-genes, eval=TRUE, cache = FALSE, fig.asp = 0.7}
 genes = c("KLRF1", "KLRD1")
 VlnPlot(MC.seurat, genes, ncol = 2, pt.size = 0.0)
 ```
@@ -104,9 +104,9 @@ We can verify the identification of the NK cell cluster by comparing the metacel
 p_cluster + p_annot
 ```
 
-### Visualize gene-gene correlation 
+### Visualize gene-gene correlation
 
-We can use the `supercell_GeneGenePlot` function from the SuperCell package to visualize the correlation between marker genes of a cell-type: 
+We can use the `supercell_GeneGenePlot` function from the SuperCell package to visualize the correlation between marker genes of a cell-type:
 (i) at the single-cell level and
 (ii) at the metacell level.
 
@@ -130,8 +130,8 @@ p.sc <- SuperCell::supercell_GeneGenePlot(
   gene_x = gene_x,
   gene_y = gene_y,
   clusters = sc_data@meta.data[, annotation_column],
-  sort.by.corr = F, 
-  alpha = alpha, 
+  sort.by.corr = F,
+  alpha = alpha,
   color.use = celltype_colors
 )
 p.sc$p
