@@ -14,10 +14,10 @@ We will first perform the integration in an unsupervised mode (\@ref(integration
 
 
 In this section, we will first perform the integration in an unsupervised mode, i.e., without considering the single-cell annotation. 
-For a supervised version, please refer to section \@ref(integration_supervised).
+For a supervised version, please refer to section \@ref(integration-supervised).
 
 ###  Data loading
-Please follow the section \@ref(HLCA-data) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
+Please follow the section \@ref(HLCA-data-download) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
 
 ###  Setting up the environment
 First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MCAT tool).
@@ -34,8 +34,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used (Mb) gc trigger (Mb) max used (Mb)
-#> Ncells  649427 34.7    1512988 80.9   704593 37.7
-#> Vcells 1197125  9.2    8388608 64.0  1814779 13.9
+#> Ncells  649427 34.7    1512985 80.9   704593 37.7
+#> Vcells 1197128  9.2    8388608 64.0  1814779 13.9
 ```
 
 
@@ -294,7 +294,7 @@ umap.integrated.datasets + umap.integrated.celltypes + umap.unintegrated.dataset
 Seurat efficiently corrected the batch effect in the data while keeping the cell type separated, but other batch correction methods such as harmony would have also done the job.
 
 Note that In the original study, datasets were integrated using SCANVI semi-supervised integration using partial annotation obtained for each dataset prior integration.
-If you are interested in such supervised approach at the metacell level in R you can have a look to our second example in section \@ref(integration_supervised) using the [STACAS](https://github.com/carmonalab/STACAS) package.
+If you are interested in such supervised approach at the metacell level in R you can have a look to our second example in section \@ref(integration-supervised) using the [STACAS](https://github.com/carmonalab/STACAS) package.
 
 We can navigate in the different annotation levels.
 
@@ -428,7 +428,7 @@ In contrast, simply loading the original single-cell data in R using Seurat is e
 
 In this first example we used a fully unsupervised workflow and did not use any prior biological knowledge.
 Authors of the original study made a remarkable work annotating the hundreds of thousands cells of the atlas.
-In the second example in section \@ref(integration_supervised) we propose a supervised workflow using this annotation to guide both the metacell
+In the second example in section \@ref(integration-supervised) we propose a supervised workflow using this annotation to guide both the metacell
 identification and the batch correction.
 
 We can save the results for comparison with the second example.
@@ -451,7 +451,7 @@ Taking advantage of the single-cell annotation of the original study we will bui
 guide the integration with the cell type label using [STACAS](https://github.com/carmonalab/STACAS).
 
 ### Data loading
-Please follow the section \@ref(HLCA-data) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
+Please follow the section \@ref(HLCA-data-download) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
 
 ### Setting up the environment
 First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MCAT tool).
@@ -468,8 +468,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#> Ncells 3555046 189.9    6520119   348.3    6520119   348.3
-#> Vcells 6717574  51.3 1799339950 13727.9 2245659214 17133.1
+#> Ncells 3555031 189.9    6520115   348.3    6520115   348.3
+#> Vcells 6717577  51.3 1799339956 13727.9 2245659217 17133.1
 ```
 
 
@@ -588,7 +588,7 @@ p_4 + p_finest
 <img src="40-integration_analysis_files/figure-html/unnamed-chunk-18-1.png" width="672" />
 
 Overall using supervised metacells construction we obtain pure metacells until the 3rd level of annotation and
-improve metacell purities for finer levels compared to the unsupervised approach (see previous section \@ref(integration_unsupervised)).
+improve metacell purities for finer levels compared to the unsupervised approach (see previous section \@ref(integration-unsupervised)).
 
 
 ```r
@@ -782,7 +782,7 @@ level3_sup + level3_unsup
 
 ### Downstream analysis
 
-You can try conduce the same downstream analyses as in the previous example \@ref(integration_unsupervised) (clustering, cell type abundances, DEG ...).
+You can try conduce the same downstream analyses as in the previous example \@ref(integration-unsupervised) (clustering, cell type abundances, DEG ...).
 
 Here to show you the interest of supervised workflow with pure metacell we can zoom on the smooth muscle sub types. Despite the low metacell number for each cell type these different subtypes are separated on the UMAP, especially the rare FAM83D+ smooth muscles that were discovered in the original study.
 

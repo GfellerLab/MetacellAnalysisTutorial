@@ -31,13 +31,7 @@ virtualenv my_env
 source my_env/bin/activate
 
 # Installing SEACells
-git clone https://github.com/dpeerlab/SEACells.git
-cd SEACells
-python setup.py install
-cd ..
-pip install -r SEACells_requirements.txt
-pip install ipywidgets
-pip install jupyter
+pip install git+https://github.com/dpeerlab/SEACells
 
 # Install MC2
 pip install git+https://github.com/tanaylab/metacells
@@ -46,7 +40,7 @@ pip install git+https://github.com/tanaylab/metacells
 In R, install the SuperCell package:
 
 ```r
-remotes::install_github("GfellerLab/SuperCell", force = TRUE, upgrade = FALSE)
+remotes::install_github("GfellerLab/SuperCell", upgrade = "never")
 ```
 
 To run python function in R, install reticulate:
@@ -61,127 +55,70 @@ To use the python libraries installed in the virtual environment, define the RET
 echo 'RETICULATE_PYTHON=my_env/bin/python' > '.Renviron'
 ```
 
-## Retrieve a discrete dataset (PBMCs dataset) {#PBMC-data}
+## Retrieve a discrete dataset (PBMCs dataset) {#bmcite-data}
 
-To test metacell construction on a discrete dataset, we retrieved the 3k PBMCs from scanpy datasets as follows:
+To test metacell construction on a discrete dataset, we retrieved the "bmcite" dataset from the SeauratData R package containing around 30'000 cells.
 
-```python
-import scanpy as sc 
-import os
-
-adata = sc.datasets.pbmc3k()
-adata_proc = sc.datasets.pbmc3k_processed()
-
-adata       = adata[adata_proc.obs_names].copy()
-adata.obs   = adata_proc.obs.copy()
-adata.uns   = adata_proc.uns.copy()
-adata.obsm  = adata_proc.obsm.copy()
-adata.obsp  = adata_proc.obsp.copy()
-
-adata.X = adata.X.astype("float32")
-raw_ad = sc.AnnData(adata.X.copy())
-raw_ad.obs_names, raw_ad.var_names = adata.obs_names, adata.var_names
-adata.raw = raw_ad
-```
-
-The data are saved in the following file for future analyses in python (use of SEACells and MC2): "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
-
-
-```python
-directory = os.path.join("data", "3k_pbmc")
-
-if not os.path.exists(directory):
-    os.makedirs(directory)
-  
-adata.write_h5ad(os.path.join("data", "3k_pbmc", "singlecell_anndata_filtered.h5ad"))
-```
-
-The data are saved in the following file for future analyses in R (use of SuperCell): "data/3k_pbmc/singlecell_seurat_filtered.rds".
+The data are saved in the following file for future analyses in R (use of SuperCell): "data/bmcite/singlecell_seurat_filtered.rds".
 
 
 ```r
-library(reticulate)
-library(Seurat)
-#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
-#> will retire shortly. Please refer to R-spatial evolution reports on
-#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
-#> This package is now running under evolution status 0
-#> Attaching SeuratObject
-library(anndata)
-adata <- anndata::read_h5ad(file.path("data/3k_pbmc/singlecell_anndata_filtered.h5ad"))
+library(SeuratData)
+InstallData("bmcite")
 
-raw_counts <- Matrix::t(adata$raw$X)
-colnames(raw_counts) <- rownames(adata$obs)
-rownames(raw_counts) <- rownames(adata$var)
+data("bmcite")
+bmcite
+head(bmcite@meta.data)
+bmcite$celltype_simplified <- plyr::revalue(bmcite$celltype.l2, 
+                                            c("CD8 Effector_1" = "Non-Naive CD8 cell",
+                                              "CD8 Effector_2" = "Non-Naive CD8 cell",
+                                              "CD8 Memory_1" = "Non-Naive CD8 cell",
+                                              "CD8 Memory_2" = "Non-Naive CD8 cell",
+                                              "CD8 Naive" = "Naive CD8 cell",
+                                              "CD4 Naive" = "Naive CD4 cell",
+                                              "CD4 Memory" = "Non-Naive CD4 cell",
+                                              "Treg" = "Non-Naive CD4 cell",
+                                              "Naive B" = "B cell",
+                                              "Memory B" = "B cell",
+                                              "CD56 bright NK" = "NK",
+                                              "MAIT" = "Unconventional T",
+                                              "gdT" = "Unconventional T"
+                                              ))
+bmcite <- bmcite[,-grep("Prog",bmcite$celltype_simplified)]
+saveRDS(bmcite, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
 
-pbmc <- CreateSeuratObject(counts = raw_counts, meta.data = adata$obs)
-#> Warning: Feature names cannot have underscores ('_'), replacing with dashes
-#> ('-')
-saveRDS(pbmc, file = paste0("data/3k_pbmc/singlecell_seurat_filtered.rds"))
 ```
 
 
+The data are saved in the following file for future analyses in python (use of SEACells and MC2): "data/bmcite/singlecell_anndata_filtered.h5ad".
+
+```r
+library(anndata)
+adata <- AnnData(X = Matrix::t(bmcite@assays$RNA@counts),
+                 var = data.frame(genes = rownames(bmcite@assays$RNA@counts)),
+                 obs = bmcite@meta.data)
+
+write_h5ad(adata, paste0("data/bmcite/singlecell_anndata_filtered.h5ad"))
+
+```
+
 ## Retrieve a continuous dataset (CD34 dataset) {#CD34-data}
 
-To test metacell construction on discrete dataset, we retrieved the CD34 dataset provided in [@SEACells]:
+To test metacell construction on continuous dataset, we retrieved the CD34 dataset provided in [@SEACells]:
 
 ```bash
 mkdir data/CD34
 wget -O data/CD34/cd34_multiome_rna.h5ad 'https://zenodo.org/record/6383269/files/cd34_multiome_rna.h5ad?download=1' 
 ```
 
-
-```python
-import scanpy as sc 
-import os
-
-adata = sc.read(os.path.join("data", "CD34", "cd34_multiome_rna.h5ad"))
-adata.X.sort_indices()
-raw_ad = sc.AnnData(adata.X.copy())
-raw_ad.obs_names, raw_ad.var_names = adata.obs_names, adata.var_names
-adata.raw = raw_ad
-
-sc.pl.embedding(adata, 'X_umap', color='celltype')
-#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
-#>   cax = scatter(
-```
-
-<img src="01-Requirements_files/figure-html/unnamed-chunk-11-1.png" width="672" />
-
-The data are saved in the following file for future analyses in python (use of SEACells and MC2): "data/CD34/singlecell_anndata_filtered.h5ad".
-
-```python
-directory = os.path.join("data", "cd34_multiome")
-
-if not os.path.exists(directory):
-    os.makedirs(directory)
-    
-adata.write_h5ad(os.path.join("data", "CD34", "singlecell_anndata_filtered.h5ad"))
-```
-
-The data are saved in the following file for future analyses in R (use of SuperCell): "data/CD34/singlecell_seurat_filtered.rds".
-
-
-```r
-library(reticulate)
-library(Seurat)
-library(anndata)
-adata <- anndata::read_h5ad(file.path("data/CD34/singlecell_anndata_filtered.h5ad"))
-
-raw_counts <- Matrix::t(adata$raw$X)
-colnames(raw_counts) <- rownames(adata$obs)
-rownames(raw_counts) <- rownames(adata$var)
-
-cd34 <- CreateSeuratObject(counts = raw_counts, meta.data = adata$obs)
-saveRDS(cd34, file = file.path("data/CD34/singlecell_seurat_filtered.rds"))
-```
+The downloaded file will be used in the section \@ref(command-line).
 
 ## Retrieve the lung atlas dataset {#HLCA-data}
 
 This dataset will be used for the integration of a large number of single-cell datasets at the level of metacells (see section \@ref(integration)).
 Considering, the large size of the data to download, if you don't consider running the integration analysis, you can skip this part of the tutorial.
 
-### Downloading the atlas
+### Downloading the atlas {#HLCA-data-download}
 
 To illustrate how metacells can be used in the context of single-cell data integration,
 we used a cell atlas of the human lung (core) available on [cellxgene](https://cellxgene.cziscience.com/collections/6f6d381a-7701-4781-935c-db10d30de293). 
@@ -235,49 +172,3 @@ tf.split - t0.split
 ```
 
 
-## Retrieve a discrete dataset (PBMCs 30k dataset) {#PBMC30k-data}
-
-To test metacell construction on a discrete dataset, we retrieved the "bmcite" dataset from the SeauratData R package containing around 30'000 cells.
-
-The data are saved in the following file for future analyses in R (use of SuperCell): "data/bmcite/singlecell_seurat_filtered.rds".
-
-
-```r
-library(SeuratData)
-InstallData("bmcite")
-
-data("bmcite")
-bmcite
-head(bmcite@meta.data)
-bmcite$celltype_simplified <- plyr::revalue(bmcite$celltype.l2, 
-                                            c("CD8 Effector_1" = "Non-Naive CD8 cell",
-                                              "CD8 Effector_2" = "Non-Naive CD8 cell",
-                                              "CD8 Memory_1" = "Non-Naive CD8 cell",
-                                              "CD8 Memory_2" = "Non-Naive CD8 cell",
-                                              "CD8 Naive" = "Naive CD8 cell",
-                                              "CD4 Naive" = "Naive CD4 cell",
-                                              "CD4 Memory" = "Non-Naive CD4 cell",
-                                              "Treg" = "Non-Naive CD4 cell",
-                                              "Naive B" = "B cell",
-                                              "Memory B" = "B cell",
-                                              "CD56 bright NK" = "NK",
-                                              "MAIT" = "Unconventional T",
-                                              "gdT" = "Unconventional T"
-                                              ))
-bmcite <- bmcite[,-grep("Prog",bmcite$celltype_simplified)]
-saveRDS(bmcite, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
-
-```
-
-
-The data are saved in the following file for future analyses in python (use of SEACells and MC2): "data/bmcite/singlecell_anndata_filtered.h5ad".
-
-```r
-library(anndata)
-adata <- AnnData(X = Matrix::t(bmcite@assays$RNA@counts),
-                 var = data.frame(genes = rownames(bmcite@assays$RNA@counts)),
-                 obs = bmcite@meta.data)
-
-write_h5ad(adata, paste0("data/bmcite/singlecell_anndata_filtered.h5ad"))
-
-```

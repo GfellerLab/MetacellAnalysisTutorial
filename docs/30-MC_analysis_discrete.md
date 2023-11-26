@@ -16,7 +16,7 @@ In this tutorial, standard analyses include dimensionality reduction, clustering
 
 
 ```r
-library(Seurat) 
+library(Seurat)
 #> The legacy packages maptools, rgdal, and rgeos, underpinning this package
 #> will retire shortly. Please refer to R-spatial evolution reports on
 #> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
@@ -47,14 +47,14 @@ MC_tool = "SuperCell"
 proj_name = "bmcite"
 annotation_column = "celltype_simplified"
 
-cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
-                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
-                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell",
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell",
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2",
                 "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
 
-celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
-                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
-                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41",
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5",
                  "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
 names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
@@ -93,7 +93,7 @@ p_annot
 <img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-1.png" width="672" />
 
 ```r
-#DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors, pt.size = log1p(MC.seurat$size)) 
+#DimPlot(MC.seurat, reduction = "umap", cols = celltype_colors, pt.size = log1p(MC.seurat$size))
 ```
 
 ### Clustering
@@ -116,10 +116,10 @@ p_cluster
 
 ### Differential expression analysis
 
-We perform diffrential analysis to identify the markers of our cluster 3 as an example using the `FindMarkers` function. 
+We perform diffrential analysis to identify the markers of our cluster 3 as an example using the `FindMarkers` function.
 
 ```r
-# Set idents to metacell annotation 
+# Set idents to metacell annotation
 Idents(MC.seurat) <- "SCclustering"
 
 cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE)
@@ -146,8 +146,8 @@ cells_markers[order(cells_markers$avg_log2FC, decreasing = T)[1:10], ]
 #> SPON2 4.903245e-24   2.763682 0.929 0.469 8.339929e-20
 ```
 
-We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family, 
-which is a group of transmembrane proteins preferentially expressed in NK cells. 
+We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family,
+which is a group of transmembrane proteins preferentially expressed in NK cells.
 
 
 ```r
@@ -166,9 +166,9 @@ p_cluster + p_annot
 
 <img src="30-MC_analysis_discrete_files/figure-html/unnamed-chunk-4-1.png" width="960" />
 
-### Visualize gene-gene correlation 
+### Visualize gene-gene correlation
 
-We can use the `supercell_GeneGenePlot` function from the SuperCell package to visualize the correlation between marker genes of a cell-type: 
+We can use the `supercell_GeneGenePlot` function from the SuperCell package to visualize the correlation between marker genes of a cell-type:
 (i) at the single-cell level and
 (ii) at the metacell level.
 
@@ -195,8 +195,8 @@ p.sc <- SuperCell::supercell_GeneGenePlot(
   gene_x = gene_x,
   gene_y = gene_y,
   clusters = sc_data@meta.data[, annotation_column],
-  sort.by.corr = F, 
-  alpha = alpha, 
+  sort.by.corr = F,
+  alpha = alpha,
   color.use = celltype_colors
 )
 p.sc$p
@@ -235,7 +235,7 @@ p.MC$p
 
 
 ```r
-library(Seurat) 
+library(Seurat)
 library(dplyr)
 library(ggplot2)
 library(SuperCell)
@@ -254,14 +254,14 @@ MC_tool = "SuperCell"
 proj_name = "bmcite"
 annotation_column = "celltype_simplified"
 
-cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
-                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
-                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
+cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell",
+                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell",
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2",
                 "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
 
-celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
-                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
-                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
+celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
+                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41",
+                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5",
                  "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
 names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
@@ -294,9 +294,9 @@ MC_list$UMAP <- supercell_UMAP(
   n.comp = 30, n_neighbors = 15, min_dist=0.5
 )
 
-supercell_DimPlot(SC = MC_list, 
+supercell_DimPlot(SC = MC_list,
   groups = MC.seurat@meta.data[, annotation_column],
-  dim.name = "UMAP", 
+  dim.name = "UMAP",
   title = paste0("UMAP of metacells colored by cell type assignment"), color.use = celltype_colors
 ) + guides(color=guide_legend(ncol=2))
 ```
@@ -317,9 +317,9 @@ MC.seurat$SCclustering <- MC_list$SCclustering$clustering
 
 # Plot clustering result
 supercell_DimPlot(
-  MC_list, 
+  MC_list,
   groups = factor(MC_list$SCclustering$clustering),
-  dim.name = "UMAP", 
+  dim.name = "UMAP",
   title = paste0("UMAP of metacells colored by metacell clustering")
 )  + guides(color=guide_legend(ncol=2))
 ```
@@ -328,21 +328,21 @@ supercell_DimPlot(
 
 ### Differential expression analysis
 
-We perform diffrential analysis to identify the markers of our clusters using the `supercell_FindAllMarkers` function from the SuperCell package. 
+We perform diffrential analysis to identify the markers of our clusters using the `supercell_FindAllMarkers` function from the SuperCell package.
 
 ```r
 # Compute upregulated genes in each cell line (versus other cells)
 MC.all.markers <- supercell_FindAllMarkers(
-  ge = GetAssayData(MC.seurat, slot = "data"), 
-  clusters = MC_list$SCclustering$clustering, 
+  ge = GetAssayData(MC.seurat, slot = "data"),
+  clusters = MC_list$SCclustering$clustering,
   supercell_size = MC_list$supercell_size,
-  only.pos = TRUE, 
-  min.pct = 0, 
+  only.pos = TRUE,
+  min.pct = 0,
   logfc.threshold = 0.2
 )
 ```
 
-We select the markers for cluster 9: 
+We select the markers for cluster 9:
 
 ```r
 cluster_markers <- MC.all.markers[[9]]
@@ -372,8 +372,6 @@ VlnPlot(MC.seurat, features = genes.to.plot, ncol = 5, pt.size = 0.0)
 #> Groups with fewer than two data points have been dropped.
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-weighted-1.png" width="672" />
-
-
+<img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-weighted-1.png" width="960" />
 
 

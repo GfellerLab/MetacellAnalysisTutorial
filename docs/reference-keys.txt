@@ -1,12 +1,11 @@
 installations
 using-conda-recommended
 without-conda
-PBMC-data
+bmcite-data
 CD34-data
 HLCA-data
-downloading-the-atlas
+HLCA-data-download
 splitting-atlas-by-datasets
-PBMC30k-data
 Metacell-construction-chapter
 SuperCell-construction
 method
