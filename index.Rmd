@@ -21,7 +21,7 @@ i. SuperCell [@SuperCell] (tutorial in \@ref(SuperCell-construction)),
 ii. Metacells version 2 (MC2 [@MC2]) (tutorial in \@ref(MC2-construction)),
 iii. SEACells [@SEACells] (tutorial in \@ref(SEACells-construction)).
 
-We provide examples of downstream analyses (section \@(downstream-analysis)) performed at the metacell level (e.g clustering, differential analysis, marker identification).
+We provide examples of downstream analyses (section \@ref(downstream-analysis)) performed at the metacell level (e.g clustering, differential analysis, marker identification).
 
 We also show how to obtain metacells by running these methods using a **command line tool** that we provide as part of the MetacellAnalysisToolkit (**MCAT**) [github repository](https://github.com/GfellerLab/MetacellAnalysisToolkit).
 This repository also contains the **MetacellAnalysisToolkit R package** which provides R functions to compute QC
