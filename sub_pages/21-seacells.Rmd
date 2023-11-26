@@ -55,8 +55,8 @@ annotation_label = {'cell_lines':'cell_line',
 ```
 
 ### Data loading 
-Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
-Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 30'000 bone marrow cells. 
+Please follow the section \@ref(bmcite-data) to retrieve these data from the SeuratData package and save the data in the following file: "data/bmcite/singlecell_anndata_filtered.h5ad".
 
 
 ```{python seacell-load-data, eval = TRUE, echo = TRUE}

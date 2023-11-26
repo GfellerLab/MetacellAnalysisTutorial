@@ -7,7 +7,7 @@ In this section, we will first perform the integration in an unsupervised mode, 
 For a supervised version, please refer to section \@ref(integration-supervised).
 
 ###  Data loading
-Please follow the section \@ref(HLCA-data) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
+Please follow the section \@ref(HLCA-data-download) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
 
 ###  Setting up the environment
 First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MCAT tool).
