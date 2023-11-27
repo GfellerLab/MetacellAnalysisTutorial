@@ -44,8 +44,8 @@ annotation_label = unlist(list('cell_lines'='cell_line',
 ```
 
 ### Data loading
-We will run SuperCell on a single-cell dataset composed of 2638 peripheral blood mononuclear cells (PBMCs) available in the scanpy package.
-Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package, preprocess and save the data in the following file: "data/3k_pbmc/singlecell_seurat_filtered.rds".
+We will run SuperCell on a single-cell dataset composed of around 30'000 bone marrow cells.
+Please follow the section \@ref(bmcite-data) to retrieve these data from the SeuratData package and save the data in the following file: "data/bmcite/singlecell_seurat_filtered.rds".
 
 ```{r SuperCell-load-data-noEval, eval = TRUE, echo = TRUE}
 print(proj_name)

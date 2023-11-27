@@ -45,8 +45,8 @@ library(SuperCell)
 
 
 ### Data loading
-We will run SuperCell on a single-cell dataset composed of 2638 peripheral blood mononuclear cells (PBMCs) available in the scanpy package.
-Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package, preprocess and save the data in the following file: "data/3k_pbmc/singlecell_seurat_filtered.rds".
+We will run SuperCell on a single-cell dataset composed of around 30'000 bone marrow cells.
+Please follow the section \@ref(bmcite-data) to retrieve these data from the SeuratData package and save the data in the following file: "data/bmcite/singlecell_seurat_filtered.rds".
 
 
 ```r
@@ -265,8 +265,8 @@ anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_na
 
 ```
 #>             used   (Mb) gc trigger   (Mb)  max used   (Mb)
-#> Ncells   3487417  186.3   10348358  552.7  16169308  863.6
-#> Vcells 156621539 1195.0  478099330 3647.7 478092829 3647.6
+#> Ncells   3487417  186.3   10348411  552.7  16169391  863.6
+#> Vcells 156621529 1195.0  478099316 3647.7 478092819 3647.6
 ```
 
 
@@ -315,8 +315,8 @@ If you don't have these packages installed, please refer to the section \@ref(in
 
 
 ### Data loading 
-We will run Metacell-2 (MC2) on a single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
-Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+We will run Metacell-2 (MC2) on a single-cell dataset composed of around 30'000 bone marrow cells. 
+Please follow the section \@ref(bmcite-data) to retrieve these data from the SeuratData package and save the data in the following file: "data/bmcite/singlecell_anndata_filtered.h5ad".
 
 
 
@@ -726,8 +726,8 @@ If you don't have these packages installed, please refer to the section \@ref(in
 
 
 ### Data loading 
-Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
-Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 30'000 bone marrow cells. 
+Please follow the section \@ref(bmcite-data) to retrieve these data from the SeuratData package and save the data in the following file: "data/bmcite/singlecell_anndata_filtered.h5ad".
 
 
 
@@ -904,7 +904,7 @@ The `core.summarize_by_SEACell` function can be used to generate a metacell coun
 
 ```python
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
-#>   0%|          | 0/133 [00:00<?, ?it/s]  5%|4         | 6/133 [00:00<00:02, 55.80it/s]  9%|9         | 12/133 [00:00<00:02, 56.50it/s] 14%|#3        | 18/133 [00:00<00:02, 54.98it/s] 18%|#8        | 24/133 [00:00<00:01, 55.70it/s] 23%|##2       | 30/133 [00:00<00:01, 56.92it/s] 27%|##7       | 36/133 [00:00<00:01, 56.67it/s] 32%|###2      | 43/133 [00:00<00:01, 57.63it/s] 37%|###6      | 49/133 [00:00<00:01, 58.12it/s] 41%|####1     | 55/133 [00:00<00:01, 57.72it/s] 46%|####5     | 61/133 [00:01<00:01, 56.17it/s] 50%|#####     | 67/133 [00:01<00:01, 55.50it/s] 56%|#####5    | 74/133 [00:01<00:01, 57.52it/s] 61%|######    | 81/133 [00:01<00:00, 58.74it/s] 66%|######6   | 88/133 [00:01<00:00, 59.40it/s] 71%|#######1  | 95/133 [00:01<00:00, 60.96it/s] 77%|#######6  | 102/133 [00:01<00:00, 61.27it/s] 82%|########1 | 109/133 [00:01<00:00, 62.79it/s] 87%|########7 | 116/133 [00:01<00:00, 63.16it/s] 92%|#########2| 123/133 [00:02<00:00, 64.88it/s] 98%|#########7| 130/133 [00:02<00:00, 65.73it/s]100%|##########| 133/133 [00:02<00:00, 60.14it/s]
+#>   0%|          | 0/133 [00:00<?, ?it/s]  5%|4         | 6/133 [00:00<00:02, 56.52it/s]  9%|9         | 12/133 [00:00<00:02, 55.83it/s] 14%|#3        | 18/133 [00:00<00:02, 53.07it/s] 18%|#8        | 24/133 [00:00<00:02, 53.39it/s] 23%|##2       | 30/133 [00:00<00:01, 54.36it/s] 27%|##7       | 36/133 [00:00<00:01, 53.78it/s] 32%|###1      | 42/133 [00:00<00:01, 54.84it/s] 36%|###6      | 48/133 [00:00<00:01, 54.67it/s] 41%|####      | 54/133 [00:00<00:01, 54.71it/s] 45%|####5     | 60/133 [00:01<00:01, 52.97it/s] 50%|####9     | 66/133 [00:01<00:01, 51.83it/s] 54%|#####4    | 72/133 [00:01<00:01, 53.77it/s] 59%|#####8    | 78/133 [00:01<00:01, 54.26it/s] 64%|######3   | 85/133 [00:01<00:00, 56.21it/s] 68%|######8   | 91/133 [00:01<00:00, 57.18it/s] 74%|#######3  | 98/133 [00:01<00:00, 59.23it/s] 78%|#######8  | 104/133 [00:01<00:00, 59.23it/s] 83%|########3 | 111/133 [00:01<00:00, 60.68it/s] 89%|########8 | 118/133 [00:02<00:00, 61.64it/s] 94%|#########3| 125/133 [00:02<00:00, 63.04it/s] 99%|#########9| 132/133 [00:02<00:00, 63.71it/s]100%|##########| 133/133 [00:02<00:00, 57.40it/s]
 ```
 #### Annotate metacells {-}
 Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 

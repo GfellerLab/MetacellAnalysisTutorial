@@ -49,8 +49,8 @@ annotation_label = {'cell_lines':'cell_line',
 ```
 
 ### Data loading 
-We will run Metacell-2 (MC2) on a single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs). 
-Please follow the section \@ref(PBMC-data) to retrieve these data from the scanpy package and save the data in the following file: "data/3k_pbmc/singlecell_anndata_filtered.h5ad".
+We will run Metacell-2 (MC2) on a single-cell dataset composed of around 30'000 bone marrow cells. 
+Please follow the section \@ref(bmcite-data) to retrieve these data from the SeuratData package and save the data in the following file: "data/bmcite/singlecell_anndata_filtered.h5ad".
 ```{r load-data, child='./functional_chunks/load_anndata.Rmd'}
 ```
 

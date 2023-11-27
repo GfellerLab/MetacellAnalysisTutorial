@@ -107,7 +107,7 @@ For more information on the method, please refer to our review <span class="cita
 <h4>Importing R packages<a class="anchor" aria-label="anchor" href="#importing-r-packages"><i class="fas fa-link"></i></a>
 </h4>
 <p>To run SuperCell, the following R package needs to be imported:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span>package<span class="op">=</span><span class="st">'SuperCell'</span><span class="op">)</span> <span class="op">==</span> <span class="st">""</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"GfellerLab/SuperCell"</span>, force <span class="op">=</span> <span class="cn">TRUE</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">}</span> </span>
@@ -118,9 +118,9 @@ For more information on the method, please refer to our review <span class="cita
 <h3>
 <span class="header-section-number">1.1.2</span> Data loading<a class="anchor" aria-label="anchor" href="#data-loading"><i class="fas fa-link"></i></a>
 </h3>
-<p>We will run SuperCell on a single-cell dataset composed of 2638 peripheral blood mononuclear cells (PBMCs) available in the scanpy package.
-Please follow the section <a href="requirements.html#PBMC-data">0.2</a> to retrieve these data from the scanpy package, preprocess and save the data in the following file: “data/3k_pbmc/singlecell_seurat_filtered.rds”.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p>We will run SuperCell on a single-cell dataset composed of around 30’000 bone marrow cells.
+Please follow the section <a href="requirements.html#bmcite-data">0.2</a> to retrieve these data from the SeuratData package and save the data in the following file: “data/bmcite/singlecell_seurat_filtered.rds”.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">proj_name</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "bmcite"</span></span>
 <span></span>
@@ -163,7 +163,7 @@ and (iv) the number of most variable genes to consider for PCA (<code>n.var.gene
 <p>SuperCell builds its knn graph based on Euclidean distances defined in the PCA space.
 PCA computation is performed on the log-normalized gene expression data in the <code>SCimplify</code> SuperCell function.
 In the following code chunk, we use Seurat to normalize and visualize the data:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Attaching SeuratObject</span></span>
 <span><span class="va">sc_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/NormalizeData.html">NormalizeData</a></span><span class="op">(</span><span class="va">sc_data</span>, normalization.method <span class="op">=</span> <span class="st">"LogNormalize"</span><span class="op">)</span></span>
@@ -183,7 +183,7 @@ In the following code chunk, we use Seurat to normalize and visualize the data:<
 </h4>
 <p>In this tutorial, we will run SuperCell using the 30 first principal components resulting from the PCA.
 We chose a graining level of 25 and a number of neighbors of 15 for the knn step.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gamma</span> <span class="op">=</span> <span class="fl">50</span> <span class="co"># the requested graining level.</span></span>
 <span><span class="va">k_knn</span> <span class="op">=</span> <span class="fl">30</span> <span class="co"># the number of neighbors considered to build the knn network.</span></span>
 <span><span class="va">nb_var_genes</span> <span class="op">=</span> <span class="fl">2000</span> <span class="co"># number of the top variable genes to use for dimensionality reduction </span></span>
@@ -193,7 +193,7 @@ We chose a graining level of 25 and a number of neighbors of 15 for the knn step
 <h4>Metacells identification<a class="anchor" aria-label="anchor" href="#metacells-identification"><i class="fas fa-link"></i></a>
 </h4>
 <p>The metacells are identified using the <code>SCimplify</code> function from the SuperCell package.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MC</span> <span class="op">&lt;-</span> <span class="fu">SuperCell</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/SuperCell/man/SCimplify.html">SCimplify</a></span><span class="op">(</span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/AssayData.html">GetAssayData</a></span><span class="op">(</span><span class="va">sc_data</span>, slot <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span>,  <span class="co"># single-cell log-normalized gene expression data</span></span>
 <span>                           k.knn <span class="op">=</span> <span class="va">k_knn</span>,</span>
 <span>                           gamma <span class="op">=</span> <span class="va">gamma</span>,</span>
@@ -215,7 +215,7 @@ We chose a graining level of 25 and a number of neighbors of 15 for the knn step
 Two modes can be used for single-cell aggregation, <em>i.e.</em> averaging of log-normalized gene expression or summing up raw counts (using the <code>mode</code> parameter).
 Note that we provide raw counts for the aggregation in this tutorial to match the aggregation steps using PC2 and SEAcells (see <a href="Metacell-construction-chapter.html#MC2-construction">1.2</a> and <a href="Metacell-construction-chapter.html#SEACells-construction">1.3</a>).
 Data normalization will thus be needed for downstream analyses on the metacell counts matrix.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MC.GE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SuperCell/man/supercell_GE.html">supercell_GE</a></span><span class="op">(</span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/AssayData.html">GetAssayData</a></span><span class="op">(</span><span class="va">sc_data</span>, slot <span class="op">=</span> <span class="st">"counts"</span><span class="op">)</span>,</span>
 <span>                      <span class="va">MC</span><span class="op">$</span><span class="va">membership</span>,</span>
 <span>                      mode <span class="op">=</span>  <span class="st">"sum"</span></span>
@@ -231,7 +231,7 @@ Data normalization will thus be needed for downstream analyses on the metacell c
 <p>We can assign each metacell to a particular annotation using the <code><a href="https://rdrr.io/pkg/SuperCell/man/supercell_assign.html">supercell_assign()</a></code> function.
 By default, this function assigns each metacell to a cluster with the largest Jaccard coefficient to avoid biases towards very rare or very abundant clusters.
 Alternatively, assignment can be performed using <code>relative</code> (<code>method = "relative"</code>, may cause biases towards very small populations) or <code>absolute</code> (<code>method = "absolute"</code>, may cause biases towards large populations) abundance.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">annotation_label</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                bmcite </span></span>
 <span><span class="co">#&gt; "celltype_simplified"</span></span>
@@ -248,7 +248,7 @@ Alternatively, assignment can be performed using <code>relative</code> (<code>me
 <p>The SuperCell package provides the <code>supercell_plot</code> function to visualize the metacell network (igraph object where number of nodes corresponds to number of metacells),
 which is stored in the <code>MC</code> list in <code>graph.supercells</code>.
 The metacells can be colored with respect to a vector of annotation.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SuperCell/man/supercell_plot.html">supercell_plot</a></span><span class="op">(</span></span>
 <span>  <span class="va">MC</span><span class="op">$</span><span class="va">graph.supercells</span>, </span>
 <span>  group <span class="op">=</span> <span class="va">MC</span><span class="op">$</span><span class="va">annotation</span>, </span>
@@ -264,7 +264,7 @@ The metacells can be colored with respect to a vector of annotation.</p>
 </h3>
 <p>For future downstream analyses in R (section <a href="downstream-analysis.html#standard-analysis-R">3.1</a>), metacell counts can be saved in a Seurat object.
 Here we also save in the Seurat object the PCA components and genes used in SCimplify for future QC analysis (See <a href="QCs.html#QCs">2</a>).</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">MC.GE</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">MC.GE</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">MC.seurat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/CreateSeuratObject.html">CreateSeuratObject</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">MC.GE</span>, </span>
 <span>                                meta.data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">MC</span><span class="op">$</span><span class="va">membership</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -291,7 +291,7 @@ Here we also save in the Seurat object the PCA components and genes used in SCim
 <p>We can also use the <code><a href="https://rdrr.io/pkg/SuperCell/man/supercell_2_Seurat.html">supercell_2_Seurat()</a></code> function from the SuperCell package.
 This function takes as inputs the metacell count matrix (output of the SuperCell <code><a href="https://rdrr.io/pkg/SuperCell/man/supercell_GE.html">supercell_GE()</a></code> function) and the output of the SuperCell <code><a href="https://rdrr.io/pkg/SuperCell/man/SCimplify.html">SCimplify()</a></code> function
 to output a Seurat object containing normalized metacells gene expression data as well as the first (<code>N.comp</code>) principal components of PCA performed internally using user defined set of genes (by default the genes used for metacells constructions).</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MC.seurat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SuperCell/man/supercell_2_Seurat.html">supercell_2_Seurat</a></span><span class="op">(</span></span>
 <span>  SC.GE <span class="op">=</span> <span class="va">MC.GE</span>,</span>
 <span>  SC <span class="op">=</span> <span class="va">MC</span>,</span>
@@ -301,7 +301,7 @@ to output a Seurat object containing normalized metacells gene expression data a
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">MC.seurat</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">'./data/'</span>, <span class="va">proj_name</span>, <span class="st">'/metacell_'</span>, <span class="va">MC_tool</span>,<span class="st">'.rds'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>For future downstream analyses in python (section <a href="#standard-analysis-Py"><strong>??</strong></a>), metacell counts can be saved in an Anndata object:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">MC.seurat.ad</span> <span class="op">&lt;-</span> <span class="fu">anndata</span><span class="fu">::</span><span class="fu"><a href="https://anndata.dynverse.org/reference/AnnData.html">AnnData</a></span><span class="op">(</span></span>
 <span>  X <span class="op">=</span> <span class="fu">Matrix</span><span class="fu">::</span><span class="fu">t</span><span class="op">(</span><span class="fu">Seurat</span><span class="fu">::</span><span class="fu"><a href="https://mojaveazure.github.io/seurat-object/reference/AssayData.html">GetAssayData</a></span><span class="op">(</span><span class="va">MC.seurat</span>, slot <span class="op">=</span> <span class="st">"counts"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  obs <span class="op">=</span> <span class="va">MC.seurat</span><span class="op">@</span><span class="va">meta.data</span></span>
@@ -309,8 +309,8 @@ to output a Seurat object containing normalized metacells gene expression data a
 <span></span>
 <span><span class="fu">anndata</span><span class="fu">::</span><span class="fu"><a href="https://anndata.dynverse.org/reference/write_h5ad.html">write_h5ad</a></span><span class="op">(</span>anndata <span class="op">=</span> <span class="va">MC.seurat.ad</span>, filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">'./data/'</span>, <span class="va">proj_name</span>, <span class="st">'/metacell_'</span>, <span class="va">MC_tool</span>,<span class="st">'.h5ad'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt;             used   (Mb) gc trigger   (Mb)  max used   (Mb)
-#&gt; Ncells   3487417  186.3   10348358  552.7  16169308  863.6
-#&gt; Vcells 156621539 1195.0  478099330 3647.7 478092829 3647.6</code></pre>
+#&gt; Ncells   3487417  186.3   10348411  552.7  16169391  863.6
+#&gt; Vcells 156621529 1195.0  478099316 3647.7 478092819 3647.6</code></pre>
 </div>
 </div>
 <div id="MC2-construction" class="section level2" number="1.2">
@@ -335,14 +335,14 @@ For more information on the method, please refer to our review <span class="cita
 <h4>Importing python packages<a class="anchor" aria-label="anchor" href="#importing-python-packages"><i class="fas fa-link"></i></a>
 </h4>
 <p>To run MC2, the following python packages need to be imported:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="Metacell-construction-chapter.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb28-2"><a href="Metacell-construction-chapter.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb28-3"><a href="Metacell-construction-chapter.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb28-4"><a href="Metacell-construction-chapter.html#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anndata <span class="im">as</span> ad</span>
-<span id="cb28-5"><a href="Metacell-construction-chapter.html#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
-<span id="cb28-6"><a href="Metacell-construction-chapter.html#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb28-7"><a href="Metacell-construction-chapter.html#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb28-8"><a href="Metacell-construction-chapter.html#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> metacells <span class="im">as</span> mc</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="Metacell-construction-chapter.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb22-2"><a href="Metacell-construction-chapter.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb22-3"><a href="Metacell-construction-chapter.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb22-4"><a href="Metacell-construction-chapter.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> anndata <span class="im">as</span> ad</span>
+<span id="cb22-5"><a href="Metacell-construction-chapter.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb22-6"><a href="Metacell-construction-chapter.html#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb22-7"><a href="Metacell-construction-chapter.html#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb22-8"><a href="Metacell-construction-chapter.html#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> metacells <span class="im">as</span> mc</span></code></pre></div>
 <p>If you don’t have these packages installed, please refer to the section <a href="requirements.html#installations">0.1</a>.</p>
 </div>
 </div>
@@ -350,14 +350,14 @@ For more information on the method, please refer to our review <span class="cita
 <h3>
 <span class="header-section-number">1.2.2</span> Data loading<a class="anchor" aria-label="anchor" href="#data-loading-1"><i class="fas fa-link"></i></a>
 </h3>
-<p>We will run Metacell-2 (MC2) on a single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs).
-Please follow the section <a href="requirements.html#PBMC-data">0.2</a> to retrieve these data from the scanpy package and save the data in the following file: “data/3k_pbmc/singlecell_anndata_filtered.h5ad”.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="Metacell-construction-chapter.html#cb29-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">"MC2"</span></span>
-<span id="cb29-2"><a href="Metacell-construction-chapter.html#cb29-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">"bmcite"</span></span>
-<span id="cb29-3"><a href="Metacell-construction-chapter.html#cb29-3" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read(os.path.join(<span class="st">"data"</span>, proj_name, <span class="st">"singlecell_anndata_filtered.h5ad"</span>))</span>
-<span id="cb29-4"><a href="Metacell-construction-chapter.html#cb29-4" aria-hidden="true" tabindex="-1"></a>ad.var.index <span class="op">=</span> ad.var.genes</span></code></pre></div>
+<p>We will run Metacell-2 (MC2) on a single-cell dataset composed of around 30’000 bone marrow cells.
+Please follow the section <a href="requirements.html#bmcite-data">0.2</a> to retrieve these data from the SeuratData package and save the data in the following file: “data/bmcite/singlecell_anndata_filtered.h5ad”.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="Metacell-construction-chapter.html#cb23-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">"MC2"</span></span>
+<span id="cb23-2"><a href="Metacell-construction-chapter.html#cb23-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">"bmcite"</span></span>
+<span id="cb23-3"><a href="Metacell-construction-chapter.html#cb23-3" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read(os.path.join(<span class="st">"data"</span>, proj_name, <span class="st">"singlecell_anndata_filtered.h5ad"</span>))</span>
+<span id="cb23-4"><a href="Metacell-construction-chapter.html#cb23-4" aria-hidden="true" tabindex="-1"></a>ad.var.index <span class="op">=</span> ad.var.genes</span></code></pre></div>
 <p>We initialize the name of the anndata (in the unstructured annotations) object using the <code>mc.ut.set_name()</code> function from the MC2 package.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="Metacell-construction-chapter.html#cb30-1" aria-hidden="true" tabindex="-1"></a>mc.ut.set_name(ad, proj_name)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="Metacell-construction-chapter.html#cb24-1" aria-hidden="true" tabindex="-1"></a>mc.ut.set_name(ad, proj_name)</span></code></pre></div>
 </div>
 <div id="filtering-steps-1" class="section level3" number="1.2.3">
 <h3>
@@ -377,18 +377,18 @@ To complete this list of genes, an iterative approach can be used following the 
 The <code>mc.pl.exclude_genes()</code> function will filter out:
 i) the known-to-be-excluded genes defined by the user as gene names or gene names patterns (<code>EXCLUDED_GENE_NAMES</code> and <code>EXCLUDED_GENE_PATTERNS</code> parameters respectively),
 and ii) the “bursty lonely genes”.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="Metacell-construction-chapter.html#cb31-1" aria-hidden="true" tabindex="-1"></a>EXCLUDED_GENE_NAMES <span class="op">=</span> [<span class="st">"XIST"</span>, <span class="st">"MALAT1"</span>, <span class="st">"NEAT1"</span>] </span>
-<span id="cb31-2"><a href="Metacell-construction-chapter.html#cb31-2" aria-hidden="true" tabindex="-1"></a>EXCLUDED_GENE_PATTERNS <span class="op">=</span> [<span class="st">'MT-.*'</span>]</span>
-<span id="cb31-3"><a href="Metacell-construction-chapter.html#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="Metacell-construction-chapter.html#cb31-4" aria-hidden="true" tabindex="-1"></a>mc.pl.exclude_genes(</span>
-<span id="cb31-5"><a href="Metacell-construction-chapter.html#cb31-5" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb31-6"><a href="Metacell-construction-chapter.html#cb31-6" aria-hidden="true" tabindex="-1"></a>    excluded_gene_names<span class="op">=</span>EXCLUDED_GENE_NAMES,</span>
-<span id="cb31-7"><a href="Metacell-construction-chapter.html#cb31-7" aria-hidden="true" tabindex="-1"></a>    excluded_gene_patterns<span class="op">=</span>EXCLUDED_GENE_PATTERNS,</span>
-<span id="cb31-8"><a href="Metacell-construction-chapter.html#cb31-8" aria-hidden="true" tabindex="-1"></a>    random_seed<span class="op">=</span><span class="dv">123456</span></span>
-<span id="cb31-9"><a href="Metacell-construction-chapter.html#cb31-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb31-10"><a href="Metacell-construction-chapter.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.var[bursty_lonely_gene]: 0 true (0%) out of 17009 bools</span></span>
-<span id="cb31-11"><a href="Metacell-construction-chapter.html#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.var[properly_sampled_gene]: 16993 true (99.91%) out of 17009 bools</span></span>
-<span id="cb31-12"><a href="Metacell-construction-chapter.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.var[excluded_gene]: 32 true (0.1881%) out of 17009 bools</span></span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="Metacell-construction-chapter.html#cb25-1" aria-hidden="true" tabindex="-1"></a>EXCLUDED_GENE_NAMES <span class="op">=</span> [<span class="st">"XIST"</span>, <span class="st">"MALAT1"</span>, <span class="st">"NEAT1"</span>] </span>
+<span id="cb25-2"><a href="Metacell-construction-chapter.html#cb25-2" aria-hidden="true" tabindex="-1"></a>EXCLUDED_GENE_PATTERNS <span class="op">=</span> [<span class="st">'MT-.*'</span>]</span>
+<span id="cb25-3"><a href="Metacell-construction-chapter.html#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="Metacell-construction-chapter.html#cb25-4" aria-hidden="true" tabindex="-1"></a>mc.pl.exclude_genes(</span>
+<span id="cb25-5"><a href="Metacell-construction-chapter.html#cb25-5" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb25-6"><a href="Metacell-construction-chapter.html#cb25-6" aria-hidden="true" tabindex="-1"></a>    excluded_gene_names<span class="op">=</span>EXCLUDED_GENE_NAMES,</span>
+<span id="cb25-7"><a href="Metacell-construction-chapter.html#cb25-7" aria-hidden="true" tabindex="-1"></a>    excluded_gene_patterns<span class="op">=</span>EXCLUDED_GENE_PATTERNS,</span>
+<span id="cb25-8"><a href="Metacell-construction-chapter.html#cb25-8" aria-hidden="true" tabindex="-1"></a>    random_seed<span class="op">=</span><span class="dv">123456</span></span>
+<span id="cb25-9"><a href="Metacell-construction-chapter.html#cb25-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-10"><a href="Metacell-construction-chapter.html#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.var[bursty_lonely_gene]: 0 true (0%) out of 17009 bools</span></span>
+<span id="cb25-11"><a href="Metacell-construction-chapter.html#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.var[properly_sampled_gene]: 16993 true (99.91%) out of 17009 bools</span></span>
+<span id="cb25-12"><a href="Metacell-construction-chapter.html#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.var[excluded_gene]: 32 true (0.1881%) out of 17009 bools</span></span></code></pre></div>
 </div>
 <div id="cell-filtering-based-on-umis-counts" class="section level4 unnumbered">
 <h4>Cell filtering based on UMIs counts<a class="anchor" aria-label="anchor" href="#cell-filtering-based-on-umis-counts"><i class="fas fa-link"></i></a>
@@ -398,28 +398,28 @@ Also, cell filtering based on UMI counts in excluded genes is also performed(<co
 Since our dataset has been pre-filtered, very lenient cutoffs will be used in this tutorial.
 The following code chunk defines these parameters.
 To adapt them to your datasets, we advise you to explore the distributions of total UMI counts and UMI counts in excluded genes, as recommended and described in the MC2 <a href="https://tanaylab.github.io/metacells-vignettes/one-pass.html">original vignette</a>.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="Metacell-construction-chapter.html#cb32-1" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MIN_CELL_TOTAL <span class="op">=</span> <span class="dv">200</span> </span>
-<span id="cb32-2"><a href="Metacell-construction-chapter.html#cb32-2" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MAX_CELL_TOTAL <span class="op">=</span> <span class="dv">10000</span> </span>
-<span id="cb32-3"><a href="Metacell-construction-chapter.html#cb32-3" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION <span class="op">=</span> <span class="fl">0.25</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="Metacell-construction-chapter.html#cb26-1" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MIN_CELL_TOTAL <span class="op">=</span> <span class="dv">200</span> </span>
+<span id="cb26-2"><a href="Metacell-construction-chapter.html#cb26-2" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MAX_CELL_TOTAL <span class="op">=</span> <span class="dv">10000</span> </span>
+<span id="cb26-3"><a href="Metacell-construction-chapter.html#cb26-3" aria-hidden="true" tabindex="-1"></a>PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION <span class="op">=</span> <span class="fl">0.25</span></span></code></pre></div>
 <p>The number of UMIs in excluded genes is computed using the <code>mc.tl.compute_excluded_gene_umis()</code> function and cells are filtered out using the <code>mc.pl.exclude_cells()</code> function.
 Additional cells can be filtered out by adding a cell description columns in the <code>obs</code> data frame in the anndata oject. This annotation should be a boolean indicating whether the cell should filtered out or not.
 The name of this column should be provided to the <code>mc.pl.exclude_cells()</code> function via the <code>additional_cells_masks</code> parameter.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="Metacell-construction-chapter.html#cb33-1" aria-hidden="true" tabindex="-1"></a>mc.tl.compute_excluded_gene_umis(ad)</span>
-<span id="cb33-2"><a href="Metacell-construction-chapter.html#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="Metacell-construction-chapter.html#cb33-3" aria-hidden="true" tabindex="-1"></a>mc.pl.exclude_cells(</span>
-<span id="cb33-4"><a href="Metacell-construction-chapter.html#cb33-4" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb33-5"><a href="Metacell-construction-chapter.html#cb33-5" aria-hidden="true" tabindex="-1"></a>    properly_sampled_min_cell_total<span class="op">=</span>PROPERLY_SAMPLED_MIN_CELL_TOTAL,</span>
-<span id="cb33-6"><a href="Metacell-construction-chapter.html#cb33-6" aria-hidden="true" tabindex="-1"></a>    properly_sampled_max_cell_total<span class="op">=</span>PROPERLY_SAMPLED_MAX_CELL_TOTAL,</span>
-<span id="cb33-7"><a href="Metacell-construction-chapter.html#cb33-7" aria-hidden="true" tabindex="-1"></a>    properly_sampled_max_excluded_genes_fraction<span class="op">=</span>PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION <span class="co"># ,</span></span>
-<span id="cb33-8"><a href="Metacell-construction-chapter.html#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># additional_cells_masks=["|doublet_cell"]</span></span>
-<span id="cb33-9"><a href="Metacell-construction-chapter.html#cb33-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb33-10"><a href="Metacell-construction-chapter.html#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.obs[properly_sampled_cell]: 28694 true (98.62%) out of 29096 bools</span></span>
-<span id="cb33-11"><a href="Metacell-construction-chapter.html#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.obs[excluded_cell]: 402 true (1.382%) out of 29096 bools</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="Metacell-construction-chapter.html#cb27-1" aria-hidden="true" tabindex="-1"></a>mc.tl.compute_excluded_gene_umis(ad)</span>
+<span id="cb27-2"><a href="Metacell-construction-chapter.html#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="Metacell-construction-chapter.html#cb27-3" aria-hidden="true" tabindex="-1"></a>mc.pl.exclude_cells(</span>
+<span id="cb27-4"><a href="Metacell-construction-chapter.html#cb27-4" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb27-5"><a href="Metacell-construction-chapter.html#cb27-5" aria-hidden="true" tabindex="-1"></a>    properly_sampled_min_cell_total<span class="op">=</span>PROPERLY_SAMPLED_MIN_CELL_TOTAL,</span>
+<span id="cb27-6"><a href="Metacell-construction-chapter.html#cb27-6" aria-hidden="true" tabindex="-1"></a>    properly_sampled_max_cell_total<span class="op">=</span>PROPERLY_SAMPLED_MAX_CELL_TOTAL,</span>
+<span id="cb27-7"><a href="Metacell-construction-chapter.html#cb27-7" aria-hidden="true" tabindex="-1"></a>    properly_sampled_max_excluded_genes_fraction<span class="op">=</span>PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION <span class="co"># ,</span></span>
+<span id="cb27-8"><a href="Metacell-construction-chapter.html#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># additional_cells_masks=["|doublet_cell"]</span></span>
+<span id="cb27-9"><a href="Metacell-construction-chapter.html#cb27-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-10"><a href="Metacell-construction-chapter.html#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.obs[properly_sampled_cell]: 28694 true (98.62%) out of 29096 bools</span></span>
+<span id="cb27-11"><a href="Metacell-construction-chapter.html#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.obs[excluded_cell]: 402 true (1.382%) out of 29096 bools</span></span></code></pre></div>
 <p>After performing the two-step filtering (genes and cells), the “cleaned” data can be extracted using the <code>mc.pl.extract_clean_data()</code> function.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="Metacell-construction-chapter.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract clean dataset (with filtered cells and genes)</span></span>
-<span id="cb34-2"><a href="Metacell-construction-chapter.html#cb34-2" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> mc.pl.extract_clean_data(ad)</span>
-<span id="cb34-3"><a href="Metacell-construction-chapter.html#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[full_cell_index]: 28694 int32s</span></span>
-<span id="cb34-4"><a href="Metacell-construction-chapter.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[full_gene_index]: 16977 int32s</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="Metacell-construction-chapter.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract clean dataset (with filtered cells and genes)</span></span>
+<span id="cb28-2"><a href="Metacell-construction-chapter.html#cb28-2" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> mc.pl.extract_clean_data(ad)</span>
+<span id="cb28-3"><a href="Metacell-construction-chapter.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[full_cell_index]: 28694 int32s</span></span>
+<span id="cb28-4"><a href="Metacell-construction-chapter.html#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[full_gene_index]: 16977 int32s</span></span></code></pre></div>
 </div>
 </div>
 <div id="building-metacells-1" class="section level3" number="1.2.4">
@@ -434,49 +434,49 @@ These genes will be ignored for computing cells similarity and building metacell
 but will be considered to define outlier cells (<em>i.e.</em>, expression levels of lateral genes should be consistent within metacells).
 In the following chunk, we consider a minimal list of lateral genes (provided by the MC2 authors) including cell-cycle and ribosomal genes and
 mark them in the MC2 object using the <code>mc.pl.mark_lateral_genes()</code> function.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="Metacell-construction-chapter.html#cb35-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-2"><a href="Metacell-construction-chapter.html#cb35-2" aria-hidden="true" tabindex="-1"></a>LATERAL_GENE_NAMES <span class="op">=</span> [</span>
-<span id="cb35-3"><a href="Metacell-construction-chapter.html#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ACSM3"</span>, <span class="st">"ANP32B"</span>, <span class="st">"APOE"</span>, <span class="st">"AURKA"</span>, <span class="st">"B2M"</span>, <span class="st">"BIRC5"</span>, <span class="st">"BTG2"</span>, <span class="st">"CALM1"</span>, <span class="st">"CD63"</span>, <span class="st">"CD69"</span>, <span class="st">"CDK4"</span>,</span>
-<span id="cb35-4"><a href="Metacell-construction-chapter.html#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CENPF"</span>, <span class="st">"CENPU"</span>, <span class="st">"CENPW"</span>, <span class="st">"CH17-373J23.1"</span>, <span class="st">"CKS1B"</span>, <span class="st">"CKS2"</span>, <span class="st">"COX4I1"</span>, <span class="st">"CXCR4"</span>, <span class="st">"DNAJB1"</span>,</span>
-<span id="cb35-5"><a href="Metacell-construction-chapter.html#cb35-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DONSON"</span>, <span class="st">"DUSP1"</span>, <span class="st">"DUT"</span>, <span class="st">"EEF1A1"</span>, <span class="st">"EEF1B2"</span>, <span class="st">"EIF3E"</span>, <span class="st">"EMP3"</span>, <span class="st">"FKBP4"</span>, <span class="st">"FOS"</span>, <span class="st">"FOSB"</span>, <span class="st">"FTH1"</span>,</span>
-<span id="cb35-6"><a href="Metacell-construction-chapter.html#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"G0S2"</span>, <span class="st">"GGH"</span>, <span class="st">"GLTSCR2"</span>, <span class="st">"GMNN"</span>, <span class="st">"GNB2L1"</span>, <span class="st">"GPR183"</span>, <span class="st">"H2AFZ"</span>, <span class="st">"H3F3B"</span>, <span class="st">"HBM"</span>, <span class="st">"HIST1H1C"</span>,</span>
-<span id="cb35-7"><a href="Metacell-construction-chapter.html#cb35-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HIST1H2AC"</span>, <span class="st">"HIST1H2BG"</span>, <span class="st">"HIST1H4C"</span>, <span class="st">"HLA-A"</span>, <span class="st">"HLA-B"</span>, <span class="st">"HLA-C"</span>, <span class="st">"HLA-DMA"</span>, <span class="st">"HLA-DMB"</span>,</span>
-<span id="cb35-8"><a href="Metacell-construction-chapter.html#cb35-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HLA-DPA1"</span>, <span class="st">"HLA-DPB1"</span>, <span class="st">"HLA-DQA1"</span>, <span class="st">"HLA-DQB1"</span>, <span class="st">"HLA-DRA"</span>, <span class="st">"HLA-DRB1"</span>, <span class="st">"HLA-E"</span>, <span class="st">"HLA-F"</span>, <span class="st">"HMGA1"</span>,</span>
-<span id="cb35-9"><a href="Metacell-construction-chapter.html#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HMGB1"</span>, <span class="st">"HMGB2"</span>, <span class="st">"HMGB3"</span>, <span class="st">"HMGN2"</span>, <span class="st">"HNRNPAB"</span>, <span class="st">"HSP90AA1"</span>, <span class="st">"HSP90AB1"</span>, <span class="st">"HSPA1A"</span>, <span class="st">"HSPA1B"</span>,</span>
-<span id="cb35-10"><a href="Metacell-construction-chapter.html#cb35-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HSPA6"</span>, <span class="st">"HSPD1"</span>, <span class="st">"HSPE1"</span>, <span class="st">"HSPH1"</span>, <span class="st">"ID2"</span>, <span class="st">"IER2"</span>, <span class="st">"IGHA1"</span>, <span class="st">"IGHA2"</span>, <span class="st">"IGHD"</span>, <span class="st">"IGHG1"</span>, <span class="st">"IGHG2"</span>,</span>
-<span id="cb35-11"><a href="Metacell-construction-chapter.html#cb35-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"IGHG3"</span>, <span class="st">"IGHG4"</span>, <span class="st">"IGHM"</span>, <span class="st">"IGKC"</span>, <span class="st">"IGKV1-12"</span>, <span class="st">"IGKV1-39"</span>, <span class="st">"IGKV1-5"</span>, <span class="st">"IGKV3-15"</span>, <span class="st">"IGKV4-1"</span>,</span>
-<span id="cb35-12"><a href="Metacell-construction-chapter.html#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"IGLC2"</span>, <span class="st">"IGLC3"</span>, <span class="st">"IGLC6"</span>, <span class="st">"IGLC7"</span>, <span class="st">"IGLL1"</span>, <span class="st">"IGLL5"</span>, <span class="st">"IGLV2-34"</span>, <span class="st">"JUN"</span>, <span class="st">"JUNB"</span>, <span class="st">"KIAA0101"</span>,</span>
-<span id="cb35-13"><a href="Metacell-construction-chapter.html#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LEPROTL1"</span>, <span class="st">"LGALS1"</span>, <span class="st">"LINC01206"</span>, <span class="st">"LTB"</span>, <span class="st">"MCM3"</span>, <span class="st">"MCM4"</span>, <span class="st">"MCM7"</span>, <span class="st">"MKI67"</span>, <span class="st">"MT2A"</span>, <span class="st">"MYL12A"</span>,</span>
-<span id="cb35-14"><a href="Metacell-construction-chapter.html#cb35-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MYL6"</span>, <span class="st">"NASP"</span>, <span class="st">"NFKBIA"</span>, <span class="st">"NUSAP1"</span>, <span class="st">"PA2G4"</span>, <span class="st">"PCNA"</span>, <span class="st">"PDLIM1"</span>, <span class="st">"PLK3"</span>, <span class="st">"PPP1R15A"</span>, <span class="st">"PTMA"</span>,</span>
-<span id="cb35-15"><a href="Metacell-construction-chapter.html#cb35-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PTTG1"</span>, <span class="st">"RAN"</span>, <span class="st">"RANBP1"</span>, <span class="st">"RGCC"</span>, <span class="st">"RGS1"</span>, <span class="st">"RGS2"</span>, <span class="st">"RGS3"</span>, <span class="st">"RP11-1143G9.4"</span>, <span class="st">"RP11-160E2.6"</span>,</span>
-<span id="cb35-16"><a href="Metacell-construction-chapter.html#cb35-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RP11-53B5.1"</span>, <span class="st">"RP11-620J15.3"</span>, <span class="st">"RP5-1025A1.3"</span>, <span class="st">"RP5-1171I10.5"</span>, <span class="st">"RPS10"</span>, <span class="st">"RPS10-NUDT3"</span>, <span class="st">"RPS11"</span>,</span>
-<span id="cb35-17"><a href="Metacell-construction-chapter.html#cb35-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS12"</span>, <span class="st">"RPS13"</span>, <span class="st">"RPS14"</span>, <span class="st">"RPS15"</span>, <span class="st">"RPS15A"</span>, <span class="st">"RPS16"</span>, <span class="st">"RPS17"</span>, <span class="st">"RPS18"</span>, <span class="st">"RPS19"</span>, <span class="st">"RPS19BP1"</span>,</span>
-<span id="cb35-18"><a href="Metacell-construction-chapter.html#cb35-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS2"</span>, <span class="st">"RPS20"</span>, <span class="st">"RPS21"</span>, <span class="st">"RPS23"</span>, <span class="st">"RPS24"</span>, <span class="st">"RPS25"</span>, <span class="st">"RPS26"</span>, <span class="st">"RPS27"</span>, <span class="st">"RPS27A"</span>, <span class="st">"RPS27L"</span>,</span>
-<span id="cb35-19"><a href="Metacell-construction-chapter.html#cb35-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS28"</span>, <span class="st">"RPS29"</span>, <span class="st">"RPS3"</span>, <span class="st">"RPS3A"</span>, <span class="st">"RPS4X"</span>, <span class="st">"RPS4Y1"</span>, <span class="st">"RPS4Y2"</span>, <span class="st">"RPS5"</span>, <span class="st">"RPS6"</span>, <span class="st">"RPS6KA1"</span>,</span>
-<span id="cb35-20"><a href="Metacell-construction-chapter.html#cb35-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS6KA2"</span>, <span class="st">"RPS6KA2-AS1"</span>, <span class="st">"RPS6KA3"</span>, <span class="st">"RPS6KA4"</span>, <span class="st">"RPS6KA5"</span>, <span class="st">"RPS6KA6"</span>, <span class="st">"RPS6KB1"</span>, <span class="st">"RPS6KB2"</span>,</span>
-<span id="cb35-21"><a href="Metacell-construction-chapter.html#cb35-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS6KC1"</span>, <span class="st">"RPS6KL1"</span>, <span class="st">"RPS7"</span>, <span class="st">"RPS8"</span>, <span class="st">"RPS9"</span>, <span class="st">"RPSA"</span>, <span class="st">"RRM2"</span>, <span class="st">"SMC4"</span>, <span class="st">"SRGN"</span>, <span class="st">"SRSF7"</span>, <span class="st">"STMN1"</span>,</span>
-<span id="cb35-22"><a href="Metacell-construction-chapter.html#cb35-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"TK1"</span>, <span class="st">"TMSB4X"</span>, <span class="st">"TOP2A"</span>, <span class="st">"TPX2"</span>, <span class="st">"TSC22D3"</span>, <span class="st">"TUBA1A"</span>, <span class="st">"TUBA1B"</span>, <span class="st">"TUBB"</span>, <span class="st">"TUBB4B"</span>, <span class="st">"TXN"</span>, <span class="st">"TYMS"</span>,</span>
-<span id="cb35-23"><a href="Metacell-construction-chapter.html#cb35-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"UBA52"</span>, <span class="st">"UBC"</span>, <span class="st">"UBE2C"</span>, <span class="st">"UHRF1"</span>, <span class="st">"YBX1"</span>, <span class="st">"YPEL5"</span>, <span class="st">"ZFP36"</span>, <span class="st">"ZWINT"</span></span>
-<span id="cb35-24"><a href="Metacell-construction-chapter.html#cb35-24" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb35-25"><a href="Metacell-construction-chapter.html#cb35-25" aria-hidden="true" tabindex="-1"></a>LATERAL_GENE_PATTERNS <span class="op">=</span> [<span class="st">"RP[LS].*"</span>]  <span class="co"># Ribosomal</span></span>
-<span id="cb35-26"><a href="Metacell-construction-chapter.html#cb35-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-27"><a href="Metacell-construction-chapter.html#cb35-27" aria-hidden="true" tabindex="-1"></a><span class="co"># This will mark as "lateral_gene" any genes that match the above, if they exist in the clean dataset.</span></span>
-<span id="cb35-28"><a href="Metacell-construction-chapter.html#cb35-28" aria-hidden="true" tabindex="-1"></a>mc.pl.mark_lateral_genes(</span>
-<span id="cb35-29"><a href="Metacell-construction-chapter.html#cb35-29" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb35-30"><a href="Metacell-construction-chapter.html#cb35-30" aria-hidden="true" tabindex="-1"></a>    lateral_gene_names<span class="op">=</span>LATERAL_GENE_NAMES,</span>
-<span id="cb35-31"><a href="Metacell-construction-chapter.html#cb35-31" aria-hidden="true" tabindex="-1"></a>    lateral_gene_patterns<span class="op">=</span>LATERAL_GENE_PATTERNS,</span>
-<span id="cb35-32"><a href="Metacell-construction-chapter.html#cb35-32" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb35-33"><a href="Metacell-construction-chapter.html#cb35-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[lateral_gene]: 245 true (1.443%) out of 16977 bools</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="Metacell-construction-chapter.html#cb29-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-2"><a href="Metacell-construction-chapter.html#cb29-2" aria-hidden="true" tabindex="-1"></a>LATERAL_GENE_NAMES <span class="op">=</span> [</span>
+<span id="cb29-3"><a href="Metacell-construction-chapter.html#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ACSM3"</span>, <span class="st">"ANP32B"</span>, <span class="st">"APOE"</span>, <span class="st">"AURKA"</span>, <span class="st">"B2M"</span>, <span class="st">"BIRC5"</span>, <span class="st">"BTG2"</span>, <span class="st">"CALM1"</span>, <span class="st">"CD63"</span>, <span class="st">"CD69"</span>, <span class="st">"CDK4"</span>,</span>
+<span id="cb29-4"><a href="Metacell-construction-chapter.html#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CENPF"</span>, <span class="st">"CENPU"</span>, <span class="st">"CENPW"</span>, <span class="st">"CH17-373J23.1"</span>, <span class="st">"CKS1B"</span>, <span class="st">"CKS2"</span>, <span class="st">"COX4I1"</span>, <span class="st">"CXCR4"</span>, <span class="st">"DNAJB1"</span>,</span>
+<span id="cb29-5"><a href="Metacell-construction-chapter.html#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DONSON"</span>, <span class="st">"DUSP1"</span>, <span class="st">"DUT"</span>, <span class="st">"EEF1A1"</span>, <span class="st">"EEF1B2"</span>, <span class="st">"EIF3E"</span>, <span class="st">"EMP3"</span>, <span class="st">"FKBP4"</span>, <span class="st">"FOS"</span>, <span class="st">"FOSB"</span>, <span class="st">"FTH1"</span>,</span>
+<span id="cb29-6"><a href="Metacell-construction-chapter.html#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"G0S2"</span>, <span class="st">"GGH"</span>, <span class="st">"GLTSCR2"</span>, <span class="st">"GMNN"</span>, <span class="st">"GNB2L1"</span>, <span class="st">"GPR183"</span>, <span class="st">"H2AFZ"</span>, <span class="st">"H3F3B"</span>, <span class="st">"HBM"</span>, <span class="st">"HIST1H1C"</span>,</span>
+<span id="cb29-7"><a href="Metacell-construction-chapter.html#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HIST1H2AC"</span>, <span class="st">"HIST1H2BG"</span>, <span class="st">"HIST1H4C"</span>, <span class="st">"HLA-A"</span>, <span class="st">"HLA-B"</span>, <span class="st">"HLA-C"</span>, <span class="st">"HLA-DMA"</span>, <span class="st">"HLA-DMB"</span>,</span>
+<span id="cb29-8"><a href="Metacell-construction-chapter.html#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HLA-DPA1"</span>, <span class="st">"HLA-DPB1"</span>, <span class="st">"HLA-DQA1"</span>, <span class="st">"HLA-DQB1"</span>, <span class="st">"HLA-DRA"</span>, <span class="st">"HLA-DRB1"</span>, <span class="st">"HLA-E"</span>, <span class="st">"HLA-F"</span>, <span class="st">"HMGA1"</span>,</span>
+<span id="cb29-9"><a href="Metacell-construction-chapter.html#cb29-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HMGB1"</span>, <span class="st">"HMGB2"</span>, <span class="st">"HMGB3"</span>, <span class="st">"HMGN2"</span>, <span class="st">"HNRNPAB"</span>, <span class="st">"HSP90AA1"</span>, <span class="st">"HSP90AB1"</span>, <span class="st">"HSPA1A"</span>, <span class="st">"HSPA1B"</span>,</span>
+<span id="cb29-10"><a href="Metacell-construction-chapter.html#cb29-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HSPA6"</span>, <span class="st">"HSPD1"</span>, <span class="st">"HSPE1"</span>, <span class="st">"HSPH1"</span>, <span class="st">"ID2"</span>, <span class="st">"IER2"</span>, <span class="st">"IGHA1"</span>, <span class="st">"IGHA2"</span>, <span class="st">"IGHD"</span>, <span class="st">"IGHG1"</span>, <span class="st">"IGHG2"</span>,</span>
+<span id="cb29-11"><a href="Metacell-construction-chapter.html#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"IGHG3"</span>, <span class="st">"IGHG4"</span>, <span class="st">"IGHM"</span>, <span class="st">"IGKC"</span>, <span class="st">"IGKV1-12"</span>, <span class="st">"IGKV1-39"</span>, <span class="st">"IGKV1-5"</span>, <span class="st">"IGKV3-15"</span>, <span class="st">"IGKV4-1"</span>,</span>
+<span id="cb29-12"><a href="Metacell-construction-chapter.html#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"IGLC2"</span>, <span class="st">"IGLC3"</span>, <span class="st">"IGLC6"</span>, <span class="st">"IGLC7"</span>, <span class="st">"IGLL1"</span>, <span class="st">"IGLL5"</span>, <span class="st">"IGLV2-34"</span>, <span class="st">"JUN"</span>, <span class="st">"JUNB"</span>, <span class="st">"KIAA0101"</span>,</span>
+<span id="cb29-13"><a href="Metacell-construction-chapter.html#cb29-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LEPROTL1"</span>, <span class="st">"LGALS1"</span>, <span class="st">"LINC01206"</span>, <span class="st">"LTB"</span>, <span class="st">"MCM3"</span>, <span class="st">"MCM4"</span>, <span class="st">"MCM7"</span>, <span class="st">"MKI67"</span>, <span class="st">"MT2A"</span>, <span class="st">"MYL12A"</span>,</span>
+<span id="cb29-14"><a href="Metacell-construction-chapter.html#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MYL6"</span>, <span class="st">"NASP"</span>, <span class="st">"NFKBIA"</span>, <span class="st">"NUSAP1"</span>, <span class="st">"PA2G4"</span>, <span class="st">"PCNA"</span>, <span class="st">"PDLIM1"</span>, <span class="st">"PLK3"</span>, <span class="st">"PPP1R15A"</span>, <span class="st">"PTMA"</span>,</span>
+<span id="cb29-15"><a href="Metacell-construction-chapter.html#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PTTG1"</span>, <span class="st">"RAN"</span>, <span class="st">"RANBP1"</span>, <span class="st">"RGCC"</span>, <span class="st">"RGS1"</span>, <span class="st">"RGS2"</span>, <span class="st">"RGS3"</span>, <span class="st">"RP11-1143G9.4"</span>, <span class="st">"RP11-160E2.6"</span>,</span>
+<span id="cb29-16"><a href="Metacell-construction-chapter.html#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RP11-53B5.1"</span>, <span class="st">"RP11-620J15.3"</span>, <span class="st">"RP5-1025A1.3"</span>, <span class="st">"RP5-1171I10.5"</span>, <span class="st">"RPS10"</span>, <span class="st">"RPS10-NUDT3"</span>, <span class="st">"RPS11"</span>,</span>
+<span id="cb29-17"><a href="Metacell-construction-chapter.html#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS12"</span>, <span class="st">"RPS13"</span>, <span class="st">"RPS14"</span>, <span class="st">"RPS15"</span>, <span class="st">"RPS15A"</span>, <span class="st">"RPS16"</span>, <span class="st">"RPS17"</span>, <span class="st">"RPS18"</span>, <span class="st">"RPS19"</span>, <span class="st">"RPS19BP1"</span>,</span>
+<span id="cb29-18"><a href="Metacell-construction-chapter.html#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS2"</span>, <span class="st">"RPS20"</span>, <span class="st">"RPS21"</span>, <span class="st">"RPS23"</span>, <span class="st">"RPS24"</span>, <span class="st">"RPS25"</span>, <span class="st">"RPS26"</span>, <span class="st">"RPS27"</span>, <span class="st">"RPS27A"</span>, <span class="st">"RPS27L"</span>,</span>
+<span id="cb29-19"><a href="Metacell-construction-chapter.html#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS28"</span>, <span class="st">"RPS29"</span>, <span class="st">"RPS3"</span>, <span class="st">"RPS3A"</span>, <span class="st">"RPS4X"</span>, <span class="st">"RPS4Y1"</span>, <span class="st">"RPS4Y2"</span>, <span class="st">"RPS5"</span>, <span class="st">"RPS6"</span>, <span class="st">"RPS6KA1"</span>,</span>
+<span id="cb29-20"><a href="Metacell-construction-chapter.html#cb29-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS6KA2"</span>, <span class="st">"RPS6KA2-AS1"</span>, <span class="st">"RPS6KA3"</span>, <span class="st">"RPS6KA4"</span>, <span class="st">"RPS6KA5"</span>, <span class="st">"RPS6KA6"</span>, <span class="st">"RPS6KB1"</span>, <span class="st">"RPS6KB2"</span>,</span>
+<span id="cb29-21"><a href="Metacell-construction-chapter.html#cb29-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RPS6KC1"</span>, <span class="st">"RPS6KL1"</span>, <span class="st">"RPS7"</span>, <span class="st">"RPS8"</span>, <span class="st">"RPS9"</span>, <span class="st">"RPSA"</span>, <span class="st">"RRM2"</span>, <span class="st">"SMC4"</span>, <span class="st">"SRGN"</span>, <span class="st">"SRSF7"</span>, <span class="st">"STMN1"</span>,</span>
+<span id="cb29-22"><a href="Metacell-construction-chapter.html#cb29-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"TK1"</span>, <span class="st">"TMSB4X"</span>, <span class="st">"TOP2A"</span>, <span class="st">"TPX2"</span>, <span class="st">"TSC22D3"</span>, <span class="st">"TUBA1A"</span>, <span class="st">"TUBA1B"</span>, <span class="st">"TUBB"</span>, <span class="st">"TUBB4B"</span>, <span class="st">"TXN"</span>, <span class="st">"TYMS"</span>,</span>
+<span id="cb29-23"><a href="Metacell-construction-chapter.html#cb29-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"UBA52"</span>, <span class="st">"UBC"</span>, <span class="st">"UBE2C"</span>, <span class="st">"UHRF1"</span>, <span class="st">"YBX1"</span>, <span class="st">"YPEL5"</span>, <span class="st">"ZFP36"</span>, <span class="st">"ZWINT"</span></span>
+<span id="cb29-24"><a href="Metacell-construction-chapter.html#cb29-24" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb29-25"><a href="Metacell-construction-chapter.html#cb29-25" aria-hidden="true" tabindex="-1"></a>LATERAL_GENE_PATTERNS <span class="op">=</span> [<span class="st">"RP[LS].*"</span>]  <span class="co"># Ribosomal</span></span>
+<span id="cb29-26"><a href="Metacell-construction-chapter.html#cb29-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-27"><a href="Metacell-construction-chapter.html#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="co"># This will mark as "lateral_gene" any genes that match the above, if they exist in the clean dataset.</span></span>
+<span id="cb29-28"><a href="Metacell-construction-chapter.html#cb29-28" aria-hidden="true" tabindex="-1"></a>mc.pl.mark_lateral_genes(</span>
+<span id="cb29-29"><a href="Metacell-construction-chapter.html#cb29-29" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb29-30"><a href="Metacell-construction-chapter.html#cb29-30" aria-hidden="true" tabindex="-1"></a>    lateral_gene_names<span class="op">=</span>LATERAL_GENE_NAMES,</span>
+<span id="cb29-31"><a href="Metacell-construction-chapter.html#cb29-31" aria-hidden="true" tabindex="-1"></a>    lateral_gene_patterns<span class="op">=</span>LATERAL_GENE_PATTERNS,</span>
+<span id="cb29-32"><a href="Metacell-construction-chapter.html#cb29-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb29-33"><a href="Metacell-construction-chapter.html#cb29-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[lateral_gene]: 245 true (1.443%) out of 16977 bools</span></span></code></pre></div>
 <p>Some genes have higher variances than expected which could lead to false positive outlier identification.
 Users can mark those genes as <em>noisy genes</em> using the <code>mc.pl.mark_noisy_genes()</code> function.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="Metacell-construction-chapter.html#cb36-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-2"><a href="Metacell-construction-chapter.html#cb36-2" aria-hidden="true" tabindex="-1"></a>NOISY_GENE_NAMES <span class="op">=</span> [</span>
-<span id="cb36-3"><a href="Metacell-construction-chapter.html#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CCL3"</span>, <span class="st">"CCL4"</span>, <span class="st">"CCL5"</span>, <span class="st">"CXCL8"</span>, <span class="st">"DUSP1"</span>, <span class="st">"FOS"</span>, <span class="st">"G0S2"</span>, <span class="st">"HBB"</span>, <span class="st">"HIST1H4C"</span>, <span class="st">"IER2"</span>, <span class="st">"IGKC"</span>,</span>
-<span id="cb36-4"><a href="Metacell-construction-chapter.html#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"IGLC2"</span>, <span class="st">"JUN"</span>, <span class="st">"JUNB"</span>, <span class="st">"KLRB1"</span>, <span class="st">"MT2A"</span>, <span class="st">"RPS26"</span>, <span class="st">"RPS4Y1"</span>, <span class="st">"TRBC1"</span>, <span class="st">"TUBA1B"</span>, <span class="st">"TUBB"</span></span>
-<span id="cb36-5"><a href="Metacell-construction-chapter.html#cb36-5" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb36-6"><a href="Metacell-construction-chapter.html#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This will mark as "noisy_gene" any genes that match the above, if they exist in the clean dataset.</span></span>
-<span id="cb36-7"><a href="Metacell-construction-chapter.html#cb36-7" aria-hidden="true" tabindex="-1"></a>mc.pl.mark_noisy_genes(ad, noisy_gene_names<span class="op">=</span>NOISY_GENE_NAMES)</span>
-<span id="cb36-8"><a href="Metacell-construction-chapter.html#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[noisy_gene]: 20 true (0.1178%) out of 16977 bools</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="Metacell-construction-chapter.html#cb30-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-2"><a href="Metacell-construction-chapter.html#cb30-2" aria-hidden="true" tabindex="-1"></a>NOISY_GENE_NAMES <span class="op">=</span> [</span>
+<span id="cb30-3"><a href="Metacell-construction-chapter.html#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CCL3"</span>, <span class="st">"CCL4"</span>, <span class="st">"CCL5"</span>, <span class="st">"CXCL8"</span>, <span class="st">"DUSP1"</span>, <span class="st">"FOS"</span>, <span class="st">"G0S2"</span>, <span class="st">"HBB"</span>, <span class="st">"HIST1H4C"</span>, <span class="st">"IER2"</span>, <span class="st">"IGKC"</span>,</span>
+<span id="cb30-4"><a href="Metacell-construction-chapter.html#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"IGLC2"</span>, <span class="st">"JUN"</span>, <span class="st">"JUNB"</span>, <span class="st">"KLRB1"</span>, <span class="st">"MT2A"</span>, <span class="st">"RPS26"</span>, <span class="st">"RPS4Y1"</span>, <span class="st">"TRBC1"</span>, <span class="st">"TUBA1B"</span>, <span class="st">"TUBB"</span></span>
+<span id="cb30-5"><a href="Metacell-construction-chapter.html#cb30-5" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb30-6"><a href="Metacell-construction-chapter.html#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This will mark as "noisy_gene" any genes that match the above, if they exist in the clean dataset.</span></span>
+<span id="cb30-7"><a href="Metacell-construction-chapter.html#cb30-7" aria-hidden="true" tabindex="-1"></a>mc.pl.mark_noisy_genes(ad, noisy_gene_names<span class="op">=</span>NOISY_GENE_NAMES)</span>
+<span id="cb30-8"><a href="Metacell-construction-chapter.html#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[noisy_gene]: 20 true (0.1178%) out of 16977 bools</span></span></code></pre></div>
 <p>To extend this list of lateral genes, users can use the <code>relate_to_lateral_genes</code> function to identify genes that are highly correlated with the predefined lateral genes.
 The use of this function is described in <a href="https://tanaylab.github.io/metacells-vignettes/iterative.html">the vignette from the MC2 authors</a>.</p>
 </div>
@@ -485,8 +485,8 @@ The use of this function is described in <a href="https://tanaylab.github.io/met
 </h4>
 <p>By default, MC2 will build metacells with a size of 96 cells per metacells.
 Users can vary the <code>target_metacell_size</code> parameter to reach a desired graining level.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="Metacell-construction-chapter.html#cb37-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">75</span></span>
-<span id="cb37-2"><a href="Metacell-construction-chapter.html#cb37-2" aria-hidden="true" tabindex="-1"></a>target_metacell_size <span class="op">=</span> gamma</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="Metacell-construction-chapter.html#cb31-1" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">75</span></span>
+<span id="cb31-2"><a href="Metacell-construction-chapter.html#cb31-2" aria-hidden="true" tabindex="-1"></a>target_metacell_size <span class="op">=</span> gamma</span></code></pre></div>
 </div>
 <div id="metacells-identification-using-the-divide-and-conquer-approach" class="section level4 unnumbered">
 <h4>Metacells identification using the divide and conquer approach<a class="anchor" aria-label="anchor" href="#metacells-identification-using-the-divide-and-conquer-approach"><i class="fas fa-link"></i></a>
@@ -497,39 +497,39 @@ To change this behavior and adapt the number of cores the MC2 authors propose to
 to adapt the number of processed in parallel depending on the available memory.</p>
 <p>The <code>mc.pl.divide_and_conquer_pipeline()</code> function associates each cell to a metacell or defines the cell as outlier.
 These assignments are found in the <code>obs</code> layer of the anndata object.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="Metacell-construction-chapter.html#cb38-1" aria-hidden="true" tabindex="-1"></a>max_parallel_piles <span class="op">=</span> mc.pl.guess_max_parallel_piles(ad)</span>
-<span id="cb38-2"><a href="Metacell-construction-chapter.html#cb38-2" aria-hidden="true" tabindex="-1"></a>mc.pl.set_max_parallel_piles(max_parallel_piles)</span>
-<span id="cb38-3"><a href="Metacell-construction-chapter.html#cb38-3" aria-hidden="true" tabindex="-1"></a>mc.pl.divide_and_conquer_pipeline(</span>
-<span id="cb38-4"><a href="Metacell-construction-chapter.html#cb38-4" aria-hidden="true" tabindex="-1"></a>    ad,</span>
-<span id="cb38-5"><a href="Metacell-construction-chapter.html#cb38-5" aria-hidden="true" tabindex="-1"></a>    target_metacell_size <span class="op">=</span> target_metacell_size,</span>
-<span id="cb38-6"><a href="Metacell-construction-chapter.html#cb38-6" aria-hidden="true" tabindex="-1"></a>    random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
-<span id="cb38-7"><a href="Metacell-construction-chapter.html#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[selected_gene]: * -&gt; False</span></span>
-<span id="cb38-8"><a href="Metacell-construction-chapter.html#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[rare_gene]: 0 true (0%) out of 16977 bools</span></span>
-<span id="cb38-9"><a href="Metacell-construction-chapter.html#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[rare_gene_module]: 16977 int32 elements with all outliers (100%)</span></span>
-<span id="cb38-10"><a href="Metacell-construction-chapter.html#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[cells_rare_gene_module]: 28694 int32 elements with all outliers (100%)</span></span>
-<span id="cb38-11"><a href="Metacell-construction-chapter.html#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[rare_cell]: 0 true (0%) out of 28694 bools</span></span>
-<span id="cb38-12"><a href="Metacell-construction-chapter.html#cb38-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[selected_gene]: 1666 true (9.813%) out of 16977 bools</span></span>
-<span id="cb38-13"><a href="Metacell-construction-chapter.html#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[metacell]: 28694 int32s</span></span>
-<span id="cb38-14"><a href="Metacell-construction-chapter.html#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[dissolved]: 0 true (0%) out of 28694 bools</span></span>
-<span id="cb38-15"><a href="Metacell-construction-chapter.html#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[metacell_level]: 28694 int32s</span></span>
-<span id="cb38-16"><a href="Metacell-construction-chapter.html#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-17"><a href="Metacell-construction-chapter.html#cb38-17" aria-hidden="true" tabindex="-1"></a>ad.obs.metacell.head</span>
-<span id="cb38-18"><a href="Metacell-construction-chapter.html#cb38-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of a_AAACCTGAGGTGGGTT-1     73</span></span>
-<span id="cb38-19"><a href="Metacell-construction-chapter.html#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_AAACCTGAGTACATGA-1    365</span></span>
-<span id="cb38-20"><a href="Metacell-construction-chapter.html#cb38-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_AAACCTGCAAACCTAC-1     88</span></span>
-<span id="cb38-21"><a href="Metacell-construction-chapter.html#cb38-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_AAACCTGCAAGGTGTG-1    287</span></span>
-<span id="cb38-22"><a href="Metacell-construction-chapter.html#cb38-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_AAACCTGCACGGTAGA-1    244</span></span>
-<span id="cb38-23"><a href="Metacell-construction-chapter.html#cb38-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        ... </span></span>
-<span id="cb38-24"><a href="Metacell-construction-chapter.html#cb38-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCCGAGCCA-1     65</span></span>
-<span id="cb38-25"><a href="Metacell-construction-chapter.html#cb38-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCCGTAGGC-1    187</span></span>
-<span id="cb38-26"><a href="Metacell-construction-chapter.html#cb38-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCCTCGCAT-1    327</span></span>
-<span id="cb38-27"><a href="Metacell-construction-chapter.html#cb38-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCGCCGTGA-1    107</span></span>
-<span id="cb38-28"><a href="Metacell-construction-chapter.html#cb38-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCGTTTGCC-1    263</span></span>
-<span id="cb38-29"><a href="Metacell-construction-chapter.html#cb38-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Name: metacell, Length: 28694, dtype: int32&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="Metacell-construction-chapter.html#cb32-1" aria-hidden="true" tabindex="-1"></a>max_parallel_piles <span class="op">=</span> mc.pl.guess_max_parallel_piles(ad)</span>
+<span id="cb32-2"><a href="Metacell-construction-chapter.html#cb32-2" aria-hidden="true" tabindex="-1"></a>mc.pl.set_max_parallel_piles(max_parallel_piles)</span>
+<span id="cb32-3"><a href="Metacell-construction-chapter.html#cb32-3" aria-hidden="true" tabindex="-1"></a>mc.pl.divide_and_conquer_pipeline(</span>
+<span id="cb32-4"><a href="Metacell-construction-chapter.html#cb32-4" aria-hidden="true" tabindex="-1"></a>    ad,</span>
+<span id="cb32-5"><a href="Metacell-construction-chapter.html#cb32-5" aria-hidden="true" tabindex="-1"></a>    target_metacell_size <span class="op">=</span> target_metacell_size,</span>
+<span id="cb32-6"><a href="Metacell-construction-chapter.html#cb32-6" aria-hidden="true" tabindex="-1"></a>    random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
+<span id="cb32-7"><a href="Metacell-construction-chapter.html#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[selected_gene]: * -&gt; False</span></span>
+<span id="cb32-8"><a href="Metacell-construction-chapter.html#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[rare_gene]: 0 true (0%) out of 16977 bools</span></span>
+<span id="cb32-9"><a href="Metacell-construction-chapter.html#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[rare_gene_module]: 16977 int32 elements with all outliers (100%)</span></span>
+<span id="cb32-10"><a href="Metacell-construction-chapter.html#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[cells_rare_gene_module]: 28694 int32 elements with all outliers (100%)</span></span>
+<span id="cb32-11"><a href="Metacell-construction-chapter.html#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[rare_cell]: 0 true (0%) out of 28694 bools</span></span>
+<span id="cb32-12"><a href="Metacell-construction-chapter.html#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.var[selected_gene]: 1666 true (9.813%) out of 16977 bools</span></span>
+<span id="cb32-13"><a href="Metacell-construction-chapter.html#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[metacell]: 28694 int32s</span></span>
+<span id="cb32-14"><a href="Metacell-construction-chapter.html#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[dissolved]: 0 true (0%) out of 28694 bools</span></span>
+<span id="cb32-15"><a href="Metacell-construction-chapter.html#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[metacell_level]: 28694 int32s</span></span>
+<span id="cb32-16"><a href="Metacell-construction-chapter.html#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-17"><a href="Metacell-construction-chapter.html#cb32-17" aria-hidden="true" tabindex="-1"></a>ad.obs.metacell.head</span>
+<span id="cb32-18"><a href="Metacell-construction-chapter.html#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of a_AAACCTGAGGTGGGTT-1     73</span></span>
+<span id="cb32-19"><a href="Metacell-construction-chapter.html#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_AAACCTGAGTACATGA-1    365</span></span>
+<span id="cb32-20"><a href="Metacell-construction-chapter.html#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_AAACCTGCAAACCTAC-1     88</span></span>
+<span id="cb32-21"><a href="Metacell-construction-chapter.html#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_AAACCTGCAAGGTGTG-1    287</span></span>
+<span id="cb32-22"><a href="Metacell-construction-chapter.html#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_AAACCTGCACGGTAGA-1    244</span></span>
+<span id="cb32-23"><a href="Metacell-construction-chapter.html#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                        ... </span></span>
+<span id="cb32-24"><a href="Metacell-construction-chapter.html#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCCGAGCCA-1     65</span></span>
+<span id="cb32-25"><a href="Metacell-construction-chapter.html#cb32-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCCGTAGGC-1    187</span></span>
+<span id="cb32-26"><a href="Metacell-construction-chapter.html#cb32-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCCTCGCAT-1    327</span></span>
+<span id="cb32-27"><a href="Metacell-construction-chapter.html#cb32-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCGCCGTGA-1    107</span></span>
+<span id="cb32-28"><a href="Metacell-construction-chapter.html#cb32-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TTTGTCATCGTTTGCC-1    263</span></span>
+<span id="cb32-29"><a href="Metacell-construction-chapter.html#cb32-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Name: metacell, Length: 28694, dtype: int32&gt;</span></span></code></pre></div>
 <p>The following code chunk adds a columns (named <code>membership</code>) containing the single_cell assignments to the obs attribute in the single-cell anndata object.
 The membership information is required to compute metacells quality metrics as shown in chapter <a href="QCs.html#QCs">2</a>.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="Metacell-construction-chapter.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a membership -- index of metacells to which single cells belong to </span></span>
-<span id="cb39-2"><a href="Metacell-construction-chapter.html#cb39-2" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">'membership'</span>] <span class="op">=</span> [<span class="bu">int</span>(i)<span class="op">+</span><span class="dv">1</span> <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> np.nan <span class="cf">for</span> i <span class="kw">in</span> ad.obs.metacell] </span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="Metacell-construction-chapter.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a membership -- index of metacells to which single cells belong to </span></span>
+<span id="cb33-2"><a href="Metacell-construction-chapter.html#cb33-2" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">'membership'</span>] <span class="op">=</span> [<span class="bu">int</span>(i)<span class="op">+</span><span class="dv">1</span> <span class="cf">if</span> i <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> np.nan <span class="cf">for</span> i <span class="kw">in</span> ad.obs.metacell] </span></code></pre></div>
 </div>
 <div id="retrieve-aggregated-metacell-data-1" class="section level4 unnumbered">
 <h4>Retrieve aggregated metacell data<a class="anchor" aria-label="anchor" href="#retrieve-aggregated-metacell-data-1"><i class="fas fa-link"></i></a>
@@ -537,44 +537,44 @@ The membership information is required to compute metacells quality metrics as s
 <p>The function <code>mc.pl.collect_metacells()</code> should be used to subsequently retrieve an anndata object containing the data at the metacells level instead of the single-cell level.
 This function will store in the <code>X</code> data matrix of the anndata object a matrix of gene fraction (<em>i.e.</em>, the sum of all gene levels in a metacell sums to 1)
 and it will store the total UMIs per gene per metacell in the layer <code>total_umis</code>.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="Metacell-construction-chapter.html#cb40-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-2"><a href="Metacell-construction-chapter.html#cb40-2" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> mc.pl.collect_metacells(ad, name<span class="op">=</span><span class="st">'metacells'</span>, random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
-<span id="cb40-3"><a href="Metacell-construction-chapter.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[grouped]: 388 int64s</span></span>
-<span id="cb40-4"><a href="Metacell-construction-chapter.html#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[total_umis]: 388 float64s</span></span>
-<span id="cb40-5"><a href="Metacell-construction-chapter.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.layers[total_umis]: ndarray 388 X 16977 float32s</span></span>
-<span id="cb40-6"><a href="Metacell-construction-chapter.html#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[__zeros_downsample_umis]: 388 int64s</span></span>
-<span id="cb40-7"><a href="Metacell-construction-chapter.html#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.layers[zeros]: ndarray 388 X 16977 int32s</span></span>
-<span id="cb40-8"><a href="Metacell-construction-chapter.html#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[metacell_name]: 28694 &lt;U8s</span></span>
-<span id="cb40-9"><a href="Metacell-construction-chapter.html#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[genes]: 16977 objects</span></span>
-<span id="cb40-10"><a href="Metacell-construction-chapter.html#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 16977 bools</span></span>
-<span id="cb40-11"><a href="Metacell-construction-chapter.html#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[properly_sampled_gene]: 16977 true (100%) out of 16977 bools</span></span>
-<span id="cb40-12"><a href="Metacell-construction-chapter.html#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[excluded_gene]: 0 true (0%) out of 16977 bools</span></span>
-<span id="cb40-13"><a href="Metacell-construction-chapter.html#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[full_gene_index]: 16977 int32s</span></span>
-<span id="cb40-14"><a href="Metacell-construction-chapter.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[lateral_gene]: 245 true (1.443%) out of 16977 bools</span></span>
-<span id="cb40-15"><a href="Metacell-construction-chapter.html#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[noisy_gene]: 20 true (0.1178%) out of 16977 bools</span></span>
-<span id="cb40-16"><a href="Metacell-construction-chapter.html#cb40-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[selected_gene]: 1666 true (9.813%) out of 16977 bools</span></span>
-<span id="cb40-17"><a href="Metacell-construction-chapter.html#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[rare_gene]: 0 true (0%) out of 16977 bools</span></span>
-<span id="cb40-18"><a href="Metacell-construction-chapter.html#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[rare_gene_module]: 16977 int32s</span></span>
-<span id="cb40-19"><a href="Metacell-construction-chapter.html#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[metacells_rare_gene_module]: 388 int32s</span></span>
-<span id="cb40-20"><a href="Metacell-construction-chapter.html#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[rare_metacell]: 0 true (0%) out of 388 bools</span></span>
-<span id="cb40-21"><a href="Metacell-construction-chapter.html#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.uns[outliers]: 2</span></span>
-<span id="cb40-22"><a href="Metacell-construction-chapter.html#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.uns[metacells_algorithm]: metacells.0.9.0</span></span>
-<span id="cb40-23"><a href="Metacell-construction-chapter.html#cb40-23" aria-hidden="true" tabindex="-1"></a>mc_ad.shape</span>
-<span id="cb40-24"><a href="Metacell-construction-chapter.html#cb40-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (388, 16977)</span></span>
-<span id="cb40-25"><a href="Metacell-construction-chapter.html#cb40-25" aria-hidden="true" tabindex="-1"></a>mc_ad.X.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)[:<span class="dv">5</span>] </span>
-<span id="cb40-26"><a href="Metacell-construction-chapter.html#cb40-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; matrix([[0.99999994],</span></span>
-<span id="cb40-27"><a href="Metacell-construction-chapter.html#cb40-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
-<span id="cb40-28"><a href="Metacell-construction-chapter.html#cb40-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.0000001 ],</span></span>
-<span id="cb40-29"><a href="Metacell-construction-chapter.html#cb40-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
-<span id="cb40-30"><a href="Metacell-construction-chapter.html#cb40-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ]], dtype=float32)</span></span>
-<span id="cb40-31"><a href="Metacell-construction-chapter.html#cb40-31" aria-hidden="true" tabindex="-1"></a>mc_ad.layers[<span class="st">'total_umis'</span>]</span>
-<span id="cb40-32"><a href="Metacell-construction-chapter.html#cb40-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; array([[3., 1., 0., ..., 0., 0., 0.],</span></span>
-<span id="cb40-33"><a href="Metacell-construction-chapter.html#cb40-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [6., 0., 0., ..., 0., 0., 0.],</span></span>
-<span id="cb40-34"><a href="Metacell-construction-chapter.html#cb40-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [7., 3., 0., ..., 0., 0., 0.],</span></span>
-<span id="cb40-35"><a href="Metacell-construction-chapter.html#cb40-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        ...,</span></span>
-<span id="cb40-36"><a href="Metacell-construction-chapter.html#cb40-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [3., 0., 0., ..., 0., 0., 0.],</span></span>
-<span id="cb40-37"><a href="Metacell-construction-chapter.html#cb40-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [4., 2., 0., ..., 0., 0., 0.],</span></span>
-<span id="cb40-38"><a href="Metacell-construction-chapter.html#cb40-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 1., 0., ..., 0., 0., 0.]], dtype=float32)</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="Metacell-construction-chapter.html#cb34-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-2"><a href="Metacell-construction-chapter.html#cb34-2" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> mc.pl.collect_metacells(ad, name<span class="op">=</span><span class="st">'metacells'</span>, random_seed <span class="op">=</span> <span class="dv">123456</span>)</span>
+<span id="cb34-3"><a href="Metacell-construction-chapter.html#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[grouped]: 388 int64s</span></span>
+<span id="cb34-4"><a href="Metacell-construction-chapter.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[total_umis]: 388 float64s</span></span>
+<span id="cb34-5"><a href="Metacell-construction-chapter.html#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.layers[total_umis]: ndarray 388 X 16977 float32s</span></span>
+<span id="cb34-6"><a href="Metacell-construction-chapter.html#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[__zeros_downsample_umis]: 388 int64s</span></span>
+<span id="cb34-7"><a href="Metacell-construction-chapter.html#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.layers[zeros]: ndarray 388 X 16977 int32s</span></span>
+<span id="cb34-8"><a href="Metacell-construction-chapter.html#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set bmcite.clean.obs[metacell_name]: 28694 &lt;U8s</span></span>
+<span id="cb34-9"><a href="Metacell-construction-chapter.html#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[genes]: 16977 objects</span></span>
+<span id="cb34-10"><a href="Metacell-construction-chapter.html#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 16977 bools</span></span>
+<span id="cb34-11"><a href="Metacell-construction-chapter.html#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[properly_sampled_gene]: 16977 true (100%) out of 16977 bools</span></span>
+<span id="cb34-12"><a href="Metacell-construction-chapter.html#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[excluded_gene]: 0 true (0%) out of 16977 bools</span></span>
+<span id="cb34-13"><a href="Metacell-construction-chapter.html#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[full_gene_index]: 16977 int32s</span></span>
+<span id="cb34-14"><a href="Metacell-construction-chapter.html#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[lateral_gene]: 245 true (1.443%) out of 16977 bools</span></span>
+<span id="cb34-15"><a href="Metacell-construction-chapter.html#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[noisy_gene]: 20 true (0.1178%) out of 16977 bools</span></span>
+<span id="cb34-16"><a href="Metacell-construction-chapter.html#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[selected_gene]: 1666 true (9.813%) out of 16977 bools</span></span>
+<span id="cb34-17"><a href="Metacell-construction-chapter.html#cb34-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[rare_gene]: 0 true (0%) out of 16977 bools</span></span>
+<span id="cb34-18"><a href="Metacell-construction-chapter.html#cb34-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.var[rare_gene_module]: 16977 int32s</span></span>
+<span id="cb34-19"><a href="Metacell-construction-chapter.html#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[metacells_rare_gene_module]: 388 int32s</span></span>
+<span id="cb34-20"><a href="Metacell-construction-chapter.html#cb34-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[rare_metacell]: 0 true (0%) out of 388 bools</span></span>
+<span id="cb34-21"><a href="Metacell-construction-chapter.html#cb34-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.uns[outliers]: 2</span></span>
+<span id="cb34-22"><a href="Metacell-construction-chapter.html#cb34-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.uns[metacells_algorithm]: metacells.0.9.0</span></span>
+<span id="cb34-23"><a href="Metacell-construction-chapter.html#cb34-23" aria-hidden="true" tabindex="-1"></a>mc_ad.shape</span>
+<span id="cb34-24"><a href="Metacell-construction-chapter.html#cb34-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; (388, 16977)</span></span>
+<span id="cb34-25"><a href="Metacell-construction-chapter.html#cb34-25" aria-hidden="true" tabindex="-1"></a>mc_ad.X.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)[:<span class="dv">5</span>] </span>
+<span id="cb34-26"><a href="Metacell-construction-chapter.html#cb34-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; matrix([[0.99999994],</span></span>
+<span id="cb34-27"><a href="Metacell-construction-chapter.html#cb34-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
+<span id="cb34-28"><a href="Metacell-construction-chapter.html#cb34-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.0000001 ],</span></span>
+<span id="cb34-29"><a href="Metacell-construction-chapter.html#cb34-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ],</span></span>
+<span id="cb34-30"><a href="Metacell-construction-chapter.html#cb34-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         [1.        ]], dtype=float32)</span></span>
+<span id="cb34-31"><a href="Metacell-construction-chapter.html#cb34-31" aria-hidden="true" tabindex="-1"></a>mc_ad.layers[<span class="st">'total_umis'</span>]</span>
+<span id="cb34-32"><a href="Metacell-construction-chapter.html#cb34-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; array([[3., 1., 0., ..., 0., 0., 0.],</span></span>
+<span id="cb34-33"><a href="Metacell-construction-chapter.html#cb34-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [6., 0., 0., ..., 0., 0., 0.],</span></span>
+<span id="cb34-34"><a href="Metacell-construction-chapter.html#cb34-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [7., 3., 0., ..., 0., 0., 0.],</span></span>
+<span id="cb34-35"><a href="Metacell-construction-chapter.html#cb34-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        ...,</span></span>
+<span id="cb34-36"><a href="Metacell-construction-chapter.html#cb34-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [3., 0., 0., ..., 0., 0., 0.],</span></span>
+<span id="cb34-37"><a href="Metacell-construction-chapter.html#cb34-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [4., 2., 0., ..., 0., 0., 0.],</span></span>
+<span id="cb34-38"><a href="Metacell-construction-chapter.html#cb34-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        [0., 1., 0., ..., 0., 0., 0.]], dtype=float32)</span></span></code></pre></div>
 </div>
 </div>
 <div id="annotate-metacells-using-available-annotations-1" class="section level3" number="1.2.5">
@@ -585,55 +585,55 @@ and it will store the total UMIs per gene per metacell in the layer <code>total_
 using the <code>mc.tl.convey_obs_to_group()</code> function which will associate each metacell to the most frequent annotation (categorical) or
 averaged annotation (continuous) across the single-cells composing the metacell
 (use of the <code>mc.ut.most_frequent</code> and <code>np.mean</code> respectively in the <code>mode</code> paratemer).</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="Metacell-construction-chapter.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign a single value for each metacell based on the cells.</span></span>
-<span id="cb41-2"><a href="Metacell-construction-chapter.html#cb41-2" aria-hidden="true" tabindex="-1"></a>mc.tl.convey_obs_to_group(</span>
-<span id="cb41-3"><a href="Metacell-construction-chapter.html#cb41-3" aria-hidden="true" tabindex="-1"></a>    adata<span class="op">=</span>ad, gdata<span class="op">=</span>mc_ad,</span>
-<span id="cb41-4"><a href="Metacell-construction-chapter.html#cb41-4" aria-hidden="true" tabindex="-1"></a>    property_name<span class="op">=</span>annotation_label, to_property_name<span class="op">=</span>annotation_label,</span>
-<span id="cb41-5"><a href="Metacell-construction-chapter.html#cb41-5" aria-hidden="true" tabindex="-1"></a>    method<span class="op">=</span>mc.ut.most_frequent  <span class="co"># This is the default, for categorical data</span></span>
-<span id="cb41-6"><a href="Metacell-construction-chapter.html#cb41-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb41-7"><a href="Metacell-construction-chapter.html#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified]: 388 &lt;U18s</span></span>
-<span id="cb41-8"><a href="Metacell-construction-chapter.html#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-9"><a href="Metacell-construction-chapter.html#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the fraction of cells with each possible value in each metacell:</span></span>
-<span id="cb41-10"><a href="Metacell-construction-chapter.html#cb41-10" aria-hidden="true" tabindex="-1"></a>mc.tl.convey_obs_fractions_to_group(  </span>
-<span id="cb41-11"><a href="Metacell-construction-chapter.html#cb41-11" aria-hidden="true" tabindex="-1"></a>    adata<span class="op">=</span>ad, gdata<span class="op">=</span>mc_ad,</span>
-<span id="cb41-12"><a href="Metacell-construction-chapter.html#cb41-12" aria-hidden="true" tabindex="-1"></a>    property_name<span class="op">=</span>annotation_label, to_property_name<span class="op">=</span>annotation_label</span>
-<span id="cb41-13"><a href="Metacell-construction-chapter.html#cb41-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb41-14"><a href="Metacell-construction-chapter.html#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_B cell]: 388 float64s</span></span>
-<span id="cb41-15"><a href="Metacell-construction-chapter.html#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_CD14 Mono]: 388 float64s</span></span>
-<span id="cb41-16"><a href="Metacell-construction-chapter.html#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_CD16 Mono]: 388 float64s</span></span>
-<span id="cb41-17"><a href="Metacell-construction-chapter.html#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_GMP]: 388 float64s</span></span>
-<span id="cb41-18"><a href="Metacell-construction-chapter.html#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_HSC]: 388 float64s</span></span>
-<span id="cb41-19"><a href="Metacell-construction-chapter.html#cb41-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_LMPP]: 388 float64s</span></span>
-<span id="cb41-20"><a href="Metacell-construction-chapter.html#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_NK]: 388 float64s</span></span>
-<span id="cb41-21"><a href="Metacell-construction-chapter.html#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Naive CD4 cell]: 388 float64s</span></span>
-<span id="cb41-22"><a href="Metacell-construction-chapter.html#cb41-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Naive CD8 cell]: 388 float64s</span></span>
-<span id="cb41-23"><a href="Metacell-construction-chapter.html#cb41-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Non-Naive CD4 cell]: 388 float64s</span></span>
-<span id="cb41-24"><a href="Metacell-construction-chapter.html#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Non-Naive CD8 cell]: 388 float64s</span></span>
-<span id="cb41-25"><a href="Metacell-construction-chapter.html#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Plasmablast]: 388 float64s</span></span>
-<span id="cb41-26"><a href="Metacell-construction-chapter.html#cb41-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Unconventional T]: 388 float64s</span></span>
-<span id="cb41-27"><a href="Metacell-construction-chapter.html#cb41-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_cDC2]: 388 float64s</span></span>
-<span id="cb41-28"><a href="Metacell-construction-chapter.html#cb41-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_pDC]: 388 float64s</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="Metacell-construction-chapter.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign a single value for each metacell based on the cells.</span></span>
+<span id="cb35-2"><a href="Metacell-construction-chapter.html#cb35-2" aria-hidden="true" tabindex="-1"></a>mc.tl.convey_obs_to_group(</span>
+<span id="cb35-3"><a href="Metacell-construction-chapter.html#cb35-3" aria-hidden="true" tabindex="-1"></a>    adata<span class="op">=</span>ad, gdata<span class="op">=</span>mc_ad,</span>
+<span id="cb35-4"><a href="Metacell-construction-chapter.html#cb35-4" aria-hidden="true" tabindex="-1"></a>    property_name<span class="op">=</span>annotation_label, to_property_name<span class="op">=</span>annotation_label,</span>
+<span id="cb35-5"><a href="Metacell-construction-chapter.html#cb35-5" aria-hidden="true" tabindex="-1"></a>    method<span class="op">=</span>mc.ut.most_frequent  <span class="co"># This is the default, for categorical data</span></span>
+<span id="cb35-6"><a href="Metacell-construction-chapter.html#cb35-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-7"><a href="Metacell-construction-chapter.html#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified]: 388 &lt;U18s</span></span>
+<span id="cb35-8"><a href="Metacell-construction-chapter.html#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="Metacell-construction-chapter.html#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the fraction of cells with each possible value in each metacell:</span></span>
+<span id="cb35-10"><a href="Metacell-construction-chapter.html#cb35-10" aria-hidden="true" tabindex="-1"></a>mc.tl.convey_obs_fractions_to_group(  </span>
+<span id="cb35-11"><a href="Metacell-construction-chapter.html#cb35-11" aria-hidden="true" tabindex="-1"></a>    adata<span class="op">=</span>ad, gdata<span class="op">=</span>mc_ad,</span>
+<span id="cb35-12"><a href="Metacell-construction-chapter.html#cb35-12" aria-hidden="true" tabindex="-1"></a>    property_name<span class="op">=</span>annotation_label, to_property_name<span class="op">=</span>annotation_label</span>
+<span id="cb35-13"><a href="Metacell-construction-chapter.html#cb35-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-14"><a href="Metacell-construction-chapter.html#cb35-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_B cell]: 388 float64s</span></span>
+<span id="cb35-15"><a href="Metacell-construction-chapter.html#cb35-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_CD14 Mono]: 388 float64s</span></span>
+<span id="cb35-16"><a href="Metacell-construction-chapter.html#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_CD16 Mono]: 388 float64s</span></span>
+<span id="cb35-17"><a href="Metacell-construction-chapter.html#cb35-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_GMP]: 388 float64s</span></span>
+<span id="cb35-18"><a href="Metacell-construction-chapter.html#cb35-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_HSC]: 388 float64s</span></span>
+<span id="cb35-19"><a href="Metacell-construction-chapter.html#cb35-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_LMPP]: 388 float64s</span></span>
+<span id="cb35-20"><a href="Metacell-construction-chapter.html#cb35-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_NK]: 388 float64s</span></span>
+<span id="cb35-21"><a href="Metacell-construction-chapter.html#cb35-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Naive CD4 cell]: 388 float64s</span></span>
+<span id="cb35-22"><a href="Metacell-construction-chapter.html#cb35-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Naive CD8 cell]: 388 float64s</span></span>
+<span id="cb35-23"><a href="Metacell-construction-chapter.html#cb35-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Non-Naive CD4 cell]: 388 float64s</span></span>
+<span id="cb35-24"><a href="Metacell-construction-chapter.html#cb35-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Non-Naive CD8 cell]: 388 float64s</span></span>
+<span id="cb35-25"><a href="Metacell-construction-chapter.html#cb35-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Plasmablast]: 388 float64s</span></span>
+<span id="cb35-26"><a href="Metacell-construction-chapter.html#cb35-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_Unconventional T]: 388 float64s</span></span>
+<span id="cb35-27"><a href="Metacell-construction-chapter.html#cb35-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_cDC2]: 388 float64s</span></span>
+<span id="cb35-28"><a href="Metacell-construction-chapter.html#cb35-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; set metacells.obs[celltype_simplified_fraction_of_pDC]: 388 float64s</span></span></code></pre></div>
 </div>
 <div id="save-output-1" class="section level3" number="1.2.6">
 <h3>
 <span class="header-section-number">1.2.6</span> Save output<a class="anchor" aria-label="anchor" href="#save-output-1"><i class="fas fa-link"></i></a>
 </h3>
 <p>For future downstream analyses in python (section <a href="#standard-analysis-Py"><strong>??</strong></a>), we save the metacell counts in an Anndata object:</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="Metacell-construction-chapter.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object</span></span>
-<span id="cb42-2"><a href="Metacell-construction-chapter.html#cb42-2" aria-hidden="true" tabindex="-1"></a>mc_ad.uns <span class="op">=</span> ad.uns.copy()</span>
-<span id="cb42-3"><a href="Metacell-construction-chapter.html#cb42-3" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'sc.obs'</span>] <span class="op">=</span> ad.obs.copy()</span>
-<span id="cb42-4"><a href="Metacell-construction-chapter.html#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-5"><a href="Metacell-construction-chapter.html#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co"># save the requested gamma</span></span>
-<span id="cb42-6"><a href="Metacell-construction-chapter.html#cb42-6" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'gamma'</span>] <span class="op">=</span> gamma</span>
-<span id="cb42-7"><a href="Metacell-construction-chapter.html#cb42-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-8"><a href="Metacell-construction-chapter.html#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save metacell size</span></span>
-<span id="cb42-9"><a href="Metacell-construction-chapter.html#cb42-9" aria-hidden="true" tabindex="-1"></a>mc_ad.obs.rename(columns<span class="op">=</span>{<span class="st">'grouped'</span>:<span class="st">'size'</span>}, inplace <span class="op">=</span> <span class="va">True</span>)</span>
-<span id="cb42-10"><a href="Metacell-construction-chapter.html#cb42-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-11"><a href="Metacell-construction-chapter.html#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Saving metacell object for the "</span><span class="op">+</span> proj_name<span class="op">+</span> <span class="st">" dataset using "</span><span class="op">+</span> MC_tool)</span>
-<span id="cb42-12"><a href="Metacell-construction-chapter.html#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Saving metacell object for the bmcite dataset using MC2</span></span>
-<span id="cb42-13"><a href="Metacell-construction-chapter.html#cb42-13" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">'./data'</span>, proj_name, <span class="ss">f'metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad'</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="Metacell-construction-chapter.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Save single-cell metadata (i.e., `raw.obs` dataframe) in the metacell adata object</span></span>
+<span id="cb36-2"><a href="Metacell-construction-chapter.html#cb36-2" aria-hidden="true" tabindex="-1"></a>mc_ad.uns <span class="op">=</span> ad.uns.copy()</span>
+<span id="cb36-3"><a href="Metacell-construction-chapter.html#cb36-3" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'sc.obs'</span>] <span class="op">=</span> ad.obs.copy()</span>
+<span id="cb36-4"><a href="Metacell-construction-chapter.html#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="Metacell-construction-chapter.html#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># save the requested gamma</span></span>
+<span id="cb36-6"><a href="Metacell-construction-chapter.html#cb36-6" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'gamma'</span>] <span class="op">=</span> gamma</span>
+<span id="cb36-7"><a href="Metacell-construction-chapter.html#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="Metacell-construction-chapter.html#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save metacell size</span></span>
+<span id="cb36-9"><a href="Metacell-construction-chapter.html#cb36-9" aria-hidden="true" tabindex="-1"></a>mc_ad.obs.rename(columns<span class="op">=</span>{<span class="st">'grouped'</span>:<span class="st">'size'</span>}, inplace <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb36-10"><a href="Metacell-construction-chapter.html#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="Metacell-construction-chapter.html#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Saving metacell object for the "</span><span class="op">+</span> proj_name<span class="op">+</span> <span class="st">" dataset using "</span><span class="op">+</span> MC_tool)</span>
+<span id="cb36-12"><a href="Metacell-construction-chapter.html#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Saving metacell object for the bmcite dataset using MC2</span></span>
+<span id="cb36-13"><a href="Metacell-construction-chapter.html#cb36-13" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">'./data'</span>, proj_name, <span class="ss">f'metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad'</span>))</span></code></pre></div>
 <p>For future QCs and downstream analyses in R (section <a href="downstream-analysis.html#standard-analysis-R">3.1</a>), we save the metacell counts in a Seurat object:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
@@ -674,11 +674,11 @@ For more information on the method, please refer to our review <span class="cita
 <h4>Importing python packages<a class="anchor" aria-label="anchor" href="#importing-python-packages-1"><i class="fas fa-link"></i></a>
 </h4>
 <p>To run the SEACells, the following python packages need to be imported:</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="Metacell-construction-chapter.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb44-2"><a href="Metacell-construction-chapter.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb44-3"><a href="Metacell-construction-chapter.html#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
-<span id="cb44-4"><a href="Metacell-construction-chapter.html#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> SEACells</span>
-<span id="cb44-5"><a href="Metacell-construction-chapter.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="Metacell-construction-chapter.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb38-2"><a href="Metacell-construction-chapter.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb38-3"><a href="Metacell-construction-chapter.html#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
+<span id="cb38-4"><a href="Metacell-construction-chapter.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> SEACells</span>
+<span id="cb38-5"><a href="Metacell-construction-chapter.html#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span></code></pre></div>
 <p>If you don’t have these packages installed, please refer to the section <a href="requirements.html#installations">0.1</a>.</p>
 </div>
 </div>
@@ -686,13 +686,13 @@ For more information on the method, please refer to our review <span class="cita
 <h3>
 <span class="header-section-number">1.3.2</span> Data loading<a class="anchor" aria-label="anchor" href="#data-loading-2"><i class="fas fa-link"></i></a>
 </h3>
-<p>Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 3000 peripheral blood mononuclear cells (PBMCs).
-Please follow the section <a href="requirements.html#PBMC-data">0.2</a> to retrieve these data from the scanpy package and save the data in the following file: “data/3k_pbmc/singlecell_anndata_filtered.h5ad”.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="Metacell-construction-chapter.html#cb45-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">"SEACells"</span></span>
-<span id="cb45-2"><a href="Metacell-construction-chapter.html#cb45-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">"bmcite"</span></span>
-<span id="cb45-3"><a href="Metacell-construction-chapter.html#cb45-3" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read(os.path.join(<span class="st">"data"</span>, proj_name, <span class="st">"singlecell_anndata_filtered.h5ad"</span>))</span>
-<span id="cb45-4"><a href="Metacell-construction-chapter.html#cb45-4" aria-hidden="true" tabindex="-1"></a>ad.var.index <span class="op">=</span> ad.var.genes</span>
-<span id="cb45-5"><a href="Metacell-construction-chapter.html#cb45-5" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.pp.subsample(ad, n_obs<span class="op">=</span><span class="dv">10000</span>, copy<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<p>Similarly to SuperCell and MC2, we will run SEACells on the single-cell dataset composed of around 30’000 bone marrow cells.
+Please follow the section <a href="requirements.html#bmcite-data">0.2</a> to retrieve these data from the SeuratData package and save the data in the following file: “data/bmcite/singlecell_anndata_filtered.h5ad”.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="Metacell-construction-chapter.html#cb39-1" aria-hidden="true" tabindex="-1"></a>MC_tool <span class="op">=</span> <span class="st">"SEACells"</span></span>
+<span id="cb39-2"><a href="Metacell-construction-chapter.html#cb39-2" aria-hidden="true" tabindex="-1"></a>proj_name <span class="op">=</span> <span class="st">"bmcite"</span></span>
+<span id="cb39-3"><a href="Metacell-construction-chapter.html#cb39-3" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.read(os.path.join(<span class="st">"data"</span>, proj_name, <span class="st">"singlecell_anndata_filtered.h5ad"</span>))</span>
+<span id="cb39-4"><a href="Metacell-construction-chapter.html#cb39-4" aria-hidden="true" tabindex="-1"></a>ad.var.index <span class="op">=</span> ad.var.genes</span>
+<span id="cb39-5"><a href="Metacell-construction-chapter.html#cb39-5" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> sc.pp.subsample(ad, n_obs<span class="op">=</span><span class="dv">10000</span>, copy<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
 <p>Note that since SEACells can take a substential amount of time to run we downsampled the data to 10’000 cells,
 you can comment the last line of the previous code chunk to run SEACells on all the cells.</p>
 </div>
@@ -715,24 +715,24 @@ ii) the number of neighbors to consider for the knn graph (<code>n_neighbors</co
 </h4>
 <p>The following code chunk saves the raw counts of the filtered data in the raw attribute of the anndata object.
 The raw counts will be used later for metacells aggregation.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="Metacell-construction-chapter.html#cb46-1" aria-hidden="true" tabindex="-1"></a>raw_ad <span class="op">=</span> sc.AnnData(ad.X)</span>
-<span id="cb46-2"><a href="Metacell-construction-chapter.html#cb46-2" aria-hidden="true" tabindex="-1"></a>raw_ad.obs_names, raw_ad.var_names <span class="op">=</span> ad.obs_names, ad.var_names</span>
-<span id="cb46-3"><a href="Metacell-construction-chapter.html#cb46-3" aria-hidden="true" tabindex="-1"></a>ad.raw <span class="op">=</span> raw_ad</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="Metacell-construction-chapter.html#cb40-1" aria-hidden="true" tabindex="-1"></a>raw_ad <span class="op">=</span> sc.AnnData(ad.X)</span>
+<span id="cb40-2"><a href="Metacell-construction-chapter.html#cb40-2" aria-hidden="true" tabindex="-1"></a>raw_ad.obs_names, raw_ad.var_names <span class="op">=</span> ad.obs_names, ad.var_names</span>
+<span id="cb40-3"><a href="Metacell-construction-chapter.html#cb40-3" aria-hidden="true" tabindex="-1"></a>ad.raw <span class="op">=</span> raw_ad</span></code></pre></div>
 <p>To build the kernel for archetypal analysis, SEACells requires a lower-dimensionnal embedding of the data (for example using PCA for scRNA-Seq data or SVD for scATAC-Seq data).
 In the next code chunk, we follow standard pre-processing steps prior to PCA computation, <em>i.e.</em>, data normalization, log transformation, identification of highly variable genes.
 PCA components are saved in the <code>obsm</code> attribute of the anndata object.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="Metacell-construction-chapter.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize cells, log transform and compute highly variable genes</span></span>
-<span id="cb47-2"><a href="Metacell-construction-chapter.html#cb47-2" aria-hidden="true" tabindex="-1"></a>sc.pp.normalize_per_cell(ad, <span class="dv">10000</span>)</span>
-<span id="cb47-3"><a href="Metacell-construction-chapter.html#cb47-3" aria-hidden="true" tabindex="-1"></a>sc.pp.log1p(ad)</span>
-<span id="cb47-4"><a href="Metacell-construction-chapter.html#cb47-4" aria-hidden="true" tabindex="-1"></a>sc.pp.highly_variable_genes(ad, n_top_genes<span class="op">=</span><span class="dv">2000</span>)</span>
-<span id="cb47-5"><a href="Metacell-construction-chapter.html#cb47-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-6"><a href="Metacell-construction-chapter.html#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute principal components  </span></span>
-<span id="cb47-7"><a href="Metacell-construction-chapter.html#cb47-7" aria-hidden="true" tabindex="-1"></a>n_comp    <span class="op">=</span> <span class="dv">30</span></span>
-<span id="cb47-8"><a href="Metacell-construction-chapter.html#cb47-8" aria-hidden="true" tabindex="-1"></a>sc.tl.pca(ad, n_comps<span class="op">=</span>n_comp, use_highly_variable<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb47-9"><a href="Metacell-construction-chapter.html#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-10"><a href="Metacell-construction-chapter.html#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run UMAP for visualization</span></span>
-<span id="cb47-11"><a href="Metacell-construction-chapter.html#cb47-11" aria-hidden="true" tabindex="-1"></a>sc.pp.neighbors(ad)</span>
-<span id="cb47-12"><a href="Metacell-construction-chapter.html#cb47-12" aria-hidden="true" tabindex="-1"></a>sc.tl.umap(ad)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="Metacell-construction-chapter.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalize cells, log transform and compute highly variable genes</span></span>
+<span id="cb41-2"><a href="Metacell-construction-chapter.html#cb41-2" aria-hidden="true" tabindex="-1"></a>sc.pp.normalize_per_cell(ad, <span class="dv">10000</span>)</span>
+<span id="cb41-3"><a href="Metacell-construction-chapter.html#cb41-3" aria-hidden="true" tabindex="-1"></a>sc.pp.log1p(ad)</span>
+<span id="cb41-4"><a href="Metacell-construction-chapter.html#cb41-4" aria-hidden="true" tabindex="-1"></a>sc.pp.highly_variable_genes(ad, n_top_genes<span class="op">=</span><span class="dv">2000</span>)</span>
+<span id="cb41-5"><a href="Metacell-construction-chapter.html#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-6"><a href="Metacell-construction-chapter.html#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute principal components  </span></span>
+<span id="cb41-7"><a href="Metacell-construction-chapter.html#cb41-7" aria-hidden="true" tabindex="-1"></a>n_comp    <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb41-8"><a href="Metacell-construction-chapter.html#cb41-8" aria-hidden="true" tabindex="-1"></a>sc.tl.pca(ad, n_comps<span class="op">=</span>n_comp, use_highly_variable<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb41-9"><a href="Metacell-construction-chapter.html#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-10"><a href="Metacell-construction-chapter.html#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Run UMAP for visualization</span></span>
+<span id="cb41-11"><a href="Metacell-construction-chapter.html#cb41-11" aria-hidden="true" tabindex="-1"></a>sc.pp.neighbors(ad)</span>
+<span id="cb41-12"><a href="Metacell-construction-chapter.html#cb41-12" aria-hidden="true" tabindex="-1"></a>sc.tl.umap(ad)</span></code></pre></div>
 </div>
 <div id="setting-up-seacells-parameters" class="section level4 unnumbered">
 <h4>Setting up SEACells parameters<a class="anchor" aria-label="anchor" href="#setting-up-seacells-parameters"><i class="fas fa-link"></i></a>
@@ -741,36 +741,36 @@ PCA components are saved in the <code>obsm</code> attribute of the anndata objec
 The number of neighbors to considered for the knn graph can be fixed using the <code>n_neighbors</code> parameter (here 15).<br>
 As mentioned previously, users should provide as input the number of metacells required (<code>n_SEACells</code> parameter). This number can be defined as the ratio between the number of single cells and the desired graining level (<code>gamma</code> parameter in the following code chunk).
 In this example, we choose a graining level of 25.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="Metacell-construction-chapter.html#cb48-1" aria-hidden="true" tabindex="-1"></a>build_kernel_on <span class="op">=</span> <span class="st">'X_pca'</span> <span class="co"># key in ad.obsm to use for computing metacells</span></span>
-<span id="cb48-2"><a href="Metacell-construction-chapter.html#cb48-2" aria-hidden="true" tabindex="-1"></a>n_waypoint_eigs <span class="op">=</span> <span class="dv">10</span>      <span class="co"># Number of eigenvalues to consider when initializing metacells</span></span>
-<span id="cb48-3"><a href="Metacell-construction-chapter.html#cb48-3" aria-hidden="true" tabindex="-1"></a>n_neighbors <span class="op">=</span> <span class="dv">15</span> <span class="co"># Number of neighbors used for graph construction </span></span>
-<span id="cb48-4"><a href="Metacell-construction-chapter.html#cb48-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">75</span>   <span class="co"># the requested graining level</span></span>
-<span id="cb48-5"><a href="Metacell-construction-chapter.html#cb48-5" aria-hidden="true" tabindex="-1"></a>n_SEACells <span class="op">=</span> <span class="bu">int</span>(ad.shape[<span class="dv">0</span>]<span class="op">/</span>gamma) <span class="co"># the requested number of metacells  </span></span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="Metacell-construction-chapter.html#cb42-1" aria-hidden="true" tabindex="-1"></a>build_kernel_on <span class="op">=</span> <span class="st">'X_pca'</span> <span class="co"># key in ad.obsm to use for computing metacells</span></span>
+<span id="cb42-2"><a href="Metacell-construction-chapter.html#cb42-2" aria-hidden="true" tabindex="-1"></a>n_waypoint_eigs <span class="op">=</span> <span class="dv">10</span>      <span class="co"># Number of eigenvalues to consider when initializing metacells</span></span>
+<span id="cb42-3"><a href="Metacell-construction-chapter.html#cb42-3" aria-hidden="true" tabindex="-1"></a>n_neighbors <span class="op">=</span> <span class="dv">15</span> <span class="co"># Number of neighbors used for graph construction </span></span>
+<span id="cb42-4"><a href="Metacell-construction-chapter.html#cb42-4" aria-hidden="true" tabindex="-1"></a>gamma <span class="op">=</span> <span class="dv">75</span>   <span class="co"># the requested graining level</span></span>
+<span id="cb42-5"><a href="Metacell-construction-chapter.html#cb42-5" aria-hidden="true" tabindex="-1"></a>n_SEACells <span class="op">=</span> <span class="bu">int</span>(ad.shape[<span class="dv">0</span>]<span class="op">/</span>gamma) <span class="co"># the requested number of metacells  </span></span></code></pre></div>
 </div>
 <div id="initializing-the-seacells-model" class="section level4 unnumbered">
 <h4>Initializing the SEACells model<a class="anchor" aria-label="anchor" href="#initializing-the-seacells-model"><i class="fas fa-link"></i></a>
 </h4>
 <p>The SEACells model is initialized with the previously defined parameters using the <code>SEACells.core.SEACells</code> function.</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="Metacell-construction-chapter.html#cb49-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> SEACells.core.SEACells(ad,</span>
-<span id="cb49-2"><a href="Metacell-construction-chapter.html#cb49-2" aria-hidden="true" tabindex="-1"></a>                  build_kernel_on <span class="op">=</span> build_kernel_on,</span>
-<span id="cb49-3"><a href="Metacell-construction-chapter.html#cb49-3" aria-hidden="true" tabindex="-1"></a>                  n_SEACells <span class="op">=</span> n_SEACells,</span>
-<span id="cb49-4"><a href="Metacell-construction-chapter.html#cb49-4" aria-hidden="true" tabindex="-1"></a>                  n_waypoint_eigs <span class="op">=</span> n_waypoint_eigs,</span>
-<span id="cb49-5"><a href="Metacell-construction-chapter.html#cb49-5" aria-hidden="true" tabindex="-1"></a>                  n_neighbors <span class="op">=</span> n_neighbors,</span>
-<span id="cb49-6"><a href="Metacell-construction-chapter.html#cb49-6" aria-hidden="true" tabindex="-1"></a>                  convergence_epsilon <span class="op">=</span> <span class="fl">1e-3</span>,</span>
-<span id="cb49-7"><a href="Metacell-construction-chapter.html#cb49-7" aria-hidden="true" tabindex="-1"></a>                  verbose <span class="op">=</span> <span class="va">True</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="Metacell-construction-chapter.html#cb43-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> SEACells.core.SEACells(ad,</span>
+<span id="cb43-2"><a href="Metacell-construction-chapter.html#cb43-2" aria-hidden="true" tabindex="-1"></a>                  build_kernel_on <span class="op">=</span> build_kernel_on,</span>
+<span id="cb43-3"><a href="Metacell-construction-chapter.html#cb43-3" aria-hidden="true" tabindex="-1"></a>                  n_SEACells <span class="op">=</span> n_SEACells,</span>
+<span id="cb43-4"><a href="Metacell-construction-chapter.html#cb43-4" aria-hidden="true" tabindex="-1"></a>                  n_waypoint_eigs <span class="op">=</span> n_waypoint_eigs,</span>
+<span id="cb43-5"><a href="Metacell-construction-chapter.html#cb43-5" aria-hidden="true" tabindex="-1"></a>                  n_neighbors <span class="op">=</span> n_neighbors,</span>
+<span id="cb43-6"><a href="Metacell-construction-chapter.html#cb43-6" aria-hidden="true" tabindex="-1"></a>                  convergence_epsilon <span class="op">=</span> <span class="fl">1e-3</span>,</span>
+<span id="cb43-7"><a href="Metacell-construction-chapter.html#cb43-7" aria-hidden="true" tabindex="-1"></a>                  verbose <span class="op">=</span> <span class="va">True</span>)</span></code></pre></div>
 <p>Kernel computation is performed using the <code>mconstruct_kernel_matrix</code> function.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="Metacell-construction-chapter.html#cb50-1" aria-hidden="true" tabindex="-1"></a>model.construct_kernel_matrix()</span>
-<span id="cb50-2"><a href="Metacell-construction-chapter.html#cb50-2" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> model.kernel_matrix</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="Metacell-construction-chapter.html#cb44-1" aria-hidden="true" tabindex="-1"></a>model.construct_kernel_matrix()</span>
+<span id="cb44-2"><a href="Metacell-construction-chapter.html#cb44-2" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> model.kernel_matrix</span></code></pre></div>
 <p>Metacells are initialized using the <code>initialize_archetypes</code> function.<br>
 The SEACells archetypes initialization is based on cells sampling and thus is stochastic. User can fix a seed for reproducible results.
 To check that the archetypes are evenly spread, users can visualize them using the <code>plot.plot_initialization</code> function.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="Metacell-construction-chapter.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility</span></span>
-<span id="cb51-2"><a href="Metacell-construction-chapter.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># random.seed(123)</span></span>
-<span id="cb51-3"><a href="Metacell-construction-chapter.html#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-4"><a href="Metacell-construction-chapter.html#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize archetypes</span></span>
-<span id="cb51-5"><a href="Metacell-construction-chapter.html#cb51-5" aria-hidden="true" tabindex="-1"></a>model.initialize_archetypes()</span>
-<span id="cb51-6"><a href="Metacell-construction-chapter.html#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the initialization </span></span>
-<span id="cb51-7"><a href="Metacell-construction-chapter.html#cb51-7" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_initialization(ad, model, plot_basis<span class="op">=</span><span class="st">'X_umap'</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="Metacell-construction-chapter.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility</span></span>
+<span id="cb45-2"><a href="Metacell-construction-chapter.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co"># random.seed(123)</span></span>
+<span id="cb45-3"><a href="Metacell-construction-chapter.html#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="Metacell-construction-chapter.html#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize archetypes</span></span>
+<span id="cb45-5"><a href="Metacell-construction-chapter.html#cb45-5" aria-hidden="true" tabindex="-1"></a>model.initialize_archetypes()</span>
+<span id="cb45-6"><a href="Metacell-construction-chapter.html#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the initialization </span></span>
+<span id="cb45-7"><a href="Metacell-construction-chapter.html#cb45-7" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_initialization(ad, model, plot_basis<span class="op">=</span><span class="st">'X_umap'</span>) </span></code></pre></div>
 <div class="inline-figure"><img src="21-MC_construction_discrete_files/figure-html/seacells-plotInit-1.png" width="672"></div>
 </div>
 <div id="fitting-the-seacells-model-to-identify-metacells" class="section level4 unnumbered">
@@ -778,73 +778,74 @@ To check that the archetypes are evenly spread, users can visualize them using t
 </h4>
 <p>The identification of the archetypes is an iterative process. In this example, we fixed the minimum and maximum number of iteration to 10 and 50 respectively.
 We then check the model convergence using the <code>plot_convergence</code> function.</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="Metacell-construction-chapter.html#cb52-1" aria-hidden="true" tabindex="-1"></a>model.fit(min_iter <span class="op">=</span> <span class="dv">10</span>, max_iter <span class="op">=</span> <span class="dv">100</span>)</span>
-<span id="cb52-2"><a href="Metacell-construction-chapter.html#cb52-2" aria-hidden="true" tabindex="-1"></a>model.plot_convergence()</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="Metacell-construction-chapter.html#cb46-1" aria-hidden="true" tabindex="-1"></a>model.fit(min_iter <span class="op">=</span> <span class="dv">10</span>, max_iter <span class="op">=</span> <span class="dv">100</span>)</span>
+<span id="cb46-2"><a href="Metacell-construction-chapter.html#cb46-2" aria-hidden="true" tabindex="-1"></a>model.plot_convergence()</span></code></pre></div>
 <div class="inline-figure"><img src="21-MC_construction_discrete_files/figure-html/seacells-plotConvergence-3.png" width="672"></div>
 <p>Once the final archetypes have been identified, we can assign each single-cell to one metacell (hard assignments).
 These assignments (<code>membership</code>) can be retrieved using the <code>get_hard_assignments</code> function or extracted from the anndata object using <code>ad.obs["SEACell"]</code>.
 In this tutorial, we will only consider hard assignments. However, the SEACells package also provides the option to retrieve soft assignments (multiple weighted assignments for each cell) using the <code>get_soft_assignments</code> function.
 For more details on the soft assignments, please refer to the <a href="https://www.nature.com/articles/s41587-023-01716-9#Sec11">SEACell paper</a> and the original <a href="https://github.com/dpeerlab/SEACells/blob/main/notebooks/SEACell_computation.ipynb">author’s jupyter notebook</a>.</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="Metacell-construction-chapter.html#cb53-1" aria-hidden="true" tabindex="-1"></a>membership <span class="op">=</span> model.get_hard_assignments()</span>
-<span id="cb53-2"><a href="Metacell-construction-chapter.html#cb53-2" aria-hidden="true" tabindex="-1"></a>membership.head</span>
-<span id="cb53-3"><a href="Metacell-construction-chapter.html#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of                           SEACell</span></span>
-<span id="cb53-4"><a href="Metacell-construction-chapter.html#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; index                            </span></span>
-<span id="cb53-5"><a href="Metacell-construction-chapter.html#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_GTCACAATCATCATTC-1   SEACell-16</span></span>
-<span id="cb53-6"><a href="Metacell-construction-chapter.html#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_CTCACACCAGCCTTGG-1   SEACell-17</span></span>
-<span id="cb53-7"><a href="Metacell-construction-chapter.html#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CTTAGGATCTTAGCCC-1   SEACell-62</span></span>
-<span id="cb53-8"><a href="Metacell-construction-chapter.html#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_TTAGTTCAGGTACTCT-1  SEACell-108</span></span>
-<span id="cb53-9"><a href="Metacell-construction-chapter.html#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TAGACCAAGGGATGGG-1  SEACell-106</span></span>
-<span id="cb53-10"><a href="Metacell-construction-chapter.html#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...                           ...</span></span>
-<span id="cb53-11"><a href="Metacell-construction-chapter.html#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_AGTCTTTCATTTGCTT-1   SEACell-51</span></span>
-<span id="cb53-12"><a href="Metacell-construction-chapter.html#cb53-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CGATGGCAGTACGCCC-1    SEACell-4</span></span>
-<span id="cb53-13"><a href="Metacell-construction-chapter.html#cb53-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CTGAAGTCAATCCGAT-1   SEACell-49</span></span>
-<span id="cb53-14"><a href="Metacell-construction-chapter.html#cb53-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CAGTAACAGGGTTCCC-1   SEACell-77</span></span>
-<span id="cb53-15"><a href="Metacell-construction-chapter.html#cb53-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_GGAATAATCTTGTTTG-1  SEACell-105</span></span>
-<span id="cb53-16"><a href="Metacell-construction-chapter.html#cb53-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb53-17"><a href="Metacell-construction-chapter.html#cb53-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10000 rows x 1 columns]&gt;</span></span>
-<span id="cb53-18"><a href="Metacell-construction-chapter.html#cb53-18" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">"SEACell"</span>].head</span>
-<span id="cb53-19"><a href="Metacell-construction-chapter.html#cb53-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of index</span></span>
-<span id="cb53-20"><a href="Metacell-construction-chapter.html#cb53-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_GTCACAATCATCATTC-1     SEACell-16</span></span>
-<span id="cb53-21"><a href="Metacell-construction-chapter.html#cb53-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_CTCACACCAGCCTTGG-1     SEACell-17</span></span>
-<span id="cb53-22"><a href="Metacell-construction-chapter.html#cb53-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CTTAGGATCTTAGCCC-1     SEACell-62</span></span>
-<span id="cb53-23"><a href="Metacell-construction-chapter.html#cb53-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_TTAGTTCAGGTACTCT-1    SEACell-108</span></span>
-<span id="cb53-24"><a href="Metacell-construction-chapter.html#cb53-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TAGACCAAGGGATGGG-1    SEACell-106</span></span>
-<span id="cb53-25"><a href="Metacell-construction-chapter.html#cb53-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            ...     </span></span>
-<span id="cb53-26"><a href="Metacell-construction-chapter.html#cb53-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_AGTCTTTCATTTGCTT-1     SEACell-51</span></span>
-<span id="cb53-27"><a href="Metacell-construction-chapter.html#cb53-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CGATGGCAGTACGCCC-1      SEACell-4</span></span>
-<span id="cb53-28"><a href="Metacell-construction-chapter.html#cb53-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CTGAAGTCAATCCGAT-1     SEACell-49</span></span>
-<span id="cb53-29"><a href="Metacell-construction-chapter.html#cb53-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CAGTAACAGGGTTCCC-1     SEACell-77</span></span>
-<span id="cb53-30"><a href="Metacell-construction-chapter.html#cb53-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_GGAATAATCTTGTTTG-1    SEACell-105</span></span>
-<span id="cb53-31"><a href="Metacell-construction-chapter.html#cb53-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Name: SEACell, Length: 10000, dtype: object&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="Metacell-construction-chapter.html#cb47-1" aria-hidden="true" tabindex="-1"></a>membership <span class="op">=</span> model.get_hard_assignments()</span>
+<span id="cb47-2"><a href="Metacell-construction-chapter.html#cb47-2" aria-hidden="true" tabindex="-1"></a>membership.head</span>
+<span id="cb47-3"><a href="Metacell-construction-chapter.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of                           SEACell</span></span>
+<span id="cb47-4"><a href="Metacell-construction-chapter.html#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; index                            </span></span>
+<span id="cb47-5"><a href="Metacell-construction-chapter.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_GTCACAATCATCATTC-1   SEACell-16</span></span>
+<span id="cb47-6"><a href="Metacell-construction-chapter.html#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_CTCACACCAGCCTTGG-1   SEACell-17</span></span>
+<span id="cb47-7"><a href="Metacell-construction-chapter.html#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CTTAGGATCTTAGCCC-1   SEACell-62</span></span>
+<span id="cb47-8"><a href="Metacell-construction-chapter.html#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_TTAGTTCAGGTACTCT-1  SEACell-108</span></span>
+<span id="cb47-9"><a href="Metacell-construction-chapter.html#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TAGACCAAGGGATGGG-1  SEACell-106</span></span>
+<span id="cb47-10"><a href="Metacell-construction-chapter.html#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ...                           ...</span></span>
+<span id="cb47-11"><a href="Metacell-construction-chapter.html#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_AGTCTTTCATTTGCTT-1   SEACell-51</span></span>
+<span id="cb47-12"><a href="Metacell-construction-chapter.html#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CGATGGCAGTACGCCC-1    SEACell-4</span></span>
+<span id="cb47-13"><a href="Metacell-construction-chapter.html#cb47-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CTGAAGTCAATCCGAT-1   SEACell-49</span></span>
+<span id="cb47-14"><a href="Metacell-construction-chapter.html#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CAGTAACAGGGTTCCC-1   SEACell-77</span></span>
+<span id="cb47-15"><a href="Metacell-construction-chapter.html#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_GGAATAATCTTGTTTG-1  SEACell-105</span></span>
+<span id="cb47-16"><a href="Metacell-construction-chapter.html#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb47-17"><a href="Metacell-construction-chapter.html#cb47-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10000 rows x 1 columns]&gt;</span></span>
+<span id="cb47-18"><a href="Metacell-construction-chapter.html#cb47-18" aria-hidden="true" tabindex="-1"></a>ad.obs[<span class="st">"SEACell"</span>].head</span>
+<span id="cb47-19"><a href="Metacell-construction-chapter.html#cb47-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;bound method NDFrame.head of index</span></span>
+<span id="cb47-20"><a href="Metacell-construction-chapter.html#cb47-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_GTCACAATCATCATTC-1     SEACell-16</span></span>
+<span id="cb47-21"><a href="Metacell-construction-chapter.html#cb47-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_CTCACACCAGCCTTGG-1     SEACell-17</span></span>
+<span id="cb47-22"><a href="Metacell-construction-chapter.html#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CTTAGGATCTTAGCCC-1     SEACell-62</span></span>
+<span id="cb47-23"><a href="Metacell-construction-chapter.html#cb47-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_TTAGTTCAGGTACTCT-1    SEACell-108</span></span>
+<span id="cb47-24"><a href="Metacell-construction-chapter.html#cb47-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_TAGACCAAGGGATGGG-1    SEACell-106</span></span>
+<span id="cb47-25"><a href="Metacell-construction-chapter.html#cb47-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                            ...     </span></span>
+<span id="cb47-26"><a href="Metacell-construction-chapter.html#cb47-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_AGTCTTTCATTTGCTT-1     SEACell-51</span></span>
+<span id="cb47-27"><a href="Metacell-construction-chapter.html#cb47-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CGATGGCAGTACGCCC-1      SEACell-4</span></span>
+<span id="cb47-28"><a href="Metacell-construction-chapter.html#cb47-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CTGAAGTCAATCCGAT-1     SEACell-49</span></span>
+<span id="cb47-29"><a href="Metacell-construction-chapter.html#cb47-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; a_CAGTAACAGGGTTCCC-1     SEACell-77</span></span>
+<span id="cb47-30"><a href="Metacell-construction-chapter.html#cb47-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; b_GGAATAATCTTGTTTG-1    SEACell-105</span></span>
+<span id="cb47-31"><a href="Metacell-construction-chapter.html#cb47-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Name: SEACell, Length: 10000, dtype: object&gt;</span></span></code></pre></div>
 </div>
 <div id="retrieve-aggregated-metacell-data-2" class="section level4 unnumbered">
 <h4>Retrieve aggregated metacell data<a class="anchor" aria-label="anchor" href="#retrieve-aggregated-metacell-data-2"><i class="fas fa-link"></i></a>
 </h4>
 <p>The <code>core.summarize_by_SEACell</code> function can be used to generate a metacell count matrix (aggregation of counts across all cells belonging to each metacell).</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="Metacell-construction-chapter.html#cb54-1" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> SEACells.core.summarize_by_SEACell(ad, SEACells_label<span class="op">=</span><span class="st">'SEACell'</span>, summarize_layer<span class="op">=</span><span class="st">'raw'</span>, celltype_label<span class="op">=</span>annotation_label)</span>
-<span id="cb54-2"><a href="Metacell-construction-chapter.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb54-3"><a href="Metacell-construction-chapter.html#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">133</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
-<span id="cb54-4"><a href="Metacell-construction-chapter.html#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span><span class="op">%|</span><span class="dv">4</span>         <span class="op">|</span> <span class="dv">6</span><span class="op">/</span><span class="dv">133</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span><span class="dv">00</span>:<span class="dv">0</span><span class="er">2</span>, <span class="fl">55.80</span><span class="er">it</span><span class="op">/</span>s]</span>
-<span id="cb54-5"><a href="Metacell-construction-chapter.html#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">9</span><span class="op">%|</span><span class="dv">9</span>         <span class="op">|</span> <span class="dv">12</span><span class="op">/</span><span class="dv">133</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span><span class="dv">00</span>:<span class="dv">0</span><span class="er">2</span>, <span class="fl">56.50</span><span class="er">it</span><span class="op">/</span>s]</span>
-<span id="cb54-6"><a href="Metacell-construction-chapter.html#cb54-6" aria-hidden="true" tabindex="-1"></a> <span class="dv">14</span><span class="op">%|</span><span class="co">#3        | 18/133 [00:00&lt;00:02, 54.98it/s]</span></span>
-<span id="cb54-7"><a href="Metacell-construction-chapter.html#cb54-7" aria-hidden="true" tabindex="-1"></a> <span class="dv">18</span><span class="op">%|</span><span class="co">#8        | 24/133 [00:00&lt;00:01, 55.70it/s]</span></span>
-<span id="cb54-8"><a href="Metacell-construction-chapter.html#cb54-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">23</span><span class="op">%|</span><span class="co">##2       | 30/133 [00:00&lt;00:01, 56.92it/s]</span></span>
-<span id="cb54-9"><a href="Metacell-construction-chapter.html#cb54-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">27</span><span class="op">%|</span><span class="co">##7       | 36/133 [00:00&lt;00:01, 56.67it/s]</span></span>
-<span id="cb54-10"><a href="Metacell-construction-chapter.html#cb54-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">32</span><span class="op">%|</span><span class="co">###2      | 43/133 [00:00&lt;00:01, 57.63it/s]</span></span>
-<span id="cb54-11"><a href="Metacell-construction-chapter.html#cb54-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">37</span><span class="op">%|</span><span class="co">###6      | 49/133 [00:00&lt;00:01, 58.12it/s]</span></span>
-<span id="cb54-12"><a href="Metacell-construction-chapter.html#cb54-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">41</span><span class="op">%|</span><span class="co">####1     | 55/133 [00:00&lt;00:01, 57.72it/s]</span></span>
-<span id="cb54-13"><a href="Metacell-construction-chapter.html#cb54-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">46</span><span class="op">%|</span><span class="co">####5     | 61/133 [00:01&lt;00:01, 56.17it/s]</span></span>
-<span id="cb54-14"><a href="Metacell-construction-chapter.html#cb54-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">50</span><span class="op">%|</span><span class="co">#####     | 67/133 [00:01&lt;00:01, 55.50it/s]</span></span>
-<span id="cb54-15"><a href="Metacell-construction-chapter.html#cb54-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">56</span><span class="op">%|</span><span class="co">#####5    | 74/133 [00:01&lt;00:01, 57.52it/s]</span></span>
-<span id="cb54-16"><a href="Metacell-construction-chapter.html#cb54-16" aria-hidden="true" tabindex="-1"></a> <span class="dv">61</span><span class="op">%|</span><span class="co">######    | 81/133 [00:01&lt;00:00, 58.74it/s]</span></span>
-<span id="cb54-17"><a href="Metacell-construction-chapter.html#cb54-17" aria-hidden="true" tabindex="-1"></a> <span class="dv">66</span><span class="op">%|</span><span class="co">######6   | 88/133 [00:01&lt;00:00, 59.40it/s]</span></span>
-<span id="cb54-18"><a href="Metacell-construction-chapter.html#cb54-18" aria-hidden="true" tabindex="-1"></a> <span class="dv">71</span><span class="op">%|</span><span class="co">#######1  | 95/133 [00:01&lt;00:00, 60.96it/s]</span></span>
-<span id="cb54-19"><a href="Metacell-construction-chapter.html#cb54-19" aria-hidden="true" tabindex="-1"></a> <span class="dv">77</span><span class="op">%|</span><span class="co">#######6  | 102/133 [00:01&lt;00:00, 61.27it/s]</span></span>
-<span id="cb54-20"><a href="Metacell-construction-chapter.html#cb54-20" aria-hidden="true" tabindex="-1"></a> <span class="dv">82</span><span class="op">%|</span><span class="co">########1 | 109/133 [00:01&lt;00:00, 62.79it/s]</span></span>
-<span id="cb54-21"><a href="Metacell-construction-chapter.html#cb54-21" aria-hidden="true" tabindex="-1"></a> <span class="dv">87</span><span class="op">%|</span><span class="co">########7 | 116/133 [00:01&lt;00:00, 63.16it/s]</span></span>
-<span id="cb54-22"><a href="Metacell-construction-chapter.html#cb54-22" aria-hidden="true" tabindex="-1"></a> <span class="dv">92</span><span class="op">%|</span><span class="co">#########2| 123/133 [00:02&lt;00:00, 64.88it/s]</span></span>
-<span id="cb54-23"><a href="Metacell-construction-chapter.html#cb54-23" aria-hidden="true" tabindex="-1"></a> <span class="dv">98</span><span class="op">%|</span><span class="co">#########7| 130/133 [00:02&lt;00:00, 65.73it/s]</span></span>
-<span id="cb54-24"><a href="Metacell-construction-chapter.html#cb54-24" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 133/133 [00:02&lt;00:00, 60.14it/s]</span></span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="Metacell-construction-chapter.html#cb48-1" aria-hidden="true" tabindex="-1"></a>mc_ad <span class="op">=</span> SEACells.core.summarize_by_SEACell(ad, SEACells_label<span class="op">=</span><span class="st">'SEACell'</span>, summarize_layer<span class="op">=</span><span class="st">'raw'</span>, celltype_label<span class="op">=</span>annotation_label)</span>
+<span id="cb48-2"><a href="Metacell-construction-chapter.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb48-3"><a href="Metacell-construction-chapter.html#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span><span class="op">%|</span>          <span class="op">|</span> <span class="dv">0</span><span class="op">/</span><span class="dv">133</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span>?, ?it<span class="op">/</span>s]</span>
+<span id="cb48-4"><a href="Metacell-construction-chapter.html#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span><span class="op">%|</span><span class="dv">4</span>         <span class="op">|</span> <span class="dv">6</span><span class="op">/</span><span class="dv">133</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span><span class="dv">00</span>:<span class="dv">0</span><span class="er">2</span>, <span class="fl">56.52</span><span class="er">it</span><span class="op">/</span>s]</span>
+<span id="cb48-5"><a href="Metacell-construction-chapter.html#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">9</span><span class="op">%|</span><span class="dv">9</span>         <span class="op">|</span> <span class="dv">12</span><span class="op">/</span><span class="dv">133</span> [<span class="dv">00</span>:<span class="dv">00</span><span class="op">&lt;</span><span class="dv">00</span>:<span class="dv">0</span><span class="er">2</span>, <span class="fl">55.83</span><span class="er">it</span><span class="op">/</span>s]</span>
+<span id="cb48-6"><a href="Metacell-construction-chapter.html#cb48-6" aria-hidden="true" tabindex="-1"></a> <span class="dv">14</span><span class="op">%|</span><span class="co">#3        | 18/133 [00:00&lt;00:02, 53.07it/s]</span></span>
+<span id="cb48-7"><a href="Metacell-construction-chapter.html#cb48-7" aria-hidden="true" tabindex="-1"></a> <span class="dv">18</span><span class="op">%|</span><span class="co">#8        | 24/133 [00:00&lt;00:02, 53.39it/s]</span></span>
+<span id="cb48-8"><a href="Metacell-construction-chapter.html#cb48-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">23</span><span class="op">%|</span><span class="co">##2       | 30/133 [00:00&lt;00:01, 54.36it/s]</span></span>
+<span id="cb48-9"><a href="Metacell-construction-chapter.html#cb48-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">27</span><span class="op">%|</span><span class="co">##7       | 36/133 [00:00&lt;00:01, 53.78it/s]</span></span>
+<span id="cb48-10"><a href="Metacell-construction-chapter.html#cb48-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">32</span><span class="op">%|</span><span class="co">###1      | 42/133 [00:00&lt;00:01, 54.84it/s]</span></span>
+<span id="cb48-11"><a href="Metacell-construction-chapter.html#cb48-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">36</span><span class="op">%|</span><span class="co">###6      | 48/133 [00:00&lt;00:01, 54.67it/s]</span></span>
+<span id="cb48-12"><a href="Metacell-construction-chapter.html#cb48-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">41</span><span class="op">%|</span><span class="co">####      | 54/133 [00:00&lt;00:01, 54.71it/s]</span></span>
+<span id="cb48-13"><a href="Metacell-construction-chapter.html#cb48-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">45</span><span class="op">%|</span><span class="co">####5     | 60/133 [00:01&lt;00:01, 52.97it/s]</span></span>
+<span id="cb48-14"><a href="Metacell-construction-chapter.html#cb48-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">50</span><span class="op">%|</span><span class="co">####9     | 66/133 [00:01&lt;00:01, 51.83it/s]</span></span>
+<span id="cb48-15"><a href="Metacell-construction-chapter.html#cb48-15" aria-hidden="true" tabindex="-1"></a> <span class="dv">54</span><span class="op">%|</span><span class="co">#####4    | 72/133 [00:01&lt;00:01, 53.77it/s]</span></span>
+<span id="cb48-16"><a href="Metacell-construction-chapter.html#cb48-16" aria-hidden="true" tabindex="-1"></a> <span class="dv">59</span><span class="op">%|</span><span class="co">#####8    | 78/133 [00:01&lt;00:01, 54.26it/s]</span></span>
+<span id="cb48-17"><a href="Metacell-construction-chapter.html#cb48-17" aria-hidden="true" tabindex="-1"></a> <span class="dv">64</span><span class="op">%|</span><span class="co">######3   | 85/133 [00:01&lt;00:00, 56.21it/s]</span></span>
+<span id="cb48-18"><a href="Metacell-construction-chapter.html#cb48-18" aria-hidden="true" tabindex="-1"></a> <span class="dv">68</span><span class="op">%|</span><span class="co">######8   | 91/133 [00:01&lt;00:00, 57.18it/s]</span></span>
+<span id="cb48-19"><a href="Metacell-construction-chapter.html#cb48-19" aria-hidden="true" tabindex="-1"></a> <span class="dv">74</span><span class="op">%|</span><span class="co">#######3  | 98/133 [00:01&lt;00:00, 59.23it/s]</span></span>
+<span id="cb48-20"><a href="Metacell-construction-chapter.html#cb48-20" aria-hidden="true" tabindex="-1"></a> <span class="dv">78</span><span class="op">%|</span><span class="co">#######8  | 104/133 [00:01&lt;00:00, 59.23it/s]</span></span>
+<span id="cb48-21"><a href="Metacell-construction-chapter.html#cb48-21" aria-hidden="true" tabindex="-1"></a> <span class="dv">83</span><span class="op">%|</span><span class="co">########3 | 111/133 [00:01&lt;00:00, 60.68it/s]</span></span>
+<span id="cb48-22"><a href="Metacell-construction-chapter.html#cb48-22" aria-hidden="true" tabindex="-1"></a> <span class="dv">89</span><span class="op">%|</span><span class="co">########8 | 118/133 [00:02&lt;00:00, 61.64it/s]</span></span>
+<span id="cb48-23"><a href="Metacell-construction-chapter.html#cb48-23" aria-hidden="true" tabindex="-1"></a> <span class="dv">94</span><span class="op">%|</span><span class="co">#########3| 125/133 [00:02&lt;00:00, 63.04it/s]</span></span>
+<span id="cb48-24"><a href="Metacell-construction-chapter.html#cb48-24" aria-hidden="true" tabindex="-1"></a> <span class="dv">99</span><span class="op">%|</span><span class="co">#########9| 132/133 [00:02&lt;00:00, 63.71it/s]</span></span>
+<span id="cb48-25"><a href="Metacell-construction-chapter.html#cb48-25" aria-hidden="true" tabindex="-1"></a><span class="dv">100</span><span class="op">%|</span><span class="co">##########| 133/133 [00:02&lt;00:00, 57.40it/s]</span></span></code></pre></div>
 </div>
 <div id="annotate-metacells" class="section level4 unnumbered">
 <h4>Annotate metacells<a class="anchor" aria-label="anchor" href="#annotate-metacells"><i class="fas fa-link"></i></a>
@@ -858,26 +859,26 @@ allowed us to annotate the metacells to the most common cell type in each metace
 <span class="header-section-number">1.3.5</span> Visualize metacells<a class="anchor" aria-label="anchor" href="#visualize-metacells"><i class="fas fa-link"></i></a>
 </h3>
 <p>To visualize the metacells, we can project the metacells on the single-cell UMAP representation using the <code>plot.plot_2D</code> included in the SEACells package.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="Metacell-construction-chapter.html#cb55-1" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_2D(ad, key<span class="op">=</span><span class="st">'X_umap'</span>, colour_metacells<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="Metacell-construction-chapter.html#cb49-1" aria-hidden="true" tabindex="-1"></a>SEACells.plot.plot_2D(ad, key<span class="op">=</span><span class="st">'X_umap'</span>, colour_metacells<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
 <div class="inline-figure"><img src="21-MC_construction_discrete_files/figure-html/seacells-umap-5.png" width="480"></div>
 <div id="save-output-2" class="section level5 unnumbered">
 <h5>Save output<a class="anchor" aria-label="anchor" href="#save-output-2"><i class="fas fa-link"></i></a>
 </h5>
 <p>For future downstream analyses in python (section <a href="#standard-analysis-Py"><strong>??</strong></a>), we save the metacell counts in an Anndata object:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb56-1"><a href="Metacell-construction-chapter.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Saving metacell object for the "</span><span class="op">+</span> proj_name<span class="op">+</span> <span class="st">" dataset using "</span><span class="op">+</span> MC_tool)</span>
-<span id="cb56-2"><a href="Metacell-construction-chapter.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Saving metacell object for the bmcite dataset using SEACells</span></span>
-<span id="cb56-3"><a href="Metacell-construction-chapter.html#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-4"><a href="Metacell-construction-chapter.html#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Save metacell sizes </span></span>
-<span id="cb56-5"><a href="Metacell-construction-chapter.html#cb56-5" aria-hidden="true" tabindex="-1"></a>label_df <span class="op">=</span> ad.obs[[<span class="st">'SEACell'</span>]].reset_index()</span>
-<span id="cb56-6"><a href="Metacell-construction-chapter.html#cb56-6" aria-hidden="true" tabindex="-1"></a>mc_ad.obs <span class="op">=</span> mc_ad.obs.join(pd.DataFrame(label_df.groupby(<span class="st">'SEACell'</span>).count().iloc[:, <span class="dv">0</span>]).rename(columns<span class="op">=</span>{<span class="st">'index'</span>:<span class="st">'size'</span>}))</span>
-<span id="cb56-7"><a href="Metacell-construction-chapter.html#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-8"><a href="Metacell-construction-chapter.html#cb56-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save pca used to compute metacells</span></span>
-<span id="cb56-9"><a href="Metacell-construction-chapter.html#cb56-9" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'var_features'</span>]<span class="op">=</span>ad.var_names[ad.var.highly_variable].tolist()</span>
-<span id="cb56-10"><a href="Metacell-construction-chapter.html#cb56-10" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'sc.pca'</span>]<span class="op">=</span>ad.obsm[<span class="st">'X_pca'</span>] </span>
-<span id="cb56-11"><a href="Metacell-construction-chapter.html#cb56-11" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'sc.umap'</span>]<span class="op">=</span>ad.obsm[<span class="st">'X_umap'</span>] </span>
-<span id="cb56-12"><a href="Metacell-construction-chapter.html#cb56-12" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">'./data'</span>, proj_name, <span class="ss">f'metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad'</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="Metacell-construction-chapter.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Saving metacell object for the "</span><span class="op">+</span> proj_name<span class="op">+</span> <span class="st">" dataset using "</span><span class="op">+</span> MC_tool)</span>
+<span id="cb50-2"><a href="Metacell-construction-chapter.html#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Saving metacell object for the bmcite dataset using SEACells</span></span>
+<span id="cb50-3"><a href="Metacell-construction-chapter.html#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="Metacell-construction-chapter.html#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Save metacell sizes </span></span>
+<span id="cb50-5"><a href="Metacell-construction-chapter.html#cb50-5" aria-hidden="true" tabindex="-1"></a>label_df <span class="op">=</span> ad.obs[[<span class="st">'SEACell'</span>]].reset_index()</span>
+<span id="cb50-6"><a href="Metacell-construction-chapter.html#cb50-6" aria-hidden="true" tabindex="-1"></a>mc_ad.obs <span class="op">=</span> mc_ad.obs.join(pd.DataFrame(label_df.groupby(<span class="st">'SEACell'</span>).count().iloc[:, <span class="dv">0</span>]).rename(columns<span class="op">=</span>{<span class="st">'index'</span>:<span class="st">'size'</span>}))</span>
+<span id="cb50-7"><a href="Metacell-construction-chapter.html#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="Metacell-construction-chapter.html#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="co"># save pca used to compute metacells</span></span>
+<span id="cb50-9"><a href="Metacell-construction-chapter.html#cb50-9" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'var_features'</span>]<span class="op">=</span>ad.var_names[ad.var.highly_variable].tolist()</span>
+<span id="cb50-10"><a href="Metacell-construction-chapter.html#cb50-10" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'sc.pca'</span>]<span class="op">=</span>ad.obsm[<span class="st">'X_pca'</span>] </span>
+<span id="cb50-11"><a href="Metacell-construction-chapter.html#cb50-11" aria-hidden="true" tabindex="-1"></a>mc_ad.uns[<span class="st">'sc.umap'</span>]<span class="op">=</span>ad.obsm[<span class="st">'X_umap'</span>] </span>
+<span id="cb50-12"><a href="Metacell-construction-chapter.html#cb50-12" aria-hidden="true" tabindex="-1"></a>mc_ad.write_h5ad(os.path.join(<span class="st">'./data'</span>, proj_name, <span class="ss">f'metacell_</span><span class="sc">{</span>MC_tool<span class="sc">}</span><span class="ss">.h5ad'</span>))</span></code></pre></div>
 <p>For future downstream analyses in R (section <a href="downstream-analysis.html#standard-analysis-R">3.1</a>), we save the metacell counts in a Seurat object:</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
