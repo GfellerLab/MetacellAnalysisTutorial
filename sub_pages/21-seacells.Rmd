@@ -62,6 +62,8 @@ Please follow the section \@ref(bmcite-data) to retrieve these data from the Seu
 ```{python seacell-load-data, eval = TRUE, echo = TRUE}
 MC_tool = "SEACells"
 proj_name = "bmcite"
+annotation_label = 'celltype_simplified'
+
 ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
 ad.var.index = ad.var.genes
 ad = sc.pp.subsample(ad, n_obs=10000, copy=True)
