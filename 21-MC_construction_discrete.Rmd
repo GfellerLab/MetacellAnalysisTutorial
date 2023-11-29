@@ -2,7 +2,7 @@
 
 In this chapter, we will demonstrate metacell construction using three different methods: SuperCell in R, MetaCell-2 (MC2) and SEACells in Pyhton. 
 
-For this, we will first use a dataset of PBMCs from study. This dataset contains around 3K cells which is an example of a dataset with well defined cell types. 
+For this, we will first use a dataset of PBMC dataset from the SeuratData package. This dataset contains around 30K cells and is an example of a dataset with well defined cell types. 
 For an example of more continuous data, see chapter \@ref(MC-continuous).
 
 ```{r include=FALSE}

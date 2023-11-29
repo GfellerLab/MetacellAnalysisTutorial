@@ -100,7 +100,22 @@ The package also provides a function to visualize metacells projected in the sin
 (i) the single-cell data used to build the metacells and
 (ii) the metacell data saved in a Seurat object (see chapter <a href="Metacell-construction-chapter.html#Metacell-construction-chapter">1</a>).</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load the single-cell data </span></span>
+<code class="sourceCode R"><span><span class="va">MC_tool</span> <span class="op">=</span> <span class="st">"SuperCell"</span></span>
+<span><span class="va">proj_name</span> <span class="op">=</span> <span class="st">"bmcite"</span></span>
+<span><span class="va">annotation_label</span> <span class="op">=</span> <span class="st">"celltype_simplified"</span></span>
+<span></span>
+<span><span class="va">cell_types</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Prog_RBC"</span>, <span class="st">"Unconventional T"</span>, <span class="st">"Naive CD4 cell"</span>, <span class="st">"Non-Naive CD4 cell"</span>, </span>
+<span>                <span class="st">"CD14 Mono"</span>, <span class="st">"B cell"</span>, <span class="st">"Naive CD8 cell"</span>, <span class="st">"Non-Naive CD8 cell"</span>, </span>
+<span>                <span class="st">"NK"</span>, <span class="st">"GMP"</span>, <span class="st">"CD16 Mono"</span>, <span class="st">"pDC"</span>, <span class="st">"cDC2"</span>, <span class="st">"Prog_B 2"</span>, </span>
+<span>                <span class="st">"Prog_Mk"</span>, <span class="st">"Plasmablast"</span>, <span class="st">"HSC"</span>, <span class="st">"LMPP"</span>, <span class="st">"Prog_DC"</span>, <span class="st">"Prog_B 1"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">celltype_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#7E57C2"</span>, <span class="st">"#1E88E5"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>, <span class="st">"#9E9D24"</span>, </span>
+<span>                 <span class="st">"#F06292"</span>, <span class="st">"#546E7A"</span>, <span class="st">"#D4E157"</span>, <span class="st">"#76FF03"</span>, <span class="st">"#6D4C41"</span>, </span>
+<span>                 <span class="st">"#26A69A"</span>, <span class="st">"#AB47BC"</span>, <span class="st">"#EC407A"</span>, <span class="st">"#D81B60"</span>, <span class="st">"#42A5F5"</span>, </span>
+<span>                 <span class="st">"#2E7D32"</span>, <span class="st">"#FFA726"</span>, <span class="st">"#5E35B1"</span>, <span class="st">"#EF5350"</span>, <span class="st">"#3949AB"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">celltype_colors</span><span class="op">)</span> <span class="op">&lt;-</span><span class="va">cell_types</span></span>
+<span></span>
+<span><span class="co"># Load the single-cell data </span></span>
 <span><span class="va">sc_data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/"</span>, <span class="va">proj_name</span>, <span class="st">"/singlecell_seurat_filtered.rds"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Load the metacell data </span></span>
 <span><span class="va">mc_data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">'data/'</span>, <span class="va">proj_name</span>, <span class="st">'/metacell_'</span>, <span class="va">MC_tool</span>,<span class="st">'.rds'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -283,7 +298,7 @@ Metacells can also be colored by a continuous variable such as one of the QC met
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-24.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-29.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

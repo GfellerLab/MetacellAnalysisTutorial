@@ -2,7 +2,7 @@
 
 In this chapter, we will demonstrate metacell construction using three different methods: SuperCell in R, MetaCell-2 (MC2) and SEACells in Pyhton. 
 
-For this, we will first use a dataset of PBMCs from study. This dataset contains around 3K cells which is an example of a dataset with well defined cell types. 
+For this, we will first use a dataset of PBMC dataset from the SeuratData package. This dataset contains around 30K cells and is an example of a dataset with well defined cell types. 
 For an example of more continuous data, see chapter \@ref(MC-continuous).
 
 
@@ -50,9 +50,10 @@ Please follow the section \@ref(bmcite-data) to retrieve these data from the Seu
 
 
 ```r
-print(proj_name)
-#> [1] "bmcite"
-
+MC_tool = "SuperCell"
+proj_name <- "bmcite"
+annotation_label <- "celltype_simplified"
+  
 cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
                 "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
                 "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
@@ -170,8 +171,7 @@ Alternatively, assignment can be performed using `relative` (`method = "relative
 
 ```r
 print(annotation_label)
-#>                bmcite 
-#> "celltype_simplified"
+#> [1] "celltype_simplified"
 MC$annotation <- supercell_assign(clusters = sc_data@meta.data[, annotation_label], # single-cell annotation
                                   supercell_membership = MC$membership, # single-cell assignment to metacells
                                   method = "absolute"
@@ -265,8 +265,8 @@ anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_na
 
 ```
 #>             used   (Mb) gc trigger   (Mb)  max used   (Mb)
-#> Ncells   3487417  186.3   10348411  552.7  16169391  863.6
-#> Vcells 156621529 1195.0  478099316 3647.7 478092819 3647.6
+#> Ncells   3487416  186.3   10347303  552.7  16167660  863.5
+#> Vcells 156621547 1195.0  478098708 3647.7 478092837 3647.6
 ```
 
 
@@ -330,6 +330,7 @@ Please follow the section \@ref(bmcite-data) to retrieve these data from the Seu
 ```python
 MC_tool = "MC2"
 proj_name = "bmcite"
+annotation_label = 'celltype_simplified'
 ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
 ad.var.index = ad.var.genes
 ```
@@ -734,6 +735,8 @@ Please follow the section \@ref(bmcite-data) to retrieve these data from the Seu
 ```python
 MC_tool = "SEACells"
 proj_name = "bmcite"
+annotation_label = 'celltype_simplified'
+
 ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
 ad.var.index = ad.var.genes
 ad = sc.pp.subsample(ad, n_obs=10000, copy=True)
@@ -904,7 +907,7 @@ The `core.summarize_by_SEACell` function can be used to generate a metacell coun
 
 ```python
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
-#>   0%|          | 0/133 [00:00<?, ?it/s]  5%|4         | 6/133 [00:00<00:02, 56.52it/s]  9%|9         | 12/133 [00:00<00:02, 55.83it/s] 14%|#3        | 18/133 [00:00<00:02, 53.07it/s] 18%|#8        | 24/133 [00:00<00:02, 53.39it/s] 23%|##2       | 30/133 [00:00<00:01, 54.36it/s] 27%|##7       | 36/133 [00:00<00:01, 53.78it/s] 32%|###1      | 42/133 [00:00<00:01, 54.84it/s] 36%|###6      | 48/133 [00:00<00:01, 54.67it/s] 41%|####      | 54/133 [00:00<00:01, 54.71it/s] 45%|####5     | 60/133 [00:01<00:01, 52.97it/s] 50%|####9     | 66/133 [00:01<00:01, 51.83it/s] 54%|#####4    | 72/133 [00:01<00:01, 53.77it/s] 59%|#####8    | 78/133 [00:01<00:01, 54.26it/s] 64%|######3   | 85/133 [00:01<00:00, 56.21it/s] 68%|######8   | 91/133 [00:01<00:00, 57.18it/s] 74%|#######3  | 98/133 [00:01<00:00, 59.23it/s] 78%|#######8  | 104/133 [00:01<00:00, 59.23it/s] 83%|########3 | 111/133 [00:01<00:00, 60.68it/s] 89%|########8 | 118/133 [00:02<00:00, 61.64it/s] 94%|#########3| 125/133 [00:02<00:00, 63.04it/s] 99%|#########9| 132/133 [00:02<00:00, 63.71it/s]100%|##########| 133/133 [00:02<00:00, 57.40it/s]
+#>   0%|          | 0/133 [00:00<?, ?it/s]  5%|4         | 6/133 [00:00<00:02, 54.81it/s]  9%|9         | 12/133 [00:00<00:02, 54.85it/s] 14%|#3        | 18/133 [00:00<00:02, 53.33it/s] 18%|#8        | 24/133 [00:00<00:02, 54.13it/s] 23%|##2       | 30/133 [00:00<00:01, 55.14it/s] 27%|##7       | 36/133 [00:00<00:01, 54.75it/s] 32%|###1      | 42/133 [00:00<00:01, 55.90it/s] 36%|###6      | 48/133 [00:00<00:01, 56.03it/s] 41%|####      | 54/133 [00:00<00:01, 56.13it/s] 45%|####5     | 60/133 [00:01<00:01, 54.51it/s] 50%|####9     | 66/133 [00:01<00:01, 53.56it/s] 55%|#####4    | 73/133 [00:01<00:01, 55.82it/s] 59%|#####9    | 79/133 [00:01<00:00, 56.18it/s] 65%|######4   | 86/133 [00:01<00:00, 58.11it/s] 70%|######9   | 93/133 [00:01<00:00, 59.68it/s] 75%|#######5  | 100/133 [00:01<00:00, 60.48it/s] 80%|########  | 107/133 [00:01<00:00, 61.07it/s] 86%|########5 | 114/133 [00:01<00:00, 62.09it/s] 91%|######### | 121/133 [00:02<00:00, 63.20it/s] 97%|#########6| 129/133 [00:02<00:00, 66.22it/s]100%|##########| 133/133 [00:02<00:00, 58.99it/s]
 ```
 #### Annotate metacells {-}
 Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 
