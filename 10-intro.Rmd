@@ -1,5 +1,6 @@
 # Introduction to the metacell concept{.unnumbered}
 
+
 Metacells correspond to partitions of single-cell data into disjoint homogeneous groups of highly similar cells followed by aggregation of their profiles [@baran_metacell_2019]. 
 This concept relies on the assumption that most of the variability within metacells corresponds to technical noise and not to biologically relevant heterogeneity. 
 
