@@ -3,7 +3,7 @@
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
-
+root_dir = rprojroot::find_rstudio_root_file()
 ```
 
 
@@ -51,6 +51,7 @@ Please follow the section \@ref(bmcite-data) to retrieve these data from the Seu
 MC_tool = "SuperCell"
 proj_name <- "bmcite"
 annotation_label <- "celltype_simplified"
+root_dir <- "./"
   
 cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
                 "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
@@ -62,8 +63,7 @@ celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
                  "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
                  "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
 names(celltype_colors) <-cell_types
-
-sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
+sc_data = readRDS(paste0(root_dir, "data/", proj_name, "/singlecell_seurat_filtered.rds"))
 ```
 
 ### Filtering steps
@@ -112,7 +112,7 @@ nb_pc = 50 # the number of principal components to use.
 
 The metacells are identified using the `SCimplify` function from the SuperCell package.   
 ```{r supercell-run, cache = TO_CACHE}
-MC <- SuperCell::SCimplify(Seurat::GetAssayData(sc_data, slot = "data"),  # single-cell log-normalized gene expression data
+MC <- SuperCell::SCimplify(Seurat::GetAssayData(sc_data, layer = "data"),  # single-cell log-normalized gene expression data
                            k.knn = k_knn,
                            gamma = gamma,
                            # n.var.genes = nb_var_genes,  
@@ -136,7 +136,7 @@ Note that we provide raw counts for the aggregation in this tutorial to match th
 Data normalization will thus be needed for downstream analyses on the metacell counts matrix.
 
 ```{r SuperCell-aggregate, cache = TO_CACHE}
-MC.GE <- supercell_GE(Seurat::GetAssayData(sc_data, slot = "counts"),
+MC.GE <- supercell_GE(Seurat::GetAssayData(sc_data, layer = "counts"),
                       MC$membership,
                       mode =  "sum"
                       )
@@ -193,43 +193,30 @@ MC.seurat@misc$cell_membership <- data.frame(row.names = names(MC$membership), m
 MC.seurat@misc$var_features <- MC$genes.use 
 
 # Save the PCA components and genes used in SCimplify  
-PCA.res <- irlba::irlba(scale(Matrix::t(sc_data@assays$RNA@data[MC$genes.use, ])), nv = nb_pc)
+PCA.res <- irlba::irlba(scale(Matrix::t(GetAssayData(sc_data,assay = "RNA",layer = "data")[MC$genes.use, ])), nv = nb_pc)
 pca.x <- PCA.res$u %*% diag(PCA.res$d)
-rownames(pca.x) <- colnames(sc_data@assays$RNA@data)
+rownames(pca.x) <- colnames(GetAssayData(sc_data,assay = "RNA",layer = "data"))
 MC.seurat@misc$sc.pca <- CreateDimReducObject(
   embeddings = pca.x,
   loadings = PCA.res$v,
   key = "PC_",
   assay = "RNA"
 )
+# setwd("/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/")
 print(paste0("Saving metacell object for the ", proj_name, " dataset using ", MC_tool))
-saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
+saveRDS(MC.seurat, file = paste0(root_dir, 'data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
-We can also use the `supercell_2_Seurat()` function from the SuperCell package. 
-This function takes as inputs the metacell count matrix (output of the SuperCell `supercell_GE()` function) and the output of the SuperCell `SCimplify()` function
-to output a Seurat object containing normalized metacells gene expression data as well as the first (`N.comp`) principal components of PCA performed internally using user defined set of genes (by default the genes used for metacells constructions).
-
-
-```{r SuperCell-r-save2, eval = FALSE}
-MC.seurat <- supercell_2_Seurat(
-  SC.GE = MC.GE,
-  SC = MC,
-  fields = c("annotation", "supercell_size"), # elements of MC to save as metacell metadata 
-  var.genes = MC$genes.use,
-  N.comp = 10
-)
-saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
-```
 
 For future downstream analyses in python (section \@ref(standard-analysis-Py)), metacell counts can be saved in an Anndata object: 
 ```{r SuperCell-py-save, cache = TO_CACHE, message = FALSE, warning = FALSE}
 MC.seurat.ad <- anndata::AnnData(
-  X = Matrix::t(Seurat::GetAssayData(MC.seurat, slot = "counts")),
+  X = Matrix::t(Seurat::GetAssayData(MC.seurat, layer = "counts")),
   obs = MC.seurat@meta.data
 )
 
-anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_name, '/metacell_', MC_tool,'.h5ad'))
+# setwd("/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/")
+anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0(root_dir, 'data/', proj_name, '/metacell_', MC_tool,'.h5ad'))
 ```
 
 ```{r SuperCell-remove-variables, include = TRUE, echo = FALSE}

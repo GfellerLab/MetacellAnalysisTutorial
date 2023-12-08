@@ -3,6 +3,7 @@
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+root_dir <- rprojroot::find_rstudio_root_file()
 ```
 
 ```{r r-libraries-weighted, eval=TRUE}
@@ -34,7 +35,7 @@ celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
                  "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5",
                  "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
 names(celltype_colors) <-cell_types
-MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
+MC.seurat = readRDS(paste0(root_dir,'/data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
 
@@ -51,8 +52,8 @@ MC.seurat <- NormalizeData(MC.seurat, normalization.method = "LogNormalize")
 MC_list <- list(N.SC = ncol(MC.seurat),
                 supercell_size = MC.seurat$size)
 MC_list$PCA <- SuperCell::supercell_prcomp(
-  Matrix::t(GetAssayData(MC.seurat, slot = "data")),
-  genes.use = MC.seurat@misc$var_features,  # or a new set of HVG can be computed
+  Matrix::t(GetAssayData(MC.seurat, layer = "data")),
+  genes.use = MC.seurat@misc$var_features, #VariableFeatures(MC.seurat),   or a new set of HVG can be computed
   supercell_size = MC_list$supercell_size, # provide this parameter to run sample-weighted version of PCA,
   k = 30
 )
@@ -97,7 +98,7 @@ We perform diffrential analysis to identify the markers of our clusters using th
 ```{r r-mc-DEG-weighted, eval=TRUE}
 # Compute upregulated genes in each cell line (versus other cells)
 MC.all.markers <- supercell_FindAllMarkers(
-  ge = GetAssayData(MC.seurat, slot = "data"),
+  ge = GetAssayData(MC.seurat, layer = "data"),
   clusters = MC_list$SCclustering$clustering,
   supercell_size = MC_list$supercell_size,
   only.pos = TRUE,

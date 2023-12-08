@@ -3,6 +3,7 @@
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+root_dir <- rprojroot::find_rstudio_root_file()
 ```
 
 In this section, we construct metacells using [Metacell-2 (MC2)](https://github.com/tanaylab/metacells) implemented in Python. 
@@ -58,7 +59,7 @@ Please follow the section \@ref(bmcite-data) to retrieve these data from the Seu
 MC_tool = "MC2"
 proj_name = "bmcite"
 annotation_label = 'celltype_simplified'
-ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
+ad = sc.read(os.path.join("/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data", proj_name, "singlecell_anndata_filtered.h5ad"))
 ad.var.index = ad.var.genes
 ```
 
@@ -291,7 +292,7 @@ mc_ad.uns['gamma'] = gamma
 mc_ad.obs.rename(columns={'grouped':'size'}, inplace = True)
 
 print("Saving metacell object for the "+ proj_name+ " dataset using "+ MC_tool)
-mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
+mc_ad.write_h5ad(os.path.join('/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data', proj_name, f'metacell_{MC_tool}.h5ad'))
 ```
 
 For future QCs and downstream analyses in R (section \@ref(standard-analysis-R)), we save the metacell counts in a Seurat object: 
@@ -299,7 +300,7 @@ For future QCs and downstream analyses in R (section \@ref(standard-analysis-R))
 library(Seurat)
 library(anndata)
 library(reticulate)
-adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_MC2.h5ad"))
+adata_mc <- read_h5ad(paste0(root_dir,"/data/", py$proj_name, "/metacell_MC2.h5ad"))
 
 # Save counts and metadata in a Seurat object
 countMatrix <-  Matrix::t(adata_mc$X)
@@ -310,7 +311,7 @@ MC.seurat@misc[["var_features"]] <- rownames(adata_mc$var)[which(adata_mc$var$se
 
 # Save membership in misc
 MC.seurat@misc$cell_membership <- py$ad$obs['membership']
-saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_MC2.rds'))
+saveRDS(MC.seurat, file = paste0(root_dir,'/data/', py$proj_name, '/metacell_MC2.rds'))
 ```
 
 ```{python mc2-remove-variables, include = FALSE}

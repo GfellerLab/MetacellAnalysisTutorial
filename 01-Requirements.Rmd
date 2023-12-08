@@ -13,11 +13,12 @@ To build a conda environment containing the three metacell building tools used i
 please follow the instructions provided in the README of our MetacellAnalysisToolkit [github repository](https://github.com/GfellerLab/MetacellToolkit).
 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 library(reticulate)
-conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
-
-use_condaenv(conda_env)
+#conda_env <-  conda_list()[reticulate::conda_list()$name == "base","python"]
+# conda_env <-  "/Users/admin/miniconda3/bin/python"
+# use_condaenv(conda_env)
+use_python("/Users/admin/miniconda3/bin/python")
 ```
 
 ### Without conda
@@ -60,6 +61,7 @@ The data are saved in the following file for future analyses in R (use of SuperC
 
 ```{R, eval = F, collapse = T, cache = TO_CACHE}
 library(SeuratData)
+library(Seurat)
 InstallData("bmcite")
 
 data("bmcite")
@@ -81,7 +83,10 @@ bmcite$celltype_simplified <- plyr::revalue(bmcite$celltype.l2,
                                               "gdT" = "Unconventional T"
                                               ))
 bmcite <- bmcite[,-grep("Prog",bmcite$celltype_simplified)]
-saveRDS(bmcite, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
+
+bmcite_v2 <- CreateSeuratObject(counts = GetAssayData(bmcite,assay = "RNA",layer = "count"),meta.data = bmcite@meta.data)
+bmcite_v2 <-  NormalizeData(bmcite_v2)
+saveRDS(bmcite_v2, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
 
 ```
 
@@ -89,9 +94,9 @@ saveRDS(bmcite, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
 The data are saved in the following file for future analyses in python (use of SEACells and MC2): "data/bmcite/singlecell_anndata_filtered.h5ad".
 ```{R, eval = F, collapse = T, cache = TO_CACHE}
 library(anndata)
-adata <- AnnData(X = Matrix::t(bmcite@assays$RNA@counts),
-                 var = data.frame(genes = rownames(bmcite@assays$RNA@counts)),
-                 obs = bmcite@meta.data)
+adata <- AnnData(X = Matrix::t(GetAssayData(bmcite_v2,assay = "RNA",layer = "count")),
+                 var = data.frame(genes = rownames(GetAssayData(bmcite_v2,assay = "RNA",layer = "count"))),
+                 obs = bmcite_v2@meta.data)
 
 write_h5ad(adata, paste0("data/bmcite/singlecell_anndata_filtered.h5ad"))
 

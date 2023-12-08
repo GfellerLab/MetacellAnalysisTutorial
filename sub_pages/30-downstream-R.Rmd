@@ -3,6 +3,7 @@
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+root_dir <- rprojroot::find_rstudio_root_file()
 ```
 
 In this tutorial, standard analyses include dimensionality reduction, clustering and differential expression using the [Seurat](https://satijalab.org/seurat/) framework.
@@ -35,7 +36,7 @@ celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
                  "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5",
                  "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
 names(celltype_colors) <-cell_types
-MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
+MC.seurat = readRDS(paste0(root_dir,'/data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
 
@@ -56,7 +57,7 @@ data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cell_type = MC.seurat@meta.data[, annotation_column]))
 
-p_annot <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cell_type)) + geom_point(aes(size=size)) +
+p_annot <- ggplot(data, aes(x= umap_1, y=umap_2, color = cell_type)) + geom_point(aes(size=size)) +
   ggplot2::scale_size_continuous(range = c(0.5,  0.5*max(log((data$size))))) +
    ggplot2::scale_color_manual(values = celltype_colors) +
   theme_classic() + guides(color=guide_legend(ncol=2))
@@ -73,7 +74,7 @@ data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cluster = paste0("C_",MC.seurat$SCclustering)))
 
-p_cluster <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cluster)) + geom_point(aes(size=size)) +
+p_cluster <- ggplot(data, aes(x= umap_1, y=umap_2, color = cluster)) + geom_point(aes(size=size)) +
   ggplot2::scale_size_continuous(range = c(0.5, 0.5*max(log1p((data$size))))) +
   theme_classic() + guides(color=guide_legend(ncol=2))
 p_cluster
@@ -113,7 +114,7 @@ We can use the `supercell_GeneGenePlot` function from the SuperCell package to v
 For that, we load the single-cell data from which the metacells were derived from.
 ```{r r-load-single-cell, eval=TRUE}
 print(proj_name)
-sc_data <- readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
+sc_data <- readRDS(paste0(root_dir,"/data/", proj_name, "/singlecell_seurat_filtered.rds"))
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
 ```
 
@@ -126,7 +127,7 @@ gene_y <- rownames(cells_markers)[6:10]
 alpha <- 0.7
 
 p.sc <- SuperCell::supercell_GeneGenePlot(
-  GetAssayData(sc_data, slot = "data"),
+  GetAssayData(sc_data, layer = "data"),
   gene_x = gene_x,
   gene_y = gene_y,
   clusters = sc_data@meta.data[, annotation_column],
@@ -140,7 +141,7 @@ p.sc$p
 We visualize gene-gene correlation at the metacell level:
 ```{r r-mc-gene_gene_cors, eval=TRUE}
 
-p.MC <- SuperCell::supercell_GeneGenePlot(GetAssayData(MC.seurat, slot = "data"),
+p.MC <- SuperCell::supercell_GeneGenePlot(GetAssayData(MC.seurat, layer = "data"),
                                           gene_x = gene_x,
                                           gene_y = gene_y,
                                           clusters = MC.seurat@meta.data[, annotation_column],

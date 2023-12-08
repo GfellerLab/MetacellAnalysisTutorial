@@ -1,6 +1,7 @@
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+root_dir = rprojroot::find_rstudio_root_file()
 ```
 
 In this section, we will first perform the integration in an unsupervised mode, i.e., without considering the single-cell annotation. 
@@ -16,8 +17,8 @@ To build the conda environment please follow the instructions on our MetacellAna
 ```{r, eval = FALSE}
 library(reticulate)
 conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
-
-Sys.setenv(RETICULATE_PYTHON = conda_env)
+use_python("/Users/admin/miniconda3/bin/python")
+Sys.setenv(RETICULATE_PYTHON = use_python("/Users/admin/miniconda3/bin/python"))
 ```
 
 ```{r, echo=F}
@@ -56,9 +57,9 @@ To call the MCAT command line, please define your path to the gihub cloned repos
 
 ```{bash, eval = FALSE, results = FALSE, message=FALSE, warning=FALSE}
 #git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
-MCAT_path=MetacellAnalysisToolkit/
+MCAT_path=/Users/admin/Documents/GitHub/MetacellAnalysisToolkit/
 start=`date +%s`
-for d in data/HLCA/datasets/*;
+for d in /Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data/HLCA/datasets/*;
 do ${MCAT_path}cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 echo "Duration: $((($(date +%s)-$start)/60)) minutes"
@@ -71,7 +72,7 @@ To consider the datasets in the same order as the one used in this tutorial we r
 
 ```{r, eval = TRUE, results = FALSE, message=FALSE, warning=FALSE}
 library(anndata)
-adata <- read_h5ad("data/HLCA/local.h5ad",backed = "r")
+adata <- read_h5ad(paste0(root_dir,"/data/HLCA/local.h5ad"),backed = "r")
 adata$var_names <- adata$var$feature_name # We will use gene short name for downstream analyses
 datasets <- unique(adata$obs$dat)
 rm(adata)
@@ -80,7 +81,7 @@ gc()
 
 ```{r read_metacells_obj, results = FALSE, message=FALSE, warning=FALSE}
 
-metacell.files <- sapply(datasets, FUN = function(x){paste0("data/HLCA/datasets/",x,"/mc_adata.h5ad")})
+metacell.files <- sapply(datasets, FUN = function(x){paste0(root_dir,"/data/HLCA/datasets/",x,"/mc_adata.h5ad")})
 
 metacell.objs <- lapply(X = metacell.files, function(X){
   adata <- read_h5ad(X)
@@ -263,6 +264,7 @@ Now let's found the markers of the cluster 23 we've just identified.
 
 ```{r integrated_findmarkers}
 DefaultAssay(combined.mc) <- "RNA"
+combined.mc[["RNA"]] <- JoinLayers(combined.mc[["RNA"]])
 markers23 <- FindMarkers(combined.mc, ident.1 = 23, only.pos = T)
 head(markers23)
 ```
@@ -325,5 +327,5 @@ identification and the batch correction.
 We can save the results for comparison with the second example.
 
 ```{r combined_data_save}
-saveRDS(combined.mc,"data/HLCA/combined.mc.unsup.rds")
+saveRDS(combined.mc,paste0(root_dir,"/data/HLCA/combined.mc.unsup.rds"))
 ```

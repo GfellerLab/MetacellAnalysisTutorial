@@ -3,6 +3,7 @@
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+root_dir <- rprojroot::find_rstudio_root_file()
 ```
 
 ```{r, include=FALSE}
@@ -64,7 +65,7 @@ MC_tool = "SEACells"
 proj_name = "bmcite"
 annotation_label = 'celltype_simplified'
 
-ad = sc.read(os.path.join("data", proj_name, "singlecell_anndata_filtered.h5ad"))
+ad = sc.read(os.path.join("/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data", proj_name, "singlecell_anndata_filtered.h5ad"))
 ad.var.index = ad.var.genes
 ad = sc.pp.subsample(ad, n_obs=10000, copy=True)
 ```
@@ -164,11 +165,11 @@ SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap')
 
 ```{python seacells-plotInit, eval = MODEL_LOAD, echo = FALSE}
 import pickle
-filename = 'data/bmcite/saved_model.pkl'
+filename = '/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data/bmcite/saved_model.pkl'
 with open(filename, 'rb') as file:
     model = pickle.load(file)
     
-filename = 'data/bmcite/saved_ad.pkl'
+filename = '/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data/bmcite/saved_ad.pkl'
 with open(filename, 'rb') as file:
     ad = pickle.load(file)
     
@@ -193,11 +194,11 @@ model.plot_convergence()
 ```{python seacells-save_env, eval = MODEL_EVAL, echo = FALSE}
 import pickle
 # Save the environment
-filename = 'data/bmcite/saved_model.pkl'
+filename = '/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data/bmcite/saved_model.pkl'
 with open(filename, 'wb') as file:
     pickle.dump(model, file)
 
-filename = 'data/bmcite/saved_ad.pkl'
+filename = '/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data/bmcite/saved_ad.pkl'
 with open(filename, 'wb') as file:
     pickle.dump(ad, file)
 ```
@@ -249,7 +250,7 @@ mc_ad.obs = mc_ad.obs.join(pd.DataFrame(label_df.groupby('SEACell').count().iloc
 mc_ad.uns['var_features']=ad.var_names[ad.var.highly_variable].tolist()
 mc_ad.uns['sc.pca']=ad.obsm['X_pca'] 
 mc_ad.uns['sc.umap']=ad.obsm['X_umap'] 
-mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
+mc_ad.write_h5ad(os.path.join('/Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data', proj_name, f'metacell_{MC_tool}.h5ad'))
 ```
 
 For future downstream analyses in R (section \@ref(standard-analysis-R)), we save the metacell counts in a Seurat object: 
@@ -257,7 +258,7 @@ For future downstream analyses in R (section \@ref(standard-analysis-R)), we sav
 library(Seurat)
 library(anndata)
 library(reticulate)
-adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_SEACells.h5ad"))
+adata_mc <- read_h5ad(paste0(root_dir,"/data/", py$proj_name, "/metacell_SEACells.h5ad"))
 
 # Save counts and metadata in a Seurat object
 countMatrix <-  Matrix::t(adata_mc$X)
@@ -276,7 +277,7 @@ MC.seurat@misc$sc.pca <- CreateDimReducObject(
 )
 # Save membership in misc
 MC.seurat@misc$cell_membership <- data.frame(row.names = rownames(py$membership), membership = py$membership$SEACell)
-saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_SEACells.rds'))
+saveRDS(MC.seurat, file = paste0(root_dir,'/data/', py$proj_name, '/metacell_SEACells.rds'))
 ```
 
 

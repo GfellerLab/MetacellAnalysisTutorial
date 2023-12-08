@@ -1,6 +1,7 @@
 ```{r, include=FALSE}
 # include this section if your child (nested) .Rmd has plot output. This make sure that plot is saved in correct location and displayed in rendered book. Mb not the best solution, but it works :) 
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+root_dir <- rprojroot::find_rstudio_root_file()
 ```
 
 ```{bash, cache = TO_CACHE, eval = FALSE, echo = FALSE}

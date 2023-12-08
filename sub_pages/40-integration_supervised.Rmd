@@ -1,6 +1,7 @@
 
 ```{r, include=FALSE}
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+root_dir = rprojroot::find_rstudio_root_file()
 ```
 
 As for the unsupervised integration example, we will work with the Human Cell Lung Atlas core [HLCA](%5Bhttps://www.nature.com/articles/s41591-023-02327-2)
@@ -19,8 +20,8 @@ To build the conda environment please follow the instructions on our MetacellAna
 ```{r, eval = FALSE}
 library(reticulate)
 conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
-
-Sys.setenv(RETICULATE_PYTHON = conda_env)
+use_python("/Users/admin/miniconda3/bin/python")
+Sys.setenv(RETICULATE_PYTHON = use_python("/Users/admin/miniconda3/bin/python"))
 ```
 
 ```{r, echo=F}
@@ -29,6 +30,7 @@ gc()
 ```
 
 ```{r}
+root_dir <- rprojroot::find_rstudio_root_file()
 library(Seurat)
 library(anndata)
 library(SuperCell)
@@ -61,8 +63,8 @@ To call the MCAT command line, please define your path to the gihub cloned repos
 
 ```{bash eval=FALSE, message=FALSE, warning=FALSE, results=FALSE}
 #git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
-MCAT_path=MetacellAnalysisToolkit/
-for d in data/HLCA/datasets/*;
+MCAT_path=/Users/admin/Documents/GitHub/MetacellAnalysisToolkit/
+for d in /Users/admin/Documents/GitHub/MetacellAnalysisTutorial/data/HLCA/datasets/*;
 do ${MCAT_path}cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 ```
@@ -74,7 +76,8 @@ To consider the datasets in the same order as the one used in this tutorial we r
 
 ```{r, eval = TRUE, results = FALSE, message=FALSE, warning=FALSE}
 library(anndata)
-adata <- read_h5ad("data/HLCA/local.h5ad",backed = "r")
+getwd()
+adata <- read_h5ad(paste0(root_dir,"/data/HLCA/local.h5ad"),backed = "r")
 adata$var_names <- adata$var$feature_name # We will use gene short name for downstream analyses
 datasets <- unique(adata$obs$dat)
 rm(adata)
@@ -83,7 +86,7 @@ gc()
 
 ```{r results = FALSE, message=FALSE, warning=FALSE}
 
-metacell.files <- sapply(datasets, FUN = function(x){paste0("data/HLCA/datasets/",x,"/sup_mc/mc_adata.h5ad")})
+metacell.files <- sapply(datasets, FUN = function(x){paste0(root_dir,"/data/HLCA/datasets/",x,"/sup_mc/mc_adata.h5ad")})
 
 metacell.objs <- lapply(X = metacell.files, function(X){
   adata <- read_h5ad(X)
@@ -129,7 +132,7 @@ Overall using supervised metacells construction we obtain pure metacells until t
 improve metacell purities for finer levels compared to the unsupervised approach (see previous section \@ref(integration-unsupervised)).
 
 ```{r fig.height=6, fig.width=14}
-meta.data.unsup <- readRDS("data/HLCA/combined.mc.unsup.rds")@meta.data
+meta.data.unsup <- readRDS(paste0(root_dir,"/data/HLCA/combined.mc.unsup.rds"))@meta.data
 
 p_4_unsup <- ggplot(meta.data.unsup, aes(x = dataset, y = ann_level_4_purity, fill = dataset)) + geom_boxplot() +
     scale_x_discrete(guide = guide_axis(angle = 45)) + ggtitle("unsup metacells level 4 purity") + NoLegend() + ylim(c(0,1))
@@ -256,7 +259,7 @@ DimPlot(combined.mc,group.by = "ann_level_3",reduction = "umap",label = T, repel
 we can quickly visually compare these results with the unsupervised integration obtained with Seurat:
 
 ```{r fig.height=6, fig.width=14}
-combined.mc.unsup <- readRDS("data/HLCA/combined.mc.unsup.rds")
+combined.mc.unsup <- readRDS(paste0(root_dir,"/data/HLCA/combined.mc.unsup.rds"))
 
 combined.mc$ann_level_3 <- factor(combined.mc$ann_level_3)
 matched.color.celltypes <- color.celltypes[1:length(levels(combined.mc$ann_level_3))]
@@ -295,6 +298,7 @@ Using a DEG analysis we can check if we retrieve their markers. MYH11 and CNN1 g
 
 ```{r fig.height=8,fig.width=12}
 DefaultAssay(combined.mc) <- "RNA"
+combined.mc[["RNA"]] <- JoinLayers(combined.mc[["RNA"]])
 Idents(combined.mc) <- "ann"
 markersSmoothMuscle <- FindMarkers(combined.mc,ident.1 = "Smooth muscle FAM83D+",only.pos = T)
 
