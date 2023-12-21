@@ -7,7 +7,7 @@
 <title>Requirements | Metacell Analysis Tutorial</title>
 <meta name="author" content="Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller">
 <meta name="description" content="This chapter describes how to obtain the packages and data needed to reproduce the analyses performed in this tutorial.  0.1 Installations  0.1.1 Using conda (recommended) To build a conda...">
-<meta name="generator" content="bookdown 0.36 with bs4_book()">
+<meta name="generator" content="bookdown 0.37 with bs4_book()">
 <meta property="og:title" content="Requirements | Metacell Analysis Tutorial">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://GfellerLab.github.io/MetacellAnalysisTutorial/requirements.html">
@@ -70,9 +70,9 @@
 <li><a class="active" href="requirements.html">Requirements</a></li>
 <li><a class="" href="introduction-to-the-metacell-concept.html">Introduction to the metacell concept</a></li>
 <li><a class="" href="Metacell-construction-chapter.html"><span class="header-section-number">1</span> Constructing metacells</a></li>
-<li><a class="" href="QCs.html"><span class="header-section-number">2</span> Metacells QCs</a></li>
+<li><a class="" href="QCs.html"><span class="header-section-number">2</span> Metacells’ QCs</a></li>
 <li><a class="" href="downstream-analysis.html"><span class="header-section-number">3</span> Downstream analysis of metacells</a></li>
-<li><a class="" href="command-line.html"><span class="header-section-number">4</span> Metacell Analysis Toolkit (MCAT)</a></li>
+<li><a class="" href="command-line.html"><span class="header-section-number">4</span> Metacell Analysis Toolkit (MATK)</a></li>
 <li><a class="" href="integration.html"><span class="header-section-number">5</span> Integration of metacells</a></li>
 <li><a class="" href="references.html">References</a></li>
 </ul>
@@ -96,6 +96,7 @@
 </h3>
 <p>To build a conda environment containing the three metacell building tools used in this tutorial (SuperCell, MC2 and SEACells),
 please follow the instructions provided in the README of our MetacellAnalysisToolkit <a href="https://github.com/GfellerLab/MetacellToolkit">github repository</a>.</p>
+<p>Then run the following lines to define the python path to use.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/">reticulate</a></span><span class="op">)</span></span>
 <span><span class="va">conda_env</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html">conda_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/conda-tools.html">conda_list</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"MetacellAnalysisToolkit"</span>,<span class="st">"python"</span><span class="op">]</span></span>
@@ -129,13 +130,13 @@ please follow the instructions provided in the README of our MetacellAnalysisToo
 </div>
 <div id="bmcite-data" class="section level2" number="0.2">
 <h2>
-<span class="header-section-number">0.2</span> Retrieve a discrete dataset (PBMCs dataset)<a class="anchor" aria-label="anchor" href="#bmcite-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">0.2</span> Retrieve a discrete dataset (Bone marrow dataset)<a class="anchor" aria-label="anchor" href="#bmcite-data"><i class="fas fa-link"></i></a>
 </h2>
 <p>To test metacell construction on a discrete dataset, we retrieved the “bmcite” dataset from the SeauratData R package containing around 30’000 cells.</p>
 <p>The data are saved in the following file for future analyses in R (use of SuperCell): “data/bmcite/singlecell_seurat_filtered.rds”.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">SeuratData</span><span class="op">)</span></span>
-<span><span class="fu">InstallData</span><span class="op">(</span><span class="st">"bmcite"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.satijalab.org/seurat">SeuratData</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://satijalab.org/seurat/reference/InstallData.html">InstallData</a></span><span class="op">(</span><span class="st">"bmcite"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"bmcite"</span><span class="op">)</span></span>
 <span><span class="va">bmcite</span></span>
@@ -156,6 +157,9 @@ please follow the instructions provided in the README of our MetacellAnalysisToo
 <span>                                              <span class="st">"gdT"</span> <span class="op">=</span> <span class="st">"Unconventional T"</span></span>
 <span>                                              <span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">bmcite</span> <span class="op">&lt;-</span> <span class="va">bmcite</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"Prog"</span>,<span class="va">bmcite</span><span class="op">$</span><span class="va">celltype_simplified</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"Seurat"</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">bmcite</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span>object <span class="op">=</span> <span class="va">bmcite</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span>, Class <span class="op">=</span> <span class="st">"Assay"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">bmcite</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"data/bmcite/singlecell_seurat_filtered.rds"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The data are saved in the following file for future analyses in python (use of SEACells and MC2): “data/bmcite/singlecell_anndata_filtered.h5ad”.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -171,8 +175,8 @@ please follow the instructions provided in the README of our MetacellAnalysisToo
 <span class="header-section-number">0.3</span> Retrieve a continuous dataset (CD34 dataset)<a class="anchor" aria-label="anchor" href="#CD34-data"><i class="fas fa-link"></i></a>
 </h2>
 <p>To test metacell construction on continuous dataset, we retrieved the CD34 dataset provided in <span class="citation">(<a href="references.html#ref-SEACells" role="doc-biblioref">Persad et al. 2023</a>)</span>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="requirements.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> data/CD34</span>
-<span id="cb8-2"><a href="requirements.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-O</span> data/CD34/cd34_multiome_rna.h5ad <span class="st">'https://zenodo.org/record/6383269/files/cd34_multiome_rna.h5ad?download=1'</span> </span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="requirements.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/CD34</span>
+<span id="cb8-2"><a href="requirements.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-O</span> data/CD34/cd34_multiome_rna.h5ad <span class="st">'https://dp-lab-data-public.s3.amazonaws.com/SEACells-multiome/cd34_multiome_rna.h5ad'</span> </span></code></pre></div>
 <p>The downloaded file will be used in the section <a href="command-line.html#command-line">4</a>.</p>
 </div>
 <div id="HLCA-data" class="section level2" number="0.4">
@@ -248,7 +252,7 @@ This should take less than 10 minutes.</p>
 <li><a class="nav-link" href="#without-conda"><span class="header-section-number">0.1.2</span> Without conda</a></li>
 </ul>
 </li>
-<li><a class="nav-link" href="#bmcite-data"><span class="header-section-number">0.2</span> Retrieve a discrete dataset (PBMCs dataset)</a></li>
+<li><a class="nav-link" href="#bmcite-data"><span class="header-section-number">0.2</span> Retrieve a discrete dataset (Bone marrow dataset)</a></li>
 <li><a class="nav-link" href="#CD34-data"><span class="header-section-number">0.3</span> Retrieve a continuous dataset (CD34 dataset)</a></li>
 <li>
 <a class="nav-link" href="#HLCA-data"><span class="header-section-number">0.4</span> Retrieve the lung atlas dataset</a><ul class="nav navbar-nav">
@@ -273,7 +277,7 @@ This should take less than 10 minutes.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-11-29.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-12-20.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

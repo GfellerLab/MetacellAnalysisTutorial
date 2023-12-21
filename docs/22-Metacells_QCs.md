@@ -1,4 +1,4 @@
-# Metacells QCs {#QCs}
+# Metacells' QCs {#QCs}
 
 
 
@@ -11,11 +11,11 @@ Import packages:
 
 
 ```r
-# if(system.file(package='MetacellAnalysisToolkit') == ""){
-#   remotes::install_github("GfellerLab/MetacellAnalysisToolkit", force = TRUE, upgrade = FALSE)
-# } 
 library(MetacellAnalysisToolkit)
 library(Seurat)
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+if(packageVersion("Seurat") >= 5){options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
+#> [1] "you are using seurat v5 with assay option v4"
 ```
 
 To explore metacells QCs, we need to load: 
@@ -55,7 +55,8 @@ This also allows us to compute metacell purity. If the annotation considered is 
 cell type within the metacell [@SuperCell].
 
 ```r
-mc_data$purity <- mc_purity(membership = mc_data@misc$cell_membership$membership, annotation = sc_data@meta.data[, annotation_label])
+membership_df <- mc_data@misc$cell_membership
+mc_data$purity <- mc_purity(membership = membership_df$membership, annotation = sc_data@meta.data[, annotation_label])
 qc_boxplot(mc.obj = mc_data, qc.metrics = "purity")
 ```
 
@@ -72,7 +73,7 @@ The **compactness** of a metacell is the variance of the components within the m
 The lower the compactness value the better.
 
 This metric as well as the separation metric are computed based on a low embedding of the single-cell data (e.g., PCA). 
-Note that it is important to use the embedding used initially to construc the metacells.
+Note that it is important to use the embedding used initially to construct the metacells.
 In the next chunk, we retrieve the principal components computed for metacell construction 
 (in chapter \@ref(Metacell-construction-chapter) these principal components were saved in the Seurat objects containing the metacell data) 
 and run UMAP for visualization.
@@ -89,12 +90,13 @@ UMAPPlot(sc_data, group.by = annotation_label, reduction = "umap", cols=celltype
 
 <img src="22-Metacells_QCs_files/figure-html/sc-embessing-1.png" width="672" />
 
+We can compute the compactness of each metacell using the PCA components.
 
 ```r
-membership_df <- mc_data@misc$cell_membership
-mc_data$compactness <- mc_compactness(cell.membership = membership_df, sc.obj = sc_data,
-                                      sc.reduction = "pca", n.components = 30, diffusion.components = T)
-#> Computing compactness ...
+mc_data$compactness <- mc_compactness(cell.membership = membership_df, 
+                                      sc.obj = sc_data,
+                                      sc.reduction = "pca", 
+                                      dims = 1:30)
 qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness")
 ```
 
@@ -106,14 +108,41 @@ qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness", split.by = annotation_l
 
 <img src="22-Metacells_QCs_files/figure-html/compute_compactness-2.png" width="672" />
 
+We can also compute the compactness of each metacell using diffusion map components computed based on the PCA axes, as suggested in [@SEACells].
+To compute the diffusion map components, you can use the function `get_dim_reduc()` from the MetacellAnalysisTookit R package.
+
+```r
+# we run diffufion maps on the pca axes saved in the seurat object. Note that a matrix containing the PCA components can be provided as well
+diffusion_comp <- get_diffusion_comp(sc.obj = sc_data, sc.reduction = "pca", dims = 1:30)
+#> Error in python_config_impl(python) : 
+#>   Error running '/users/agabrie4/.virtualenvs/r-reticulate/bin/python': No such file.
+#> The Python installation used to create the virtualenv has been moved or removed:
+#>   '/usr/bin'
+#> Computing diffusion maps ...
+mc_data$compactness <- mc_compactness(cell.membership = membership_df, 
+                                      sc.obj = sc_data,
+                                      sc.reduction = diffusion_comp, 
+                                      dims = 1:ncol(diffusion_comp))
+qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness")
+```
+
+<img src="22-Metacells_QCs_files/figure-html/compute_compactness_diffMaps-1.png" width="672" />
+
+```r
+qc_boxplot(mc.obj = mc_data, qc.metrics = "compactness", split.by = annotation_label)
+```
+
+<img src="22-Metacells_QCs_files/figure-html/compute_compactness_diffMaps-2.png" width="672" />
+
 ### Separation
 The **separation** of a metacell is the distance to the closest metacell [@SEACells]. 
 The higher the separation value the better.
 
 
 ```r
-mc_data$separation <- mc_separation(cell.membership = membership_df, sc.obj = sc_data, sc.reduction = "pca", diffusion.components = T)
-#> Computing separation ...
+mc_data$separation <- mc_separation(cell.membership = membership_df, 
+                                    sc.obj = sc_data, 
+                                    sc.reduction = "pca")
 qc_boxplot(mc.obj = mc_data, qc.metrics = "separation")
 ```
 
@@ -124,6 +153,23 @@ qc_boxplot(mc.obj = mc_data, qc.metrics = "separation", split.by = annotation_la
 ```
 
 <img src="22-Metacells_QCs_files/figure-html/compute_separation-2.png" width="672" />
+
+
+
+```r
+mc_data$separation <- mc_separation(cell.membership = membership_df, 
+                                    sc.obj = sc_data, 
+                                    sc.reduction = diffusion_comp)
+qc_boxplot(mc.obj = mc_data, qc.metrics = "separation")
+```
+
+<img src="22-Metacells_QCs_files/figure-html/compute_separation_diffMaps-1.png" width="672" />
+
+```r
+qc_boxplot(mc.obj = mc_data, qc.metrics = "separation", split.by = annotation_label)
+```
+
+<img src="22-Metacells_QCs_files/figure-html/compute_separation_diffMaps-2.png" width="672" />
 
 Note that compactness and separation metrics are correlated, better compactness results in worse separation and vice versa. 
 Metacells from dense regions will have better compactness but worse separation, 
@@ -149,6 +195,8 @@ Note that it is the only metric that is latent-space independent.
 ```r
 mc_data$INV <- mc_INV(cell.membership = membership_df, sc.obj = sc_data, group.label = "membership")
 #> Computing INV ...
+#> Warning in asMethod(object): sparse->dense coercion: allocating vector of size
+#> 3.7 GiB
 qc_boxplot(mc.obj = mc_data, qc.metrics = "INV")
 ```
 
@@ -190,7 +238,7 @@ qc_boxplot(mc.obj = mc_data, qc.metrics = "size", split.by = annotation_label)
 ## Representativeness of metacells 
 To visualize the metacells, we can project the metacells on the single-cell UMAP representation using the `mc_projection()` function (adapted from the `plot.plot_2D()` from the SEACells package).
 A good metacell partition should reproduce the overall structure of the single-cell data by uniformly representing the latent space.
-To use this function we need the data at the single-cell level (or at least an low-dimensional embedding of the data) and the single-cell membership to each the metacell.
+To use this function we need the data at the single-cell level (or at least a low-dimensional embedding of the data) and the single-cell membership to each the metacell.
 
 
 ```r

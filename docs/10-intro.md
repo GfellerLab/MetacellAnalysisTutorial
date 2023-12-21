@@ -3,7 +3,7 @@
 Metacells correspond to partitions of single-cell data into disjoint homogeneous groups of highly similar cells followed by aggregation of their profiles [@baran_metacell_2019]. 
 This concept relies on the assumption that most of the variability within metacells corresponds to technical noise and not to biologically relevant heterogeneity. 
 
-Using metacells enables users to: (i) remove the noise while preserving and enhancing biological signal in sparse single-cell genomics data and,
+Using metacells enables users to: (i) remove some of the noise while preserving and enhancing biological signal in sparse single-cell genomics data and,
 (ii) address computational challenges due to the large size of these data. 
 
 ![The metacell concept.](images/figure1.png)

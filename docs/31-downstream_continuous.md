@@ -1,7 +1,7 @@
 
 
 
-# Metacell Analysis Toolkit (MCAT) {#command-line}
+# Metacell Analysis Toolkit (MATK) {#command-line}
 
 We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset.
 The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level.
@@ -13,7 +13,7 @@ To retrieve this data, please refer to section \@ref(CD34-data).
 
 
 ## Setting up the environment
-
+Please skip this step if you did not use conda in the requirements section.
 
 ```r
 library(reticulate)
@@ -27,26 +27,40 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 ```r
 library(SuperCell)
 library(Seurat)
+#> Loading required package: SeuratObject
+#> Loading required package: sp
 #> The legacy packages maptools, rgdal, and rgeos, underpinning this package
 #> will retire shortly. Please refer to R-spatial evolution reports on
 #> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
 #> This package is now running under evolution status 0
-#> Attaching SeuratObject
+#> 
+#> Attaching package: 'SeuratObject'
+#> The following object is masked from 'package:base':
+#> 
+#>     intersect
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
+#> [1] "you are using seurat v5 with assay option v4"
 library(anndata)
+#> 
+#> Attaching package: 'anndata'
+#> The following object is masked from 'package:SeuratObject':
+#> 
+#>     Layers
 library(MetacellAnalysisToolkit)
 library(ggplot2)
 ```
 ## Metacell building{#MC-continuous}
-Here we will use the MCAT bash command line to build the metacells with MetaCell2 and SuperCell. 
-To call the MCAT command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
+Here we will use the MATK bash command line to build the metacells with MetaCell2 and SuperCell. 
+To call the MATK command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
 
 ### Building metacell with MetaCell2 (MC2)
 We use MetaCell2 (`-t MetaCell`) to identify metacells at a gamma of 50 (`-g 50`). We specify that we want a Seurat .rds object in ouput (`-s seurat`).
 
 ```bash
 #git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
-MCAT_path=MetacellAnalysisToolkit/
-${MCAT_path}/cli/MCAT -t MetaCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD34/MC2/ -g 50 -s seurat
+MATK_path=MetacellAnalysisToolkit/
+${MATK_path}/cli/MATK -t MetaCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD34/MC2/ -g 50 -s seurat
 #> MetaCell
 #> data/CD34/cd34_multiome_rna.h5ad
 #> Identifying metacells...
@@ -118,11 +132,25 @@ We use SuperCell (`-t SuperCell`) to identify metacells at a gamma of 50 (`-g 50
 We use 2000 highly variable genes (HVGs, `-f 2000`) to compute a PCA from which we use 50 components (`-n 50`) to make a k = 30 knn (`-k 30`) graph on which we identify the metacells.
 
 ```bash
-MCAT_path=MetacellAnalysisToolkit/
-${MCAT_path}/cli/MCAT -t SuperCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD34/SuperCell/ -f 2000 -g 50 -n 50 -k 30 -s seurat
+MATK_path=MetacellAnalysisToolkit/
+${MATK_path}/cli/MATK -t SuperCell -i data/CD34/cd34_multiome_rna.h5ad -o data/CD34/SuperCell/ -f 2000 -g 50 -n 50 -k 30 -s seurat
 #> SuperCell
 #> data/CD34/cd34_multiome_rna.h5ad
 #> Identifying metacells...
+#> Loading required package: SeuratObject
+#> Loading required package: sp
+#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
+#> will retire shortly. Please refer to R-spatial evolution reports on
+#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
+#> This package is now running under evolution status 0 
+#> 
+#> Attaching package: ‘SeuratObject’
+#> 
+#> The following object is masked from ‘package:base’:
+#> 
+#>     intersect
+#> 
+#> you are using seurat v5 with assay option v3
 #> $ARGS
 #> character(0)
 #> 
@@ -150,15 +178,34 @@ ${MCAT_path}/cli/MCAT -t SuperCell -i data/CD34/cd34_multiome_rna.h5ad -o data/C
 #> $isNorm
 #> [1] FALSE
 #> 
-#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
-#> will retire shortly. Please refer to R-spatial evolution reports on
-#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
-#> This package is now running under evolution status 0 
-#>            used  (Mb) gc trigger  (Mb) max used  (Mb)
-#> Ncells  3007855 160.7    4923175 263.0  4923175 263.0
-#> Vcells 33556923 256.1   90049828 687.1 83767565 639.1
+#> $cores
+#> [1] 1
+#> 
+#> Error in python_config_impl(python) : 
+#>   Error running '/users/agabrie4/.virtualenvs/r-reticulate/bin/python': No such file.
+#> The Python installation used to create the virtualenv has been moved or removed:
+#>   '/usr/bin'
+#> Counts matrix provided is not sparse; vreating v5 assay in Seurat object
+#> Warning: Data is of class dgRMatrix. Coercing to dgCMatrix.
+#> Warning: No layers found matching search pattern provided
+#> Warning: No layers found matching search pattern provided
+#> Warning: No layers found matching search pattern provided
+#> Warning: No layers found matching search pattern provided
+#> Warning: No layers found matching search pattern provided
+#> Warning: Assay RNA changing from Assay5 to Assay
+#>            used  (Mb) gc trigger  (Mb)  max used   (Mb)
+#> Ncells  3211915 171.6    4993665 266.7   4993665  266.7
+#> Vcells 34023475 259.6  130605737 996.5 138275620 1055.0
+#> Warning messages:
+#> 1: Layer ‘data’ is empty 
+#> 2: Layer ‘scale.data’ is empty 
 #> Normalize data...Identify Metacells...
 #> Identify 138 metacells using SuperCell...
+#> 
+#> Warning message:
+#> The `slot` argument of `GetAssayData()` is deprecated as of SeuratObject 5.0.0.
+#> ℹ Please use the `layer` argument instead. 
+#> Warning: Assay RNA changing from Assay5 to Assay
 #> Assign metadata to metacells and compute purities...
 #> Done.
 ```
@@ -166,7 +213,7 @@ ${MCAT_path}/cli/MCAT -t SuperCell -i data/CD34/cd34_multiome_rna.h5ad -o data/C
 ## Short downstream analysis of the metacells
 
 ### MetaCell2 metacells
-We load the object obtained with MCAT
+We load the object obtained with MATK
 
 ```r
 cd34.metacell <- readRDS("data/CD34/MC2/mc_Seurat.rds")
@@ -174,12 +221,15 @@ cd34.metacell
 #> An object of class Seurat 
 #> 12462 features across 140 samples within 1 assay 
 #> Active assay: RNA (12462 features, 0 variable features)
+#>  1 layer present: counts
 ```
 We Normalize the metacells data, identify the HVGs, and we make a classical dimensionality reduction (first a PCA and then vizualisation with a UMAP).
 
 ```r
 cd34.metacell <- NormalizeData(cd34.metacell)
+#> Normalizing layer: counts
 cd34.metacell <- FindVariableFeatures(cd34.metacell)
+#> Finding variable features for layer counts
 cd34.metacell <- ScaleData(cd34.metacell)
 #> Centering and scaling data matrix
 cd34.metacell <- RunPCA(cd34.metacell)
@@ -218,24 +268,24 @@ cd34.metacell <- RunPCA(cd34.metacell)
 #> Negative:  SOX4, ACTG1, MIR181A1HG, LINC00173, MED13L, IGFBP7, IL2RG, HCST, SLC43A2, SATB1 
 #> 	   ABHD17B, ARPP21, TMSB10, TRPM2, LAT2, DNTT, SLC45A3, MYO1G, S100Z, SMAD7 
 #> 	   REEP5, RPLP1, LINC01934, TNFRSF21, RBMS3, WDR66, MZB1, COBL, CDK6, MOB1B
-cd34.metacell <- RunUMAP(cd34.metacell,dims = c(1:50),min.dist = 0.5)
+cd34.metacell <- RunUMAP(cd34.metacell,dims = c(1:50), min.dist = 0.5)
 #> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
 #> This message will be shown once per session
-#> 15:51:05 UMAP embedding parameters a = 0.583 b = 1.334
-#> 15:51:05 Read 140 rows and found 50 numeric columns
-#> 15:51:05 Using Annoy for neighbor search, n_neighbors = 30
-#> 15:51:05 Building Annoy index with metric = cosine, n_trees = 50
+#> 18:10:44 UMAP embedding parameters a = 0.583 b = 1.334
+#> 18:10:44 Read 140 rows and found 50 numeric columns
+#> 18:10:44 Using Annoy for neighbor search, n_neighbors = 30
+#> 18:10:44 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 15:51:05 Writing NN index file to temp file /tmp/35608746/Rtmp9EMQ7F/file232e4b70484ed4
-#> 15:51:05 Searching Annoy index using 1 thread, search_k = 3000
-#> 15:51:05 Annoy recall = 100%
-#> 15:51:05 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 15:51:05 Initializing from normalized Laplacian + noise (using irlba)
-#> 15:51:05 Commencing optimization for 500 epochs, with 4956 positive edges
-#> 15:51:06 Optimization finished
+#> 18:10:44 Writing NN index file to temp file /tmp/36242292/Rtmp9dCBen/file1b2e6473bd0ce4
+#> 18:10:44 Searching Annoy index using 1 thread, search_k = 3000
+#> 18:10:44 Annoy recall = 100%
+#> 18:10:44 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 18:10:45 Initializing from normalized Laplacian + noise (using RSpectra)
+#> 18:10:45 Commencing optimization for 500 epochs, with 4956 positive edges
+#> 18:10:45 Optimization finished
 ```
 
 Plot the results using Seurat.
@@ -288,8 +338,9 @@ When analyzing metacells it's a good idea to plot their size on these. We can do
 
 ```r
 data <- cbind(umap.metacell$data, cd34.metacell$size)
+colnames(data)[1:2] <- c("umap_1", "umap_2")
 colnames(data)[length(colnames(data))] <- "size"
-ggplot(data,aes(x= UMAP_1,y=UMAP_2,color = celltype)) + geom_point(aes(size=size)) + theme_classic()
+ggplot(data,aes(x = umap_1, y = umap_2, color = celltype)) + geom_point(aes(size=size)) + theme_classic()
 ```
 
 <img src="31-downstream_continuous_files/figure-html/unnamed-chunk-10-1.png" width="672" />
@@ -297,9 +348,10 @@ ggplot(data,aes(x= UMAP_1,y=UMAP_2,color = celltype)) + geom_point(aes(size=size
 ```r
 lapply(marker.metacell.umaps,FUN = function(x){
   data <- cbind(x$data,cd34.metacell$size)
+  colnames(data)[1:2] <- c("umap_1", "umap_2")
   colnames(data)[length(colnames(data))] <- "size"
   gene <- colnames(data)[length(colnames(data))-1]
-  ggplot(data,aes(x= UMAP_1,y=UMAP_2,size=size,colour = .data[[gene]])) + geom_point() + 
+  ggplot(data,aes(x = umap_1, y = umap_2, size=size, colour = .data[[gene]])) + geom_point() + 
     scale_color_gradientn(colors =  c("lightgrey", "blue"), 
                           guide = "colorbar")  +
   theme_classic() + ggtitle(gene)
@@ -334,7 +386,7 @@ lapply(marker.metacell.umaps,FUN = function(x){
 
 We can do the same with the metacells obtained with SuperCell
 
-We load the object obtained with MCAT
+We load the object obtained with MATK
 
 ```r
 cd34.supercell <- readRDS("data/CD34/SuperCell/mc_Seurat.rds")
@@ -342,6 +394,7 @@ cd34.supercell
 #> An object of class Seurat 
 #> 12464 features across 138 samples within 1 assay 
 #> Active assay: RNA (12464 features, 0 variable features)
+#>  3 layers present: counts, data, scale.data
 ```
 We Normalize the supercells data, identify the HVGs, and we make a classical dimensionality reduction (first a PCA and then vizualisation with a UMAP).
 
@@ -387,20 +440,20 @@ cd34.supercell <- RunPCA(cd34.supercell)
 #> 	   KIFC1, PRC1, GTSE1, CIT, KIF18B, NUF2, CDK1, KIF15, KIF11, FOXM1 
 #> 	   BIRC5, CCNA2, CDC25C, MKI67, TUBB4B, CDCA8, TPX2, CENPE, KIF23, CDCA2
 cd34.supercell <- RunUMAP(cd34.supercell,dims = c(1:50),min.dist = 0.5)
-#> 15:51:10 UMAP embedding parameters a = 0.583 b = 1.334
-#> 15:51:10 Read 138 rows and found 50 numeric columns
-#> 15:51:10 Using Annoy for neighbor search, n_neighbors = 30
-#> 15:51:10 Building Annoy index with metric = cosine, n_trees = 50
+#> 18:10:51 UMAP embedding parameters a = 0.583 b = 1.334
+#> 18:10:51 Read 138 rows and found 50 numeric columns
+#> 18:10:51 Using Annoy for neighbor search, n_neighbors = 30
+#> 18:10:51 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 15:51:10 Writing NN index file to temp file /tmp/35608746/Rtmp9EMQ7F/file232e4b4e4c8867
-#> 15:51:10 Searching Annoy index using 1 thread, search_k = 3000
-#> 15:51:10 Annoy recall = 100%
-#> 15:51:10 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 15:51:10 Initializing from normalized Laplacian + noise (using irlba)
-#> 15:51:10 Commencing optimization for 500 epochs, with 4504 positive edges
-#> 15:51:11 Optimization finished
+#> 18:10:51 Writing NN index file to temp file /tmp/36242292/Rtmp9dCBen/file1b2e64be96421
+#> 18:10:51 Searching Annoy index using 1 thread, search_k = 3000
+#> 18:10:51 Annoy recall = 100%
+#> 18:10:51 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 18:10:51 Initializing from normalized Laplacian + noise (using RSpectra)
+#> 18:10:51 Commencing optimization for 500 epochs, with 4504 positive edges
+#> 18:10:52 Optimization finished
 ```
 
 Plot the results using Seurat.
@@ -451,8 +504,9 @@ When analyzing supercells it's a good idea to plot their size on these. We can d
 
 ```r
 data <- cbind(umap.supercell$data,cd34.supercell$size)
+colnames(data)[1:2] <- c("umap_1", "umap_2")
 colnames(data)[length(colnames(data))] <- "size"
-ggplot(data,aes(x= UMAP_1,y=UMAP_2,color = celltype)) + geom_point(aes(size=size)) + theme_classic()
+ggplot(data,aes(x = umap_1, y = umap_2, color = celltype)) + geom_point(aes(size=size)) + theme_classic()
 ```
 
 <img src="31-downstream_continuous_files/figure-html/unnamed-chunk-16-1.png" width="672" />
@@ -461,9 +515,10 @@ ggplot(data,aes(x= UMAP_1,y=UMAP_2,color = celltype)) + geom_point(aes(size=size
 ```r
 lapply(marker.supercell.umaps,FUN = function(x){
   data <- cbind(x$data,cd34.supercell$size)
+  colnames(data)[1:2] <- c("umap_1", "umap_2")
   colnames(data)[length(colnames(data))] <- "size"
   gene <- colnames(data)[length(colnames(data))-1]
-  ggplot(data,aes(x= UMAP_1,y=UMAP_2,size=size,colour = .data[[gene]])) + geom_point() + 
+  ggplot(data,aes(x = umap_1, y = umap_2, size=size,colour = .data[[gene]])) + geom_point() + 
     scale_color_gradientn(colors =  c("lightgrey", "blue"), 
                           guide = "colorbar")  +
   theme_classic() + ggtitle(gene)
@@ -501,8 +556,21 @@ First we need to load the single cell data and make a classical dimentionality r
 
 ```r
 cd34.singlecells <- read_h5ad("data/CD34/cd34_multiome_rna.h5ad")
+#> Error in python_config_impl(python) : 
+#>   Error running '/users/agabrie4/.virtualenvs/r-reticulate/bin/python': No such file.
+#> The Python installation used to create the virtualenv has been moved or removed:
+#>   '/usr/bin'
 cd34.singlecells <- CreateSeuratObject(counts = Matrix::t(cd34.singlecells$X),meta.data = cd34.singlecells$obs)
+#> Warning: Data is of class dgRMatrix. Coercing to dgCMatrix.
 cd34.singlecells <- NormalizeData(cd34.singlecells)
+#> Normalizing layer: counts
+if(packageVersion("Seurat") >= 5) {
+  cd34.singlecells[["RNA"]] <- as(object = cd34.singlecells[["RNA"]], Class = "Assay")
+}
+#> Warning: No layers found matching search pattern provided
+#> Warning: No layers found matching search pattern provided
+#> Warning: Layer 'scale.data' is empty
+#> Warning: Assay RNA changing from Assay5 to Assay
 cd34.singlecells <- FindVariableFeatures(cd34.singlecells)
 cd34.singlecells <- ScaleData(cd34.singlecells)
 #> Centering and scaling data matrix
@@ -543,20 +611,20 @@ cd34.singlecells <- RunPCA(cd34.singlecells)
 #> 	   GYPC, PRSS57, RPLP2, SMIM24, RPS8, RPL35, MIR181A1HG, RPS3, RPL27A, RPL14 
 #> 	   RPL7, RPS6, RPL6, RPL8, RPL32, RACK1, ACTG1, RPL29, RPS3A, RPL7A
 cd34.singlecells <- RunUMAP(cd34.singlecells,dims = c(1:50))
-#> 15:51:22 UMAP embedding parameters a = 0.9922 b = 1.112
-#> 15:51:22 Read 6881 rows and found 50 numeric columns
-#> 15:51:22 Using Annoy for neighbor search, n_neighbors = 30
-#> 15:51:22 Building Annoy index with metric = cosine, n_trees = 50
+#> 18:11:07 UMAP embedding parameters a = 0.9922 b = 1.112
+#> 18:11:07 Read 6881 rows and found 50 numeric columns
+#> 18:11:07 Using Annoy for neighbor search, n_neighbors = 30
+#> 18:11:07 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 15:51:23 Writing NN index file to temp file /tmp/35608746/Rtmp9EMQ7F/file232e4b4c181e67
-#> 15:51:23 Searching Annoy index using 1 thread, search_k = 3000
-#> 15:51:24 Annoy recall = 100%
-#> 15:51:24 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 15:51:25 Initializing from normalized Laplacian + noise (using irlba)
-#> 15:51:25 Commencing optimization for 500 epochs, with 293954 positive edges
-#> 15:51:31 Optimization finished
+#> 18:11:07 Writing NN index file to temp file /tmp/36242292/Rtmp9dCBen/file1b2e6429fac5ba
+#> 18:11:07 Searching Annoy index using 1 thread, search_k = 3000
+#> 18:11:09 Annoy recall = 100%
+#> 18:11:09 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 18:11:10 Initializing from normalized Laplacian + noise (using RSpectra)
+#> 18:11:10 Commencing optimization for 500 epochs, with 293954 positive edges
+#> 18:11:18 Optimization finished
 ```
 Plot single cell data.
 
@@ -599,14 +667,19 @@ mc_projection(
 ### Compactness and separation
 
 We can compute the compactness and separation of the metacells from the single cell pca. 
-With the `mc_compactnness` we can use the approach of SEACells by computing these metrics in a diffusion map obtained from the pca.
+We can use the approach of SEACells by computing these metrics in a diffusion map obtained from the pca using the `get_diffusion_comp` function and then
+run the `mc_compactnness` and `mc_separation` functions to obtain the compactness and separation metrics.
 
 First for MetaCell2 metacells
 
 ```r
-cd34.metacell$compactness <- mc_compactness(cell.membership = cd34.metacell@misc$cell_membership, sc.obj = cd34.singlecells,
-                                      sc.reduction = "pca", n.components = 50, diffusion.components = T)
-#> Computing compactness ...
+diffusion_comp <- get_diffusion_comp(sc.obj = cd34.singlecells, sc.reduction = "pca", dims = 1:50)
+#> Computing diffusion maps ...
+cd34.metacell$compactness <- mc_compactness(cell.membership = cd34.metacell@misc$cell_membership, 
+                                            sc.obj = cd34.singlecells,
+                                            group.label = "metacell_name",
+                                            sc.reduction = diffusion_comp,
+                                            dims = 1:ncol(diffusion_comp))
 
 qc_boxplot(mc.obj = cd34.metacell, qc.metrics = "compactness")
 ```
@@ -615,9 +688,11 @@ qc_boxplot(mc.obj = cd34.metacell, qc.metrics = "compactness")
 
 
 ```r
-cd34.metacell$separation <- mc_separation(cell.membership = cd34.metacell@misc$cell_membership, sc.obj = cd34.singlecells,
-                                      sc.reduction = "pca", n.components = 50, diffusion.components = T)
-#> Computing separation ...
+cd34.metacell$separation <- mc_separation(cell.membership = cd34.metacell@misc$cell_membership,
+                                          sc.obj = cd34.singlecells,
+                                          group.label = "metacell_name",
+                                          sc.reduction = diffusion_comp,
+                                          dims =  1:ncol(diffusion_comp))
 
 qc_boxplot(mc.obj = cd34.metacell, qc.metrics = "separation")
 ```
@@ -626,9 +701,10 @@ qc_boxplot(mc.obj = cd34.metacell, qc.metrics = "separation")
 Same for metacell obtained with SuperCell.
 
 ```r
-cd34.supercell$compactness <- mc_compactness(cell.membership = cd34.supercell@misc$cell_membership, sc.obj = cd34.singlecells,
-                                      sc.reduction = "pca", n.components = 50, diffusion.components = T)
-#> Computing compactness ...
+cd34.supercell$compactness <- mc_compactness(cell.membership = cd34.supercell@misc$cell_membership, 
+                                            sc.obj = cd34.singlecells,
+                                            sc.reduction = diffusion_comp, 
+                                            dims = 1:ncol(diffusion_comp))
 
 qc_boxplot(mc.obj = cd34.supercell, qc.metrics = "compactness")
 ```
@@ -637,9 +713,10 @@ qc_boxplot(mc.obj = cd34.supercell, qc.metrics = "compactness")
 
 
 ```r
-cd34.supercell$separation <- mc_separation(cell.membership = cd34.supercell@misc$cell_membership, sc.obj = cd34.singlecells,
-                                      sc.reduction = "pca", n.components = 50, diffusion.components = T)
-#> Computing separation ...
+cd34.supercell$separation <- mc_separation(cell.membership = cd34.supercell@misc$cell_membership, 
+                                          sc.obj = cd34.singlecells,
+                                          sc.reduction = diffusion_comp,
+                                          dims =  1:ncol(diffusion_comp))
 
 qc_boxplot(mc.obj = cd34.supercell, qc.metrics = "separation")
 ```
@@ -652,7 +729,7 @@ We can compute the INV for the MetaCell2 and SuperCell metacells as defined in M
 ```r
 cd34.supercell$INV <- mc_INV(cell.membership = cd34.supercell@misc$cell_membership, sc.obj = cd34.singlecells)
 #> Computing INV ...
-cd34.metacell$INV <- mc_INV(cell.membership = cd34.metacell@misc$cell_membership, sc.obj = cd34.singlecells)
+cd34.metacell$INV <- mc_INV(cell.membership = cd34.metacell@misc$cell_membership, sc.obj = cd34.singlecells, group.label = "metacell_name")
 #> Computing INV ...
 ```
 

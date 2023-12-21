@@ -10,7 +10,7 @@ This chapter describes how to obtain the packages and data needed to reproduce t
 To build a conda environment containing the three metacell building tools used in this tutorial (SuperCell, MC2 and SEACells), 
 please follow the instructions provided in the README of our MetacellAnalysisToolkit [github repository](https://github.com/GfellerLab/MetacellToolkit).
 
-
+Then run the following lines to define the python path to use.
 
 ```r
 library(reticulate)
@@ -55,7 +55,7 @@ To use the python libraries installed in the virtual environment, define the RET
 echo 'RETICULATE_PYTHON=my_env/bin/python' > '.Renviron'
 ```
 
-## Retrieve a discrete dataset (PBMCs dataset) {#bmcite-data}
+## Retrieve a discrete dataset (Bone marrow dataset) {#bmcite-data}
 
 To test metacell construction on a discrete dataset, we retrieved the "bmcite" dataset from the SeauratData R package containing around 30'000 cells.
 
@@ -85,6 +85,9 @@ bmcite$celltype_simplified <- plyr::revalue(bmcite$celltype.l2,
                                               "gdT" = "Unconventional T"
                                               ))
 bmcite <- bmcite[,-grep("Prog",bmcite$celltype_simplified)]
+if(packageVersion("Seurat") >= 5) {
+  bmcite[["RNA"]] <- as(object = bmcite[["RNA"]], Class = "Assay")
+}
 saveRDS(bmcite, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
 
 ```
@@ -107,8 +110,8 @@ write_h5ad(adata, paste0("data/bmcite/singlecell_anndata_filtered.h5ad"))
 To test metacell construction on continuous dataset, we retrieved the CD34 dataset provided in [@SEACells]:
 
 ```bash
-mkdir data/CD34
-wget -O data/CD34/cd34_multiome_rna.h5ad 'https://zenodo.org/record/6383269/files/cd34_multiome_rna.h5ad?download=1' 
+mkdir -p data/CD34
+wget -O data/CD34/cd34_multiome_rna.h5ad 'https://dp-lab-data-public.s3.amazonaws.com/SEACells-multiome/cd34_multiome_rna.h5ad' 
 ```
 
 The downloaded file will be used in the section \@ref(command-line).
