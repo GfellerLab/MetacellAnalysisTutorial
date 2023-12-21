@@ -15,7 +15,6 @@ library(MetacellAnalysisToolkit)
 library(Seurat)
 # If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
 if(packageVersion("Seurat") >= 5){options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
-#> [1] "you are using seurat v5 with assay option v4"
 ```
 
 To explore metacells QCs, we need to load: 
@@ -118,6 +117,7 @@ diffusion_comp <- get_diffusion_comp(sc.obj = sc_data, sc.reduction = "pca", dim
 #>   Error running '/users/agabrie4/.virtualenvs/r-reticulate/bin/python': No such file.
 #> The Python installation used to create the virtualenv has been moved or removed:
 #>   '/usr/bin'
+#> Warning: The following arguments are not used: layer
 #> Computing diffusion maps ...
 mc_data$compactness <- mc_compactness(cell.membership = membership_df, 
                                       sc.obj = sc_data,

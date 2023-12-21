@@ -17,24 +17,17 @@ In this tutorial, standard analyses include dimensionality reduction, clustering
 
 ```r
 library(Seurat)
-#> Loading required package: SeuratObject
-#> Loading required package: sp
 #> The legacy packages maptools, rgdal, and rgeos, underpinning this package
 #> will retire shortly. Please refer to R-spatial evolution reports on
 #> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
 #> This package is now running under evolution status 0
-#> 
-#> Attaching package: 'SeuratObject'
-#> The following object is masked from 'package:base':
-#> 
-#>     intersect
+#> Attaching SeuratObject
 # If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
 wilcox.test <- "wilcox"
 if(packageVersion("Seurat") >= 5) {
   options(Seurat.object.assay.version = "v4") 
   wilcox.test <- "wilcox_limma"
   print("you are using seurat v5 with assay option v4")}
-#> [1] "you are using seurat v5 with assay option v4"
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -137,17 +130,17 @@ Idents(MC.seurat) <- "SCclustering"
 
 cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE, logfc.threshold = 0.25, min.pct = 0.1, test.use = wilcox.test)
 cells_markers[order(cells_markers$avg_log2FC, decreasing = T)[1:10], ]
-#>                p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> SH2D1B  4.891817e-73   6.847440 0.976 0.063 8.320491e-69
-#> CCNJL   7.548909e-60   6.408700 0.500 0.002 1.283994e-55
-#> NCAM1   3.027264e-61   6.171451 0.833 0.052 5.149074e-57
-#> KIR2DL1 5.624657e-40   5.907526 0.429 0.011 9.566979e-36
-#> LGALS9C 1.299450e-31   5.633886 0.357 0.011 2.210234e-27
-#> KLRF1   2.903180e-32   5.619850 1.000 0.406 4.938018e-28
-#> NCR1    1.269200e-66   5.560546 0.952 0.069 2.158782e-62
-#> LGALS9B 1.568102e-28   5.552238 0.286 0.006 2.667184e-24
-#> SPON2   4.903245e-24   5.462028 0.929 0.469 8.339929e-20
-#> NMUR1   7.401129e-57   5.457965 0.786 0.048 1.258858e-52
+#>              p_val avg_log2FC pct.1 pct.2    p_val_adj
+#> GNLY  4.624070e-27   4.620624 1.000 0.898 7.865080e-23
+#> NKG7  3.623582e-26   3.796975 1.000 0.878 6.163350e-22
+#> KLRF1 2.903180e-32   3.154920 1.000 0.406 4.938018e-28
+#> KLRD1 7.406286e-32   3.011319 1.000 0.407 1.259735e-27
+#> GZMB  1.220131e-24   3.010468 0.976 0.504 2.075321e-20
+#> KLRB1 1.374561e-25   2.989229 1.000 0.698 2.337991e-21
+#> CMC1  5.065132e-24   2.918483 1.000 0.846 8.615283e-20
+#> PRF1  1.881760e-31   2.869718 1.000 0.398 3.200685e-27
+#> CD7   2.407873e-27   2.806730 1.000 0.735 4.095552e-23
+#> SPON2 4.903245e-24   2.763682 0.929 0.469 8.339929e-20
 ```
 
 We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family,
@@ -183,7 +176,6 @@ print(proj_name)
 #> [1] "bmcite"
 sc_data <- readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
-#> Warning: Command NormalizeData.RNA changing from SeuratCommand to SeuratCommand
 ```
 
 We visualize gene-gene correlation at the single-cell level:
@@ -204,11 +196,6 @@ p.sc <- SuperCell::supercell_GeneGenePlot(
   alpha = alpha,
   color.use = celltype_colors
 )
-#> Warning: The `slot` argument of `GetAssayData()` is deprecated as of SeuratObject 5.0.0.
-#> ℹ Please use the `layer` argument instead.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
 p.sc$p
 ```
 
@@ -345,6 +332,12 @@ sc.pl.violin(adata, ['KLRF1', 'IL2RB', 'GNLY'], groupby=annotation_column, size 
 
 <img src="30-MC_analysis_discrete_files/figure-html/py-mc-markers-6.png" width="2564" />
 
+```python
+sc.pl.violin(adata, ['KLRF1', 'IL2RB', 'GNLY'], groupby='leiden', size = 2, rotation = 90)
+```
+
+<img src="30-MC_analysis_discrete_files/figure-html/py-mc-markers-7.png" width="2564" />
+
 
 ## Sample-weighted analysis {#weighted-analysis}
 
@@ -358,7 +351,6 @@ sc.pl.violin(adata, ['KLRF1', 'IL2RB', 'GNLY'], groupby=annotation_column, size 
 library(Seurat)
 # If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
 if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
-#> [1] "you are using seurat v5 with assay option v4"
 library(dplyr)
 library(ggplot2)
 library(SuperCell)

@@ -19,6 +19,18 @@ conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToo
 use_condaenv(conda_env)
 ```
 
+The following R packages should also be installed. 
+This tutorial was developed under Seurat V4 but is also compatible with Seurat V5.
+
+
+```r
+remotes::install_github("GfellerLab/SuperCell",upgrade = "never")
+remotes::install_github("GfellerLab/MetacellAnalysisToolkit",upgrade = "never")
+remotes::install_github("rstudio/reticulate",upgrade = "never")  #temporary fix for reading sparse matrix with R anndata https://github.com/rstudio/reticulate/issues/141
+#install.packages("Seurat") # uncoment to update Seurat to V5 since V5 not yet on conda
+#BiocManager::install('limma',update = F) # uncoment if Seurat V5 used 
+```
+
 ### Without conda
 If you don't have conda, you can use the following instructions:
 
@@ -53,6 +65,18 @@ To use the python libraries installed in the virtual environment, define the RET
 
 ```bash
 echo 'RETICULATE_PYTHON=my_env/bin/python' > '.Renviron'
+```
+
+The following R packages should also be installed. 
+This tutorial was developed under Seurat V4 but is also compatible with Seurat V5.
+
+
+```r
+remotes::install_github("GfellerLab/SuperCell",upgrade = "never")
+remotes::install_github("GfellerLab/MetacellAnalysisToolkit",upgrade = "never")
+remotes::install_github("rstudio/reticulate",upgrade = "never")  #temporary fix for reading sparse matrix with R anndata https://github.com/rstudio/reticulate/issues/141
+#install.packages("Seurat") # uncoment to update Seurat to V5 since V5 not yet on conda
+#BiocManager::install('limma',update = F) # uncoment if Seurat V5 used 
 ```
 
 ## Retrieve a discrete dataset (Bone marrow dataset) {#bmcite-data}
