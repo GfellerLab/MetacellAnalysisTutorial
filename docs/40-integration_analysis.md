@@ -34,31 +34,20 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 
 ```
-#>           used (Mb) gc trigger  (Mb) max used  (Mb)
-#> Ncells 1811213 96.8    3156290 168.6  3156290 168.6
-#> Vcells 3197248 24.4    8388608  64.0  5056132  38.6
+#>           used  (Mb) gc trigger (Mb) max used (Mb)
+#> Ncells 1912846 102.2    3088018  165  3088018  165
+#> Vcells 3338412  25.5    8388608   64  5498716   42
 ```
 
 
 ```r
 library(Seurat)
-#> Loading required package: SeuratObject
-#> Loading required package: sp
 #> The legacy packages maptools, rgdal, and rgeos, underpinning this package
 #> will retire shortly. Please refer to R-spatial evolution reports on
 #> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
 #> This package is now running under evolution status 0
-#> 
-#> Attaching package: 'SeuratObject'
-#> The following object is masked from 'package:base':
-#> 
-#>     intersect
+#> Attaching SeuratObject
 library(anndata)
-#> 
-#> Attaching package: 'anndata'
-#> The following object is masked from 'package:SeuratObject':
-#> 
-#>     Layers
 library(SuperCell)
 library(ggplot2)
 wilcox.test <- "wilcox"
@@ -66,7 +55,6 @@ if(packageVersion("Seurat") >= 5) {
   options(Seurat.object.assay.version = "v4") 
   wilcox.test <- "wilcox_limma"
   print("you are using seurat v5 with assay option v4")}
-#> [1] "you are using seurat v5 with assay option v4"
 
 color.celltypes  <- c('#E5D2DD', '#53A85F', '#F1BB72', '#F3B1A0', '#D6E7A3', '#57C3F3', '#476D87',
                       '#E95C59', '#E59CC4', '#AB3282', '#23452F', '#BD956A', '#8C549C', '#585658',
@@ -97,7 +85,7 @@ To call the MATK command line, please define your path to the gihub cloned repos
 MATK_path=MetacellAnalysisToolkit/
 start=`date +%s`
 for d in data/HLCA/datasets/*;
-do ${MATK_path}cli/MATK -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
+do ${MATK_path}cli/MATK -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 6 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 echo "Duration: $((($(date +%s)-$start)/60)) minutes"
 ```
@@ -275,7 +263,6 @@ combined.mc
 #> An object of class Seurat 
 #> 30024 features across 11706 samples within 2 assays 
 #> Active assay: integrated (2000 features, 2000 variable features)
-#>  1 layer present: data
 #>  1 other assay present: RNA
 ```
 
@@ -375,13 +362,13 @@ DefaultAssay(combined.mc) <- "RNA"
 
 markersB <- FindMarkers(combined.mc, ident.1 = b.clust, only.pos = T, logfc.threshold = 0.25, test.use =  wilcox.test)
 head(markersB)
-#>           p_val avg_log2FC pct.1 pct.2 p_val_adj
-#> FCRLA         0   8.981631 0.962 0.022         0
-#> BLK           0   7.673257 0.990 0.058         0
-#> TNFRSF13B     0   7.496910 0.962 0.035         0
-#> LINC01781     0   8.240249 0.952 0.034         0
-#> FAM30A        0   6.386756 0.952 0.045         0
-#> LINC02397     0   7.706740 0.962 0.064         0
+#>       p_val avg_log2FC pct.1 pct.2 p_val_adj
+#> TCL1A     0  1.3939363 0.695 0.020         0
+#> FCRLA     0  1.0706003 0.962 0.022         0
+#> BLK       0  1.2209493 0.990 0.058         0
+#> FCRL5     0  0.7922142 0.886 0.027         0
+#> PNOC      0  0.5425023 0.924 0.050         0
+#> PAX5      0  0.6124840 0.895 0.023         0
 ```
 
 This cluster clearly presents a B cell signature with marker genes such as CD19 and PAX5
@@ -391,8 +378,8 @@ This cluster clearly presents a B cell signature with marker genes such as CD19 
 genes <-c("CD19","PAX5") # knwon B cells markers
 markersB[genes,]
 #>              p_val avg_log2FC pct.1 pct.2     p_val_adj
-#> CD19 6.500657e-208   7.157978 0.990 0.113 1.821744e-203
-#> PAX5  0.000000e+00   8.451859 0.895 0.023  0.000000e+00
+#> CD19 6.500657e-208   1.104315 0.990 0.113 1.821744e-203
+#> PAX5  0.000000e+00   0.612484 0.895 0.023  0.000000e+00
 VlnPlot(combined.mc, genes, ncol = 1)
 ```
 
@@ -487,8 +474,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#> Ncells 3790696 202.5    6874944   367.2    6874944   367.2
-#> Vcells 7230711  55.2 1882870150 14365.2 2331123103 17785.1
+#> Ncells 3604925 192.6    6648961   355.1    6648961   355.1
+#> Vcells 6809338  52.0 1894376356 14453.0 2366897090 18058.0
 ```
 
 
@@ -503,7 +490,6 @@ if(packageVersion("Seurat") >= 5) {
   options(Seurat.object.assay.version = "v4") 
   wilcox.test <- "wilcox_limma"
   print("you are using seurat v5 with assay option v4")}
-#> [1] "you are using seurat v5 with assay option v4"
 
 color.celltypes  <- c('#E5D2DD', '#53A85F', '#F1BB72', '#F3B1A0', '#D6E7A3', '#57C3F3', '#476D87',
                       '#E95C59', '#E59CC4', '#AB3282', '#23452F', '#BD956A', '#8C549C', '#585658',
@@ -535,7 +521,7 @@ To call the MATK command line, please define your path to the gihub cloned repos
 #git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
 MATK_path=MetacellAnalysisToolkit/
 for d in data/HLCA/datasets/*;
-do ${MATK_path}cli/MATK -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
+do ${MATK_path}cli/MATK -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 6 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 ```
 
@@ -715,7 +701,6 @@ combined.mc
 #> An object of class Seurat 
 #> 30024 features across 12914 samples within 2 assays 
 #> Active assay: integrated (2000 features, 2000 variable features)
-#>  2 layers present: data, scale.data
 #>  1 other assay present: RNA
 #>  1 dimensional reduction calculated: pca
 ```
@@ -835,18 +820,18 @@ markersSmoothMuscle <- FindMarkers(combined.mc,ident.1 = "Smooth muscle FAM83D+"
 
 head(markersSmoothMuscle)
 #>               p_val avg_log2FC pct.1 pct.2     p_val_adj
-#> MYOCD 4.887974e-176   6.792923 0.758 0.022 1.369806e-171
-#> NMRK2 1.092465e-129   8.372466 0.273 0.003 3.061523e-125
-#> PLN   4.060884e-124   6.962042 0.879 0.044 1.138022e-119
-#> HSPB3 7.779955e-121   8.396481 0.545 0.016 2.180255e-116
-#> CASQ2 9.830136e-117   6.325768 0.636 0.023 2.754797e-112
-#> ASB5  2.233460e-107   8.553315 0.273 0.004 6.259049e-103
+#> MYOCD 4.887974e-176  1.3879478 0.758 0.022 1.369806e-171
+#> NMRK2 1.092465e-129  0.4261093 0.273 0.003 3.061523e-125
+#> PLN   4.060884e-124  3.1234083 0.879 0.044 1.138022e-119
+#> HSPB3 7.779955e-121  1.0321301 0.545 0.016 2.180255e-116
+#> CASQ2 9.830136e-117  1.1149385 0.636 0.023 2.754797e-112
+#> ASB5  2.233460e-107  0.2845419 0.273 0.004 6.259049e-103
 
 markersSmoothMuscle[c("MYH11","CNN1","FAM83D"),]
 #>               p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> MYH11  2.489777e-32    6.36830 0.970 0.286 6.977351e-28
-#> CNN1   6.519506e-71    8.31570 0.970 0.106 1.827026e-66
-#> FAM83D 3.395734e-11    5.77602 0.636 0.284 9.516205e-07
+#> MYH11  2.489777e-32   4.250912 0.970 0.286 6.977351e-28
+#> CNN1   6.519506e-71   4.627342 0.970 0.106 1.827026e-66
+#> FAM83D 3.395734e-11   2.189551 0.636 0.284 9.516205e-07
 
 # Many classical smooth muscles cells are not annotated at the 3rd level of annotation (labelled None)
 VlnPlot(combined.mc,features = c("MYH11","CNN1","FAM83D"),group.by = "ann",ncol = 2,cols = color.celltypes.ann)

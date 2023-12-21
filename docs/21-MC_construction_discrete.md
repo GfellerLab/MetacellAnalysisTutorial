@@ -41,20 +41,13 @@ if(system.file(package='SuperCell') == ""){
 } 
 library(SuperCell)
 library(Seurat)
-#> Loading required package: SeuratObject
-#> Loading required package: sp
 #> The legacy packages maptools, rgdal, and rgeos, underpinning this package
 #> will retire shortly. Please refer to R-spatial evolution reports on
 #> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
 #> This package is now running under evolution status 0
-#> 
-#> Attaching package: 'SeuratObject'
-#> The following object is masked from 'package:base':
-#> 
-#>     intersect
+#> Attaching SeuratObject
 # If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
 if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
-#> [1] "you are using seurat v5 with assay option v4"
 ```
 
 
@@ -105,15 +98,10 @@ In the following code chunk, we use Seurat to normalize and visualize the data:
 
 ```r
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
-#> Warning: Command NormalizeData.RNA changing from SeuratCommand to SeuratCommand
 sc_data <- FindVariableFeatures(sc_data, nfeatures = 2000)
-#> Warning: Command FindVariableFeatures.RNA changing from SeuratCommand to
-#> SeuratCommand
 sc_data <- ScaleData(sc_data)
 #> Centering and scaling data matrix
-#> Warning: Command ScaleData.RNA changing from SeuratCommand to SeuratCommand
 sc_data <- RunPCA(sc_data, npcs = 50, verbose = F)
-#> Warning: Command RunPCA.RNA changing from SeuratCommand to SeuratCommand
 sc_data <- RunUMAP(sc_data, reduction = "pca", dims = c(1:30), n.neighbors = 30, verbose = F)
 #> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
@@ -149,11 +137,6 @@ MC <- SuperCell::SCimplify(Seurat::GetAssayData(sc_data, slot = "data"),  # sing
                            n.pc = nb_pc,
                            genes.use = Seurat::VariableFeatures(sc_data)
                            )
-#> Warning: The `slot` argument of `GetAssayData()` is deprecated as of SeuratObject 5.0.0.
-#> ℹ Please use the `layer` argument instead.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
 ```
 
 `SCimplify` returns a list containing the following main elements: 
@@ -290,8 +273,8 @@ anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_na
 
 ```
 #>             used   (Mb) gc trigger   (Mb)  max used   (Mb)
-#> Ncells   3709563  198.2   11952140  638.4  14940175  797.9
-#> Vcells 161752795 1234.1  485533554 3704.4 485527349 3704.3
+#> Ncells   3494394  186.7   11652825  622.4  14566031  778.0
+#> Vcells 156633708 1195.1  478116159 3647.8 478105101 3647.7
 ```
 
 
@@ -686,13 +669,7 @@ For future QCs and downstream analyses in R (section \@ref(standard-analysis-R))
 library(Seurat)
 # If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
 if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
-#> [1] "you are using seurat v5 with assay option v4"
 library(anndata)
-#> 
-#> Attaching package: 'anndata'
-#> The following object is masked from 'package:SeuratObject':
-#> 
-#>     Layers
 library(reticulate)
 
 adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_MC2.h5ad"))
@@ -702,6 +679,10 @@ countMatrix <-  Matrix::t(adata_mc$X)
 colnames(countMatrix) <- adata_mc$obs_names
 rownames(countMatrix) <- adata_mc$var_names
 MC.seurat <- CreateSeuratObject(counts = as(countMatrix, 'CsparseMatrix'), meta.data = as.data.frame(adata_mc$obs))
+#> Warning: Invalid name supplied, making object name syntactically valid. New
+#> object name is
+#> sizetotal_umisX__zeros_downsample_umismetacells_rare_gene_modulerare_metacellcelltype_simplifiedcelltype_simplified_fraction_of_B.cellcelltype_simplified_fraction_of_CD14.Monocelltype_simplified_fraction_of_CD16.Monocelltype_simplified_fraction_of_GMPcelltype_simplified_fraction_of_HSCcelltype_simplified_fraction_of_LMPPcelltype_simplified_fraction_of_NKcelltype_simplified_fraction_of_Naive.CD4.cellcelltype_simplified_fraction_of_Naive.CD8.cellcelltype_simplified_fraction_of_Non.Naive.CD4.cellcelltype_simplified_fraction_of_Non.Naive.CD8.cellcelltype_simplified_fraction_of_Plasmablastcelltype_simplified_fraction_of_Unconventional.Tcelltype_simplified_fraction_of_cDC2celltype_simplified_fraction_of_pDC;
+#> see ?make.names for more details on syntax validity
 MC.seurat@misc[["var_features"]] <- rownames(adata_mc$var)[which(adata_mc$var$selected_gene == T)] 
 
 # Save membership in misc
@@ -709,17 +690,6 @@ MC.seurat@misc$cell_membership <- py$ad$obs['membership']
 if(packageVersion("Seurat") >= 5) {
   MC.seurat[["RNA"]] <- as(object = MC.seurat[["RNA"]], Class = "Assay")
 }
-#> Warning: No layers found matching search pattern provided
-
-#> Warning: No layers found matching search pattern provided
-
-#> Warning: No layers found matching search pattern provided
-#> Warning: Layer 'data' is empty
-#> Warning: No layers found matching search pattern provided
-
-#> Warning: No layers found matching search pattern provided
-#> Warning: Layer 'scale.data' is empty
-#> Warning: Assay RNA changing from Assay5 to Assay
 saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_MC2.rds'))
 ```
 
@@ -951,7 +921,7 @@ The `core.summarize_by_SEACell` function can be used to generate a metacell coun
 
 ```python
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
-#>   0%|          | 0/133 [00:00<?, ?it/s]  4%|3         | 5/133 [00:00<00:03, 40.53it/s]  8%|7         | 10/133 [00:00<00:03, 39.22it/s] 11%|#         | 14/133 [00:00<00:03, 38.41it/s] 14%|#3        | 18/133 [00:00<00:03, 35.89it/s] 17%|#6        | 22/133 [00:00<00:03, 35.42it/s] 20%|#9        | 26/133 [00:00<00:03, 35.36it/s] 23%|##2       | 30/133 [00:00<00:02, 35.87it/s] 26%|##5       | 34/133 [00:00<00:02, 35.97it/s] 29%|##8       | 38/133 [00:01<00:02, 35.35it/s] 32%|###1      | 42/133 [00:01<00:02, 36.60it/s] 35%|###4      | 46/133 [00:01<00:02, 37.02it/s] 38%|###7      | 50/133 [00:01<00:02, 37.30it/s] 41%|####      | 54/133 [00:01<00:02, 37.55it/s] 44%|####3     | 58/133 [00:01<00:02, 37.33it/s] 47%|####6     | 62/133 [00:01<00:01, 36.54it/s] 50%|####9     | 66/133 [00:01<00:01, 36.63it/s] 53%|#####2    | 70/133 [00:01<00:01, 37.44it/s] 56%|#####5    | 74/133 [00:02<00:01, 36.53it/s] 59%|#####8    | 78/133 [00:02<00:01, 36.47it/s] 62%|######2   | 83/133 [00:02<00:01, 38.43it/s] 66%|######6   | 88/133 [00:02<00:01, 39.24it/s] 70%|######9   | 93/133 [00:02<00:01, 39.65it/s] 74%|#######3  | 98/133 [00:02<00:00, 40.52it/s] 77%|#######7  | 103/133 [00:02<00:00, 41.34it/s] 81%|########1 | 108/133 [00:02<00:00, 41.84it/s] 85%|########4 | 113/133 [00:02<00:00, 41.45it/s] 89%|########8 | 118/133 [00:03<00:00, 41.63it/s] 92%|#########2| 123/133 [00:03<00:00, 42.30it/s] 96%|#########6| 128/133 [00:03<00:00, 43.23it/s]100%|##########| 133/133 [00:03<00:00, 43.19it/s]100%|##########| 133/133 [00:03<00:00, 38.90it/s]
+#>   0%|          | 0/133 [00:00<?, ?it/s]  4%|3         | 5/133 [00:00<00:02, 46.51it/s]  8%|7         | 10/133 [00:00<00:02, 45.13it/s] 11%|#1        | 15/133 [00:00<00:02, 44.69it/s] 15%|#5        | 20/133 [00:00<00:02, 43.51it/s] 19%|#8        | 25/133 [00:00<00:02, 43.61it/s] 23%|##2       | 30/133 [00:00<00:02, 43.73it/s] 26%|##6       | 35/133 [00:00<00:02, 43.83it/s] 30%|###       | 40/133 [00:00<00:02, 44.02it/s] 34%|###3      | 45/133 [00:01<00:01, 44.35it/s] 38%|###7      | 50/133 [00:01<00:01, 44.95it/s] 41%|####1     | 55/133 [00:01<00:01, 45.30it/s] 45%|####5     | 60/133 [00:01<00:01, 45.18it/s] 49%|####8     | 65/133 [00:01<00:01, 43.15it/s] 53%|#####2    | 70/133 [00:01<00:01, 44.03it/s] 56%|#####6    | 75/133 [00:01<00:01, 43.97it/s] 60%|######    | 80/133 [00:01<00:01, 44.23it/s] 64%|######3   | 85/133 [00:01<00:01, 45.21it/s] 68%|######7   | 90/133 [00:02<00:00, 45.65it/s] 71%|#######1  | 95/133 [00:02<00:00, 46.80it/s] 75%|#######5  | 100/133 [00:02<00:00, 47.26it/s] 79%|#######8  | 105/133 [00:02<00:00, 47.82it/s] 83%|########2 | 110/133 [00:02<00:00, 48.19it/s] 86%|########6 | 115/133 [00:02<00:00, 47.93it/s] 90%|######### | 120/133 [00:02<00:00, 48.13it/s] 95%|#########4| 126/133 [00:02<00:00, 49.05it/s] 99%|#########9| 132/133 [00:02<00:00, 49.36it/s]100%|##########| 133/133 [00:02<00:00, 45.99it/s]
 ```
 #### Annotate metacells {-}
 Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 
@@ -995,7 +965,6 @@ library(Seurat)
 library(Seurat)
 # If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
 if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
-#> [1] "you are using seurat v5 with assay option v4"
 library(anndata)
 library(reticulate)
 
@@ -1022,16 +991,6 @@ MC.seurat@misc$cell_membership <- data.frame(row.names = rownames(py$membership)
 if(packageVersion("Seurat") >= 5) {
   MC.seurat[["RNA"]] <- as(object = MC.seurat[["RNA"]], Class = "Assay")
 }
-#> Warning: No layers found matching search pattern provided
-#> Warning: No layers found matching search pattern provided
-
-#> Warning: No layers found matching search pattern provided
-#> Warning: Layer 'data' is empty
-#> Warning: No layers found matching search pattern provided
-
-#> Warning: No layers found matching search pattern provided
-#> Warning: Layer 'scale.data' is empty
-#> Warning: Assay RNA changing from Assay5 to Assay
 saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_SEACells.rds'))
 ```
 
