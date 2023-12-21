@@ -9,6 +9,12 @@ In this tutorial, standard analyses include dimensionality reduction, clustering
 
 ```{r r-libraries, eval=TRUE}
 library(Seurat)
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+wilcox.test <- "wilcox"
+if(packageVersion("Seurat") >= 5) {
+  options(Seurat.object.assay.version = "v4") 
+  wilcox.test <- "wilcox_limma"
+  print("you are using seurat v5 with assay option v4")}
 library(dplyr)
 library(ggplot2)
 ```
@@ -42,7 +48,7 @@ MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ### Dimensionality reduction
 
 As for single-cells, we normalize the raw counts (here aggregated raw counts) and we identify the most variable features in the metacells gene expression data.
-Based on these features, we run PCA and use the first principal components to obtain a two dimensionnal representation of the data using UMAP.
+Based on these features, we run PCA and use the first principal components to obtain a two dimensional representation of the data using UMAP.
 
 ```{r r-mc-dim-reduc, eval=TRUE}
 Idents(MC.seurat) <- annotation_column
@@ -55,8 +61,8 @@ MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F, min.dist = 1)
 data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cell_type = MC.seurat@meta.data[, annotation_column]))
-
-p_annot <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cell_type)) + geom_point(aes(size=size)) +
+colnames(data)[1:2] <- c("umap_1", "umap_2")
+p_annot <- ggplot(data, aes(x= umap_1, y=umap_2, color = cell_type)) + geom_point(aes(size=size)) +
   ggplot2::scale_size_continuous(range = c(0.5,  0.5*max(log((data$size))))) +
    ggplot2::scale_color_manual(values = celltype_colors) +
   theme_classic() + guides(color=guide_legend(ncol=2))
@@ -72,8 +78,8 @@ MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reduc
 data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cluster = paste0("C_",MC.seurat$SCclustering)))
-
-p_cluster <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cluster)) + geom_point(aes(size=size)) +
+colnames(data)[1:2] <- c("umap_1", "umap_2")
+p_cluster <- ggplot(data, aes(x= umap_1, y=umap_2, color = cluster)) + geom_point(aes(size=size)) +
   ggplot2::scale_size_continuous(range = c(0.5, 0.5*max(log1p((data$size))))) +
   theme_classic() + guides(color=guide_legend(ncol=2))
 p_cluster
@@ -81,12 +87,12 @@ p_cluster
 
 ### Differential expression analysis
 
-We perform diffrential analysis to identify the markers of our cluster 3 as an example using the `FindMarkers` function.
+We perform differential analysis to identify the markers of our cluster 11 as an example using the `FindMarkers` function.
 ```{r r-mc-DEG, eval=TRUE}
 # Set idents to metacell annotation
 Idents(MC.seurat) <- "SCclustering"
 
-cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE)
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE, logfc.threshold = 0.25, min.pct = 0.1, test.use = wilcox.test)
 cells_markers[order(cells_markers$avg_log2FC, decreasing = T)[1:10], ]
 ```
 

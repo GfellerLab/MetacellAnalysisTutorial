@@ -2,7 +2,7 @@
 
 In this chapter, we will demonstrate metacell construction using three different methods: SuperCell in R, MetaCell-2 (MC2) and SEACells in Pyhton. 
 
-For this, we will first use a dataset of PBMC dataset from the SeuratData package. This dataset contains around 30K cells and is an example of a dataset with well defined cell types. 
+For this, we will first use a dataset of bone marrow cells from the SeuratData package. This dataset contains around 30K cells and is an example of a dataset with well defined cell types. 
 For an example of more continuous data, see chapter \@ref(MC-continuous).
 
 ```{r include=FALSE}
@@ -48,32 +48,3 @@ warnings.filterwarnings('ignore')
 ```
 
 
-<!-- We provide a command line tool allowing users to build metacells using either tool (MC2, SuperCell or SEACells) from a provided dataset. -->
-<!-- The command line tool takes multiple parameters as input, *e.g.,* number of neighbors considered in the knn, number of components used, graining level. -->
-<!-- which is for example required in a benchmark setting. -->
-
-
-<!-- ```{bash, commandlines_setup, eval = FALSE} -->
-<!-- setwd("MetacellToolkit/") -->
-<!-- ``` -->
-
-<!-- ```{bash, SuperCell-command, eval = FALSE} -->
-<!-- proj_name="3k_pbmc" -->
-<!-- MC_tool="SuperCell" -->
-<!-- # input raw adata output adata -->
-<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata -->
-
-<!-- # input raw adata output seurat -->
-<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat -->
-<!-- ``` -->
-
-
-<!-- ```{bash, SEACells-command, eval = FALSE} -->
-<!-- proj_name="3k_pbmc" -->
-<!-- MC_tool="SEACells" -->
-<!-- # input raw adata output adata -->
-<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s adata -->
-
-<!-- # input raw adata output seurat -->
-<!-- Rscript cli/${MC_tool}CL.R -i data/${proj_name}/singlecell_anndata_filtered.h5ad -o data/${proj_name}/${MC_tool}/ -n 50 -f 2000 -k 30 -g 50 -s seurat -->
-<!-- ``` -->

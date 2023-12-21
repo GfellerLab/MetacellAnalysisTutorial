@@ -24,9 +24,12 @@ To run SuperCell, the following R package needs to be imported:
 
 ```{r SuperCell-packages, eval = TRUE}
 if(system.file(package='SuperCell') == ""){
-  remotes::install_github("GfellerLab/SuperCell", force = TRUE, upgrade = FALSE)
+  remotes::install_github("GfellerLab/SuperCell", force = TRUE, upgrade = "never")
 } 
 library(SuperCell)
+library(Seurat)
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
 ```
 
 ```{r SuperCell-r-global-parameters, echo = FALSE}
@@ -61,7 +64,7 @@ celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
                  "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
                  "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
                  "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
-names(celltype_colors) <-cell_types
+names(celltype_colors) <- cell_types
 
 sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
 ```
@@ -86,7 +89,6 @@ PCA computation is performed on the log-normalized gene expression data in the `
 In the following code chunk, we use Seurat to normalize and visualize the data:
 
 ```{r supercell-data-processing, cache = TO_CACHE, evaluate = TRUE}
-library(Seurat)
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
 sc_data <- FindVariableFeatures(sc_data, nfeatures = 2000)
 sc_data <- ScaleData(sc_data)
@@ -202,6 +204,9 @@ MC.seurat@misc$sc.pca <- CreateDimReducObject(
   key = "PC_",
   assay = "RNA"
 )
+if(packageVersion("Seurat") >= 5) {
+  MC.seurat[["RNA"]] <- as(object = MC.seurat[["RNA"]], Class = "Assay")
+}
 print(paste0("Saving metacell object for the ", proj_name, " dataset using ", MC_tool))
 saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
@@ -219,6 +224,9 @@ MC.seurat <- supercell_2_Seurat(
   var.genes = MC$genes.use,
   N.comp = 10
 )
+if(packageVersion("Seurat") >= 5) {
+  MC.seurat[["RNA"]] <- as(object = MC.seurat[["RNA"]], Class = "Assay")
+}
 saveRDS(MC.seurat, file = paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 

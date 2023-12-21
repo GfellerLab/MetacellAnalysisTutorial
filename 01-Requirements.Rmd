@@ -12,12 +12,23 @@ This chapter describes how to obtain the packages and data needed to reproduce t
 To build a conda environment containing the three metacell building tools used in this tutorial (SuperCell, MC2 and SEACells), 
 please follow the instructions provided in the README of our MetacellAnalysisToolkit [github repository](https://github.com/GfellerLab/MetacellToolkit).
 
-
-```{r, eval = FALSE}
+Then run the following lines to define the python path to use.
+```{r, eval = T}
 library(reticulate)
 conda_env <-  conda_list()[reticulate::conda_list()$name == "MetacellAnalysisToolkit","python"]
 
 use_condaenv(conda_env)
+```
+
+The following R packages should also be installed. 
+This tutorial was developed under Seurat V4 but is also compatible with Seurat V5.
+
+```{r, eval = F, echo = T}
+remotes::install_github("GfellerLab/SuperCell",upgrade = "never")
+remotes::install_github("GfellerLab/MetacellAnalysisToolkit",upgrade = "never")
+remotes::install_github("rstudio/reticulate",upgrade = "never")  #temporary fix for reading sparse matrix with R anndata https://github.com/rstudio/reticulate/issues/141
+#install.packages("Seurat") # uncoment to update Seurat to V5 since V5 not yet on conda
+#BiocManager::install('limma',update = F) # uncoment if Seurat V5 used 
 ```
 
 ### Without conda
@@ -52,7 +63,18 @@ To use the python libraries installed in the virtual environment, define the RET
 echo 'RETICULATE_PYTHON=my_env/bin/python' > '.Renviron'
 ```
 
-## Retrieve a discrete dataset (PBMCs dataset) {#bmcite-data}
+The following R packages should also be installed. 
+This tutorial was developed under Seurat V4 but is also compatible with Seurat V5.
+
+```{r, eval = F, echo = T}
+remotes::install_github("GfellerLab/SuperCell",upgrade = "never")
+remotes::install_github("GfellerLab/MetacellAnalysisToolkit",upgrade = "never")
+remotes::install_github("rstudio/reticulate",upgrade = "never")  #temporary fix for reading sparse matrix with R anndata https://github.com/rstudio/reticulate/issues/141
+#install.packages("Seurat") # uncoment to update Seurat to V5 since V5 not yet on conda
+#BiocManager::install('limma',update = F) # uncoment if Seurat V5 used 
+```
+
+## Retrieve a discrete dataset (Bone marrow dataset) {#bmcite-data}
 
 To test metacell construction on a discrete dataset, we retrieved the "bmcite" dataset from the SeauratData R package containing around 30'000 cells.
 
@@ -81,6 +103,9 @@ bmcite$celltype_simplified <- plyr::revalue(bmcite$celltype.l2,
                                               "gdT" = "Unconventional T"
                                               ))
 bmcite <- bmcite[,-grep("Prog",bmcite$celltype_simplified)]
+if(packageVersion("Seurat") >= 5) {
+  bmcite[["RNA"]] <- as(object = bmcite[["RNA"]], Class = "Assay")
+}
 saveRDS(bmcite, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
 
 ```
@@ -100,9 +125,9 @@ write_h5ad(adata, paste0("data/bmcite/singlecell_anndata_filtered.h5ad"))
 ## Retrieve a continuous dataset (CD34 dataset) {#CD34-data}
 
 To test metacell construction on continuous dataset, we retrieved the CD34 dataset provided in [@SEACells]:
-```{bash, eval = FALSE, cache = TO_CACHE}
-mkdir data/CD34
-wget -O data/CD34/cd34_multiome_rna.h5ad 'https://zenodo.org/record/6383269/files/cd34_multiome_rna.h5ad?download=1' 
+```{bash, eval = F, cache = TO_CACHE}
+mkdir -p data/CD34
+wget -O data/CD34/cd34_multiome_rna.h5ad 'https://dp-lab-data-public.s3.amazonaws.com/SEACells-multiome/cd34_multiome_rna.h5ad' 
 ```
 
 The downloaded file will be used in the section \@ref(command-line).
@@ -129,7 +154,7 @@ This should take less than 10 minutes.
 
 If you are limited in time feel free to process only a subset of the dataset.
 
-```{r , eval = FALSE, collapse = T, cache = TO_CACHE}
+```{r , eval = F, collapse = T, cache = TO_CACHE}
 t0.split <- Sys.time()
 
 library(anndata)

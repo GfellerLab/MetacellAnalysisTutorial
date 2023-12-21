@@ -7,6 +7,8 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
 ```{r r-libraries-weighted, eval=TRUE}
 library(Seurat)
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
 library(dplyr)
 library(ggplot2)
 library(SuperCell)
@@ -114,7 +116,7 @@ MC.top.markers <- cluster_markers[order(cluster_markers$logFC, decreasing = T),]
 head(MC.top.markers)
 ```
 
-We visualize the top 5 markers for the cluster 7 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
+We visualize the top 5 markers for the cluster 9 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
 ```{r r-mc-plot-genes-weighted, eval=TRUE, fig.width = 10, fig.height = 5}
 Idents(MC.seurat) <- "SCclustering"
 # genes.to.plot <- MC.seurat.top.markers$gene[MC.seurat.top.markers$cluster == unique(MC.seurat@meta.data[,annotation_column])[1]]
