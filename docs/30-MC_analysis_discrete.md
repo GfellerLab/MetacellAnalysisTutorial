@@ -1,7 +1,7 @@
 # Downstream analysis of metacells {#downstream-analysis}
 
 In this chapter, we run standard and advanced downstream analyses on metacells instead of single-cell data. 
-In this analysis, we treat each metacell as a single cell, neglecting information about the size of the metacell (i.e., number of containing single cells). 
+We will treat each metacell as a single cell, neglecting information about the size of the metacell (i.e., number of containing single cells). 
 If you are interested in sample-weighted analysis, where metacell size is taken into account, see section \@ref(weighted-analysis).
 
 ## Standard analysis (R) {#standard-analysis-R}
@@ -17,11 +17,24 @@ In this tutorial, standard analyses include dimensionality reduction, clustering
 
 ```r
 library(Seurat)
+#> Loading required package: SeuratObject
+#> Loading required package: sp
 #> The legacy packages maptools, rgdal, and rgeos, underpinning this package
 #> will retire shortly. Please refer to R-spatial evolution reports on
 #> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
 #> This package is now running under evolution status 0
-#> Attaching SeuratObject
+#> 
+#> Attaching package: 'SeuratObject'
+#> The following object is masked from 'package:base':
+#> 
+#>     intersect
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+wilcox.test <- "wilcox"
+if(packageVersion("Seurat") >= 5) {
+  options(Seurat.object.assay.version = "v4") 
+  wilcox.test <- "wilcox_limma"
+  print("you are using seurat v5 with assay option v4")}
+#> [1] "you are using seurat v5 with assay option v4"
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -64,7 +77,7 @@ MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ### Dimensionality reduction
 
 As for single-cells, we normalize the raw counts (here aggregated raw counts) and we identify the most variable features in the metacells gene expression data.
-Based on these features, we run PCA and use the first principal components to obtain a two dimensionnal representation of the data using UMAP.
+Based on these features, we run PCA and use the first principal components to obtain a two dimensional representation of the data using UMAP.
 
 
 ```r
@@ -82,8 +95,8 @@ MC.seurat <- RunUMAP(MC.seurat, dims = 1:30, verbose = F, min.dist = 1)
 data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cell_type = MC.seurat@meta.data[, annotation_column]))
-
-p_annot <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cell_type)) + geom_point(aes(size=size)) +
+colnames(data)[1:2] <- c("umap_1", "umap_2")
+p_annot <- ggplot(data, aes(x= umap_1, y=umap_2, color = cell_type)) + geom_point(aes(size=size)) +
   ggplot2::scale_size_continuous(range = c(0.5,  0.5*max(log((data$size))))) +
    ggplot2::scale_color_manual(values = celltype_colors) +
   theme_classic() + guides(color=guide_legend(ncol=2))
@@ -105,8 +118,8 @@ MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reduc
 data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
                          cluster = paste0("C_",MC.seurat$SCclustering)))
-
-p_cluster <- ggplot(data, aes(x= UMAP_1, y=UMAP_2, color = cluster)) + geom_point(aes(size=size)) +
+colnames(data)[1:2] <- c("umap_1", "umap_2")
+p_cluster <- ggplot(data, aes(x= umap_1, y=umap_2, color = cluster)) + geom_point(aes(size=size)) +
   ggplot2::scale_size_continuous(range = c(0.5, 0.5*max(log1p((data$size))))) +
   theme_classic() + guides(color=guide_legend(ncol=2))
 p_cluster
@@ -116,34 +129,25 @@ p_cluster
 
 ### Differential expression analysis
 
-We perform diffrential analysis to identify the markers of our cluster 3 as an example using the `FindMarkers` function.
+We perform differential analysis to identify the markers of our cluster 11 as an example using the `FindMarkers` function.
 
 ```r
 # Set idents to metacell annotation
 Idents(MC.seurat) <- "SCclustering"
 
-cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE)
-#> For a more efficient implementation of the Wilcoxon Rank Sum Test,
-#> (default method for FindMarkers) please install the limma package
-#> --------------------------------------------
-#> install.packages('BiocManager')
-#> BiocManager::install('limma')
-#> --------------------------------------------
-#> After installation of limma, Seurat will automatically use the more 
-#> efficient implementation (no further action necessary).
-#> This message will be shown once per session
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE, logfc.threshold = 0.25, min.pct = 0.1, test.use = wilcox.test)
 cells_markers[order(cells_markers$avg_log2FC, decreasing = T)[1:10], ]
-#>              p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> GNLY  4.624070e-27   4.620624 1.000 0.898 7.865080e-23
-#> NKG7  3.623582e-26   3.796975 1.000 0.878 6.163350e-22
-#> KLRF1 2.903180e-32   3.154920 1.000 0.406 4.938018e-28
-#> KLRD1 7.406286e-32   3.011319 1.000 0.407 1.259735e-27
-#> GZMB  1.220131e-24   3.010468 0.976 0.504 2.075321e-20
-#> KLRB1 1.374561e-25   2.989229 1.000 0.698 2.337991e-21
-#> CMC1  5.065132e-24   2.918483 1.000 0.846 8.615283e-20
-#> PRF1  1.881760e-31   2.869718 1.000 0.398 3.200685e-27
-#> CD7   2.407873e-27   2.806730 1.000 0.735 4.095552e-23
-#> SPON2 4.903245e-24   2.763682 0.929 0.469 8.339929e-20
+#>                p_val avg_log2FC pct.1 pct.2    p_val_adj
+#> SH2D1B  4.891817e-73   6.847440 0.976 0.063 8.320491e-69
+#> CCNJL   7.548909e-60   6.408700 0.500 0.002 1.283994e-55
+#> NCAM1   3.027264e-61   6.171451 0.833 0.052 5.149074e-57
+#> KIR2DL1 5.624657e-40   5.907526 0.429 0.011 9.566979e-36
+#> LGALS9C 1.299450e-31   5.633886 0.357 0.011 2.210234e-27
+#> KLRF1   2.903180e-32   5.619850 1.000 0.406 4.938018e-28
+#> NCR1    1.269200e-66   5.560546 0.952 0.069 2.158782e-62
+#> LGALS9B 1.568102e-28   5.552238 0.286 0.006 2.667184e-24
+#> SPON2   4.903245e-24   5.462028 0.929 0.469 8.339929e-20
+#> NMUR1   7.401129e-57   5.457965 0.786 0.048 1.258858e-52
 ```
 
 We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family,
@@ -164,7 +168,7 @@ We can verify the identification of the NK cell cluster by comparing the metacel
 p_cluster + p_annot
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/unnamed-chunk-4-1.png" width="960" />
+<img src="30-MC_analysis_discrete_files/figure-html/unnamed-chunk-5-1.png" width="960" />
 
 ### Visualize gene-gene correlation
 
@@ -179,6 +183,7 @@ print(proj_name)
 #> [1] "bmcite"
 sc_data <- readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
 sc_data <- NormalizeData(sc_data, normalization.method = "LogNormalize")
+#> Warning: Command NormalizeData.RNA changing from SeuratCommand to SeuratCommand
 ```
 
 We visualize gene-gene correlation at the single-cell level:
@@ -199,6 +204,11 @@ p.sc <- SuperCell::supercell_GeneGenePlot(
   alpha = alpha,
   color.use = celltype_colors
 )
+#> Warning: The `slot` argument of `GetAssayData()` is deprecated as of SeuratObject 5.0.0.
+#> ℹ Please use the `layer` argument instead.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 p.sc$p
 ```
 
@@ -221,9 +231,119 @@ p.MC$p
 <img src="30-MC_analysis_discrete_files/figure-html/r-mc-gene_gene_cors-1.png" width="672" />
 
 
-<!-- ## Standard analysis (Python) {#standard-analysis-Py} -->
-<!-- ```{r, child='./sub_pages/30-downstream-Py.Rmd'} -->
-<!-- ``` -->
+## Standard analysis (Python) {#standard-analysis-Py}
+
+
+[//]: # (Standard downstream analysis of metacells using Py (Scanpy))
+
+
+
+In this section, standard analysis includes dimensionality reduction, clustering, differential expression etc using [Scanpy](https://scanpy-tutorials.readthedocs.io/en/latest/#) framework.
+
+
+```python
+import os
+import numpy as np
+import pandas as pd
+import scanpy as sc
+sc.settings.verbosity = 1 
+```
+
+
+
+```python
+MC_tool = "SEACells"
+proj_name = "bmcite"
+annotation_column = "celltype_simplified"
+adata = sc.read(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
+```
+
+### Dimensionality reduction
+
+```python
+adata.var_names_make_unique()  # this is unnecessary if using `var_names='gene_ids'` in `sc.read_10x_mtx`
+
+sc.pp.normalize_per_cell(adata)
+sc.pp.log1p(adata)
+sc.pp.highly_variable_genes(adata, n_top_genes=2000)
+
+# Freeze the state of the AnnData object for later use in differential testing and visualizations of gene expression
+adata.raw = adata # step needd only if I use regress_out steps
+
+# Compute PCA (highly variable genes will be used)
+sc.tl.pca(adata, svd_solver='arpack')
+
+# Compute the neighbor graph
+sc.pp.neighbors(adata, n_neighbors=15, n_pcs=30)
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/umap/distances.py:1063: NumbaDeprecationWarning: [1mThe 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.[0m
+#>   @numba.jit()
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/umap/distances.py:1071: NumbaDeprecationWarning: [1mThe 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.[0m
+#>   @numba.jit()
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/umap/distances.py:1086: NumbaDeprecationWarning: [1mThe 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.[0m
+#>   @numba.jit()
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/umap/umap_.py:660: NumbaDeprecationWarning: [1mThe 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.[0m
+#>   @numba.jit()
+
+# Run umap
+sc.tl.umap(adata)
+
+# Plot metacells in the UMAP space
+sc.pl.umap(adata, color=[annotation_column], size = 100)
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
+#>   cax = scatter(
+```
+
+<img src="30-MC_analysis_discrete_files/figure-html/py-mc-dim-reduc-1.png" width="672" />
+
+### Clustering
+
+Perform clustering on the metacell data.
+
+```python
+# run laiden graph-clustering
+sc.tl.leiden(adata, neighbors_key = "neighbors", resolution = 2)
+
+# plot the metacells in the UMAP space and color by cluster
+sc.pl.umap(adata, color=['leiden'], size = 100)
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/scanpy/plotting/_tools/scatterplots.py:392: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
+#>   cax = scatter(
+```
+
+<img src="30-MC_analysis_discrete_files/figure-html/py-mc-clustering-3.png" width="672" />
+
+### Differential expression analysis
+
+Identify marker genes for each group of metacells. 
+We visualize top markers for NK Tcells (cluster 6).
+
+```python
+# Identify marker genes
+sc.tl.rank_genes_groups(adata, 'leiden', method='wilcoxon')
+sc.pl.rank_genes_groups(adata, n_genes=25, sharey=False)
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/scanpy/plotting/_tools/__init__.py:397: UserWarning: Attempting to set identical low and high ylims makes transformation singular; automatically expanding.
+#>   ax.set_ylim(ymin, ymax)
+```
+
+<img src="30-MC_analysis_discrete_files/figure-html/py-mc-markers-5.png" width="2688" />
+
+```python
+
+# Show the top marker genes
+print(pd.DataFrame(adata.uns['rank_genes_groups']['names']).head(5))
+#>          0        1        2      3  ...        7               8         9      10
+#> 0    TPD52  PIK3IP1   S100A8   LAG3  ...     PKIB           TRADD     PILRA    SPIB
+#> 1    CD79A     LEF1     MNDA  TRGC2  ...    NDRG2           CLIC5    STXBP2    CLN8
+#> 2  POU2AF1    SARAF  C14orf2   LYAR  ...     ENHO  RP11-1399P15.1    CDKN1C   PTPRS
+#> 3     LCN8     CCR7    APLP2  DUSP2  ...    GPAT3            AQP3  C19orf38  BCL11A
+#> 4  RASGRP3  FAM134B    MARC1   IL32  ...  CLEC10A         TNFRSF4     COTL1    IRF8
+#> 
+#> [5 rows x 11 columns]
+
+# Visualize marker genes
+sc.pl.violin(adata, ['KLRF1', 'IL2RB', 'GNLY'], groupby=annotation_column, size = 2, rotation = 90)
+```
+
+<img src="30-MC_analysis_discrete_files/figure-html/py-mc-markers-6.png" width="2564" />
 
 
 ## Sample-weighted analysis {#weighted-analysis}
@@ -236,6 +356,9 @@ p.MC$p
 
 ```r
 library(Seurat)
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
+#> [1] "you are using seurat v5 with assay option v4"
 library(dplyr)
 library(ggplot2)
 library(SuperCell)
@@ -357,7 +480,7 @@ head(MC.top.markers)
 #> CST7        0           0 1.0000000 0.7280256 2.081451 2.706358 0.30405936
 ```
 
-We visualize the top 5 markers for the cluster 7 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
+We visualize the top 5 markers for the cluster 9 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
 
 ```r
 Idents(MC.seurat) <- "SCclustering"

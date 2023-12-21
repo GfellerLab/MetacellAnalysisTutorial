@@ -235,7 +235,7 @@ SEACells.plot.plot_2D(ad, key='X_umap', colour_metacells=True)
 ```
 
 
-##### Save output {-}
+### Save output {-}
 For future downstream analyses in python (section \@ref(standard-analysis-Py)), we save the metacell counts in an Anndata object: 
 
 ```{python seacells-save-py}
@@ -255,8 +255,12 @@ mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
 For future downstream analyses in R (section \@ref(standard-analysis-R)), we save the metacell counts in a Seurat object: 
 ```{r seacells-save-seurat}
 library(Seurat)
+library(Seurat)
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
 library(anndata)
 library(reticulate)
+
 adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_SEACells.h5ad"))
 
 # Save counts and metadata in a Seurat object
@@ -276,6 +280,9 @@ MC.seurat@misc$sc.pca <- CreateDimReducObject(
 )
 # Save membership in misc
 MC.seurat@misc$cell_membership <- data.frame(row.names = rownames(py$membership), membership = py$membership$SEACell)
+if(packageVersion("Seurat") >= 5) {
+  MC.seurat[["RNA"]] <- as(object = MC.seurat[["RNA"]], Class = "Assay")
+}
 saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_SEACells.rds'))
 ```
 

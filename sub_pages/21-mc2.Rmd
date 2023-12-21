@@ -297,8 +297,11 @@ mc_ad.write_h5ad(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
 For future QCs and downstream analyses in R (section \@ref(standard-analysis-R)), we save the metacell counts in a Seurat object: 
 ```{r mc2-save-seurat}
 library(Seurat)
+# If you have Seurat V5 installed, specify that you want to analyze Seurat V4 objects
+if(packageVersion("Seurat") >= 5) {options(Seurat.object.assay.version = "v4"); print("you are using seurat v5 with assay option v4")}
 library(anndata)
 library(reticulate)
+
 adata_mc <- read_h5ad(paste0("data/", py$proj_name, "/metacell_MC2.h5ad"))
 
 # Save counts and metadata in a Seurat object
@@ -310,6 +313,9 @@ MC.seurat@misc[["var_features"]] <- rownames(adata_mc$var)[which(adata_mc$var$se
 
 # Save membership in misc
 MC.seurat@misc$cell_membership <- py$ad$obs['membership']
+if(packageVersion("Seurat") >= 5) {
+  MC.seurat[["RNA"]] <- as(object = MC.seurat[["RNA"]], Class = "Assay")
+}
 saveRDS(MC.seurat, file = paste0('./data/', py$proj_name, '/metacell_MC2.rds'))
 ```
 

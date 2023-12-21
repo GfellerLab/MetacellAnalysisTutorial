@@ -20,8 +20,9 @@ For a supervised version, please refer to section \@ref(integration-supervised).
 Please follow the section \@ref(HLCA-data-download) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
 
 ###  Setting up the environment
-First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MCAT tool).
+First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MATK tool).
 To build the conda environment please follow the instructions on our MetacellAnalysisToolkit [github repository](https://github.com/GfellerLab/MetacellToolkit).
+Please skip this step if you did not use conda in the requirements section.
 
 
 ```r
@@ -33,26 +34,43 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 
 ```
-#>           used (Mb) gc trigger (Mb) max used (Mb)
-#> Ncells  649427 34.7    1512985 80.9   704593 37.7
-#> Vcells 1197128  9.2    8388608 64.0  1814779 13.9
+#>           used (Mb) gc trigger  (Mb) max used  (Mb)
+#> Ncells 1811213 96.8    3156290 168.6  3156290 168.6
+#> Vcells 3197248 24.4    8388608  64.0  5056132  38.6
 ```
 
 
 ```r
 library(Seurat)
+#> Loading required package: SeuratObject
+#> Loading required package: sp
 #> The legacy packages maptools, rgdal, and rgeos, underpinning this package
 #> will retire shortly. Please refer to R-spatial evolution reports on
 #> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
 #> This package is now running under evolution status 0
-#> Attaching SeuratObject
+#> 
+#> Attaching package: 'SeuratObject'
+#> The following object is masked from 'package:base':
+#> 
+#>     intersect
 library(anndata)
+#> 
+#> Attaching package: 'anndata'
+#> The following object is masked from 'package:SeuratObject':
+#> 
+#>     Layers
 library(SuperCell)
 library(ggplot2)
+wilcox.test <- "wilcox"
+if(packageVersion("Seurat") >= 5) {
+  options(Seurat.object.assay.version = "v4") 
+  wilcox.test <- "wilcox_limma"
+  print("you are using seurat v5 with assay option v4")}
+#> [1] "you are using seurat v5 with assay option v4"
 
 color.celltypes  <- c('#E5D2DD', '#53A85F', '#F1BB72', '#F3B1A0', '#D6E7A3', '#57C3F3', '#476D87',
                       '#E95C59', '#E59CC4', '#AB3282', '#23452F', '#BD956A', '#8C549C', '#585658',
-                      '#9FA3A8', '#E0D4CA', '#5F3D69', '#58A4C3', "#b20000",'#E4C755', '#F7F398',
+                      '#9FA3A8', '#E0D4CA', '#5F3D69', '#58A4C3', "#b20000", '#E4C755', '#F7F398',
                       '#AA9A59', '#E63863', '#E39A35', '#C1E6F3', '#6778AE', '#91D0BE', '#B53E2B',
                       '#712820', '#DCC1DD', '#CCE0F5', '#CCC9E6', '#625D9E', '#68A180', '#3A6963',
                       '#968175')
@@ -61,7 +79,7 @@ color.celltypes  <- c('#E5D2DD', '#53A85F', '#F1BB72', '#F3B1A0', '#D6E7A3', '#5
 
 ###  Building metacell
 
-We build metacells with the MCAT command line using SuperCell (`-t SuperCell`).
+We build metacells with the MATK command line using SuperCell (`-t SuperCell`).
 To facilitate downstream analysis of the donors we build metacells for each sample in each dataset (`-a sample`).
 Here we will use 2000 highly variable genes (`-f 2000`) to compute the PCA from which we used 50 principal components (`-m 50`) to build a k = 30 (`-k 30`) nearest neighbor graph on which the metacells are identified using a graining level of 50 (`-g 50`).
 We use an adata .h5ad output format (`-s adata`) as it is faster to write and lighter to store than a Seurat .rds object.
@@ -71,15 +89,15 @@ This step takes around 20 min with multiple cores (`-l 6`). Be aware that parall
 If you are limited in memory you should still be able to process the samples by reducing the number of cores (e.g. `-l 3`) or
 by sequentially processing the samples (just remove the `-l`) in a slightly longer time.
 
-To call the MCAT command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
+To call the MATK command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
 
 
 ```bash
 #git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
-MCAT_path=MetacellAnalysisToolkit/
+MATK_path=MetacellAnalysisToolkit/
 start=`date +%s`
 for d in data/HLCA/datasets/*;
-do ${MCAT_path}cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
+do ${MATK_path}cli/MATK -t SuperCell -i $d/sc_adata.h5ad -o $d -a sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 echo "Duration: $((($(date +%s)-$start)/60)) minutes"
 ```
@@ -110,6 +128,7 @@ metacell.objs <- lapply(X = metacell.files, function(X){
   colnames(countMatrix) <- adata$obs_names
   rownames(countMatrix) <- adata$var_names
   sobj <- Seurat::CreateSeuratObject(counts = countMatrix,meta.data = adata$obs)
+  if(packageVersion("Seurat") >= 5){sobj[["RNA"]] <- as(object = sobj[["RNA"]], Class = "Assay")}
   sobj <- RenameCells(sobj, add.cell.id = unique(sobj$sample)) # we give unique name to metacells
   return(sobj)
 })
@@ -117,7 +136,7 @@ metacell.objs <- lapply(X = metacell.files, function(X){
 
 ###  Merging objects and basic quality control
 
-Given the single-cell metadata, the MCAT tool automatically assigns annotations to metacells and computes purities for all the categorical variables present
+Given the single-cell metadata, the MATK tool automatically assigns annotations to metacells and computes purities for all the categorical variables present
 in the metadata of the input single-cell object.
 
 Thus, we can check the purity of our metacells at different levels of annotations, as well as their size (number of single cells they contain).
@@ -256,6 +275,7 @@ combined.mc
 #> An object of class Seurat 
 #> 30024 features across 11706 samples within 2 assays 
 #> Active assay: integrated (2000 features, 2000 variable features)
+#>  1 layer present: data
 #>  1 other assay present: RNA
 ```
 
@@ -339,30 +359,29 @@ UMAPPlot(combined.mc, label = T) + NoLegend()
 <img src="40-integration_analysis_files/figure-html/integrated_clustering-1.png" width="672" />
 
 #### Deferentially expressed gene (DEG) analysis.
+We can find which of the obtained clusters correspond to the B cells annotated in the original study (4th level of annotation)
 
-Now let's found the markers of the cluster 23 we've just identified.
+```r
+b.clust <- names(which.max(table(combined.mc$ann_level_4, combined.mc$integrated_snn_res.0.5)["B cells", ]))
+b.clust
+#> [1] "23"
+```
+
+Now let's found the markers of this cluster.
 
 
 ```r
 DefaultAssay(combined.mc) <- "RNA"
-markers23 <- FindMarkers(combined.mc, ident.1 = 23, only.pos = T)
-#> For a more efficient implementation of the Wilcoxon Rank Sum Test,
-#> (default method for FindMarkers) please install the limma package
-#> --------------------------------------------
-#> install.packages('BiocManager')
-#> BiocManager::install('limma')
-#> --------------------------------------------
-#> After installation of limma, Seurat will automatically use the more 
-#> efficient implementation (no further action necessary).
-#> This message will be shown once per session
-head(markers23)
-#>       p_val avg_log2FC pct.1 pct.2 p_val_adj
-#> TCL1A     0  1.3939674 0.695 0.020         0
-#> FCRLA     0  1.0703400 0.962 0.022         0
-#> BLK       0  1.2192942 0.990 0.058         0
-#> FCRL5     0  0.7934100 0.895 0.026         0
-#> PNOC      0  0.5477793 0.924 0.050         0
-#> PAX5      0  0.6089985 0.886 0.024         0
+
+markersB <- FindMarkers(combined.mc, ident.1 = b.clust, only.pos = T, logfc.threshold = 0.25, test.use =  wilcox.test)
+head(markersB)
+#>           p_val avg_log2FC pct.1 pct.2 p_val_adj
+#> FCRLA         0   8.981631 0.962 0.022         0
+#> BLK           0   7.673257 0.990 0.058         0
+#> TNFRSF13B     0   7.496910 0.962 0.035         0
+#> LINC01781     0   8.240249 0.952 0.034         0
+#> FAM30A        0   6.386756 0.952 0.045         0
+#> LINC02397     0   7.706740 0.962 0.064         0
 ```
 
 This cluster clearly presents a B cell signature with marker genes such as CD19 and PAX5
@@ -370,22 +389,22 @@ This cluster clearly presents a B cell signature with marker genes such as CD19 
 
 ```r
 genes <-c("CD19","PAX5") # knwon B cells markers
-markers23[genes,]
+markersB[genes,]
 #>              p_val avg_log2FC pct.1 pct.2     p_val_adj
-#> CD19 1.599543e-207  1.1037564 0.990 0.114 4.482558e-203
-#> PAX5  0.000000e+00  0.6089985 0.886 0.024  0.000000e+00
+#> CD19 6.500657e-208   7.157978 0.990 0.113 1.821744e-203
+#> PAX5  0.000000e+00   8.451859 0.895 0.023  0.000000e+00
 VlnPlot(combined.mc, genes, ncol = 1)
 ```
 
 <img src="40-integration_analysis_files/figure-html/integrated_markers_visu-1.png" width="672" />
 
-By looking at the metacell annotation (assigned from the original single-cell metadata by MCAT),
+By looking at the metacell annotation (assigned from the original single-cell metadata by MATK),
 we can verify that we correctly retrieved the B cell lineage cluster.
 
 
 ```r
-DimPlot(combined.mc[, combined.mc$integrated_snn_res.0.5 == 23],
-        group.by = c("ann_level_3", "integrated_snn_res.0.5"),
+DimPlot(combined.mc[, combined.mc$integrated_snn_res.0.5 == b.clust],
+        group.by = c("ann_level_4","integrated_snn_res.0.5"),
         ncol = 2)
 ```
 
@@ -454,9 +473,9 @@ guide the integration with the cell type label using [STACAS](https://github.com
 Please follow the section \@ref(HLCA-data-download) to retrieve the HLCA atlas, divide the atlas by dataset and save the splitted data in the following folder: "data/HLCA/".
 
 ### Setting up the environment
-First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MCAT tool).
+First we need to specify that we will work with the MetacellAnalysisToolkit conda environment (needed for anndata relying on reticulate and the MATK tool).
 To build the conda environment please follow the instructions on our MetacellAnalysisToolkit [github repository](https://github.com/GfellerLab/MetacellToolkit).
-
+Please skip this step if you did not use conda in the requirements section.
 
 ```r
 library(reticulate)
@@ -468,8 +487,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#> Ncells 3555051 189.9    6520115   348.3    6520115   348.3
-#> Vcells 6717577  51.3 1799339956 13727.9 2245659215 17133.1
+#> Ncells 3790696 202.5    6874944   367.2    6874944   367.2
+#> Vcells 7230711  55.2 1882870150 14365.2 2331123103 17785.1
 ```
 
 
@@ -479,9 +498,16 @@ library(anndata)
 library(SuperCell)
 library(ggplot2)
 
+wilcox.test <- "wilcox"
+if(packageVersion("Seurat") >= 5) {
+  options(Seurat.object.assay.version = "v4") 
+  wilcox.test <- "wilcox_limma"
+  print("you are using seurat v5 with assay option v4")}
+#> [1] "you are using seurat v5 with assay option v4"
+
 color.celltypes  <- c('#E5D2DD', '#53A85F', '#F1BB72', '#F3B1A0', '#D6E7A3', '#57C3F3', '#476D87',
                       '#E95C59', '#E59CC4', '#AB3282', '#23452F', '#BD956A', '#8C549C', '#585658',
-                      '#9FA3A8', '#E0D4CA', '#5F3D69', '#58A4C3', "#b20000",'#E4C755', '#F7F398',
+                      '#9FA3A8', '#E0D4CA', '#5F3D69', '#58A4C3', "#b20000", '#E4C755', '#F7F398',
                       '#AA9A59', '#E63863', '#E39A35', '#C1E6F3', '#6778AE', '#91D0BE', '#B53E2B',
                       '#712820', '#DCC1DD', '#CCE0F5', '#CCC9E6', '#625D9E', '#68A180', '#3A6963',
                       '#968175')
@@ -501,15 +527,15 @@ by sequentially processing the samples (just remove the `-l`) in a slightly long
 
 This should take around 30 minutes.
 
-To call the MCAT command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
+To call the MATK command line, please define your path to the gihub cloned repository optained from this [github repository](https://github.com/GfellerLab/MetacellToolkit).
 
 
 
 ```bash
 #git clone https://github.com/GfellerLab/MetacellAnalysisToolkit
-MCAT_path=MetacellAnalysisToolkit/
+MATK_path=MetacellAnalysisToolkit/
 for d in data/HLCA/datasets/*;
-do ${MCAT_path}cli/MCAT -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
+do ${MATK_path}cli/MATK -t SuperCell -i $d/sc_adata.h5ad -o $d/sup_mc -a ann_sample -l 3 -n 50 -f 2000 -k 30 -g 50 -s adata
 done
 ```
 
@@ -539,6 +565,7 @@ metacell.objs <- lapply(X = metacell.files, function(X){
   colnames(countMatrix) <- adata$obs_names
   rownames(countMatrix) <- adata$var_names
   sobj <- Seurat::CreateSeuratObject(counts = countMatrix,meta.data = adata$obs)
+  if(packageVersion("Seurat") >= 5) {sobj[["RNA"]] <- as(object = sobj[["RNA"]], Class = "Assay")}
   sobj <- RenameCells(sobj, add.cell.id = unique(sobj$sample)) # we give unique name to metacells
   return(sobj)
 })
@@ -546,7 +573,7 @@ metacell.objs <- lapply(X = metacell.files, function(X){
 
 ### Merging objects and basic quality control
 
-Given the single-cell metadata, the MCAT tool automatically assigns annotations to metacells and
+Given the single-cell metadata, the MATK tool automatically assigns annotations to metacells and
 computes purities for all the categorical variables present in the metadata of the input single-cell object.
 
 Thus, let's check the purity of our metacells at different level of annotations, as well as their size (number of single cells they contain).
@@ -688,6 +715,7 @@ combined.mc
 #> An object of class Seurat 
 #> 30024 features across 12914 samples within 2 assays 
 #> Active assay: integrated (2000 features, 2000 variable features)
+#>  2 layers present: data, scale.data
 #>  1 other assay present: RNA
 #>  1 dimensional reduction calculated: pca
 ```
@@ -803,22 +831,22 @@ Using a DEG analysis we can check if we retrieve their markers. MYH11 and CNN1 g
 ```r
 DefaultAssay(combined.mc) <- "RNA"
 Idents(combined.mc) <- "ann"
-markersSmoothMuscle <- FindMarkers(combined.mc,ident.1 = "Smooth muscle FAM83D+",only.pos = T)
+markersSmoothMuscle <- FindMarkers(combined.mc,ident.1 = "Smooth muscle FAM83D+",only.pos = T, logfc.threshold = 0.25, test.use =  wilcox.test)
 
 head(markersSmoothMuscle)
 #>               p_val avg_log2FC pct.1 pct.2     p_val_adj
-#> MYOCD 1.889342e-175  1.3869594 0.758 0.022 5.294693e-171
-#> ASB5  1.754802e-130  0.2913375 0.303 0.004 4.917658e-126
-#> NMRK2 1.103717e-129  0.4245135 0.273 0.003 3.093057e-125
-#> PLN   1.568445e-124  3.1280687 0.879 0.044 4.395411e-120
-#> HSPB3 7.379856e-121  1.0364463 0.545 0.016 2.068131e-116
-#> CASQ2 4.376973e-117  1.1063566 0.636 0.023 1.226603e-112
+#> MYOCD 4.887974e-176   6.792923 0.758 0.022 1.369806e-171
+#> NMRK2 1.092465e-129   8.372466 0.273 0.003 3.061523e-125
+#> PLN   4.060884e-124   6.962042 0.879 0.044 1.138022e-119
+#> HSPB3 7.779955e-121   8.396481 0.545 0.016 2.180255e-116
+#> CASQ2 9.830136e-117   6.325768 0.636 0.023 2.754797e-112
+#> ASB5  2.233460e-107   8.553315 0.273 0.004 6.259049e-103
 
 markersSmoothMuscle[c("MYH11","CNN1","FAM83D"),]
 #>               p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> MYH11  2.596787e-32   4.248525 0.970 0.287 7.277236e-28
-#> CNN1   7.220235e-71   4.623065 0.970 0.106 2.023399e-66
-#> FAM83D 3.561820e-11   2.186449 0.636 0.285 9.981643e-07
+#> MYH11  2.489777e-32    6.36830 0.970 0.286 6.977351e-28
+#> CNN1   6.519506e-71    8.31570 0.970 0.106 1.827026e-66
+#> FAM83D 3.395734e-11    5.77602 0.636 0.284 9.516205e-07
 
 # Many classical smooth muscles cells are not annotated at the 3rd level of annotation (labelled None)
 VlnPlot(combined.mc,features = c("MYH11","CNN1","FAM83D"),group.by = "ann",ncol = 2,cols = color.celltypes.ann)

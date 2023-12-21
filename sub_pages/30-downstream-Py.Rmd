@@ -9,6 +9,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 In this section, standard analysis includes dimensionality reduction, clustering, differential expression etc using [Scanpy](https://scanpy-tutorials.readthedocs.io/en/latest/#) framework.
 
 ```{python, eval = TRUE}
+import os
 import numpy as np
 import pandas as pd
 import scanpy as sc
@@ -18,8 +19,8 @@ sc.settings.verbosity = 1
 
 ```{python, eval = TRUE}
 MC_tool = "SEACells"
-proj_name = "3k_pbmc"
-annotation_column = "louvain"
+proj_name = "bmcite"
+annotation_column = "celltype_simplified"
 adata = sc.read(os.path.join('./data', proj_name, f'metacell_{MC_tool}.h5ad'))
 ```
 
@@ -62,8 +63,7 @@ sc.pl.umap(adata, color=['leiden'], size = 100)
 ### Differential expression analysis
 
 Identify marker genes for each group of metacells. 
-Note that here we use the clusters since the Megakaryocytes contain only one metacells.
-We visualize the top 3 markers for CD8 Tcells.
+We visualize top markers for NK Tcells (cluster 6).
 ```{python py-mc-markers, eval = TRUE}
 # Identify marker genes
 sc.tl.rank_genes_groups(adata, 'leiden', method='wilcoxon')
@@ -73,5 +73,7 @@ sc.pl.rank_genes_groups(adata, n_genes=25, sharey=False)
 print(pd.DataFrame(adata.uns['rank_genes_groups']['names']).head(5))
 
 # Visualize marker genes
-sc.pl.violin(adata, ['CD8A', 'CCL5', 'LYAR'], groupby=annotation_column, size = 2, rotation = 90)
+sc.pl.violin(adata, ['KLRF1', 'IL2RB', 'GNLY'], groupby=annotation_column, size = 2, rotation = 90)
+sc.pl.violin(adata, ['KLRF1', 'IL2RB', 'GNLY'], groupby='leiden', size = 2, rotation = 90)
+
 ```

@@ -42,11 +42,15 @@ dimensionality-reduction
 clustering
 differential-expression-analysis
 visualize-gene-gene-correlation
-weighted-analysis
-load-metacell-seurat-object-1
+standard-analysis-Py
 dimensionality-reduction-1
 clustering-1
 differential-expression-analysis-1
+weighted-analysis
+load-metacell-seurat-object-1
+dimensionality-reduction-2
+clustering-2
+differential-expression-analysis-2
 command-line
 setting-up-the-environment
 MC-continuous
@@ -67,7 +71,7 @@ merging-objects-and-basic-quality-control
 unintegrated-analysis
 seurat-integration
 downstream-analysis-1
-clustering-2
+clustering-3
 deferentially-expressed-gene-deg-analysis.
 cell-type-abundances-analyses.
 conclusion
