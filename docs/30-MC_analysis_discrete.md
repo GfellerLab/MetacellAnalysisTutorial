@@ -122,37 +122,33 @@ p_cluster
 
 ### Differential expression analysis
 
-We perform differential analysis to identify the markers of our cluster 11 as an example using the `FindMarkers` function.
+We perform differential analysis to identify the markers of our cluster 11 as an example using the `FindMarkers` function. 
+We see that known NK markers are part of the differentially expressed genes.
 
 ```r
 # Set idents to metacell annotation
 Idents(MC.seurat) <- "SCclustering"
 
-cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE, logfc.threshold = 0.25, min.pct = 0.1, test.use = wilcox.test)
-cells_markers[order(cells_markers$avg_log2FC, decreasing = T)[1:10], ]
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE, logfc.threshold = 0.25, min.pct = 0.1, test.use = wilcox.test, pseudocount.use = 1)
+nk_markers <- c("KLRF1", "KIR2DL1", "IL2RB", "NKG7", "GNLY", "NCAM1")
+cells_markers[nk_markers, ]
 #>              p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> GNLY  4.624070e-27   4.620624 1.000 0.898 7.865080e-23
-#> NKG7  3.623582e-26   3.796975 1.000 0.878 6.163350e-22
-#> KLRF1 2.903180e-32   3.154920 1.000 0.406 4.938018e-28
-#> KLRD1 7.406286e-32   3.011319 1.000 0.407 1.259735e-27
-#> GZMB  1.220131e-24   3.010468 0.976 0.504 2.075321e-20
-#> KLRB1 1.374561e-25   2.989229 1.000 0.698 2.337991e-21
-#> CMC1  5.065132e-24   2.918483 1.000 0.846 8.615283e-20
-#> PRF1  1.881760e-31   2.869718 1.000 0.398 3.200685e-27
-#> CD7   2.407873e-27   2.806730 1.000 0.735 4.095552e-23
-#> SPON2 4.903245e-24   2.763682 0.929 0.469 8.339929e-20
+#> KLRF1 2.903180e-32  3.1549202 1.000 0.406 4.938018e-28
+#> NA              NA         NA    NA    NA           NA
+#> IL2RB 3.253877e-32  1.8865835 1.000 0.370 5.534519e-28
+#> NKG7  3.623582e-26  3.7969749 1.000 0.878 6.163350e-22
+#> GNLY  4.624070e-27  4.6206235 1.000 0.898 7.865080e-23
+#> NCAM1 3.027264e-61  0.5077738 0.833 0.052 5.149074e-57
 ```
 
-We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family,
-which is a group of transmembrane proteins preferentially expressed in NK cells.
+Let's visualize some of these markers in the different clusters using vviolin plots:
 
 
 ```r
-genes = c("KLRF1", "KLRD1")
-VlnPlot(MC.seurat, genes, ncol = 2, pt.size = 0.0)
+VlnPlot(MC.seurat, nk_markers, ncol = 3, pt.size = 0.0)
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-1.png" width="672" />
+<img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-1.png" width="1440" />
 
 We can verify the identification of the NK cell cluster by comparing the metacell annotation and the metacell clustering.
 
@@ -182,8 +178,8 @@ We visualize gene-gene correlation at the single-cell level:
 
 ```r
 cells_markers <- cells_markers[order(cells_markers$avg_log2FC, decreasing = T),]
-gene_x <- rownames(cells_markers)[1:5]  
-gene_y <- rownames(cells_markers)[6:10]
+gene_x <- nk_markers[1:3] 
+gene_y <- nk_markers[4:6]
 
 alpha <- 0.7
 

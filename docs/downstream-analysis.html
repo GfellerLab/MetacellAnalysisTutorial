@@ -194,30 +194,26 @@ Based on these features, we run PCA and use the first principal components to ob
 <h3>
 <span class="header-section-number">3.1.4</span> Differential expression analysis<a class="anchor" aria-label="anchor" href="#differential-expression-analysis"><i class="fas fa-link"></i></a>
 </h3>
-<p>We perform differential analysis to identify the markers of our cluster 11 as an example using the <code>FindMarkers</code> function.</p>
+<p>We perform differential analysis to identify the markers of our cluster 11 as an example using the <code>FindMarkers</code> function.
+We see that known NK markers are part of the differentially expressed genes.</p>
 <div class="sourceCode" id="cb80"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set idents to metacell annotation</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SeuratObject/man/Idents.html">Idents</a></span><span class="op">(</span><span class="va">MC.seurat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"SCclustering"</span></span>
 <span></span>
-<span><span class="va">cells_markers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindMarkers.html">FindMarkers</a></span><span class="op">(</span><span class="va">MC.seurat</span>, ident.1 <span class="op">=</span> <span class="st">"11"</span>, only.pos <span class="op">=</span> <span class="cn">TRUE</span>, logfc.threshold <span class="op">=</span> <span class="fl">0.25</span>, min.pct <span class="op">=</span> <span class="fl">0.1</span>, test.use <span class="op">=</span> <span class="va">wilcox.test</span><span class="op">)</span></span>
-<span><span class="va">cells_markers</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">cells_markers</span><span class="op">$</span><span class="va">avg_log2FC</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="op">]</span></span>
+<span><span class="va">cells_markers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/FindMarkers.html">FindMarkers</a></span><span class="op">(</span><span class="va">MC.seurat</span>, ident.1 <span class="op">=</span> <span class="st">"11"</span>, only.pos <span class="op">=</span> <span class="cn">TRUE</span>, logfc.threshold <span class="op">=</span> <span class="fl">0.25</span>, min.pct <span class="op">=</span> <span class="fl">0.1</span>, test.use <span class="op">=</span> <span class="va">wilcox.test</span>, pseudocount.use <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">nk_markers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"KLRF1"</span>, <span class="st">"KIR2DL1"</span>, <span class="st">"IL2RB"</span>, <span class="st">"NKG7"</span>, <span class="st">"GNLY"</span>, <span class="st">"NCAM1"</span><span class="op">)</span></span>
+<span><span class="va">cells_markers</span><span class="op">[</span><span class="va">nk_markers</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt;              p_val avg_log2FC pct.1 pct.2    p_val_adj</span></span>
-<span><span class="co">#&gt; GNLY  4.624070e-27   4.620624 1.000 0.898 7.865080e-23</span></span>
-<span><span class="co">#&gt; NKG7  3.623582e-26   3.796975 1.000 0.878 6.163350e-22</span></span>
-<span><span class="co">#&gt; KLRF1 2.903180e-32   3.154920 1.000 0.406 4.938018e-28</span></span>
-<span><span class="co">#&gt; KLRD1 7.406286e-32   3.011319 1.000 0.407 1.259735e-27</span></span>
-<span><span class="co">#&gt; GZMB  1.220131e-24   3.010468 0.976 0.504 2.075321e-20</span></span>
-<span><span class="co">#&gt; KLRB1 1.374561e-25   2.989229 1.000 0.698 2.337991e-21</span></span>
-<span><span class="co">#&gt; CMC1  5.065132e-24   2.918483 1.000 0.846 8.615283e-20</span></span>
-<span><span class="co">#&gt; PRF1  1.881760e-31   2.869718 1.000 0.398 3.200685e-27</span></span>
-<span><span class="co">#&gt; CD7   2.407873e-27   2.806730 1.000 0.735 4.095552e-23</span></span>
-<span><span class="co">#&gt; SPON2 4.903245e-24   2.763682 0.929 0.469 8.339929e-20</span></span></code></pre></div>
-<p>We see that the top marker genes for this cluster contain the killer cell lectin-like receptor (KLR) family,
-which is a group of transmembrane proteins preferentially expressed in NK cells.</p>
+<span><span class="co">#&gt; KLRF1 2.903180e-32  3.1549202 1.000 0.406 4.938018e-28</span></span>
+<span><span class="co">#&gt; NA              NA         NA    NA    NA           NA</span></span>
+<span><span class="co">#&gt; IL2RB 3.253877e-32  1.8865835 1.000 0.370 5.534519e-28</span></span>
+<span><span class="co">#&gt; NKG7  3.623582e-26  3.7969749 1.000 0.878 6.163350e-22</span></span>
+<span><span class="co">#&gt; GNLY  4.624070e-27  4.6206235 1.000 0.898 7.865080e-23</span></span>
+<span><span class="co">#&gt; NCAM1 3.027264e-61  0.5077738 0.833 0.052 5.149074e-57</span></span></code></pre></div>
+<p>Let’s visualize some of these markers in the different clusters using vviolin plots:</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">genes</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"KLRF1"</span>, <span class="st">"KLRD1"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">MC.seurat</span>, <span class="va">genes</span>, ncol <span class="op">=</span> <span class="fl">2</span>, pt.size <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span></span></code></pre></div>
-<div class="inline-figure"><img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-1.png" width="672"></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/VlnPlot.html">VlnPlot</a></span><span class="op">(</span><span class="va">MC.seurat</span>, <span class="va">nk_markers</span>, ncol <span class="op">=</span> <span class="fl">3</span>, pt.size <span class="op">=</span> <span class="fl">0.0</span><span class="op">)</span></span></code></pre></div>
+<div class="inline-figure"><img src="30-MC_analysis_discrete_files/figure-html/r-mc-plot-genes-1.png" width="1440"></div>
 <p>We can verify the identification of the NK cell cluster by comparing the metacell annotation and the metacell clustering.</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_cluster</span> <span class="op">+</span> <span class="va">p_annot</span></span></code></pre></div>
@@ -239,8 +235,8 @@ which is a group of transmembrane proteins preferentially expressed in NK cells.
 <p>We visualize gene-gene correlation at the single-cell level:</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cells_markers</span> <span class="op">&lt;-</span> <span class="va">cells_markers</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">cells_markers</span><span class="op">$</span><span class="va">avg_log2FC</span>, decreasing <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>,<span class="op">]</span></span>
-<span><span class="va">gene_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">cells_markers</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>  </span>
-<span><span class="va">gene_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">cells_markers</span><span class="op">)</span><span class="op">[</span><span class="fl">6</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span></span>
+<span><span class="va">gene_x</span> <span class="op">&lt;-</span> <span class="va">nk_markers</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span> </span>
+<span><span class="va">gene_y</span> <span class="op">&lt;-</span> <span class="va">nk_markers</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
 <span></span>
@@ -547,7 +543,7 @@ Using the <code>supercell_DimPlot</code> function from the the SuperCell R packa
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2023-12-21.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-01-05.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
