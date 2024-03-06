@@ -308,15 +308,20 @@ library(reshape2)
 combined.mc.epith <- combined.mc[,combined.mc$ann_level_1 == "Epithelial"]
 #combined.metacells$major_type <- droplevels(combined.metacells$major_type)
 smpCounts <- aggregate(combined.mc.epith$size, by=list(sample = combined.mc.epith$sample,
-                                                        major_type = combined.mc.epith$ann_level_3,
-                                                        smoking_status = combined.mc.epith$smoking_status),
-                                                        FUN=sum)
+                                                       major_type = combined.mc.epith$ann_level_3,
+                                                       smoking_status = combined.mc.epith$smoking_status),
+                       FUN = sum)
+
+contingencyTable <- xtabs(x ~ major_type + smoking_status, data = smpCounts)
+freqMatrix <- apply(contingencyTable, 1, FUN = function(x){x/colSums(contingencyTable)})
+# res <- chisq.test(contingencyTable)
+# Roe <- res$observed/res$expected
+freqMatrix_df <- melt(freqMatrix)
 
 remove(combined.mc.epith)
 gc()
 
-ggplot(smpCounts,aes(x = smoking_status,fill=major_type)) + geom_bar(position = "fill") + scale_fill_manual(values = color.celltypes) + xlab("% epithelial cells")
-
+ggplot(freqMatrix_df, aes(y=value,x = smoking_status,fill=major_type))  + geom_bar(stat="identity", position="fill") + scale_fill_manual(values = color.celltypes) + scale_y_continuous(labels = scales::percent) + ylab("% epithelial cells")
 ```
 
 Samples from smokers seem to present more AT2 cells but this quick analysis is for illustrative purposes only.
