@@ -26,15 +26,13 @@ MC_tool = "SuperCell"
 proj_name = "bmcite"
 annotation_column = "celltype_simplified"
 
-cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell",
-                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell",
-                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2",
-                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+cell_types <- c("Unconventional T", "Naive T cell", "Non-Naive CD4 cell", "CD14 Mono", "B cell", "Non-Naive CD8 cell",
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B", "Plasmablast", "HSC", "LMPP", "Prog_DC", "MEP")
 
-celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
-                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41",
-                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5",
-                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+celltype_colors <- c("#1E88E5", "#FFC107", "#004D40", "#9E9D24",
+                     "#F06292", "#546E7A", "#D4E157", "#76FF03", 
+                     "#26A69A", "#AB47BC", "#D81B60", "#42A5F5",
+                     "#2E7D32", "#FFA726", "#5E35B1", "#EF5350","#6D4C41")
 names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
@@ -49,12 +47,13 @@ Using the `supercell_DimPlot` function from the the SuperCell R package we can v
 
 ```{r r-mc-dim-reduc-weighted, eval=TRUE}
 MC.seurat <- NormalizeData(MC.seurat, normalization.method = "LogNormalize")
+MC.seurat <- FindVariableFeatures(MC.seurat)
 
 MC_list <- list(N.SC = ncol(MC.seurat),
                 supercell_size = MC.seurat$size)
 MC_list$PCA <- SuperCell::supercell_prcomp(
   Matrix::t(GetAssayData(MC.seurat, slot = "data")),
-  genes.use = MC.seurat@misc$var_features,  # or a new set of HVG can be computed
+  genes.use = VariableFeatures(MC.seurat),  # or a new set of HVG can be computed
   supercell_size = MC_list$supercell_size, # provide this parameter to run sample-weighted version of PCA,
   k = 30
 )
@@ -69,7 +68,7 @@ supercell_DimPlot(SC = MC_list,
   groups = MC.seurat@meta.data[, annotation_column],
   dim.name = "UMAP",
   title = paste0("UMAP of metacells colored by cell type assignment"), color.use = celltype_colors
-) + guides(color=guide_legend(ncol=2))
+) 
 
 ```
 
@@ -81,7 +80,7 @@ We cluster the metacells using the function `supercell_cluster` from SuperCell R
 D  <- dist(MC_list$PCA$x)
 
 # cluster metacells
-MC_list$SCclustering  <- supercell_cluster(D = D, k = 15, supercell_size = MC_list$supercell_size)
+MC_list$SCclustering  <- supercell_cluster(D = D, k = 20, supercell_size = MC_list$supercell_size)
 MC.seurat$SCclustering <- MC_list$SCclustering$clustering
 
 # Plot clustering result
@@ -90,7 +89,7 @@ supercell_DimPlot(
   groups = factor(MC_list$SCclustering$clustering),
   dim.name = "UMAP",
   title = paste0("UMAP of metacells colored by metacell clustering")
-)  + guides(color=guide_legend(ncol=2))
+) 
 ```
 
 ### Differential expression analysis
@@ -109,18 +108,16 @@ MC.all.markers <- supercell_FindAllMarkers(
 
 ```
 
-We select the markers for cluster 9:
+We select the markers for cluster 10:
 ```{r r-mc-topMarkers-weighted, eval=TRUE}
-cluster_markers <- MC.all.markers[[9]]
+cluster_markers <- MC.all.markers[[10]]
 MC.top.markers <- cluster_markers[order(cluster_markers$logFC, decreasing = T),]
 head(MC.top.markers)
 ```
 
-We visualize the top 5 markers for the cluster 9 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
+We visualize the top 5 markers for the cluster 10 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
 ```{r r-mc-plot-genes-weighted, eval=TRUE, fig.width = 10, fig.height = 5}
 Idents(MC.seurat) <- "SCclustering"
-# genes.to.plot <- MC.seurat.top.markers$gene[MC.seurat.top.markers$cluster == unique(MC.seurat@meta.data[,annotation_column])[1]]
-# genes.to.plot <- MC.top.markers$gene[c(seq(1, 20, 5))]
 genes.to.plot <- rownames(MC.top.markers)[1:5]
 VlnPlot(MC.seurat, features = genes.to.plot, ncol = 5, pt.size = 0.0)  
 ```

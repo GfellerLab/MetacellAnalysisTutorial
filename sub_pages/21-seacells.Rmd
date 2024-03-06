@@ -6,7 +6,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
 ```{r, include=FALSE}
-MODEL_EVAL = FALSE
+MODEL_EVAL = TRUE
 if(MODEL_EVAL){
   MODEL_LOAD = FALSE
 }else{
@@ -117,13 +117,13 @@ sc.tl.umap(ad)
 In this tutorial, we will use in the SEACells model the 30 first principal components resulting from the PCA to build the knn graph which will be used to compute the kernel. 
 The number of neighbors to considered for the knn graph can be fixed using the `n_neighbors` parameter (here 15).  
 As mentioned previously, users should provide as input the number of metacells required (`n_SEACells` parameter). This number can be defined as the ratio between the number of single cells and the desired graining level (`gamma` parameter in the following code chunk). 
-In this example, we choose a graining level of 25.  
+In this example, we choose a graining level of 50.  
 
 ```{python seacells-parameters}
 build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
 n_waypoint_eigs = 10      # Number of eigenvalues to consider when initializing metacells
 n_neighbors = 15 # Number of neighbors used for graph construction 
-gamma = 75   # the requested graining level
+gamma = 50   # the requested graining level
 n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  
 ```
 
