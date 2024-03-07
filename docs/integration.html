@@ -116,8 +116,8 @@ Please skip this step if you did not use conda in the requirements section.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>RETICULATE_PYTHON <span class="op">=</span> <span class="va">conda_env</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt;           used  (Mb) gc trigger (Mb) max used (Mb)
-#&gt; Ncells 1912846 102.2    3088018  165  3088018  165
-#&gt; Vcells 3338412  25.5    8388608   64  5498716   42</code></pre>
+#&gt; Ncells 1912851 102.2    3088062  165  3088062  165
+#&gt; Vcells 3338476  25.5    8388608   64  5498779   42</code></pre>
 <div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
@@ -401,14 +401,20 @@ For instance we can analyse the proportion of different epithelial cell types de
 <span><span class="va">combined.mc.epith</span> <span class="op">&lt;-</span> <span class="va">combined.mc</span><span class="op">[</span>,<span class="va">combined.mc</span><span class="op">$</span><span class="va">ann_level_1</span> <span class="op">==</span> <span class="st">"Epithelial"</span><span class="op">]</span></span>
 <span><span class="co">#combined.metacells$major_type &lt;- droplevels(combined.metacells$major_type)</span></span>
 <span><span class="va">smpCounts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">combined.mc.epith</span><span class="op">$</span><span class="va">size</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">combined.mc.epith</span><span class="op">$</span><span class="va">sample</span>,</span>
-<span>                                                        major_type <span class="op">=</span> <span class="va">combined.mc.epith</span><span class="op">$</span><span class="va">ann_level_3</span>,</span>
-<span>                                                        smoking_status <span class="op">=</span> <span class="va">combined.mc.epith</span><span class="op">$</span><span class="va">smoking_status</span><span class="op">)</span>,</span>
-<span>                                                        FUN<span class="op">=</span><span class="va">sum</span><span class="op">)</span></span>
+<span>                                                       major_type <span class="op">=</span> <span class="va">combined.mc.epith</span><span class="op">$</span><span class="va">ann_level_3</span>,</span>
+<span>                                                       smoking_status <span class="op">=</span> <span class="va">combined.mc.epith</span><span class="op">$</span><span class="va">smoking_status</span><span class="op">)</span>,</span>
+<span>                       FUN <span class="op">=</span> <span class="va">sum</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">contingencyTable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html">xtabs</a></span><span class="op">(</span><span class="va">x</span> <span class="op">~</span> <span class="va">major_type</span> <span class="op">+</span> <span class="va">smoking_status</span>, data <span class="op">=</span> <span class="va">smpCounts</span><span class="op">)</span></span>
+<span><span class="va">freqMatrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">contingencyTable</span>, <span class="fl">1</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span><span class="va">x</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">colSums</a></span><span class="op">(</span><span class="va">contingencyTable</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co"># res &lt;- chisq.test(contingencyTable)</span></span>
+<span><span class="co"># Roe &lt;- res$observed/res$expected</span></span>
+<span><span class="va">freqMatrix_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/melt.html">melt</a></span><span class="op">(</span><span class="va">freqMatrix</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/rm.html">remove</a></span><span class="op">(</span><span class="va">combined.mc.epith</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/gc.html">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">smpCounts</span>,<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">smoking_status</span>,fill<span class="op">=</span><span class="va">major_type</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"fill"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"% epithelial cells"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">freqMatrix_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y<span class="op">=</span><span class="va">value</span>,x <span class="op">=</span> <span class="va">smoking_status</span>,fill<span class="op">=</span><span class="va">major_type</span><span class="op">)</span><span class="op">)</span>  <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>stat<span class="op">=</span><span class="st">"identity"</span>, position<span class="op">=</span><span class="st">"fill"</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="va">color.celltypes</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html">percent</a></span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ylab</a></span><span class="op">(</span><span class="st">"% epithelial cells"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="40-integration_analysis_files/figure-html/integrated_celltype_abondance-1.png" width="672"></div>
 <p>Samples from smokers seem to present more AT2 cells but this quick analysis is for illustrative purposes only.
 In practice it’s far more complex to draw conclusion as we should have considered the variations between samples/donors as well as many other technical
@@ -459,8 +465,8 @@ Please skip this step if you did not use conda in the requirements section.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>RETICULATE_PYTHON <span class="op">=</span> <span class="va">conda_env</span><span class="op">)</span></span></code></pre></div>
 <pre><code>#&gt;           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#&gt; Ncells 3604925 192.6    6648928   355.1    6648928   355.1
-#&gt; Vcells 6809338  52.0 1894376356 14453.0 2366896927 18058.0</code></pre>
+#&gt; Ncells 3607736 192.7    6649217   355.2    6649217   355.2
+#&gt; Vcells 6815916  52.1 1894377494 14453.0 2366896489 18058.0</code></pre>
 <div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://satijalab.org/seurat">Seurat</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://anndata.dynverse.org">anndata</a></span><span class="op">)</span></span>
@@ -808,7 +814,7 @@ On the other hand, you certainly won’t be able to analyze so many single-cells
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-01-05.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-03-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

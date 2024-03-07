@@ -103,15 +103,13 @@ The package also provides a function to visualize metacells projected in the sin
 <span><span class="va">proj_name</span> <span class="op">=</span> <span class="st">"bmcite"</span></span>
 <span><span class="va">annotation_label</span> <span class="op">=</span> <span class="st">"celltype_simplified"</span></span>
 <span></span>
-<span><span class="va">cell_types</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Prog_RBC"</span>, <span class="st">"Unconventional T"</span>, <span class="st">"Naive CD4 cell"</span>, <span class="st">"Non-Naive CD4 cell"</span>, </span>
-<span>                <span class="st">"CD14 Mono"</span>, <span class="st">"B cell"</span>, <span class="st">"Naive CD8 cell"</span>, <span class="st">"Non-Naive CD8 cell"</span>, </span>
-<span>                <span class="st">"NK"</span>, <span class="st">"GMP"</span>, <span class="st">"CD16 Mono"</span>, <span class="st">"pDC"</span>, <span class="st">"cDC2"</span>, <span class="st">"Prog_B 2"</span>, </span>
-<span>                <span class="st">"Prog_Mk"</span>, <span class="st">"Plasmablast"</span>, <span class="st">"HSC"</span>, <span class="st">"LMPP"</span>, <span class="st">"Prog_DC"</span>, <span class="st">"Prog_B 1"</span><span class="op">)</span></span>
+<span><span class="va">cell_types</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Unconventional T"</span>, <span class="st">"Naive T cell"</span>, <span class="st">"Non-Naive CD4 cell"</span>, <span class="st">"CD14 Mono"</span>, <span class="st">"B cell"</span>, <span class="st">"Non-Naive CD8 cell"</span>,</span>
+<span>                <span class="st">"NK"</span>, <span class="st">"GMP"</span>, <span class="st">"CD16 Mono"</span>, <span class="st">"pDC"</span>, <span class="st">"cDC2"</span>, <span class="st">"Prog_B"</span>, <span class="st">"Plasmablast"</span>, <span class="st">"HSC"</span>, <span class="st">"LMPP"</span>, <span class="st">"Prog_DC"</span>, <span class="st">"MEP"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">celltype_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#7E57C2"</span>, <span class="st">"#1E88E5"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>, <span class="st">"#9E9D24"</span>, </span>
-<span>                 <span class="st">"#F06292"</span>, <span class="st">"#546E7A"</span>, <span class="st">"#D4E157"</span>, <span class="st">"#76FF03"</span>, <span class="st">"#6D4C41"</span>, </span>
-<span>                 <span class="st">"#26A69A"</span>, <span class="st">"#AB47BC"</span>, <span class="st">"#EC407A"</span>, <span class="st">"#D81B60"</span>, <span class="st">"#42A5F5"</span>, </span>
-<span>                 <span class="st">"#2E7D32"</span>, <span class="st">"#FFA726"</span>, <span class="st">"#5E35B1"</span>, <span class="st">"#EF5350"</span>, <span class="st">"#3949AB"</span><span class="op">)</span></span>
+<span><span class="va">celltype_colors</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#1E88E5"</span>, <span class="st">"#FFC107"</span>, <span class="st">"#004D40"</span>, <span class="st">"#9E9D24"</span>,</span>
+<span>                     <span class="st">"#F06292"</span>, <span class="st">"#546E7A"</span>, <span class="st">"#D4E157"</span>, <span class="st">"#76FF03"</span>, </span>
+<span>                     <span class="st">"#26A69A"</span>, <span class="st">"#AB47BC"</span>, <span class="st">"#D81B60"</span>, <span class="st">"#42A5F5"</span>,</span>
+<span>                     <span class="st">"#2E7D32"</span>, <span class="st">"#FFA726"</span>, <span class="st">"#5E35B1"</span>, <span class="st">"#EF5350"</span>,<span class="st">"#6D4C41"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">celltype_colors</span><span class="op">)</span> <span class="op">&lt;-</span><span class="va">cell_types</span></span>
 <span></span>
 <span><span class="co"># Load the single-cell data </span></span>
@@ -236,7 +234,7 @@ Note that it is the only metric that is latent-space independent.</p>
 <code class="sourceCode R"><span><span class="va">mc_data</span><span class="op">$</span><span class="va">INV</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/mc_INV.html">mc_INV</a></span><span class="op">(</span>cell.membership <span class="op">=</span> <span class="va">membership_df</span>, sc.obj <span class="op">=</span> <span class="va">sc_data</span>, group.label <span class="op">=</span> <span class="st">"membership"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Computing INV ...</span></span>
 <span><span class="co">#&gt; Warning in asMethod(object): sparse-&gt;dense coercion: allocating vector of size</span></span>
-<span><span class="co">#&gt; 3.7 GiB</span></span>
+<span><span class="co">#&gt; 3.9 GiB</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"INV"</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/compute_INV-1.png" width="672"></div>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
@@ -254,7 +252,7 @@ which could confound analyses. When heterogeneous size distributions are obtaine
 <div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Seurat::VlnPlot(mc_data, features = "size", pt.size = 2)</span></span>
 <span><span class="co"># Seurat::VlnPlot(mc_data, features = "size", pt.size = 2, group.by = annotation_label)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">mc_data</span><span class="op">$</span><span class="va">size</span>, main <span class="op">=</span> <span class="st">"Size distribution"</span>, xlab <span class="op">=</span> <span class="st">"Size"</span>, breaks <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">mc_data</span><span class="op">$</span><span class="va">size</span>, main <span class="op">=</span> <span class="st">"Size distribution"</span>, xlab <span class="op">=</span> <span class="st">"Size"</span>, breaks <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></code></pre></div>
 <div class="inline-figure"><img src="22-Metacells_QCs_files/figure-html/visualize_size_distribution-1.png" width="672"></div>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/MetacellAnalysisToolkit/man/qc_boxplot.html">qc_boxplot</a></span><span class="op">(</span>mc.obj <span class="op">=</span> <span class="va">mc_data</span>, qc.metrics <span class="op">=</span> <span class="st">"size"</span><span class="op">)</span></span></code></pre></div>
@@ -331,7 +329,7 @@ Metacells can also be colored by a continuous variable such as one of the QC met
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-01-05.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-03-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

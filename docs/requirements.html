@@ -152,27 +152,61 @@ This tutorial was developed under Seurat V4 but is also compatible with Seurat V
 <p>The data are saved in the following file for future analyses in R (use of SuperCell): “data/bmcite/singlecell_seurat_filtered.rds”.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.satijalab.org/seurat">SeuratData</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; The legacy packages maptools, rgdal, and rgeos, underpinning this package</span></span>
+<span><span class="co">#&gt; will retire shortly. Please refer to R-spatial evolution reports on</span></span>
+<span><span class="co">#&gt; https://r-spatial.org/r/2023/05/15/evolution4.html for details.</span></span>
+<span><span class="co">#&gt; This package is now running under evolution status 0</span></span>
+<span><span class="co">#&gt; ── Installed datasets ───────────────────────────────────── SeuratData v0.2.2 ──</span></span>
+<span><span class="co">#&gt; ✔ bmcite 0.3.0</span></span>
+<span><span class="co">#&gt; ────────────────────────────────────── Key ─────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ✔ Dataset loaded successfully</span></span>
+<span><span class="co">#&gt; ❯ Dataset built with a newer version of Seurat than installed</span></span>
+<span><span class="co">#&gt; ❓ Unknown version of Seurat installed</span></span>
 <span><span class="fu"><a href="https://satijalab.org/seurat/reference/InstallData.html">InstallData</a></span><span class="op">(</span><span class="st">"bmcite"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The following packages are already installed and will not be</span></span>
+<span><span class="co">#&gt; reinstalled: bmcite</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"bmcite"</span><span class="op">)</span></span>
 <span><span class="va">bmcite</span></span>
+<span><span class="co">#&gt; An object of class Seurat </span></span>
+<span><span class="co">#&gt; 17034 features across 30672 samples within 2 assays </span></span>
+<span><span class="co">#&gt; Active assay: RNA (17009 features, 2000 variable features)</span></span>
+<span><span class="co">#&gt;  1 other assay present: ADT</span></span>
+<span><span class="co">#&gt;  1 dimensional reduction calculated: spca</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">bmcite</span><span class="op">@</span><span class="va">meta.data</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      orig.ident nCount_RNA nFeature_RNA nCount_ADT nFeature_ADT</span></span>
+<span><span class="co">#&gt; a_AAACCTGAGCTTATCG-1     bmcite       7546         2136       1350           25</span></span>
+<span><span class="co">#&gt; a_AAACCTGAGGTGGGTT-1     bmcite       1029          437       2970           25</span></span>
+<span><span class="co">#&gt; a_AAACCTGAGTACATGA-1     bmcite       1111          429       2474           23</span></span>
+<span><span class="co">#&gt; a_AAACCTGCAAACCTAC-1     bmcite       2741          851       4799           25</span></span>
+<span><span class="co">#&gt; a_AAACCTGCAAGGTGTG-1     bmcite       2099          843       5434           25</span></span>
+<span><span class="co">#&gt; a_AAACCTGCACGGTAGA-1     bmcite       2291          783       4658           25</span></span>
+<span><span class="co">#&gt;                           lane  donor      celltype.l1 celltype.l2 RNA.weight</span></span>
+<span><span class="co">#&gt; a_AAACCTGAGCTTATCG-1 HumanHTO4 batch1 Progenitor cells    Prog_RBC  0.4827011</span></span>
+<span><span class="co">#&gt; a_AAACCTGAGGTGGGTT-1 HumanHTO1 batch1           T cell         gdT  0.2417890</span></span>
+<span><span class="co">#&gt; a_AAACCTGAGTACATGA-1 HumanHTO5 batch1           T cell   CD4 Naive  0.5077136</span></span>
+<span><span class="co">#&gt; a_AAACCTGCAAACCTAC-1 HumanHTO3 batch1           T cell  CD4 Memory  0.4313079</span></span>
+<span><span class="co">#&gt; a_AAACCTGCAAGGTGTG-1 HumanHTO2 batch1          Mono/DC   CD14 Mono  0.5685085</span></span>
+<span><span class="co">#&gt; a_AAACCTGCACGGTAGA-1 HumanHTO6 batch1           B cell     Naive B  0.4255879</span></span>
 <span><span class="va">bmcite</span><span class="op">$</span><span class="va">celltype_simplified</span> <span class="op">&lt;-</span> <span class="fu">plyr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/plyr/man/revalue.html">revalue</a></span><span class="op">(</span><span class="va">bmcite</span><span class="op">$</span><span class="va">celltype.l2</span>, </span>
 <span>                                            <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CD8 Effector_1"</span> <span class="op">=</span> <span class="st">"Non-Naive CD8 cell"</span>,</span>
 <span>                                              <span class="st">"CD8 Effector_2"</span> <span class="op">=</span> <span class="st">"Non-Naive CD8 cell"</span>,</span>
 <span>                                              <span class="st">"CD8 Memory_1"</span> <span class="op">=</span> <span class="st">"Non-Naive CD8 cell"</span>,</span>
 <span>                                              <span class="st">"CD8 Memory_2"</span> <span class="op">=</span> <span class="st">"Non-Naive CD8 cell"</span>,</span>
-<span>                                              <span class="st">"CD8 Naive"</span> <span class="op">=</span> <span class="st">"Naive CD8 cell"</span>,</span>
-<span>                                              <span class="st">"CD4 Naive"</span> <span class="op">=</span> <span class="st">"Naive CD4 cell"</span>,</span>
+<span>                                              <span class="st">"CD8 Naive"</span> <span class="op">=</span> <span class="st">"Naive T cell"</span>,</span>
+<span>                                              <span class="st">"CD4 Naive"</span> <span class="op">=</span> <span class="st">"Naive T cell"</span>,</span>
 <span>                                              <span class="st">"CD4 Memory"</span> <span class="op">=</span> <span class="st">"Non-Naive CD4 cell"</span>,</span>
 <span>                                              <span class="st">"Treg"</span> <span class="op">=</span> <span class="st">"Non-Naive CD4 cell"</span>,</span>
 <span>                                              <span class="st">"Naive B"</span> <span class="op">=</span> <span class="st">"B cell"</span>,</span>
 <span>                                              <span class="st">"Memory B"</span> <span class="op">=</span> <span class="st">"B cell"</span>,</span>
 <span>                                              <span class="st">"CD56 bright NK"</span> <span class="op">=</span> <span class="st">"NK"</span>,</span>
 <span>                                              <span class="st">"MAIT"</span> <span class="op">=</span> <span class="st">"Unconventional T"</span>,</span>
-<span>                                              <span class="st">"gdT"</span> <span class="op">=</span> <span class="st">"Unconventional T"</span></span>
+<span>                                              <span class="st">"gdT"</span> <span class="op">=</span> <span class="st">"Unconventional T"</span>,</span>
+<span>                                              <span class="st">"Prog_B 2"</span> <span class="op">=</span> <span class="st">"Prog_B"</span>,</span>
+<span>                                              <span class="st">"Prog_B 1"</span> <span class="op">=</span> <span class="st">"Prog_B"</span>,</span>
+<span>                                              <span class="st">"Prog_Mk"</span> <span class="op">=</span> <span class="st">"MEP"</span>,</span>
+<span>                                              <span class="st">"Prog_RBC"</span> <span class="op">=</span> <span class="st">"MEP"</span></span>
 <span>                                              <span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">bmcite</span> <span class="op">&lt;-</span> <span class="va">bmcite</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grep</a></span><span class="op">(</span><span class="st">"Prog"</span>,<span class="va">bmcite</span><span class="op">$</span><span class="va">celltype_simplified</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/packageDescription.html">packageVersion</a></span><span class="op">(</span><span class="st">"Seurat"</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">bmcite</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span>object <span class="op">=</span> <span class="va">bmcite</span><span class="op">[[</span><span class="st">"RNA"</span><span class="op">]</span><span class="op">]</span>, Class <span class="op">=</span> <span class="st">"Assay"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
@@ -293,7 +327,7 @@ This should take less than 10 minutes.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-01-05.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-03-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
