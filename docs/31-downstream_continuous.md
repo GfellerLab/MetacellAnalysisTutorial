@@ -233,20 +233,20 @@ cd34.metacell <- RunUMAP(cd34.metacell,dims = c(1:50), min.dist = 0.5)
 #> Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric
 #> To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'
 #> This message will be shown once per session
-#> 12:38:48 UMAP embedding parameters a = 0.583 b = 1.334
-#> 12:38:48 Read 140 rows and found 50 numeric columns
-#> 12:38:48 Using Annoy for neighbor search, n_neighbors = 30
-#> 12:38:48 Building Annoy index with metric = cosine, n_trees = 50
+#> 10:56:31 UMAP embedding parameters a = 0.583 b = 1.334
+#> 10:56:31 Read 140 rows and found 50 numeric columns
+#> 10:56:31 Using Annoy for neighbor search, n_neighbors = 30
+#> 10:56:31 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 12:38:48 Writing NN index file to temp file /tmp/36641619/RtmpioMKbJ/file3e07215f5e61cc
-#> 12:38:48 Searching Annoy index using 1 thread, search_k = 3000
-#> 12:38:48 Annoy recall = 100%
-#> 12:38:48 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 12:38:49 Initializing from normalized Laplacian + noise (using irlba)
-#> 12:38:49 Commencing optimization for 500 epochs, with 4956 positive edges
-#> 12:38:49 Optimization finished
+#> 10:56:31 Writing NN index file to temp file /tmp/39866097/Rtmpi2ZhHh/file389b370d888bf
+#> 10:56:31 Searching Annoy index using 1 thread, search_k = 3000
+#> 10:56:31 Annoy recall = 100%
+#> 10:56:31 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 10:56:32 Initializing from normalized Laplacian + noise (using irlba)
+#> 10:56:32 Commencing optimization for 500 epochs, with 4956 positive edges
+#> 10:56:32 Optimization finished
 ```
 
 Plot the results using Seurat.
@@ -400,20 +400,20 @@ cd34.supercell <- RunPCA(cd34.supercell)
 #> 	   KIFC1, PRC1, GTSE1, CIT, KIF18B, NUF2, CDK1, KIF15, KIF11, FOXM1 
 #> 	   BIRC5, CCNA2, CDC25C, MKI67, TUBB4B, CDCA8, TPX2, CENPE, KIF23, CDCA2
 cd34.supercell <- RunUMAP(cd34.supercell,dims = c(1:50),min.dist = 0.5)
-#> 12:38:54 UMAP embedding parameters a = 0.583 b = 1.334
-#> 12:38:54 Read 138 rows and found 50 numeric columns
-#> 12:38:54 Using Annoy for neighbor search, n_neighbors = 30
-#> 12:38:54 Building Annoy index with metric = cosine, n_trees = 50
+#> 10:56:37 UMAP embedding parameters a = 0.583 b = 1.334
+#> 10:56:37 Read 138 rows and found 50 numeric columns
+#> 10:56:37 Using Annoy for neighbor search, n_neighbors = 30
+#> 10:56:37 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 12:38:54 Writing NN index file to temp file /tmp/36641619/RtmpioMKbJ/file3e072172f9d35
-#> 12:38:54 Searching Annoy index using 1 thread, search_k = 3000
-#> 12:38:54 Annoy recall = 100%
-#> 12:38:54 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 12:38:55 Initializing from normalized Laplacian + noise (using irlba)
-#> 12:38:55 Commencing optimization for 500 epochs, with 4504 positive edges
-#> 12:38:55 Optimization finished
+#> 10:56:37 Writing NN index file to temp file /tmp/39866097/Rtmpi2ZhHh/file389b3552e344d
+#> 10:56:37 Searching Annoy index using 1 thread, search_k = 3000
+#> 10:56:37 Annoy recall = 100%
+#> 10:56:37 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 10:56:38 Initializing from normalized Laplacian + noise (using irlba)
+#> 10:56:38 Commencing optimization for 500 epochs, with 4504 positive edges
+#> 10:56:38 Optimization finished
 ```
 
 Plot the results using Seurat.
@@ -565,20 +565,20 @@ cd34.singlecells <- RunPCA(cd34.singlecells)
 #> 	   GYPC, PRSS57, RPLP2, SMIM24, RPS8, RPL35, MIR181A1HG, RPS3, RPL27A, RPL14 
 #> 	   RPL7, RPS6, RPL6, RPL8, RPL32, RACK1, ACTG1, RPL29, RPS3A, RPL7A
 cd34.singlecells <- RunUMAP(cd34.singlecells,dims = c(1:50))
-#> 12:39:09 UMAP embedding parameters a = 0.9922 b = 1.112
-#> 12:39:09 Read 6881 rows and found 50 numeric columns
-#> 12:39:09 Using Annoy for neighbor search, n_neighbors = 30
-#> 12:39:09 Building Annoy index with metric = cosine, n_trees = 50
+#> 10:56:53 UMAP embedding parameters a = 0.9922 b = 1.112
+#> 10:56:53 Read 6881 rows and found 50 numeric columns
+#> 10:56:53 Using Annoy for neighbor search, n_neighbors = 30
+#> 10:56:53 Building Annoy index with metric = cosine, n_trees = 50
 #> 0%   10   20   30   40   50   60   70   80   90   100%
 #> [----|----|----|----|----|----|----|----|----|----|
 #> **************************************************|
-#> 12:39:09 Writing NN index file to temp file /tmp/36641619/RtmpioMKbJ/file3e072141e98487
-#> 12:39:09 Searching Annoy index using 1 thread, search_k = 3000
-#> 12:39:11 Annoy recall = 100%
-#> 12:39:11 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
-#> 12:39:12 Initializing from normalized Laplacian + noise (using irlba)
-#> 12:39:12 Commencing optimization for 500 epochs, with 293954 positive edges
-#> 12:39:20 Optimization finished
+#> 10:56:53 Writing NN index file to temp file /tmp/39866097/Rtmpi2ZhHh/file389b35f3fd462
+#> 10:56:53 Searching Annoy index using 1 thread, search_k = 3000
+#> 10:56:55 Annoy recall = 100%
+#> 10:56:55 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30
+#> 10:56:56 Initializing from normalized Laplacian + noise (using irlba)
+#> 10:56:56 Commencing optimization for 500 epochs, with 293954 positive edges
+#> 10:57:04 Optimization finished
 ```
 Plot single cell data.
 

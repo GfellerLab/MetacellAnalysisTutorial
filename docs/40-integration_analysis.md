@@ -35,8 +35,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used  (Mb) gc trigger (Mb) max used (Mb)
-#> Ncells 1912846 102.2    3088018  165  3088018  165
-#> Vcells 3338412  25.5    8388608   64  5498716   42
+#> Ncells 1912851 102.2    3088062  165  3088062  165
+#> Vcells 3338476  25.5    8388608   64  5498779   42
 ```
 
 
@@ -409,14 +409,20 @@ library(reshape2)
 combined.mc.epith <- combined.mc[,combined.mc$ann_level_1 == "Epithelial"]
 #combined.metacells$major_type <- droplevels(combined.metacells$major_type)
 smpCounts <- aggregate(combined.mc.epith$size, by=list(sample = combined.mc.epith$sample,
-                                                        major_type = combined.mc.epith$ann_level_3,
-                                                        smoking_status = combined.mc.epith$smoking_status),
-                                                        FUN=sum)
+                                                       major_type = combined.mc.epith$ann_level_3,
+                                                       smoking_status = combined.mc.epith$smoking_status),
+                       FUN = sum)
+
+contingencyTable <- xtabs(x ~ major_type + smoking_status, data = smpCounts)
+freqMatrix <- apply(contingencyTable, 1, FUN = function(x){x/colSums(contingencyTable)})
+# res <- chisq.test(contingencyTable)
+# Roe <- res$observed/res$expected
+freqMatrix_df <- melt(freqMatrix)
 
 remove(combined.mc.epith)
 gc()
 
-ggplot(smpCounts,aes(x = smoking_status,fill=major_type)) + geom_bar(position = "fill") + scale_fill_manual(values = color.celltypes) + xlab("% epithelial cells")
+ggplot(freqMatrix_df, aes(y=value,x = smoking_status,fill=major_type))  + geom_bar(stat="identity", position="fill") + scale_fill_manual(values = color.celltypes) + scale_y_continuous(labels = scales::percent) + ylab("% epithelial cells")
 ```
 
 <img src="40-integration_analysis_files/figure-html/integrated_celltype_abondance-1.png" width="672" />
@@ -474,8 +480,8 @@ Sys.setenv(RETICULATE_PYTHON = conda_env)
 
 ```
 #>           used  (Mb) gc trigger    (Mb)   max used    (Mb)
-#> Ncells 3604925 192.6    6648928   355.1    6648928   355.1
-#> Vcells 6809338  52.0 1894376356 14453.0 2366896927 18058.0
+#> Ncells 3607736 192.7    6649217   355.2    6649217   355.2
+#> Vcells 6815916  52.1 1894377494 14453.0 2366896489 18058.0
 ```
 
 

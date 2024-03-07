@@ -316,20 +316,20 @@ We use 2000 highly variable genes (HVGs, <code>-f 2000</code>) to compute a PCA 
 <span><span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span></span>
 <span><span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'</span></span>
 <span><span class="co">#&gt; This message will be shown once per session</span></span>
-<span><span class="co">#&gt; 12:38:48 UMAP embedding parameters a = 0.583 b = 1.334</span></span>
-<span><span class="co">#&gt; 12:38:48 Read 140 rows and found 50 numeric columns</span></span>
-<span><span class="co">#&gt; 12:38:48 Using Annoy for neighbor search, n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 12:38:48 Building Annoy index with metric = cosine, n_trees = 50</span></span>
+<span><span class="co">#&gt; 10:56:31 UMAP embedding parameters a = 0.583 b = 1.334</span></span>
+<span><span class="co">#&gt; 10:56:31 Read 140 rows and found 50 numeric columns</span></span>
+<span><span class="co">#&gt; 10:56:31 Using Annoy for neighbor search, n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 10:56:31 Building Annoy index with metric = cosine, n_trees = 50</span></span>
 <span><span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span></span>
 <span><span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span></span>
 <span><span class="co">#&gt; **************************************************|</span></span>
-<span><span class="co">#&gt; 12:38:48 Writing NN index file to temp file /tmp/36641619/RtmpioMKbJ/file3e07215f5e61cc</span></span>
-<span><span class="co">#&gt; 12:38:48 Searching Annoy index using 1 thread, search_k = 3000</span></span>
-<span><span class="co">#&gt; 12:38:48 Annoy recall = 100%</span></span>
-<span><span class="co">#&gt; 12:38:48 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 12:38:49 Initializing from normalized Laplacian + noise (using irlba)</span></span>
-<span><span class="co">#&gt; 12:38:49 Commencing optimization for 500 epochs, with 4956 positive edges</span></span>
-<span><span class="co">#&gt; 12:38:49 Optimization finished</span></span></code></pre></div>
+<span><span class="co">#&gt; 10:56:31 Writing NN index file to temp file /tmp/39866097/Rtmpi2ZhHh/file389b370d888bf</span></span>
+<span><span class="co">#&gt; 10:56:31 Searching Annoy index using 1 thread, search_k = 3000</span></span>
+<span><span class="co">#&gt; 10:56:31 Annoy recall = 100%</span></span>
+<span><span class="co">#&gt; 10:56:31 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 10:56:32 Initializing from normalized Laplacian + noise (using irlba)</span></span>
+<span><span class="co">#&gt; 10:56:32 Commencing optimization for 500 epochs, with 4956 positive edges</span></span>
+<span><span class="co">#&gt; 10:56:32 Optimization finished</span></span></code></pre></div>
 <p>Plot the results using Seurat.</p>
 <div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">umap.metacell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">UMAPPlot</a></span><span class="op">(</span><span class="va">cd34.metacell</span>,group.by <span class="op">=</span> <span class="st">"celltype"</span>,label <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
@@ -442,20 +442,20 @@ When analyzing metacells it’s a good idea to plot their size on these. We can 
 <span><span class="co">#&gt;     KIFC1, PRC1, GTSE1, CIT, KIF18B, NUF2, CDK1, KIF15, KIF11, FOXM1 </span></span>
 <span><span class="co">#&gt;     BIRC5, CCNA2, CDC25C, MKI67, TUBB4B, CDCA8, TPX2, CENPE, KIF23, CDCA2</span></span>
 <span><span class="va">cd34.supercell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">cd34.supercell</span>,dims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span>,min.dist <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 12:38:54 UMAP embedding parameters a = 0.583 b = 1.334</span></span>
-<span><span class="co">#&gt; 12:38:54 Read 138 rows and found 50 numeric columns</span></span>
-<span><span class="co">#&gt; 12:38:54 Using Annoy for neighbor search, n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 12:38:54 Building Annoy index with metric = cosine, n_trees = 50</span></span>
+<span><span class="co">#&gt; 10:56:37 UMAP embedding parameters a = 0.583 b = 1.334</span></span>
+<span><span class="co">#&gt; 10:56:37 Read 138 rows and found 50 numeric columns</span></span>
+<span><span class="co">#&gt; 10:56:37 Using Annoy for neighbor search, n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 10:56:37 Building Annoy index with metric = cosine, n_trees = 50</span></span>
 <span><span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span></span>
 <span><span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span></span>
 <span><span class="co">#&gt; **************************************************|</span></span>
-<span><span class="co">#&gt; 12:38:54 Writing NN index file to temp file /tmp/36641619/RtmpioMKbJ/file3e072172f9d35</span></span>
-<span><span class="co">#&gt; 12:38:54 Searching Annoy index using 1 thread, search_k = 3000</span></span>
-<span><span class="co">#&gt; 12:38:54 Annoy recall = 100%</span></span>
-<span><span class="co">#&gt; 12:38:54 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 12:38:55 Initializing from normalized Laplacian + noise (using irlba)</span></span>
-<span><span class="co">#&gt; 12:38:55 Commencing optimization for 500 epochs, with 4504 positive edges</span></span>
-<span><span class="co">#&gt; 12:38:55 Optimization finished</span></span></code></pre></div>
+<span><span class="co">#&gt; 10:56:37 Writing NN index file to temp file /tmp/39866097/Rtmpi2ZhHh/file389b3552e344d</span></span>
+<span><span class="co">#&gt; 10:56:37 Searching Annoy index using 1 thread, search_k = 3000</span></span>
+<span><span class="co">#&gt; 10:56:37 Annoy recall = 100%</span></span>
+<span><span class="co">#&gt; 10:56:37 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 10:56:38 Initializing from normalized Laplacian + noise (using irlba)</span></span>
+<span><span class="co">#&gt; 10:56:38 Commencing optimization for 500 epochs, with 4504 positive edges</span></span>
+<span><span class="co">#&gt; 10:56:38 Optimization finished</span></span></code></pre></div>
 <p>Plot the results using Seurat.</p>
 <div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">umap.supercell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">UMAPPlot</a></span><span class="op">(</span><span class="va">cd34.supercell</span>,group.by <span class="op">=</span> <span class="st">"celltype"</span>,label <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
@@ -575,20 +575,20 @@ When analyzing supercells it’s a good idea to plot their size on these. We can
 <span><span class="co">#&gt;     GYPC, PRSS57, RPLP2, SMIM24, RPS8, RPL35, MIR181A1HG, RPS3, RPL27A, RPL14 </span></span>
 <span><span class="co">#&gt;     RPL7, RPS6, RPL6, RPL8, RPL32, RACK1, ACTG1, RPL29, RPS3A, RPL7A</span></span>
 <span><span class="va">cd34.singlecells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/RunUMAP.html">RunUMAP</a></span><span class="op">(</span><span class="va">cd34.singlecells</span>,dims <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 12:39:09 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
-<span><span class="co">#&gt; 12:39:09 Read 6881 rows and found 50 numeric columns</span></span>
-<span><span class="co">#&gt; 12:39:09 Using Annoy for neighbor search, n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 12:39:09 Building Annoy index with metric = cosine, n_trees = 50</span></span>
+<span><span class="co">#&gt; 10:56:53 UMAP embedding parameters a = 0.9922 b = 1.112</span></span>
+<span><span class="co">#&gt; 10:56:53 Read 6881 rows and found 50 numeric columns</span></span>
+<span><span class="co">#&gt; 10:56:53 Using Annoy for neighbor search, n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 10:56:53 Building Annoy index with metric = cosine, n_trees = 50</span></span>
 <span><span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span></span>
 <span><span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span></span>
 <span><span class="co">#&gt; **************************************************|</span></span>
-<span><span class="co">#&gt; 12:39:09 Writing NN index file to temp file /tmp/36641619/RtmpioMKbJ/file3e072141e98487</span></span>
-<span><span class="co">#&gt; 12:39:09 Searching Annoy index using 1 thread, search_k = 3000</span></span>
-<span><span class="co">#&gt; 12:39:11 Annoy recall = 100%</span></span>
-<span><span class="co">#&gt; 12:39:11 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
-<span><span class="co">#&gt; 12:39:12 Initializing from normalized Laplacian + noise (using irlba)</span></span>
-<span><span class="co">#&gt; 12:39:12 Commencing optimization for 500 epochs, with 293954 positive edges</span></span>
-<span><span class="co">#&gt; 12:39:20 Optimization finished</span></span></code></pre></div>
+<span><span class="co">#&gt; 10:56:53 Writing NN index file to temp file /tmp/39866097/Rtmpi2ZhHh/file389b35f3fd462</span></span>
+<span><span class="co">#&gt; 10:56:53 Searching Annoy index using 1 thread, search_k = 3000</span></span>
+<span><span class="co">#&gt; 10:56:55 Annoy recall = 100%</span></span>
+<span><span class="co">#&gt; 10:56:55 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 30</span></span>
+<span><span class="co">#&gt; 10:56:56 Initializing from normalized Laplacian + noise (using irlba)</span></span>
+<span><span class="co">#&gt; 10:56:56 Commencing optimization for 500 epochs, with 293954 positive edges</span></span>
+<span><span class="co">#&gt; 10:57:04 Optimization finished</span></span></code></pre></div>
 <p>Plot single cell data.</p>
 <div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">UMAPPlot</a></span><span class="op">(</span><span class="va">cd34.singlecells</span>,group.by <span class="op">=</span> <span class="st">"celltype"</span>,label <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
@@ -732,7 +732,7 @@ Comparison of MetaCell2 and SuperCell for separation (higher the better).</div>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-01-05.</p>
+    <p>"<strong>Metacell Analysis Tutorial</strong>" was written by Aurélie Gabriel, Léonard Hérault, Mariia Bilous, David Gfeller. It was last built on 2024-03-07.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">

@@ -62,15 +62,13 @@ MC_tool = "SuperCell"
 proj_name <- "bmcite"
 annotation_label <- "celltype_simplified"
   
-cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell", 
-                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell", 
-                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2", 
-                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+cell_types <- c("Unconventional T", "Naive T cell", "Non-Naive CD4 cell", "CD14 Mono", "B cell", "Non-Naive CD8 cell",
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B", "Plasmablast", "HSC", "LMPP", "Prog_DC", "MEP")
 
-celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24", 
-                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41", 
-                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5", 
-                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+celltype_colors <- c("#1E88E5", "#FFC107", "#004D40", "#9E9D24",
+                     "#F06292", "#546E7A", "#D4E157", "#76FF03", 
+                     "#26A69A", "#AB47BC", "#D81B60", "#42A5F5",
+                     "#2E7D32", "#FFA726", "#5E35B1", "#EF5350","#6D4C41")
 names(celltype_colors) <- cell_types
 
 sc_data = readRDS(paste0("data/", proj_name, "/singlecell_seurat_filtered.rds"))
@@ -160,7 +158,7 @@ MC.GE <- supercell_GE(Seurat::GetAssayData(sc_data, slot = "counts"),
                       mode =  "sum"
                       )
 dim(MC.GE) 
-#> [1] 17009   582
+#> [1] 17009   613
 ```
 
 ### Annotate metacells (using available annotations)
@@ -181,9 +179,9 @@ MC$annotation <- supercell_assign(clusters = sc_data@meta.data[, annotation_labe
 
 head(MC$annotation)
 #>                    1                    2                    3 
-#>             "B cell"               "LMPP" "Non-Naive CD8 cell" 
+#> "Non-Naive CD8 cell" "Non-Naive CD8 cell"               "LMPP" 
 #>                    4                    5                    6 
-#> "Non-Naive CD4 cell" "Non-Naive CD4 cell"          "CD14 Mono"
+#>             "B cell"          "CD14 Mono" "Non-Naive CD4 cell"
 ```
 
 
@@ -273,8 +271,8 @@ anndata::write_h5ad(anndata = MC.seurat.ad, filename = paste0('./data/', proj_na
 
 ```
 #>             used   (Mb) gc trigger   (Mb)  max used   (Mb)
-#> Ncells   3494394  186.7   11652824  622.4  14566030  778.0
-#> Vcells 156633708 1195.1  478116159 3647.8 478105101 3647.7
+#> Ncells   3494496  186.7   11654105  622.4  14567631  778.0
+#> Vcells 177948554 1357.7  438523727 3345.7 438519104 3345.7
 ```
 
 
@@ -377,9 +375,9 @@ mc.pl.exclude_genes(
     excluded_gene_patterns=EXCLUDED_GENE_PATTERNS,
     random_seed=123456
 )
-#> set bmcite.var[bursty_lonely_gene]: 0 true (0%) out of 17009 bools
-#> set bmcite.var[properly_sampled_gene]: 16993 true (99.91%) out of 17009 bools
-#> set bmcite.var[excluded_gene]: 32 true (0.1881%) out of 17009 bools
+#> set bmcite.var[bursty_lonely_gene]: 1 true (0.005879%) out of 17009 bools
+#> set bmcite.var[properly_sampled_gene]: 17009 true (100%) out of 17009 bools
+#> set bmcite.var[excluded_gene]: 17 true (0.09995%) out of 17009 bools
 ```
 
 #### Cell filtering based on UMIs counts {-}
@@ -412,8 +410,8 @@ mc.pl.exclude_cells(
     properly_sampled_max_excluded_genes_fraction=PROPERLY_SAMPLED_MAX_EXCLUDED_GENES_FRACTION # ,
     # additional_cells_masks=["|doublet_cell"]
 )
-#> set bmcite.obs[properly_sampled_cell]: 28694 true (98.62%) out of 29096 bools
-#> set bmcite.obs[excluded_cell]: 402 true (1.382%) out of 29096 bools
+#> set bmcite.obs[properly_sampled_cell]: 29581 true (96.44%) out of 30672 bools
+#> set bmcite.obs[excluded_cell]: 1091 true (3.557%) out of 30672 bools
 ```
 
 After performing the two-step filtering (genes and cells), the "cleaned" data can be extracted using the `mc.pl.extract_clean_data()` function.
@@ -422,8 +420,8 @@ After performing the two-step filtering (genes and cells), the "cleaned" data ca
 ```python
 # Extract clean dataset (with filtered cells and genes)
 ad = mc.pl.extract_clean_data(ad)
-#> set bmcite.clean.obs[full_cell_index]: 28694 int32s
-#> set bmcite.clean.var[full_gene_index]: 16977 int32s
+#> set bmcite.clean.obs[full_cell_index]: 29581 int32s
+#> set bmcite.clean.var[full_gene_index]: 16992 int32s
 ```
 
 
@@ -471,7 +469,7 @@ mc.pl.mark_lateral_genes(
     lateral_gene_names=LATERAL_GENE_NAMES,
     lateral_gene_patterns=LATERAL_GENE_PATTERNS,
 )
-#> set bmcite.clean.var[lateral_gene]: 245 true (1.443%) out of 16977 bools
+#> set bmcite.clean.var[lateral_gene]: 245 true (1.442%) out of 16992 bools
 ```
 
 Some genes have higher variances than expected which could lead to false positive outlier identification.
@@ -485,7 +483,7 @@ NOISY_GENE_NAMES = [
 ]
 # This will mark as "noisy_gene" any genes that match the above, if they exist in the clean dataset.
 mc.pl.mark_noisy_genes(ad, noisy_gene_names=NOISY_GENE_NAMES)
-#> set bmcite.clean.var[noisy_gene]: 20 true (0.1178%) out of 16977 bools
+#> set bmcite.clean.var[noisy_gene]: 20 true (0.1177%) out of 16992 bools
 ```
 
 To extend this list of lateral genes, users can use the `relate_to_lateral_genes` function to identify genes that are highly correlated with the predefined lateral genes.
@@ -521,28 +519,28 @@ mc.pl.divide_and_conquer_pipeline(
     target_metacell_size = target_metacell_size,
     random_seed = 123456)
 #> set bmcite.clean.var[selected_gene]: * -> False
-#> set bmcite.clean.var[rare_gene]: 0 true (0%) out of 16977 bools
-#> set bmcite.clean.var[rare_gene_module]: 16977 int32 elements with all outliers (100%)
-#> set bmcite.clean.obs[cells_rare_gene_module]: 28694 int32 elements with all outliers (100%)
-#> set bmcite.clean.obs[rare_cell]: 0 true (0%) out of 28694 bools
-#> set bmcite.clean.var[selected_gene]: 1666 true (9.813%) out of 16977 bools
-#> set bmcite.clean.obs[metacell]: 28694 int32s
-#> set bmcite.clean.obs[dissolved]: 0 true (0%) out of 28694 bools
-#> set bmcite.clean.obs[metacell_level]: 28694 int32s
+#> set bmcite.clean.var[rare_gene]: 10 true (0.05885%) out of 16992 bools
+#> set bmcite.clean.var[rare_gene_module]: 16982 outliers (99.94%) and 10 grouped (0.05885%) out of 16992 int32 elements with 1 groups with mean size 10
+#> set bmcite.clean.obs[cells_rare_gene_module]: 29562 outliers (99.94%) and 19 grouped (0.06423%) out of 29581 int32 elements with 1 groups with mean size 19
+#> set bmcite.clean.obs[rare_cell]: 19 true (0.06423%) out of 29581 bools
+#> set bmcite.clean.var[selected_gene]: 1807 true (10.63%) out of 16992 bools
+#> set bmcite.clean.obs[metacell]: 29581 int32s
+#> set bmcite.clean.obs[dissolved]: 5 true (0.0169%) out of 29581 bools
+#> set bmcite.clean.obs[metacell_level]: 29581 int32s
 
 ad.obs.metacell.head
-#> <bound method NDFrame.head of a_AAACCTGAGGTGGGTT-1     73
-#> a_AAACCTGAGTACATGA-1    365
-#> a_AAACCTGCAAACCTAC-1     88
-#> a_AAACCTGCAAGGTGTG-1    287
-#> a_AAACCTGCACGGTAGA-1    244
+#> <bound method NDFrame.head of a_AAACCTGAGCTTATCG-1    382
+#> a_AAACCTGAGGTGGGTT-1    148
+#> a_AAACCTGAGTACATGA-1    286
+#> a_AAACCTGCAAACCTAC-1     84
+#> a_AAACCTGCAAGGTGTG-1    202
 #>                        ... 
-#> b_TTTGTCATCCGAGCCA-1     65
-#> b_TTTGTCATCCGTAGGC-1    187
-#> b_TTTGTCATCCTCGCAT-1    327
-#> b_TTTGTCATCGCCGTGA-1    107
-#> b_TTTGTCATCGTTTGCC-1    263
-#> Name: metacell, Length: 28694, dtype: int32>
+#> b_TTTGTCATCCGAGCCA-1    389
+#> b_TTTGTCATCCGTAGGC-1    315
+#> b_TTTGTCATCCTCGCAT-1    208
+#> b_TTTGTCATCGCCGTGA-1    287
+#> b_TTTGTCATCGTTTGCC-1    358
+#> Name: metacell, Length: 29581, dtype: int32>
 ```
 
 
@@ -565,42 +563,42 @@ and it will store the total UMIs per gene per metacell in the layer `total_umis`
 ```python
 
 mc_ad = mc.pl.collect_metacells(ad, name='metacells', random_seed = 123456)
-#> set metacells.obs[grouped]: 388 int64s
-#> set metacells.obs[total_umis]: 388 float64s
-#> set metacells.layers[total_umis]: ndarray 388 X 16977 float32s
-#> set metacells.obs[__zeros_downsample_umis]: 388 int64s
-#> set metacells.layers[zeros]: ndarray 388 X 16977 int32s
-#> set bmcite.clean.obs[metacell_name]: 28694 <U8s
-#> set metacells.var[genes]: 16977 objects
-#> set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 16977 bools
-#> set metacells.var[properly_sampled_gene]: 16977 true (100%) out of 16977 bools
-#> set metacells.var[excluded_gene]: 0 true (0%) out of 16977 bools
-#> set metacells.var[full_gene_index]: 16977 int32s
-#> set metacells.var[lateral_gene]: 245 true (1.443%) out of 16977 bools
-#> set metacells.var[noisy_gene]: 20 true (0.1178%) out of 16977 bools
-#> set metacells.var[selected_gene]: 1666 true (9.813%) out of 16977 bools
-#> set metacells.var[rare_gene]: 0 true (0%) out of 16977 bools
-#> set metacells.var[rare_gene_module]: 16977 int32s
-#> set metacells.obs[metacells_rare_gene_module]: 388 int32s
-#> set metacells.obs[rare_metacell]: 0 true (0%) out of 388 bools
-#> set metacells.uns[outliers]: 2
+#> set metacells.obs[grouped]: 401 int64s
+#> set metacells.obs[total_umis]: 401 float64s
+#> set metacells.layers[total_umis]: ndarray 401 X 16992 float32s
+#> set metacells.obs[__zeros_downsample_umis]: 401 int64s
+#> set metacells.layers[zeros]: ndarray 401 X 16992 int32s
+#> set bmcite.clean.obs[metacell_name]: 29581 <U8s
+#> set metacells.var[genes]: 16992 objects
+#> set metacells.var[bursty_lonely_gene]: 0 true (0%) out of 16992 bools
+#> set metacells.var[properly_sampled_gene]: 16992 true (100%) out of 16992 bools
+#> set metacells.var[excluded_gene]: 0 true (0%) out of 16992 bools
+#> set metacells.var[full_gene_index]: 16992 int32s
+#> set metacells.var[lateral_gene]: 245 true (1.442%) out of 16992 bools
+#> set metacells.var[noisy_gene]: 20 true (0.1177%) out of 16992 bools
+#> set metacells.var[selected_gene]: 1807 true (10.63%) out of 16992 bools
+#> set metacells.var[rare_gene]: 10 true (0.05885%) out of 16992 bools
+#> set metacells.var[rare_gene_module]: 16992 int32s
+#> set metacells.obs[metacells_rare_gene_module]: 401 int32s
+#> set metacells.obs[rare_metacell]: 1 true (0.2494%) out of 401 bools
+#> set metacells.uns[outliers]: 5
 #> set metacells.uns[metacells_algorithm]: metacells.0.9.0
 mc_ad.shape
-#> (388, 16977)
+#> (401, 16992)
 mc_ad.X.sum(axis=1)[:5] 
-#> matrix([[0.99999994],
-#>         [1.        ],
-#>         [1.0000001 ],
-#>         [1.        ],
-#>         [1.        ]], dtype=float32)
+#> matrix([[1.],
+#>         [1.],
+#>         [1.],
+#>         [1.],
+#>         [1.]], dtype=float32)
 mc_ad.layers['total_umis']
-#> array([[3., 1., 0., ..., 0., 0., 0.],
-#>        [6., 0., 0., ..., 0., 0., 0.],
-#>        [7., 3., 0., ..., 0., 0., 0.],
+#> array([[ 2.,  1.,  0., ...,  0.,  0.,  0.],
+#>        [ 1.,  0.,  0., ...,  0.,  0.,  0.],
+#>        [ 5.,  1.,  0., ...,  0.,  0.,  0.],
 #>        ...,
-#>        [3., 0., 0., ..., 0., 0., 0.],
-#>        [4., 2., 0., ..., 0., 0., 0.],
-#>        [0., 1., 0., ..., 0., 0., 0.]], dtype=float32)
+#>        [ 5.,  0.,  0., ...,  0.,  0.,  0.],
+#>        [ 2.,  2.,  0., ...,  0.,  0.,  0.],
+#>        [10.,  1.,  0., ...,  0.,  0.,  0.]], dtype=float32)
 ```
 
 ### Annotate metacells (using available annotations)
@@ -618,28 +616,30 @@ mc.tl.convey_obs_to_group(
     property_name=annotation_label, to_property_name=annotation_label,
     method=mc.ut.most_frequent  # This is the default, for categorical data
 )
-#> set metacells.obs[celltype_simplified]: 388 <U18s
+#> set metacells.obs[celltype_simplified]: 401 <U18s
 
 # Compute the fraction of cells with each possible value in each metacell:
 mc.tl.convey_obs_fractions_to_group(  
     adata=ad, gdata=mc_ad,
     property_name=annotation_label, to_property_name=annotation_label
 )
-#> set metacells.obs[celltype_simplified_fraction_of_B cell]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_CD14 Mono]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_CD16 Mono]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_GMP]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_HSC]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_LMPP]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_NK]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_Naive CD4 cell]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_Naive CD8 cell]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_Non-Naive CD4 cell]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_Non-Naive CD8 cell]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_Plasmablast]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_Unconventional T]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_cDC2]: 388 float64s
-#> set metacells.obs[celltype_simplified_fraction_of_pDC]: 388 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_B cell]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_CD14 Mono]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_CD16 Mono]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_GMP]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_HSC]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_LMPP]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_MEP]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_NK]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_Naive T cell]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_Non-Naive CD4 cell]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_Non-Naive CD8 cell]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_Plasmablast]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_Prog_B]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_Prog_DC]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_Unconventional T]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_cDC2]: 401 float64s
+#> set metacells.obs[celltype_simplified_fraction_of_pDC]: 401 float64s
 ```
  
 ### Save output 
@@ -681,7 +681,7 @@ rownames(countMatrix) <- adata_mc$var_names
 MC.seurat <- CreateSeuratObject(counts = as(countMatrix, 'CsparseMatrix'), meta.data = as.data.frame(adata_mc$obs))
 #> Warning: Invalid name supplied, making object name syntactically valid. New
 #> object name is
-#> sizetotal_umisX__zeros_downsample_umismetacells_rare_gene_modulerare_metacellcelltype_simplifiedcelltype_simplified_fraction_of_B.cellcelltype_simplified_fraction_of_CD14.Monocelltype_simplified_fraction_of_CD16.Monocelltype_simplified_fraction_of_GMPcelltype_simplified_fraction_of_HSCcelltype_simplified_fraction_of_LMPPcelltype_simplified_fraction_of_NKcelltype_simplified_fraction_of_Naive.CD4.cellcelltype_simplified_fraction_of_Naive.CD8.cellcelltype_simplified_fraction_of_Non.Naive.CD4.cellcelltype_simplified_fraction_of_Non.Naive.CD8.cellcelltype_simplified_fraction_of_Plasmablastcelltype_simplified_fraction_of_Unconventional.Tcelltype_simplified_fraction_of_cDC2celltype_simplified_fraction_of_pDC;
+#> sizetotal_umisX__zeros_downsample_umismetacells_rare_gene_modulerare_metacellcelltype_simplifiedcelltype_simplified_fraction_of_B.cellcelltype_simplified_fraction_of_CD14.Monocelltype_simplified_fraction_of_CD16.Monocelltype_simplified_fraction_of_GMPcelltype_simplified_fraction_of_HSCcelltype_simplified_fraction_of_LMPPcelltype_simplified_fraction_of_MEPcelltype_simplified_fraction_of_NKcelltype_simplified_fraction_of_Naive.T.cellcelltype_simplified_fraction_of_Non.Naive.CD4.cellcelltype_simplified_fraction_of_Non.Naive.CD8.cellcelltype_simplified_fraction_of_Plasmablastcelltype_simplified_fraction_of_Prog_Bcelltype_simplified_fraction_of_Prog_DCcelltype_simplified_fraction_of_Unconventional.Tcelltype_simplified_fraction_of_cDC2celltype_simplified_fraction_of_pDC;
 #> see ?make.names for more details on syntax validity
 MC.seurat@misc[["var_features"]] <- rownames(adata_mc$var)[which(adata_mc$var$selected_gene == T)] 
 
@@ -806,14 +806,14 @@ sc.tl.umap(ad)
 In this tutorial, we will use in the SEACells model the 30 first principal components resulting from the PCA to build the knn graph which will be used to compute the kernel. 
 The number of neighbors to considered for the knn graph can be fixed using the `n_neighbors` parameter (here 15).  
 As mentioned previously, users should provide as input the number of metacells required (`n_SEACells` parameter). This number can be defined as the ratio between the number of single cells and the desired graining level (`gamma` parameter in the following code chunk). 
-In this example, we choose a graining level of 25.  
+In this example, we choose a graining level of 50.  
 
 
 ```python
 build_kernel_on = 'X_pca' # key in ad.obsm to use for computing metacells
 n_waypoint_eigs = 10      # Number of eigenvalues to consider when initializing metacells
 n_neighbors = 15 # Number of neighbors used for graph construction 
-gamma = 75   # the requested graining level
+gamma = 50   # the requested graining level
 n_SEACells = int(ad.shape[0]/gamma) # the requested number of metacells  
 ```
 
@@ -830,6 +830,7 @@ model = SEACells.core.SEACells(ad,
                   n_neighbors = n_neighbors,
                   convergence_epsilon = 1e-3,
                   verbose = True)
+#> Welcome to SEACells!
 ```
 
 Kernel computation is performed using the `mconstruct_kernel_matrix` function.
@@ -837,6 +838,19 @@ Kernel computation is performed using the `mconstruct_kernel_matrix` function.
 
 ```python
 model.construct_kernel_matrix()
+#> Computing kNN graph using scanpy NN ...
+#> Computing radius for adaptive bandwidth kernel...
+#>   0%|          | 0/10000 [00:00<?, ?it/s]
+#> Making graph symmetric...
+#> Parameter graph_construction = union being used to build KNN graph...
+#> Computing RBF kernel...
+#>   0%|          | 0/10000 [00:00<?, ?it/s]
+#> Building similarity LIL matrix...
+#>   0%|          | 0/10000 [00:00<?, ?it/s]
+#> Constructing CSR matrix...
+#> 
+#> /opt/conda/envs/MetacellAnalysisToolkit/lib/python3.9/site-packages/scipy/sparse/_index.py:143: SparseEfficiencyWarning: Changing the sparsity structure of a csr_matrix is expensive. lil_matrix is more efficient.
+#>   self._set_arrayXarray(i, j, x)
 M = model.kernel_matrix
 ```
 
@@ -851,11 +865,24 @@ To check that the archetypes are evenly spread, users can visualize them using t
 
 # Initialize archetypes
 model.initialize_archetypes()
+#> Building kernel on X_pca
+#> Computing diffusion components from X_pca for waypoint initialization ... 
+#> Done.
+#> Sampling waypoints ...
+#> Done.
+#> Selecting 184 cells from waypoint initialization.
+#> Initializing residual matrix using greedy column selection
+#> Initializing f and g...
+#> Selecting 16 cells from greedy initialization.
+#> 
+#>   0%|          | 0/26 [00:00<?, ?it/s] 38%|###8      | 10/26 [00:00<00:00, 92.87it/s] 77%|#######6  | 20/26 [00:00<00:00, 90.85it/s]100%|##########| 26/26 [00:00<00:00, 92.20it/s]
 # Visualize the initialization 
 SEACells.plot.plot_initialization(ad, model, plot_basis='X_umap') 
 ```
 
-<img src="21-MC_construction_discrete_files/figure-html/seacells-plotInit-1.png" width="672" />
+<img src="21-MC_construction_discrete_files/figure-html/seacells-model-init-1.png" width="672" />
+
+
 
 #### Fitting the SEACells model to identify metacells {-}
 
@@ -865,10 +892,19 @@ We then check the model convergence using the `plot_convergence` function.
 
 ```python
 model.fit(min_iter = 10, max_iter = 100)
+#> Randomly initialized A matrix.
+#> Setting convergence threshold at 0.17973
+#> Starting iteration 1.
+#> Completed iteration 1.
+#> Starting iteration 10.
+#> Completed iteration 10.
+#> Converged after 11 iterations.
 model.plot_convergence()
 ```
 
-<img src="21-MC_construction_discrete_files/figure-html/seacells-plotConvergence-3.png" width="672" />
+<img src="21-MC_construction_discrete_files/figure-html/seacells-model-fit-3.png" width="672" />
+
+
 
 
 
@@ -886,32 +922,32 @@ membership = model.get_hard_assignments()
 membership.head
 #> <bound method NDFrame.head of                           SEACell
 #> index                            
-#> a_GTCACAATCATCATTC-1   SEACell-66
-#> b_CTCACACCAGCCTTGG-1  SEACell-100
-#> a_CTTAGGATCTTAGCCC-1   SEACell-20
-#> a_TTAGTTCAGGTACTCT-1   SEACell-61
-#> b_TAGACCAAGGGATGGG-1   SEACell-90
+#> b_TGACTTTGTGTTTGGT-1   SEACell-16
+#> a_TTCTCCTTCCGCGCAA-1   SEACell-35
+#> a_ACTATCTTCTTGAGAC-1  SEACell-134
+#> b_GTTCTCGAGTAACCCT-1  SEACell-112
+#> b_ACCCACTGTGGGTCAA-1   SEACell-20
 #> ...                           ...
-#> b_AGTCTTTCATTTGCTT-1   SEACell-43
-#> a_CGATGGCAGTACGCCC-1   SEACell-37
-#> a_CTGAAGTCAATCCGAT-1   SEACell-86
-#> a_CAGTAACAGGGTTCCC-1   SEACell-42
-#> b_GGAATAATCTTGTTTG-1   SEACell-54
+#> b_AGGGTGATCGCATGAT-1  SEACell-179
+#> b_TCATTTGTCATATCGG-1  SEACell-142
+#> a_ATCGAGTGTAGCGCTC-1   SEACell-43
+#> a_CCACGGAAGAATCTCC-1   SEACell-25
+#> b_TGTCCCATCCATGAAC-1  SEACell-171
 #> 
 #> [10000 rows x 1 columns]>
 ad.obs["SEACell"].head
 #> <bound method NDFrame.head of index
-#> a_GTCACAATCATCATTC-1     SEACell-66
-#> b_CTCACACCAGCCTTGG-1    SEACell-100
-#> a_CTTAGGATCTTAGCCC-1     SEACell-20
-#> a_TTAGTTCAGGTACTCT-1     SEACell-61
-#> b_TAGACCAAGGGATGGG-1     SEACell-90
+#> b_TGACTTTGTGTTTGGT-1     SEACell-16
+#> a_TTCTCCTTCCGCGCAA-1     SEACell-35
+#> a_ACTATCTTCTTGAGAC-1    SEACell-134
+#> b_GTTCTCGAGTAACCCT-1    SEACell-112
+#> b_ACCCACTGTGGGTCAA-1     SEACell-20
 #>                            ...     
-#> b_AGTCTTTCATTTGCTT-1     SEACell-43
-#> a_CGATGGCAGTACGCCC-1     SEACell-37
-#> a_CTGAAGTCAATCCGAT-1     SEACell-86
-#> a_CAGTAACAGGGTTCCC-1     SEACell-42
-#> b_GGAATAATCTTGTTTG-1     SEACell-54
+#> b_AGGGTGATCGCATGAT-1    SEACell-179
+#> b_TCATTTGTCATATCGG-1    SEACell-142
+#> a_ATCGAGTGTAGCGCTC-1     SEACell-43
+#> a_CCACGGAAGAATCTCC-1     SEACell-25
+#> b_TGTCCCATCCATGAAC-1    SEACell-171
 #> Name: SEACell, Length: 10000, dtype: object>
 ```
 
@@ -921,7 +957,7 @@ The `core.summarize_by_SEACell` function can be used to generate a metacell coun
 
 ```python
 mc_ad = SEACells.core.summarize_by_SEACell(ad, SEACells_label='SEACell', summarize_layer='raw', celltype_label=annotation_label)
-#>   0%|          | 0/133 [00:00<?, ?it/s]  4%|3         | 5/133 [00:00<00:02, 45.95it/s]  8%|7         | 10/133 [00:00<00:02, 45.74it/s] 11%|#1        | 15/133 [00:00<00:02, 45.94it/s] 15%|#5        | 20/133 [00:00<00:02, 45.23it/s] 19%|#8        | 25/133 [00:00<00:02, 45.54it/s] 23%|##2       | 30/133 [00:00<00:02, 45.06it/s] 26%|##6       | 35/133 [00:00<00:02, 45.16it/s] 30%|###       | 40/133 [00:00<00:02, 45.49it/s] 34%|###3      | 45/133 [00:00<00:01, 45.90it/s] 38%|###7      | 50/133 [00:01<00:01, 46.42it/s] 41%|####1     | 55/133 [00:01<00:01, 46.81it/s] 45%|####5     | 60/133 [00:01<00:01, 46.83it/s] 49%|####8     | 65/133 [00:01<00:01, 46.38it/s] 53%|#####2    | 70/133 [00:01<00:01, 46.86it/s] 56%|#####6    | 75/133 [00:01<00:01, 46.51it/s] 60%|######    | 80/133 [00:01<00:01, 46.66it/s] 64%|######3   | 85/133 [00:01<00:01, 47.51it/s] 68%|######7   | 90/133 [00:01<00:00, 47.85it/s] 72%|#######2  | 96/133 [00:02<00:00, 48.84it/s] 77%|#######6  | 102/133 [00:02<00:00, 49.44it/s] 81%|########1 | 108/133 [00:02<00:00, 50.01it/s] 85%|########4 | 113/133 [00:02<00:00, 49.90it/s] 89%|########9 | 119/133 [00:02<00:00, 50.20it/s] 94%|#########3| 125/133 [00:02<00:00, 50.72it/s] 98%|#########8| 131/133 [00:02<00:00, 51.19it/s]100%|##########| 133/133 [00:02<00:00, 47.88it/s]
+#>   0%|          | 0/200 [00:00<?, ?it/s]  2%|2         | 5/200 [00:00<00:04, 41.08it/s]  5%|5         | 10/200 [00:00<00:04, 42.65it/s]  8%|7         | 15/200 [00:00<00:04, 43.14it/s] 10%|#         | 20/200 [00:00<00:04, 43.80it/s] 12%|#2        | 25/200 [00:00<00:04, 43.63it/s] 15%|#5        | 30/200 [00:00<00:03, 44.28it/s] 18%|#7        | 35/200 [00:00<00:03, 43.78it/s] 20%|##        | 40/200 [00:00<00:03, 44.36it/s] 22%|##2       | 45/200 [00:01<00:03, 44.19it/s] 25%|##5       | 50/200 [00:01<00:03, 43.67it/s] 28%|##7       | 55/200 [00:01<00:03, 44.14it/s] 30%|###       | 60/200 [00:01<00:03, 44.71it/s] 32%|###2      | 65/200 [00:01<00:03, 44.34it/s] 35%|###5      | 70/200 [00:01<00:02, 44.62it/s] 38%|###7      | 75/200 [00:01<00:02, 45.00it/s] 40%|####      | 80/200 [00:01<00:02, 45.14it/s] 42%|####2     | 85/200 [00:01<00:02, 45.70it/s] 45%|####5     | 90/200 [00:02<00:02, 45.57it/s] 48%|####7     | 95/200 [00:02<00:02, 45.68it/s] 50%|#####     | 100/200 [00:02<00:02, 45.93it/s] 52%|#####2    | 105/200 [00:02<00:02, 46.01it/s] 55%|#####5    | 110/200 [00:02<00:01, 45.38it/s] 57%|#####7    | 115/200 [00:02<00:01, 45.28it/s] 60%|######    | 120/200 [00:02<00:01, 45.17it/s] 62%|######2   | 125/200 [00:02<00:01, 45.62it/s] 65%|######5   | 130/200 [00:02<00:01, 46.11it/s] 68%|######7   | 135/200 [00:03<00:01, 46.18it/s] 70%|#######   | 140/200 [00:03<00:01, 46.45it/s] 72%|#######2  | 145/200 [00:03<00:01, 46.97it/s] 75%|#######5  | 150/200 [00:03<00:01, 46.77it/s] 78%|#######7  | 155/200 [00:03<00:00, 47.49it/s] 80%|########  | 160/200 [00:03<00:00, 47.37it/s] 82%|########2 | 165/200 [00:03<00:00, 47.35it/s] 85%|########5 | 170/200 [00:03<00:00, 47.54it/s] 88%|########7 | 175/200 [00:03<00:00, 47.55it/s] 90%|######### | 180/200 [00:03<00:00, 47.90it/s] 92%|#########2| 185/200 [00:04<00:00, 48.28it/s] 95%|#########5| 190/200 [00:04<00:00, 48.68it/s] 98%|#########7| 195/200 [00:04<00:00, 49.00it/s]100%|##########| 200/200 [00:04<00:00, 49.23it/s]100%|##########| 200/200 [00:04<00:00, 45.95it/s]
 ```
 #### Annotate metacells {-}
 Note that providing an annotation to the `celltype_label` parameter in the `SEACells.core.summarize_by_SEACell` function 

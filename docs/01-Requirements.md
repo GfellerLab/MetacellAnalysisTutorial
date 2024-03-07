@@ -88,32 +88,65 @@ The data are saved in the following file for future analyses in R (use of SuperC
 
 ```r
 library(SeuratData)
+#> The legacy packages maptools, rgdal, and rgeos, underpinning this package
+#> will retire shortly. Please refer to R-spatial evolution reports on
+#> https://r-spatial.org/r/2023/05/15/evolution4.html for details.
+#> This package is now running under evolution status 0
+#> ── Installed datasets ───────────────────────────────────── SeuratData v0.2.2 ──
+#> ✔ bmcite 0.3.0
+#> ────────────────────────────────────── Key ─────────────────────────────────────
+#> ✔ Dataset loaded successfully
+#> ❯ Dataset built with a newer version of Seurat than installed
+#> ❓ Unknown version of Seurat installed
 InstallData("bmcite")
+#> Warning: The following packages are already installed and will not be
+#> reinstalled: bmcite
 
 data("bmcite")
 bmcite
+#> An object of class Seurat 
+#> 17034 features across 30672 samples within 2 assays 
+#> Active assay: RNA (17009 features, 2000 variable features)
+#>  1 other assay present: ADT
+#>  1 dimensional reduction calculated: spca
 head(bmcite@meta.data)
+#>                      orig.ident nCount_RNA nFeature_RNA nCount_ADT nFeature_ADT
+#> a_AAACCTGAGCTTATCG-1     bmcite       7546         2136       1350           25
+#> a_AAACCTGAGGTGGGTT-1     bmcite       1029          437       2970           25
+#> a_AAACCTGAGTACATGA-1     bmcite       1111          429       2474           23
+#> a_AAACCTGCAAACCTAC-1     bmcite       2741          851       4799           25
+#> a_AAACCTGCAAGGTGTG-1     bmcite       2099          843       5434           25
+#> a_AAACCTGCACGGTAGA-1     bmcite       2291          783       4658           25
+#>                           lane  donor      celltype.l1 celltype.l2 RNA.weight
+#> a_AAACCTGAGCTTATCG-1 HumanHTO4 batch1 Progenitor cells    Prog_RBC  0.4827011
+#> a_AAACCTGAGGTGGGTT-1 HumanHTO1 batch1           T cell         gdT  0.2417890
+#> a_AAACCTGAGTACATGA-1 HumanHTO5 batch1           T cell   CD4 Naive  0.5077136
+#> a_AAACCTGCAAACCTAC-1 HumanHTO3 batch1           T cell  CD4 Memory  0.4313079
+#> a_AAACCTGCAAGGTGTG-1 HumanHTO2 batch1          Mono/DC   CD14 Mono  0.5685085
+#> a_AAACCTGCACGGTAGA-1 HumanHTO6 batch1           B cell     Naive B  0.4255879
 bmcite$celltype_simplified <- plyr::revalue(bmcite$celltype.l2, 
                                             c("CD8 Effector_1" = "Non-Naive CD8 cell",
                                               "CD8 Effector_2" = "Non-Naive CD8 cell",
                                               "CD8 Memory_1" = "Non-Naive CD8 cell",
                                               "CD8 Memory_2" = "Non-Naive CD8 cell",
-                                              "CD8 Naive" = "Naive CD8 cell",
-                                              "CD4 Naive" = "Naive CD4 cell",
+                                              "CD8 Naive" = "Naive T cell",
+                                              "CD4 Naive" = "Naive T cell",
                                               "CD4 Memory" = "Non-Naive CD4 cell",
                                               "Treg" = "Non-Naive CD4 cell",
                                               "Naive B" = "B cell",
                                               "Memory B" = "B cell",
                                               "CD56 bright NK" = "NK",
                                               "MAIT" = "Unconventional T",
-                                              "gdT" = "Unconventional T"
+                                              "gdT" = "Unconventional T",
+                                              "Prog_B 2" = "Prog_B",
+                                              "Prog_B 1" = "Prog_B",
+                                              "Prog_Mk" = "MEP",
+                                              "Prog_RBC" = "MEP"
                                               ))
-bmcite <- bmcite[,-grep("Prog",bmcite$celltype_simplified)]
 if(packageVersion("Seurat") >= 5) {
   bmcite[["RNA"]] <- as(object = bmcite[["RNA"]], Class = "Assay")
 }
 saveRDS(bmcite, file = paste0("data/bmcite/singlecell_seurat_filtered.rds"))
-
 ```
 
 
@@ -126,7 +159,6 @@ adata <- AnnData(X = Matrix::t(bmcite@assays$RNA@counts),
                  obs = bmcite@meta.data)
 
 write_h5ad(adata, paste0("data/bmcite/singlecell_anndata_filtered.h5ad"))
-
 ```
 
 ## Retrieve a continuous dataset (CD34 dataset) {#CD34-data}

@@ -53,16 +53,14 @@ MC_tool = "SuperCell"
 proj_name = "bmcite"
 annotation_column = "celltype_simplified"
 
-cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell",
-                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell",
-                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2",
-                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+cell_types <- c("Unconventional T", "Naive T cell", "Non-Naive CD4 cell", "CD14 Mono", "B cell", "Non-Naive CD8 cell",
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B", "Plasmablast", "HSC", "LMPP", "Prog_DC", "MEP")
 
-celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
-                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41",
-                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5",
-                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
-names(celltype_colors) <-cell_types
+celltype_colors <- c("#1E88E5", "#FFC107", "#004D40", "#9E9D24",
+                     "#F06292", "#546E7A", "#D4E157", "#76FF03", 
+                     "#26A69A", "#AB47BC", "#D81B60", "#42A5F5",
+                     "#2E7D32", "#FFA726", "#5E35B1", "#EF5350","#6D4C41")
+names(celltype_colors) <- cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
 
@@ -107,10 +105,23 @@ p_annot
 We cluster the metacells using Seurat clustering steps and visualize these clusters using UMAP:
 
 ```r
-MC.seurat$SCclustering  <- SuperCell::supercell_cluster(D = dist(MC.seurat@reductions$pca@cell.embeddings[, 1:30]  ), k = 15)$clustering
+MC.seurat <- FindNeighbors(MC.seurat, reduction = "pca", dims = 1:30)
+#> Computing nearest neighbor graph
+#> Computing SNN
+MC.seurat <- FindClusters(MC.seurat, resolution = 1)
+#> Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck
+#> 
+#> Number of nodes: 613
+#> Number of edges: 13076
+#> 
+#> Running Louvain algorithm...
+#> Maximum modularity in 10 random starts: 0.8557
+#> Number of communities: 13
+#> Elapsed time: 0 seconds
 data <- cbind(Embeddings(MC.seurat, reduction = "umap"),
               data.frame(size = MC.seurat$size,
-                         cluster = paste0("C_",MC.seurat$SCclustering)))
+                         cluster = MC.seurat$seurat_clusters))
+
 colnames(data)[1:2] <- c("umap_1", "umap_2")
 p_cluster <- ggplot(data, aes(x= umap_1, y=umap_2, color = cluster)) + geom_point(aes(size=size)) +
   ggplot2::scale_size_continuous(range = c(0.5, 0.5*max(log1p((data$size))))) +
@@ -122,23 +133,23 @@ p_cluster
 
 ### Differential expression analysis
 
-We perform differential analysis to identify the markers of our cluster 11 as an example using the `FindMarkers` function. 
+We perform differential analysis to identify the markers of our cluster 8 as an example using the `FindMarkers` function. 
 We see that known NK markers are part of the differentially expressed genes.
 
 ```r
-# Set idents to metacell annotation
-Idents(MC.seurat) <- "SCclustering"
+# Set idents to metacell clusters
+Idents(MC.seurat) <- "seurat_clusters"
 
-cells_markers <- FindMarkers(MC.seurat, ident.1 = "11", only.pos = TRUE, logfc.threshold = 0.25, min.pct = 0.1, test.use = wilcox.test, pseudocount.use = 1)
-nk_markers <- c("KLRF1", "KIR2DL1", "IL2RB", "NKG7", "GNLY", "NCAM1")
+cells_markers <- FindMarkers(MC.seurat, ident.1 = "8", only.pos = TRUE, logfc.threshold = 0.25, min.pct = 0.1, test.use = wilcox.test, pseudocount.use = 1)
+nk_markers <- c("KLRF1", "PRF1", "IL2RB", "NKG7", "GNLY", "NCAM1")
 cells_markers[nk_markers, ]
 #>              p_val avg_log2FC pct.1 pct.2    p_val_adj
-#> KLRF1 2.903180e-32  3.1549202 1.000 0.406 4.938018e-28
-#> NA              NA         NA    NA    NA           NA
-#> IL2RB 3.253877e-32  1.8865835 1.000 0.370 5.534519e-28
-#> NKG7  3.623582e-26  3.7969749 1.000 0.878 6.163350e-22
-#> GNLY  4.624070e-27  4.6206235 1.000 0.898 7.865080e-23
-#> NCAM1 3.027264e-61  0.5077738 0.833 0.052 5.149074e-57
+#> KLRF1 8.154407e-29  3.1480827 1.000 0.395 1.386983e-24
+#> PRF1  3.710227e-29  2.8961725 1.000 0.360 6.310726e-25
+#> IL2RB 1.988774e-29  1.8908169 0.972 0.315 3.382705e-25
+#> NKG7  3.186981e-23  3.9829930 1.000 0.875 5.420736e-19
+#> GNLY  9.632043e-24  4.8479611 1.000 0.891 1.638314e-19
+#> NCAM1 1.612098e-61  0.5074414 0.889 0.057 2.742018e-57
 ```
 
 Let's visualize some of these markers in the different clusters using vviolin plots:
@@ -192,7 +203,7 @@ p.sc <- SuperCell::supercell_GeneGenePlot(
   alpha = alpha,
   color.use = celltype_colors
 )
-p.sc$p
+p.sc$p 
 ```
 
 <img src="30-MC_analysis_discrete_files/figure-html/r-sc-gene_gene_cor-1.png" width="768" />
@@ -208,7 +219,7 @@ p.MC <- SuperCell::supercell_GeneGenePlot(GetAssayData(MC.seurat, slot = "data")
                                           sort.by.corr = F, supercell_size = MC.seurat$size,
                                           alpha = alpha,
                                           color.use = celltype_colors)
-p.MC$p
+p.MC$p 
 ```
 
 <img src="30-MC_analysis_discrete_files/figure-html/r-mc-gene_gene_cors-1.png" width="672" />
@@ -313,14 +324,14 @@ sc.pl.rank_genes_groups(adata, n_genes=25, sharey=False)
 
 # Show the top marker genes
 print(pd.DataFrame(adata.uns['rank_genes_groups']['names']).head(5))
-#>          0        1        2      3  ...        7               8         9      10
-#> 0    TPD52  PIK3IP1   S100A8   LAG3  ...     PKIB           TRADD     PILRA    SPIB
-#> 1    CD79A     LEF1     MNDA  TRGC2  ...    NDRG2           CLIC5    STXBP2    CLN8
-#> 2  POU2AF1    SARAF  C14orf2   LYAR  ...     ENHO  RP11-1399P15.1    CDKN1C   PTPRS
-#> 3     LCN8     CCR7    APLP2  DUSP2  ...    GPAT3            AQP3  C19orf38  BCL11A
-#> 4  RASGRP3  FAM134B    MARC1   IL32  ...  CLEC10A         TNFRSF4     COTL1    IRF8
+#>          0      1        2  ...         12      13        14
+#> 0  S100A12   KLF1    CRYGD  ...    SLC25A5  SH2D1B   TNFRSF4
+#> 1     VCAN  SMIM1   SMIM24  ...     EIF4A3   CD247      AQP3
+#> 2     RBP7   UROS   SPINK2  ...      STMN1    MATK     TRADD
+#> 3   S100A9   MPC2    BAALC  ...       PTMA   KLRF1    PBXIP1
+#> 4     CD14  GATA1  NGFRAP1  ...  HNRNPA2B1    HOPX  TNFRSF25
 #> 
-#> [5 rows x 11 columns]
+#> [5 rows x 15 columns]
 
 # Visualize marker genes
 sc.pl.violin(adata, ['KLRF1', 'IL2RB', 'GNLY'], groupby=annotation_column, size = 2, rotation = 90)
@@ -365,15 +376,13 @@ MC_tool = "SuperCell"
 proj_name = "bmcite"
 annotation_column = "celltype_simplified"
 
-cell_types <- c("Prog_RBC", "Unconventional T", "Naive CD4 cell", "Non-Naive CD4 cell",
-                "CD14 Mono", "B cell", "Naive CD8 cell", "Non-Naive CD8 cell",
-                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B 2",
-                "Prog_Mk", "Plasmablast", "HSC", "LMPP", "Prog_DC", "Prog_B 1")
+cell_types <- c("Unconventional T", "Naive T cell", "Non-Naive CD4 cell", "CD14 Mono", "B cell", "Non-Naive CD8 cell",
+                "NK", "GMP", "CD16 Mono", "pDC", "cDC2", "Prog_B", "Plasmablast", "HSC", "LMPP", "Prog_DC", "MEP")
 
-celltype_colors <- c("#7E57C2", "#1E88E5", "#FFC107", "#004D40", "#9E9D24",
-                 "#F06292", "#546E7A", "#D4E157", "#76FF03", "#6D4C41",
-                 "#26A69A", "#AB47BC", "#EC407A", "#D81B60", "#42A5F5",
-                 "#2E7D32", "#FFA726", "#5E35B1", "#EF5350", "#3949AB")
+celltype_colors <- c("#1E88E5", "#FFC107", "#004D40", "#9E9D24",
+                     "#F06292", "#546E7A", "#D4E157", "#76FF03", 
+                     "#26A69A", "#AB47BC", "#D81B60", "#42A5F5",
+                     "#2E7D32", "#FFA726", "#5E35B1", "#EF5350","#6D4C41")
 names(celltype_colors) <-cell_types
 MC.seurat = readRDS(paste0('./data/', proj_name, '/metacell_', MC_tool,'.rds'))
 ```
@@ -389,12 +398,13 @@ Using the `supercell_DimPlot` function from the the SuperCell R package we can v
 
 ```r
 MC.seurat <- NormalizeData(MC.seurat, normalization.method = "LogNormalize")
+MC.seurat <- FindVariableFeatures(MC.seurat)
 
 MC_list <- list(N.SC = ncol(MC.seurat),
                 supercell_size = MC.seurat$size)
 MC_list$PCA <- SuperCell::supercell_prcomp(
   Matrix::t(GetAssayData(MC.seurat, slot = "data")),
-  genes.use = MC.seurat@misc$var_features,  # or a new set of HVG can be computed
+  genes.use = VariableFeatures(MC.seurat),  # or a new set of HVG can be computed
   supercell_size = MC_list$supercell_size, # provide this parameter to run sample-weighted version of PCA,
   k = 30
 )
@@ -409,10 +419,10 @@ supercell_DimPlot(SC = MC_list,
   groups = MC.seurat@meta.data[, annotation_column],
   dim.name = "UMAP",
   title = paste0("UMAP of metacells colored by cell type assignment"), color.use = celltype_colors
-) + guides(color=guide_legend(ncol=2))
+) 
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-weighted-1.png" width="672" /><img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-weighted-2.png" width="672" />
+<img src="30-MC_analysis_discrete_files/figure-html/r-mc-dim-reduc-weighted-1.png" width="672" />
 
 ### Clustering
 
@@ -423,7 +433,7 @@ We cluster the metacells using the function `supercell_cluster` from SuperCell R
 D  <- dist(MC_list$PCA$x)
 
 # cluster metacells
-MC_list$SCclustering  <- supercell_cluster(D = D, k = 15, supercell_size = MC_list$supercell_size)
+MC_list$SCclustering  <- supercell_cluster(D = D, k = 20, supercell_size = MC_list$supercell_size)
 MC.seurat$SCclustering <- MC_list$SCclustering$clustering
 
 # Plot clustering result
@@ -432,10 +442,10 @@ supercell_DimPlot(
   groups = factor(MC_list$SCclustering$clustering),
   dim.name = "UMAP",
   title = paste0("UMAP of metacells colored by metacell clustering")
-)  + guides(color=guide_legend(ncol=2))
+) 
 ```
 
-<img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-weighted-1.png" width="672" /><img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-weighted-2.png" width="672" />
+<img src="30-MC_analysis_discrete_files/figure-html/r-mc-clustering-weighted-1.png" width="672" />
 
 ### Differential expression analysis
 
@@ -453,30 +463,38 @@ MC.all.markers <- supercell_FindAllMarkers(
 )
 ```
 
-We select the markers for cluster 9:
+We select the markers for cluster 10:
 
 ```r
-cluster_markers <- MC.all.markers[[9]]
+cluster_markers <- MC.all.markers[[10]]
 MC.top.markers <- cluster_markers[order(cluster_markers$logFC, decreasing = T),]
 head(MC.top.markers)
-#>       p.value adj.p.value     pct.1     pct.2    logFC w.mean.1   w.mean.2
-#> GNLY        0           0 1.0000000 0.9692845 3.444786 4.629992 0.54215411
-#> NKG7        0           0 1.0000000 0.9536207 2.853815 4.023960 0.51434288
-#> GZMB        0           0 0.9916981 0.6401282 2.529441 2.771860 0.15034752
-#> KLRF1       0           0 1.0000000 0.5681106 2.225002 2.353682 0.09508412
-#> KLRD1       0           0 1.0000000 0.5480537 2.184094 2.508815 0.17047908
-#> CST7        0           0 1.0000000 0.7280256 2.081451 2.706358 0.30405936
+#>       p.value adj.p.value pct.1     pct.2    logFC w.mean.1   w.mean.2
+#> GNLY        0           0     1 0.9741092 3.484511 4.638771 0.52164265
+#> NKG7        0           0     1 0.9633099 2.901688 4.043199 0.50527916
+#> GZMB        0           0     1 0.7012332 2.561807 2.825672 0.14386314
+#> KLRF1       0           0     1 0.6096614 2.241533 2.358953 0.08974488
+#> KLRD1       0           0     1 0.6235607 2.209200 2.513078 0.16453203
+#> CST7        0           0     1 0.7604756 2.122370 2.736890 0.29031145
 ```
 
-We visualize the top 5 markers for the cluster 9 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
+We visualize the top 5 markers for the cluster 10 and see that the top marker genes for this cluster contain marker genes of natural killer cells such as GZMB and GNLY.
 
 ```r
 Idents(MC.seurat) <- "SCclustering"
-# genes.to.plot <- MC.seurat.top.markers$gene[MC.seurat.top.markers$cluster == unique(MC.seurat@meta.data[,annotation_column])[1]]
-# genes.to.plot <- MC.top.markers$gene[c(seq(1, 20, 5))]
 genes.to.plot <- rownames(MC.top.markers)[1:5]
 VlnPlot(MC.seurat, features = genes.to.plot, ncol = 5, pt.size = 0.0)  
 #> Warning: Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
+#> Groups with fewer than two data points have been dropped.
 #> Groups with fewer than two data points have been dropped.
 #> Groups with fewer than two data points have been dropped.
 #> Groups with fewer than two data points have been dropped.
